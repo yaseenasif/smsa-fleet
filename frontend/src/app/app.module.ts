@@ -73,6 +73,9 @@ import { InternationalSummaryByRoadComponent } from './page/bounds/international
 import { InternationalSummaryByAirComponent } from './page/bounds/international/international-summary-by-air/international-summary-by-air.component';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
+import { AddAssignmentComponent } from './page/Assignment/add-assignment/add-assignment.component';
+import { UpdateAssignmentComponent } from './page/Assignment/update-assignment/update-assignment.component';
+import { AssignmentListComponent } from './page/Assignment/assignment-list/assignment-list.component';
 
 @NgModule({
   declarations: [
@@ -123,7 +126,10 @@ import { ToastModule } from 'primeng/toast';
     UpdateInternationalShipmentByAirComponent,
     DomesticSummaryComponent,
     InternationalSummaryByRoadComponent,
-    InternationalSummaryByAirComponent
+    InternationalSummaryByAirComponent,
+    AddAssignmentComponent,
+    UpdateAssignmentComponent,
+    AssignmentListComponent
   ],
   imports: [
     BrowserModule,

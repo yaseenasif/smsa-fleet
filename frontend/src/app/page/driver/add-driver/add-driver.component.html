@@ -13,15 +13,41 @@
             <h1 class="mb-4 h-color">Add Driver</h1>
             <div class="grid">
               <div class="col-12 md:col-12 lg:col-6">
+                <div class="flex flex-column gap-2 form-hook">
+                  <label htmlFor="name">Emp ID</label>
+                  <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
+                    [(ngModel)]="selectedEmployee" optionLabel="locationName" [filter]="true" filterBy="id"
+                    [showClear]="true" placeholder="Select Employee ID
+                  ">
+                    <ng-template pTemplate="selectedItem">
+                      <div class="flex align-items-center gap-2" *ngIf="selectedEmployee">
+                        <div>{{ selectedEmployee.id}}</div>
+                      </div>
+                    </ng-template>
+                    <ng-template let-employee pTemplate="item">
+                      <div class="flex align-items-center gap-2">
+                        <div>{{ employee.id }}</div>
+                      </div>
+                    </ng-template>
+                  </p-dropdown>
+                </div>
+              </div>
+              <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
-                  <label htmlFor="name">Name</label>
-                  <input
-                    pInputText
-                    id="name"
-                    aria-describedby="name-help"
-                    [ngModelOptions]="{standalone:true}"
-                    [(ngModel)]="name"
-                  />
+                  <label htmlFor="name">Emp Name</label>
+                  <input pInputText id="referenceNumber" aria-describedby="referenceNumber-help"
+                    [ngModelOptions]="{standalone:true}" [(ngModel)]="referenceNumber" />
+                  <!-- <small id="name-help"
+                      >{{name}}</small
+                    > -->
+                </div>
+              </div>
+
+              <div class="col-12 md:col-12 lg:col-6">
+                <div class="flex flex-column gap-2">
+                  <label htmlFor="name">Job title</label>
+                  <input pInputText id="name" aria-describedby="name-help" [ngModelOptions]="{standalone:true}"
+                    [(ngModel)]="name" />
                   <!-- <small id="name-help"
                     >{{name}}</small
                   > -->
@@ -29,40 +55,157 @@
               </div>
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
-                    <label htmlFor="name">Reference Number</label>
-                    <input
-                      pInputText
-                      id="referenceNumber"
-                      aria-describedby="referenceNumber-help"
-                      [ngModelOptions]="{standalone:true}"
-                      [(ngModel)]="referenceNumber"
-                    />
-                    <!-- <small id="name-help"
+                  <label htmlFor="name">Date of joining</label>
+                  <input pInputText id="referenceNumber" aria-describedby="referenceNumber-help"
+                    [ngModelOptions]="{standalone:true}" [(ngModel)]="referenceNumber" />
+                  <!-- <small id="name-help"
                       >{{name}}</small
                     > -->
-                  </div>
+                </div>
               </div>
-              <div class="col-12 md:col-12 lg:col-12">
+
+              <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
-                    <label htmlFor="name">Contact Number</label>
-                    <input
-                      pInputText
-                      id="contactNumber"
-                      aria-describedby="contactNumber-help"
-                      [ngModelOptions]="{standalone:true}"
-                      [(ngModel)]="contactNumber"
-                    />
-                    <!-- <small id="name-help"
+                  <label htmlFor="name">Department</label>
+                  <input pInputText id="name" aria-describedby="name-help" [ngModelOptions]="{standalone:true}"
+                    [(ngModel)]="name" />
+                  <!-- <small id="name-help"
+                    >{{name}}</small
+                  > -->
+                </div>
+              </div>
+              <div class="col-12 md:col-12 lg:col-6">
+                <div class="flex flex-column gap-2">
+                  <label htmlFor="name">Section</label>
+                  <input pInputText id="referenceNumber" aria-describedby="referenceNumber-help"
+                    [ngModelOptions]="{standalone:true}" [(ngModel)]="referenceNumber" />
+                  <!-- <small id="name-help"
                       >{{name}}</small
                     > -->
-                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 md:col-12 lg:col-6">
+                <div class="flex flex-column gap-2">
+                  <label htmlFor="name">Region</label>
+                  <input pInputText id="name" aria-describedby="name-help" [ngModelOptions]="{standalone:true}"
+                    [(ngModel)]="name" />
+                  <!-- <small id="name-help"
+                    >{{name}}</small
+                  > -->
+                </div>
+              </div>
+              <div class="col-12 md:col-12 lg:col-6">
+                <div class="flex flex-column gap-2">
+                  <label htmlFor="name">City</label>
+                  <input pInputText id="referenceNumber" aria-describedby="referenceNumber-help"
+                    [ngModelOptions]="{standalone:true}" [(ngModel)]="referenceNumber" />
+                  <!-- <small id="name-help"
+                      >{{name}}</small
+                    > -->
+                </div>
+              </div>
+
+
+              <div class="col-12 md:col-12 lg:col-6">
+                <div class="flex flex-column gap-2">
+                  <label htmlFor="name">Nationality</label>
+                  <input pInputText id="name" aria-describedby="name-help" [ngModelOptions]="{standalone:true}"
+                    [(ngModel)]="name" />
+                  <!-- <small id="name-help"
+                    >{{name}}</small
+                  > -->
+                </div>
+              </div>
+              <div class="col-12 md:col-12 lg:col-6">
+                <div class="flex flex-column gap-2">
+                  <label htmlFor="name">Contact Number</label>
+                  <input pInputText id="referenceNumber" aria-describedby="referenceNumber-help"
+                    [ngModelOptions]="{standalone:true}" [(ngModel)]="referenceNumber" />
+                  <!-- <small id="name-help"
+                      >{{name}}</small
+                    > -->
+                </div>
+              </div>
+
+              <div class="col-12 md:col-12 lg:col-6">
+                <div class="flex flex-column gap-2">
+                  <label htmlFor="name">Company email address</label>
+                  <input pInputText id="name" aria-describedby="name-help" [ngModelOptions]="{standalone:true}"
+                    [(ngModel)]="name" />
+                  <!-- <small id="name-help"
+                    >{{name}}</small
+                  > -->
+                </div>
+              </div>
+              <div class="col-12 md:col-12 lg:col-6">
+                <div class="flex flex-column gap-2">
+                  <label htmlFor="name">Grade</label>
+                  <input pInputText id="referenceNumber" aria-describedby="referenceNumber-help"
+                    [ngModelOptions]="{standalone:true}" [(ngModel)]="referenceNumber" />
+                  <!-- <small id="name-help"
+                      >{{name}}</small
+                    > -->
+                </div>
+              </div>
+
+              <div class="col-12 md:col-12 lg:col-6">
+                <div class="flex flex-column gap-2 form-hook">
+                  <label htmlFor="name">License Number</label>
+                  <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
+                    [(ngModel)]="selectedEmployee" optionLabel="locationName" [filter]="true" filterBy="id"
+                    [showClear]="true" placeholder="Select License Number
+                  ">
+                    <ng-template pTemplate="selectedItem">
+                      <div class="flex align-items-center gap-2" *ngIf="selectedEmployee">
+                        <div>{{ selectedEmployee.id}}</div>
+                      </div>
+                    </ng-template>
+                    <ng-template let-employee pTemplate="item">
+                      <div class="flex align-items-center gap-2">
+                        <div>{{ employee.id }}</div>
+                      </div>
+                    </ng-template>
+                  </p-dropdown>
+                </div>
+              </div>
+              <div class="col-12 md:col-12 lg:col-6">
+                <div class="flex flex-column gap-2 form-hook">
+                  <label htmlFor="name">Vehicle Budget</label>
+                  <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
+                    [(ngModel)]="selectedEmployee" optionLabel="locationName" [filter]="true" filterBy="id"
+                    [showClear]="true" placeholder="Select vehicle Budget
+                  ">
+                    <ng-template pTemplate="selectedItem">
+                      <div class="flex align-items-center gap-2" *ngIf="selectedEmployee">
+                        <div>{{ selectedEmployee.id}}</div>
+                      </div>
+                    </ng-template>
+                    <ng-template let-employee pTemplate="item">
+                      <div class="flex align-items-center gap-2">
+                        <div>{{ employee.id }}</div>
+                      </div>
+                    </ng-template>
+                  </p-dropdown>
+                </div>
+              </div>
+
+              <div class="col-12 md:col-12 lg:col-6">
+                <div class="flex flex-column gap-2">
+                  <label htmlFor="name">Attachments</label>
+                  <input pInputText id="contactNumber" aria-describedby="contactNumber-help"
+                    [ngModelOptions]="{standalone:true}" [(ngModel)]="contactNumber" />
+                  <!-- <small id="name-help"
+                      >{{name}}</small
+                    > -->
+                </div>
               </div>
             </div>
             <div class="flex align-items-center justify-content-end mt-4">
-                <p-button label="Cancel" class="bg-o-color mr" routerLink="/driver" styleClass="p-button-outlined">
-                </p-button>
-                <p-button label="Save" class="bg-b-color ml" >
-                </p-button>
+              <p-button label="Cancel" class="bg-o-color mr" routerLink="/driver" styleClass="p-button-outlined">
+              </p-button>
+              <p-button label="Save" class="bg-b-color ml">
+              </p-button>
             </div>
           </div>
         </div>

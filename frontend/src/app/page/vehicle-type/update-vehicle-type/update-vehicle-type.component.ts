@@ -14,6 +14,6 @@ export class UpdateVehicleTypeComponent implements OnInit {
   name!:string;
   
   ngOnInit(): void {
-    this.items = [{ label: 'Vehicle Type',routerLink:'/vehicle-type'},{ label: 'Edit Vehicle Type'}];
+    this.items = [{ label: 'Vehicle',routerLink:'/vehicle-type'},{ label: 'Edit Vehicle'}];
   }
 }
