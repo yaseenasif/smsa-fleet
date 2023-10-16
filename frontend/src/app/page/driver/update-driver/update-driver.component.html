@@ -153,8 +153,7 @@
                 <div class="flex flex-column gap-2 form-hook">
                   <label htmlFor="name">License Number</label>
                   <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
-                    [(ngModel)]="selectedEmployee" optionLabel="locationName" [filter]="true" filterBy="id"
-                    [showClear]="true" placeholder="Select License Number
+                    [(ngModel)]="selectedEmployee" placeholder="Select License Number
                   ">
                     <ng-template pTemplate="selectedItem">
                       <div class="flex align-items-center gap-2" *ngIf="selectedEmployee">
@@ -173,8 +172,7 @@
                 <div class="flex flex-column gap-2 form-hook">
                   <label htmlFor="name">Vehicle Budget</label>
                   <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
-                    [(ngModel)]="selectedEmployee" optionLabel="locationName" [filter]="true" filterBy="id"
-                    [showClear]="true" placeholder="Select vehicle Budget
+                    [(ngModel)]="selectedEmployee"  placeholder="Select vehicle Budget
                   ">
                     <ng-template pTemplate="selectedItem">
                       <div class="flex align-items-center gap-2" *ngIf="selectedEmployee">
