@@ -8,6 +8,18 @@ import { MenuItem } from 'primeng/api';
 })
 export class AddAssignmentComponent {
   items: MenuItem[] | undefined;
+    size=100000
+  uploadedFiles: any[] = [];
+
+   onUpload(event: any) {
+    
+  }
+
+   onUpload1(event:any) {
+    for(let file of event.files) {
+        this.uploadedFiles.push(file);
+    }
+  }
 
   constructor() { }
   name!:string;

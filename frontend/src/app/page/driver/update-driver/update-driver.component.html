@@ -189,15 +189,45 @@
                   </p-dropdown>
                 </div>
               </div>
-
-              <div class="col-12 md:col-12 lg:col-6">
-                <div class="flex flex-column gap-2">
-                  <label htmlFor="name">Attachments</label>
-                  <input pInputText id="contactNumber" aria-describedby="contactNumber-help"
-                    [ngModelOptions]="{standalone:true}" [(ngModel)]="contactNumber" />
-                  <!-- <small id="name-help"
-                      >{{name}}</small
-                    > -->
+            </div>
+            <h2 class="mb-4 mt-4">Attachments</h2>
+            <div class="grid">
+              <div class="lg:col-6 md:col-12 sm:col-12">
+                <div class="flex flex-column gap-2 form-hook">
+                  <h3 for="">ID Copy</h3>
+                  <p-fileUpload
+                    name="demo[]"
+                    (onUpload)="onUpload($event)"
+                    accept="image/*"
+                    [maxFileSize]="size"
+                  >
+                    <ng-template pTemplate="content">
+                      <ul *ngIf="uploadedFiles.length">
+                        <li *ngFor="let file of uploadedFiles">
+                          {{ file.name }} - {{ file.size }} bytes
+                        </li>
+                      </ul>
+                    </ng-template>
+                  </p-fileUpload>
+                </div>
+              </div>
+              <div class="lg:col-6 md:col-12 sm:col-12">
+                <div class="flex flex-column gap-2 form-hook">
+                  <h3 for="">Driving License</h3>
+                  <p-fileUpload
+                    name="demo[]"
+                    (onUpload)="onUpload($event)"
+                    accept="image/*"
+                    [maxFileSize]="size"
+                  >
+                    <ng-template pTemplate="content">
+                      <ul *ngIf="uploadedFiles.length">
+                        <li *ngFor="let file of uploadedFiles">
+                          {{ file.name }} - {{ file.size }} bytes
+                        </li>
+                      </ul>
+                    </ng-template>
+                  </p-fileUpload>
                 </div>
               </div>
             </div>
