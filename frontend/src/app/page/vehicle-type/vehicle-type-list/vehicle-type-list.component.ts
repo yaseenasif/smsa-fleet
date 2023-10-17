@@ -23,6 +23,6 @@ export class VehicleTypeListComponent implements OnInit {
  
 
   ngOnInit() {
-      this.items = [{ label: 'Vehicle Type'}];
+      this.items = [{ label: 'Vehicle'}];
   }
 }

@@ -38,6 +38,7 @@ import { ProductFieldAddComponent } from './page/product-field/product-field-add
 import { ProductFieldUpdateComponent } from './page/product-field/product-field-update/product-field-update.component';
 import {FormsModule} from'@angular/forms'
 import {DomesticShippingListComponent} from './page/shipping-order/domestic/domestic-shipping-list/domestic-shipping-list.component';
+
 import {
   HTTP_INTERCEPTORS,
   HttpClientModule
@@ -73,6 +74,10 @@ import { InternationalSummaryByRoadComponent } from './page/bounds/international
 import { InternationalSummaryByAirComponent } from './page/bounds/international/international-summary-by-air/international-summary-by-air.component';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
+import { AddAssignmentComponent } from './page/Assignment/add-assignment/add-assignment.component';
+import { UpdateAssignmentComponent } from './page/Assignment/update-assignment/update-assignment.component';
+import { AssignmentListComponent } from './page/Assignment/assignment-list/assignment-list.component';
+import { ChartModule } from 'primeng/chart';
 
 @NgModule({
   declarations: [
@@ -123,7 +128,10 @@ import { ToastModule } from 'primeng/toast';
     UpdateInternationalShipmentByAirComponent,
     DomesticSummaryComponent,
     InternationalSummaryByRoadComponent,
-    InternationalSummaryByAirComponent
+    InternationalSummaryByAirComponent,
+    AddAssignmentComponent,
+    UpdateAssignmentComponent,
+    AssignmentListComponent
   ],
   imports: [
     BrowserModule,
@@ -144,7 +152,10 @@ import { ToastModule } from 'primeng/toast';
     InputSwitchModule,
     CalendarModule,
     FileUploadModule,
-    ToastModule
+    ToastModule,
+    FileUploadModule,
+    ToastModule,
+    ChartModule
   ],
 
   providers: [
