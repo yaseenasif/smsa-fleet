@@ -1,33 +1,102 @@
-<!-- 
-<div class="grid">
-    <div class="col-1">
-        <app-sidebar></app-sidebar>
-    </div>
-    <div class="col-11">
-        
-<div class="body-position">
-    <app-dashboard-head></app-dashboard-head>
-
-    <div class="main-container">
-    
-       <h1>hello</h1>
-    </div>
-</div>
-    </div>
-</div> -->
-
-
-
 <div class="flex flex-row">
     <app-sidebar></app-sidebar>
     <div class="body-position">
-        <div class="body-holder">
-            <app-dashboard-head></app-dashboard-head>
-    
-            <div class="main">
-           
-              
+      <div class="body-holder">
+        <app-dashboard-head></app-dashboard-head>
+  
+          <div class="main">
+          <div class="body-card">
+            <div class="table-head">
+              <h2 class="h-color mb-3">Dash Board</h2>
             </div>
+            <div class="container mt-6">
+                <div class="box">
+                    <div class="w-full h-10rem border-round-2xl  flex align-items-center justify-content-around  bg-c-blue">
+                        <div class="card-section-i flex align-items-center justify-content-around ">
+                            <i class="bi bi-car-front-fill"></i>
+                        </div >
+                        <div  class="card-section-c flex align-items-center justify-content-around flex-column">
+                            <h3 class="bg-w">total vehicles</h3>
+                            <p><b class="bg-w">100.0</b></p>
+                        </div>
+                     </div>
+                </div>
+                <div class="box">
+                    <div class="w-full h-10rem border-round-2xl  flex align-items-center justify-content-around  bg-c-green">
+                        <div class="card-section-i flex align-items-center justify-content-around ">
+                            <i class="bi bi-person-fill"></i>
+                        </div >
+                        <div  class="card-section-c flex align-items-center justify-content-around flex-column">
+                            <h3 class="bg-w">total drivers</h3>
+                            <p><b class="bg-w">100.0</b></p>
+                        </div>
+                     </div>
+                </div>
+                <div class="box">
+                    <div class="w-full h-10rem border-round-2xl  flex align-items-center justify-content-around  bg-c-yellow">
+                        <div class="card-section-i flex align-items-center justify-content-around ">
+                            <i class="bi bi-geo-alt-fill"></i>
+                        </div >
+                        <div  class="card-section-c flex align-items-center justify-content-around flex-column">
+                            <h3 class="bg-w">vehicles per region</h3>
+                            <p><b class="bg-w">100.0</b></p>
+                        </div>
+                     </div>
+                </div>
+                <div class="box">
+                    <div class="w-full h-10rem border-round-2xl  flex align-items-center justify-content-around  bg-c-pink">
+                        <div class="card-section-i flex align-items-center justify-content-around ">
+                            <i class="bi bi-person-fill-add"></i>
+                        </div >
+                        <div  class="card-section-c flex align-items-center justify-content-around flex-column">
+                            <h3 class="bg-w">vehicles per vendor</h3>
+                            <p><b class="bg-w">100.0</b></p>
+                        </div>
+                     </div>
+                </div>
+                <div class="box">
+                    <div class="w-full h-10rem border-round-2xl  flex align-items-center justify-content-around bg-c-orange">
+                        <div class="card-section-i flex align-items-center justify-content-around ">
+                            <i class="bi bi-arrow-counterclockwise"></i>
+                        </div >
+                        <div  class="card-section-c flex align-items-center justify-content-around flex-column">
+                            <h3 class="bg-w">total replacement vehicles</h3>
+                            <p><b class="bg-w">100.0</b></p>
+                        </div>
+                     </div>
+                </div>
+            </div>
+         </div>    
+         <div class="body-card mt-6">
+            <div class="grid mt-6">
+                <div class="col-12">
+                    <div class="card">
+                        <p-chart type="bar" [data]="data1" [options]="options1"></p-chart>
+                    </div>
+                </div>
+            </div>
+        </div>    
+        <div class="body-card mt-6"> 
+            <div class="grid mt-6">
+                <div class="col-12 lg:col-4 md:col-12 sm:col-12">
+                    <div class="card flex justify-content-center">
+                        <p-chart type="doughnut" [data]="data" [options]="options"></p-chart>
+                    </div>
+                </div>
+                <div class="col-12 lg:col-4 md:col-12 sm:col-12">
+                    <div class="card flex justify-content-center">
+                        <p-chart type="doughnut" [data]="data" [options]="options"></p-chart>
+                    </div>
+                </div>
+                <div class="col-12 lg:col-4 md:col-12 sm:col-12">
+                    <div class="card flex justify-content-center">
+                        <p-chart type="doughnut" [data]="data" [options]="options"></p-chart>
+                    </div>
+                </div>
+            </div>
+        </div>      
+          </div>
         </div>
+      </div>
     </div>
-</div>
+  

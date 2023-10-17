@@ -46,7 +46,7 @@
                     </ng-template>
                   </p-dropdown>
                 </div>
-              </div>  
+              </div>
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Make</label>
@@ -81,7 +81,7 @@
                     </ng-template>
                   </p-dropdown>
                 </div>
-              </div> 
+              </div>
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Design</label>
@@ -116,7 +116,7 @@
                     </ng-template>
                   </p-dropdown>
                 </div>
-              </div> 
+              </div>
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2 form-hook">
                   <label htmlFor="name">Type</label>
@@ -136,7 +136,7 @@
                     </ng-template>
                   </p-dropdown>
                 </div>
-              </div> 
+              </div>
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2 form-hook">
                   <label htmlFor="name">Capacity</label>
@@ -156,7 +156,7 @@
                     </ng-template>
                   </p-dropdown>
                 </div>
-              </div> 
+              </div>
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Power</label>
@@ -206,7 +206,7 @@
                     </ng-template>
                   </p-dropdown>
                 </div>
-              </div> 
+              </div>
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2 form-hook">
                   <label htmlFor="name">Vendor</label>
@@ -226,7 +226,7 @@
                     </ng-template>
                   </p-dropdown>
                 </div>
-              </div> 
+              </div>
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Insurance Expiry</label>
@@ -306,7 +306,7 @@
                     </ng-template>
                   </p-dropdown>
                 </div>
-              </div> 
+              </div>
               <div class="col-12 md:col-12 lg:col-12">
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Attachments</label>
@@ -321,6 +321,102 @@
                     >{{name}}</small
                   > -->
                 </div>
+                <div class="col-12 md:col-12 lg:col-6">
+
+                </div>
+              </div>
+              <h2 class="mb-4 mt-4">Attachments</h2>
+              <div class="grid">
+                <div class="lg:col-6 md:col-12 sm:col-12">
+                  <div class="flex flex-column gap-2 form-hook">
+                    <h3 for="">Istemara</h3>
+                    <p-fileUpload
+                      name="demo[]"
+                      (onUpload)="onUpload($event)"
+                      accept="image/*"
+                      [maxFileSize]="size"
+                    >
+                      <ng-template pTemplate="content">
+                        <ul *ngIf="uploadedFiles.length">
+                          <li *ngFor="let file of uploadedFiles">
+                            {{ file.name }} - {{ file.size }} bytes
+                          </li>
+                        </ul>
+                      </ng-template>
+                    </p-fileUpload>
+                  </div>
+                </div>
+                <div class="lg:col-6 md:col-12 sm:col-12">
+                  <div class="flex flex-column gap-2 form-hook">
+                    <h3 for="">Insurance</h3>
+                    <p-fileUpload
+                      name="demo[]"
+                      (onUpload)="onUpload($event)"
+                      accept="image/*"
+                      [maxFileSize]="size"
+                    >
+                      <ng-template pTemplate="content">
+                        <ul *ngIf="uploadedFiles.length">
+                          <li *ngFor="let file of uploadedFiles">
+                            {{ file.name }} - {{ file.size }} bytes
+                          </li>
+                        </ul>
+                      </ng-template>
+                    </p-fileUpload>
+                  </div>
+                </div>
+                <div class="lg:col-6 md:col-12 sm:col-12">
+                  <div class="flex flex-column gap-2 form-hook">
+                    <h3 for="">Approved PO</h3>
+                    <p-fileUpload
+                      name="demo[]"
+                      (onUpload)="onUpload($event)"
+                      accept="image/*"
+                      [maxFileSize]="size"
+                    >
+                      <ng-template pTemplate="content">
+                        <ul *ngIf="uploadedFiles.length">
+                          <li *ngFor="let file of uploadedFiles">
+                            {{ file.name }} - {{ file.size }} bytes
+                          </li>
+                        </ul>
+                      </ng-template>
+                    </p-fileUpload>
+                  </div>
+                </div>
+                <div class="lg:col-6 md:col-12 sm:col-12">
+                  <div class="flex flex-column gap-2 form-hook">
+                    <h3 for="">Inspection forms</h3>
+                    <p-fileUpload
+                      name="demo[]"
+                      (onUpload)="onUpload($event)"
+                      accept="image/*"
+                      [maxFileSize]="size"
+                    >
+                      <ng-template pTemplate="content">
+                        <ul *ngIf="uploadedFiles.length">
+                          <li *ngFor="let file of uploadedFiles">
+                            {{ file.name }} - {{ file.size }} bytes
+                          </li>
+                        </ul>
+                      </ng-template>
+                    </p-fileUpload>
+                  </div>
+                </div>
+              </div>
+              <div class="flex align-items-center justify-content-end mt-4">
+                  <p-button label="Cancel" class="bg-o-color mr" routerLink="/vehicle-type" styleClass="p-button-outlined">
+                  </p-button>
+                  <p-button label="Save" class="bg-b-color ml" >
+                  </p-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
               </div>
             </div>
             <div class="flex align-items-center justify-content-end mt-4">

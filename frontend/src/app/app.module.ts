@@ -38,6 +38,7 @@ import { ProductFieldAddComponent } from './page/product-field/product-field-add
 import { ProductFieldUpdateComponent } from './page/product-field/product-field-update/product-field-update.component';
 import {FormsModule} from'@angular/forms'
 import {DomesticShippingListComponent} from './page/shipping-order/domestic/domestic-shipping-list/domestic-shipping-list.component';
+
 import {
   HTTP_INTERCEPTORS,
   HttpClientModule
@@ -76,6 +77,7 @@ import { ToastModule } from 'primeng/toast';
 import { AddAssignmentComponent } from './page/Assignment/add-assignment/add-assignment.component';
 import { UpdateAssignmentComponent } from './page/Assignment/update-assignment/update-assignment.component';
 import { AssignmentListComponent } from './page/Assignment/assignment-list/assignment-list.component';
+import { ChartModule } from 'primeng/chart';
 
 @NgModule({
   declarations: [
@@ -150,7 +152,10 @@ import { AssignmentListComponent } from './page/Assignment/assignment-list/assig
     InputSwitchModule,
     CalendarModule,
     FileUploadModule,
-    ToastModule
+    ToastModule,
+    FileUploadModule,
+    ToastModule,
+    ChartModule
   ],
 
   providers: [

@@ -16,6 +16,18 @@ export class UpdateDriverComponent implements OnInit {
   name!:string;
   contactNumber!:string;
   referenceNumber!:string;
+  size=100000
+  uploadedFiles: any[] = [];
+
+   onUpload(event: any) {
+    
+  }
+
+   onUpload1(event:any) {
+    for(let file of event.files) {
+        this.uploadedFiles.push(file);
+    }
+  }
   ngOnInit(): void {
     this.items = [{ label: 'Driver List',routerLink:'/driver'},{ label: 'Edit Driver'}];
     this.employee=[

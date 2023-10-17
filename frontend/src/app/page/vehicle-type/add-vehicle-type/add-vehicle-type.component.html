@@ -19,7 +19,7 @@
                     pInputText
                     id="name"
                     aria-describedby="name-help"
-                    [ngModelOptions]="{standalone:true}"
+                    [ngModelOptions]="{ standalone: true }"
                     [(ngModel)]="name"
                   />
                   <!-- <small id="name-help"
@@ -33,9 +33,24 @@
                   <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
                     [(ngModel)]="selectedEmployee"  placeholder="Select Plate Number
                   ">
+                  <p-dropdown
+                    class="w-full"
+                    [options]="employee"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="selectedEmployee"
+                    optionLabel="locationName"
+                    [filter]="true"
+                    filterBy="id"
+                    [showClear]="true"
+                    placeholder="Select Plate Number
+                  "
+                  >
                     <ng-template pTemplate="selectedItem">
-                      <div class="flex align-items-center gap-2" *ngIf="selectedEmployee">
-                        <div>{{ selectedEmployee.id}}</div>
+                      <div
+                        class="flex align-items-center gap-2"
+                        *ngIf="selectedEmployee"
+                      >
+                        <div>{{ selectedEmployee.id }}</div>
                       </div>
                     </ng-template>
                     <ng-template let-employee pTemplate="item">
@@ -45,7 +60,7 @@
                     </ng-template>
                   </p-dropdown>
                 </div>
-              </div>  
+              </div>
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Make</label>
@@ -53,7 +68,7 @@
                     pInputText
                     id="name"
                     aria-describedby="name-help"
-                    [ngModelOptions]="{standalone:true}"
+                    [ngModelOptions]="{ standalone: true }"
                     [(ngModel)]="name"
                   />
                   <!-- <small id="name-help"
@@ -64,12 +79,27 @@
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2 form-hook">
                   <label htmlFor="name">year</label>
+                  <p-dropdown
+                    class="w-full"
+                    [options]="employee"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="selectedEmployee"
+                    optionLabel="locationName"
+                    [filter]="true"
+                    filterBy="id"
+                    [showClear]="true"
+                    placeholder="Select Year
+                  "
+                  >
                   <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
                     [(ngModel)]="selectedEmployee"  placeholder="Select Year
                   ">
                     <ng-template pTemplate="selectedItem">
-                      <div class="flex align-items-center gap-2" *ngIf="selectedEmployee">
-                        <div>{{ selectedEmployee.id}}</div>
+                      <div
+                        class="flex align-items-center gap-2"
+                        *ngIf="selectedEmployee"
+                      >
+                        <div>{{ selectedEmployee.id }}</div>
                       </div>
                     </ng-template>
                     <ng-template let-employee pTemplate="item">
@@ -79,7 +109,7 @@
                     </ng-template>
                   </p-dropdown>
                 </div>
-              </div> 
+              </div>
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Design</label>
@@ -87,7 +117,7 @@
                     pInputText
                     id="name"
                     aria-describedby="name-help"
-                    [ngModelOptions]="{standalone:true}"
+                    [ngModelOptions]="{ standalone: true }"
                     [(ngModel)]="name"
                   />
                   <!-- <small id="name-help"
@@ -98,6 +128,16 @@
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2 form-hook">
                   <label htmlFor="name">Model</label>
+                  <input
+                    pInputText
+                    id="name"
+                    aria-describedby="name-help"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="name"
+                  />
+                  <!-- <small id="name-help"
+                    >{{name}}</small
+                  > -->
                   <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
                     [(ngModel)]="selectedEmployee"  placeholder="Select Model
                   ">
@@ -113,10 +153,20 @@
                     </ng-template>
                   </p-dropdown>
                 </div>
-              </div> 
+              </div>
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2 form-hook">
                   <label htmlFor="name">Type</label>
+                  <input
+                    pInputText
+                    id="name"
+                    aria-describedby="name-help"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="name"
+                  />
+                  <!-- <small id="name-help"
+                    >{{name}}</small
+                  > -->
                   <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
                     [(ngModel)]="selectedEmployee"  placeholder="Select Type
                   ">
@@ -132,10 +182,20 @@
                     </ng-template>
                   </p-dropdown>
                 </div>
-              </div> 
+              </div>
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2 form-hook">
                   <label htmlFor="name">Capacity</label>
+                  <input
+                    pInputText
+                    id="name"
+                    aria-describedby="name-help"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="name"
+                  />
+                  <!-- <small id="name-help"
+                    >{{name}}</small
+                  > -->
                   <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
                     [(ngModel)]="selectedEmployee" placeholder="Select Capacity
                   ">
@@ -151,7 +211,7 @@
                     </ng-template>
                   </p-dropdown>
                 </div>
-              </div> 
+              </div>
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Power</label>
@@ -159,7 +219,7 @@
                     pInputText
                     id="name"
                     aria-describedby="name-help"
-                    [ngModelOptions]="{standalone:true}"
+                    [ngModelOptions]="{ standalone: true }"
                     [(ngModel)]="name"
                   />
                   <!-- <small id="name-help"
@@ -174,7 +234,7 @@
                     pInputText
                     id="name"
                     aria-describedby="name-help"
-                    [ngModelOptions]="{standalone:true}"
+                    [ngModelOptions]="{ standalone: true }"
                     [(ngModel)]="name"
                   />
                   <!-- <small id="name-help"
@@ -185,6 +245,16 @@
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2 form-hook">
                   <label htmlFor="name">Fuel Type</label>
+                  <input
+                    pInputText
+                    id="name"
+                    aria-describedby="name-help"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="name"
+                  />
+                  <!-- <small id="name-help"
+                    >{{name}}</small
+                  > -->
                   <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
                     [(ngModel)]="selectedEmployee" placeholder="Select Fuel Type
                   ">
@@ -200,10 +270,20 @@
                     </ng-template>
                   </p-dropdown>
                 </div>
-              </div> 
+              </div>
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2 form-hook">
                   <label htmlFor="name">Vendor</label>
+                  <input
+                    pInputText
+                    id="name"
+                    aria-describedby="name-help"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="name"
+                  />
+                  <!-- <small id="name-help"
+                    >{{name}}</small
+                  > -->
                   <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
                     [(ngModel)]="selectedEmployee" placeholder="Select Plate Number
                   ">
@@ -219,7 +299,7 @@
                     </ng-template>
                   </p-dropdown>
                 </div>
-              </div> 
+              </div>
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Insurance Expiry</label>
@@ -227,7 +307,7 @@
                     pInputText
                     id="name"
                     aria-describedby="name-help"
-                    [ngModelOptions]="{standalone:true}"
+                    [ngModelOptions]="{ standalone: true }"
                     [(ngModel)]="name"
                   />
                   <!-- <small id="name-help"
@@ -242,7 +322,7 @@
                     pInputText
                     id="name"
                     aria-describedby="name-help"
-                    [ngModelOptions]="{standalone:true}"
+                    [ngModelOptions]="{ standalone: true }"
                     [(ngModel)]="name"
                   />
                   <!-- <small id="name-help"
@@ -257,7 +337,7 @@
                     pInputText
                     id="name"
                     aria-describedby="name-help"
-                    [ngModelOptions]="{standalone:true}"
+                    [ngModelOptions]="{ standalone: true }"
                     [(ngModel)]="name"
                   />
                   <!-- <small id="name-help"
@@ -272,7 +352,7 @@
                     pInputText
                     id="name"
                     aria-describedby="name-help"
-                    [ngModelOptions]="{standalone:true}"
+                    [ngModelOptions]="{ standalone: true }"
                     [(ngModel)]="name"
                   />
                   <!-- <small id="name-help"
@@ -283,6 +363,16 @@
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2 form-hook">
                   <label htmlFor="name">Usage Type</label>
+                  <input
+                    pInputText
+                    id="name"
+                    aria-describedby="name-help"
+                    [ngModelOptions]="{ standalone: true }"
+                    [(ngModel)]="name"
+                  />
+                  <!-- <small id="name-help"
+                    >{{name}}</small
+                  > -->
                   <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
                     [(ngModel)]="selectedEmployee" placeholder="Select Usage Type
                   ">
@@ -298,7 +388,85 @@
                     </ng-template>
                   </p-dropdown>
                 </div>
-              </div> 
+              </div>
+            </div>
+            <h2 class="mb-4 mt-4">Attachments</h2>
+            <div class="grid">
+              <div class="lg:col-6 md:col-12 sm:col-12">
+                <div class="flex flex-column gap-2 form-hook">
+                  <h3 for="">Istemara</h3>
+                  <p-fileUpload
+                    name="demo[]"
+                    (onUpload)="onUpload($event)"
+                    accept="image/*"
+                    [maxFileSize]="size"
+                  >
+                    <ng-template pTemplate="content">
+                      <ul *ngIf="uploadedFiles.length">
+                        <li *ngFor="let file of uploadedFiles">
+                          {{ file.name }} - {{ file.size }} bytes
+                        </li>
+                      </ul>
+                    </ng-template>
+                  </p-fileUpload>
+                </div>
+              </div>
+              <div class="lg:col-6 md:col-12 sm:col-12">
+                <div class="flex flex-column gap-2 form-hook">
+                  <h3 for="">Insurance</h3>
+                  <p-fileUpload
+                    name="demo[]"
+                    (onUpload)="onUpload($event)"
+                    accept="image/*"
+                    [maxFileSize]="size"
+                  >
+                    <ng-template pTemplate="content">
+                      <ul *ngIf="uploadedFiles.length">
+                        <li *ngFor="let file of uploadedFiles">
+                          {{ file.name }} - {{ file.size }} bytes
+                        </li>
+                      </ul>
+                    </ng-template>
+                  </p-fileUpload>
+                </div>
+              </div>
+              <div class="lg:col-6 md:col-12 sm:col-12">
+                <div class="flex flex-column gap-2 form-hook">
+                  <h3 for="">Approved PO</h3>
+                  <p-fileUpload
+                    name="demo[]"
+                    (onUpload)="onUpload($event)"
+                    accept="image/*"
+                    [maxFileSize]="size"
+                  >
+                    <ng-template pTemplate="content">
+                      <ul *ngIf="uploadedFiles.length">
+                        <li *ngFor="let file of uploadedFiles">
+                          {{ file.name }} - {{ file.size }} bytes
+                        </li>
+                      </ul>
+                    </ng-template>
+                  </p-fileUpload>
+                </div>
+              </div>
+              <div class="lg:col-6 md:col-12 sm:col-12">
+                <div class="flex flex-column gap-2 form-hook">
+                  <h3 for="">Inspection forms</h3>
+                  <p-fileUpload
+                    name="demo[]"
+                    (onUpload)="onUpload($event)"
+                    accept="image/*"
+                    [maxFileSize]="size"
+                  >
+                    <ng-template pTemplate="content">
+                      <ul *ngIf="uploadedFiles.length">
+                        <li *ngFor="let file of uploadedFiles">
+                          {{ file.name }} - {{ file.size }} bytes
+                        </li>
+                      </ul>
+                    </ng-template>
+                  </p-fileUpload>
+              </div>
               <div class="col-12 md:col-12 lg:col-12">
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Attachments</label>
@@ -316,10 +484,14 @@
               </div>
             </div>
             <div class="flex align-items-center justify-content-end mt-4">
-                <p-button label="Cancel" class="bg-o-color mr" routerLink="/vehicle-type" styleClass="p-button-outlined">
-                </p-button>
-                <p-button label="Save" class="bg-b-color ml" >
-                </p-button>
+              <p-button
+                label="Cancel"
+                class="bg-o-color mr"
+                routerLink="/vehicle-type"
+                styleClass="p-button-outlined"
+              >
+              </p-button>
+              <p-button label="Save" class="bg-b-color ml"> </p-button>
             </div>
           </div>
         </div>
