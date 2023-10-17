@@ -46,6 +46,9 @@ import { UpdateInternationalShipmentByAirComponent } from './page/shipping-order
 import { DomesticSummaryComponent } from './page/bounds/domestic/domestic-summary/domestic-summary.component';
 import { InternationalSummaryByAirComponent } from './page/bounds/international/international-summary-by-air/international-summary-by-air.component';
 import { InternationalSummaryByRoadComponent } from './page/bounds/international/international-summary-by-road/international-summary-by-road.component';
+import { AssignmentListComponent } from './page/Assignment/assignment-list/assignment-list.component';
+import { AddAssignmentComponent } from './page/Assignment/add-assignment/add-assignment.component';
+import { UpdateAssignmentComponent } from './page/Assignment/update-assignment/update-assignment.component';
 
 const routes: Routes = [
   {
@@ -274,7 +277,22 @@ const routes: Routes = [
     component:InternationalSummaryByRoadComponent,
     canActivate:[AuthGuard]
   },
-
+  {
+    path:'assignment',
+    component:AssignmentListComponent,
+    canActivate:[AuthGuard]
+  },
+  {
+    path:'add-assignment',
+    component:AddAssignmentComponent,
+    canActivate:[AuthGuard]
+  },
+  {
+    path:'edit-assignment',
+    component:UpdateAssignmentComponent,
+    canActivate:[AuthGuard]
+  },
+  
   {
     path:'login',
     component:LoginFormComponent

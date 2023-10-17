@@ -12,11 +12,11 @@
             <div class="table-head">
                 <p-toolbar>
                     <div class="p-toolbar-group-start">
-                      <h2 class="h-color">Vehicle Type</h2>
+                      <h2 class="h-color">Vehicle</h2>
                     </div>
                     <div class="p-toolbar-group-end">
                         <p-button class="bg-b-color" routerLink="/add-vehicle-type">
-                          <i class="bi bi-plus-lg" style="font-size: 20px;font-weight: bold;"></i>&nbsp;Add Vehicle Type
+                          <i class="bi bi-plus-lg" style="font-size: 20px;font-weight: bold;"></i>&nbsp;Add Vehicle
                         </p-button>
                     </div>
                 </p-toolbar>
@@ -28,7 +28,25 @@
               <ng-template pTemplate="header">
                 <tr>
                   
-                  <th class="text-center">Vehicle Type</th>
+                  <th class="text-center">PO Number</th>
+                  <th class="text-center">Plate Number</th>
+                  <th class="text-center">Make</th>
+                  <th class="text-center">Year</th>
+                  <th class="text-center">Design</th>
+                  <th class="text-center">Model</th>
+                  <th class="text-center">Type</th>
+                  <th class="text-center">Capacity</th>
+                  <th class="text-center">Power</th>
+                  <th class="text-center">Registration Expiry</th>
+                  <th class="text-center">Fuel Type</th>
+                  <th class="text-center">Vendor</th>
+                  <th class="text-center">Insurance Expiry</th>
+                  <th class="text-center">Lease Cost</th>
+                  <th class="text-center">Lease Start Date</th>
+                  <th class="text-center">Lease Expiry Date</th>
+                  <th class="text-center">Usage Type</th>
+
+                  
                  
                   <th class="text-center">Actions</th>
                 </tr>
@@ -36,13 +54,33 @@
               <ng-template pTemplate="body" let-product>
                 <tr>
                   <td class="text-center">{{ product.name }}</td>
-                  <td class="text-center"> 
-                    <p-button routerLink="/edit-vehicle-type" icon="bi bi-pen" class='mr' styleClass="p-button-rounded p-button-success p-button-text p-button-raised">
-                     
-                    </p-button>
-                     <p-button icon="bi bi-trash" class='ml' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
-                    
+                  <td class="text-center">{{ product.name }}</td>
+                  <td class="text-center">{{ product.name }}</td>
+                  <td class="text-center">{{ product.name }}</td>
+                  <td class="text-center">{{ product.name }}</td>
+                  <td class="text-center">{{ product.name }}</td>
+                  <td class="text-center">{{ product.name }}</td>
+                  <td class="text-center">{{ product.name }}</td>
+                  <td class="text-center">{{ product.name }}</td>
+                  <td class="text-center">{{ product.name }}</td>
+                  <td class="text-center">{{ product.name }}</td>
+                  <td class="text-center">{{ product.name }}</td>
+                  <td class="text-center">{{ product.name }}</td>
+                  <td class="text-center">{{ product.name }}</td>
+                  <td class="text-center">{{ product.name }}</td>
+                  <td class="text-center">{{ product.name }}</td>
+                  <td class="text-center">{{ product.name }}</td>
+
+                  <td class="text-center flex"> 
+                     <p-button routerLink="/edit-vehicle-type" icon="bi bi-pen" class='mr' styleClass="p-button-rounded p-button-success p-button-text p-button-raised">
+                       
                      </p-button>
+                      <p-button icon="bi bi-trash" class='ml' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
+                     
+                      </p-button>
+                      <p-button icon="bi bi-paperclip" class='ml mr' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
+                    
+                      </p-button>
                   </td>
                 </tr>
               </ng-template>
