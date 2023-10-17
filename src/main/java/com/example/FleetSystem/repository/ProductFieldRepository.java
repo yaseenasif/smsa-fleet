@@ -1,6 +1,6 @@
-package com.example.CargoTracking.repository;
+package com.example.FleetSystem.repository;
 
-import com.example.CargoTracking.model.ProductField;
+import com.example.FleetSystem.model.ProductField;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

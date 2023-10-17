@@ -1,4 +1,4 @@
-package com.example.CargoTracking.payload;
+package com.example.FleetSystem.payload;
 
 import lombok.Data;
 

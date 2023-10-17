@@ -1,7 +1,7 @@
-package com.example.CargoTracking.dto;
+package com.example.FleetSystem.dto;
 
 
-import com.example.CargoTracking.model.Permission;
+import com.example.FleetSystem.model.Permission;
 import lombok.*;
 
 import java.util.HashSet;

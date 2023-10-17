@@ -1,7 +1,7 @@
-package com.example.CargoTracking.controller;
+package com.example.FleetSystem.controller;
 
-import com.example.CargoTracking.model.Permission;
-import com.example.CargoTracking.service.PermissionService;
+import com.example.FleetSystem.model.Permission;
+import com.example.FleetSystem.service.PermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

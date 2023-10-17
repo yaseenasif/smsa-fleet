@@ -1,4 +1,4 @@
-package com.example.CargoTracking.model;
+package com.example.FleetSystem.model;
 
 import lombok.*;
 

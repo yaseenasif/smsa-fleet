@@ -1,7 +1,7 @@
-package com.example.CargoTracking.model;
+package com.example.FleetSystem.model;
 
 
-import com.example.CargoTracking.dto.Type;
+import com.example.FleetSystem.dto.Type;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

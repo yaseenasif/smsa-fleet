@@ -1,9 +1,9 @@
-package com.example.CargoTracking.service;
+package com.example.FleetSystem.service;
 
-import com.example.CargoTracking.dto.RolesDto;
-import com.example.CargoTracking.model.Permission;
-import com.example.CargoTracking.model.Roles;
-import com.example.CargoTracking.repository.RoleRepository;
+import com.example.FleetSystem.dto.RolesDto;
+import com.example.FleetSystem.model.Permission;
+import com.example.FleetSystem.model.Roles;
+import com.example.FleetSystem.repository.RoleRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

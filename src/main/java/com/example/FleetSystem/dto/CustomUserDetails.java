@@ -1,6 +1,6 @@
-package com.example.CargoTracking.dto;
+package com.example.FleetSystem.dto;
 
-import com.example.CargoTracking.model.User;
+import com.example.FleetSystem.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

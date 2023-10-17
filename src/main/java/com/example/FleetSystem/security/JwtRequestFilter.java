@@ -1,6 +1,6 @@
-package com.example.CargoTracking.security;
+package com.example.FleetSystem.security;
 
-import com.example.CargoTracking.service.MyUserDetailService;
+import com.example.FleetSystem.service.MyUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

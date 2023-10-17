@@ -1,8 +1,8 @@
-package com.example.CargoTracking.service;
+package com.example.FleetSystem.service;
 
-import com.example.CargoTracking.dto.CustomUserDetails;
-import com.example.CargoTracking.model.User;
-import com.example.CargoTracking.repository.UserRepository;
+import com.example.FleetSystem.dto.CustomUserDetails;
+import com.example.FleetSystem.model.User;
+import com.example.FleetSystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

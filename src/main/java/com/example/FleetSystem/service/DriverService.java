@@ -1,8 +1,8 @@
-package com.example.CargoTracking.service;
+package com.example.FleetSystem.service;
 
-import com.example.CargoTracking.dto.DriverDto;
-import com.example.CargoTracking.model.Driver;
-import com.example.CargoTracking.repository.DriverRepository;
+import com.example.FleetSystem.dto.DriverDto;
+import com.example.FleetSystem.model.Driver;
+import com.example.FleetSystem.repository.DriverRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

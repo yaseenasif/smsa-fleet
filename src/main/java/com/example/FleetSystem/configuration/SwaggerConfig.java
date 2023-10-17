@@ -1,4 +1,4 @@
-package com.example.CargoTracking.configuration;
+package com.example.FleetSystem.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

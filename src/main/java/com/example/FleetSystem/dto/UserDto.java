@@ -1,4 +1,4 @@
-package com.example.CargoTracking.dto;
+package com.example.FleetSystem.dto;
 
 import lombok.*;
 

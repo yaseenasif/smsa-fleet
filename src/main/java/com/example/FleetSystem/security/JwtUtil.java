@@ -1,4 +1,4 @@
-package com.example.CargoTracking.security;
+package com.example.FleetSystem.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

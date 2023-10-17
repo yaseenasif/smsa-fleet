@@ -1,9 +1,9 @@
-package com.example.CargoTracking.controller;
+package com.example.FleetSystem.controller;
 
-import com.example.CargoTracking.dto.LoginCredentials;
-import com.example.CargoTracking.payload.JwtAuthenticationResponse;
-import com.example.CargoTracking.security.JwtUtil;
-import com.example.CargoTracking.service.MyUserDetailService;
+import com.example.FleetSystem.dto.LoginCredentials;
+import com.example.FleetSystem.payload.JwtAuthenticationResponse;
+import com.example.FleetSystem.security.JwtUtil;
+import com.example.FleetSystem.service.MyUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

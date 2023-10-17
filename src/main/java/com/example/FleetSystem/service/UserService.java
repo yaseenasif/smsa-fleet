@@ -1,12 +1,11 @@
-package com.example.CargoTracking.service;
+package com.example.FleetSystem.service;
 
-import com.example.CargoTracking.dto.UserDto;
-import com.example.CargoTracking.model.Location;
-import com.example.CargoTracking.model.Roles;
-import com.example.CargoTracking.model.User;
-import com.example.CargoTracking.repository.LocationRepository;
-import com.example.CargoTracking.repository.RoleRepository;
-import com.example.CargoTracking.repository.UserRepository;
+import com.example.FleetSystem.dto.UserDto;
+import com.example.FleetSystem.model.Roles;
+import com.example.FleetSystem.model.User;
+import com.example.FleetSystem.repository.LocationRepository;
+import com.example.FleetSystem.repository.RoleRepository;
+import com.example.FleetSystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

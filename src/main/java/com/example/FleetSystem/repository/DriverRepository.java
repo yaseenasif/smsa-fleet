@@ -1,6 +1,6 @@
-package com.example.CargoTracking.repository;
+package com.example.FleetSystem.repository;
 
-import com.example.CargoTracking.model.Driver;
+import com.example.FleetSystem.model.Driver;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

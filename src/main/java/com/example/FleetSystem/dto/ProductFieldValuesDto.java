@@ -1,7 +1,6 @@
-package com.example.CargoTracking.dto;
+package com.example.FleetSystem.dto;
 
 
-import com.example.CargoTracking.model.ProductField;
 import lombok.*;
 
 @Getter

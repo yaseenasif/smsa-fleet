@@ -1,8 +1,8 @@
-package com.example.CargoTracking.controller;
+package com.example.FleetSystem.controller;
 
-import com.example.CargoTracking.dto.ProductFieldDto;
-import com.example.CargoTracking.model.ProductField;
-import com.example.CargoTracking.service.ProductFieldService;
+import com.example.FleetSystem.dto.ProductFieldDto;
+import com.example.FleetSystem.model.ProductField;
+import com.example.FleetSystem.service.ProductFieldService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;

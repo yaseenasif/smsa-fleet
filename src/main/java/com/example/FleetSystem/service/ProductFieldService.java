@@ -1,12 +1,11 @@
-package com.example.CargoTracking.service;
+package com.example.FleetSystem.service;
 
-import com.example.CargoTracking.dto.ProductFieldDto;
-import com.example.CargoTracking.dto.ProductFieldValuesDto;
-import com.example.CargoTracking.dto.Type;
-import com.example.CargoTracking.model.ProductField;
-import com.example.CargoTracking.model.ProductFieldValues;
-import com.example.CargoTracking.repository.ProductFieldRepository;
-import com.example.CargoTracking.repository.ProductFieldValuesRepository;
+import com.example.FleetSystem.dto.ProductFieldDto;
+import com.example.FleetSystem.dto.ProductFieldValuesDto;
+import com.example.FleetSystem.model.ProductField;
+import com.example.FleetSystem.model.ProductFieldValues;
+import com.example.FleetSystem.repository.ProductFieldRepository;
+import com.example.FleetSystem.repository.ProductFieldValuesRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;

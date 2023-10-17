@@ -1,6 +1,6 @@
-package com.example.CargoTracking.repository;
+package com.example.FleetSystem.repository;
 
-import com.example.CargoTracking.model.ProductFieldValues;
+import com.example.FleetSystem.model.ProductFieldValues;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

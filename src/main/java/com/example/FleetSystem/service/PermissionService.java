@@ -1,7 +1,7 @@
-package com.example.CargoTracking.service;
+package com.example.FleetSystem.service;
 
-import com.example.CargoTracking.model.Permission;
-import com.example.CargoTracking.repository.PermissionRepository;
+import com.example.FleetSystem.model.Permission;
+import com.example.FleetSystem.repository.PermissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,7 @@
-package com.example.CargoTracking.controller;
+package com.example.FleetSystem.controller;
 
-import com.example.CargoTracking.dto.RolesDto;
-import com.example.CargoTracking.service.RolesService;
+import com.example.FleetSystem.dto.RolesDto;
+import com.example.FleetSystem.service.RolesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
