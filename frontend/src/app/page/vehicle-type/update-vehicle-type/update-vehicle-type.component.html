@@ -10,7 +10,7 @@
         </div>
         <div class="body-card">
           <div class="card">
-            <h1 class="mb-4 h-color">Add Vehicle</h1>
+            <h1 class="mb-4 h-color">Edit Vehicle</h1>
             <div class="grid">
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
@@ -28,23 +28,18 @@
                 </div>
               </div>
               <div class="col-12 md:col-12 lg:col-6">
-                <div class="flex flex-column gap-2 form-hook">
+                <div class="flex flex-column gap-2">
                   <label htmlFor="name">Plate Number</label>
-                  <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
-                    [(ngModel)]="selectedEmployee" optionLabel="locationName" [filter]="true" filterBy="id"
-                    [showClear]="true" placeholder="Select Plate Number
-                  ">
-                    <ng-template pTemplate="selectedItem">
-                      <div class="flex align-items-center gap-2" *ngIf="selectedEmployee">
-                        <div>{{ selectedEmployee.id}}</div>
-                      </div>
-                    </ng-template>
-                    <ng-template let-employee pTemplate="item">
-                      <div class="flex align-items-center gap-2">
-                        <div>{{ employee.id }}</div>
-                      </div>
-                    </ng-template>
-                  </p-dropdown>
+                  <input
+                    pInputText
+                    id="name"
+                    aria-describedby="name-help"
+                    [ngModelOptions]="{standalone:true}"
+                    [(ngModel)]="name"
+                  />
+                  <!-- <small id="name-help"
+                    >{{name}}</small
+                  > -->
                 </div>
               </div>
               <div class="col-12 md:col-12 lg:col-6">
@@ -63,23 +58,18 @@
                 </div>
               </div>
               <div class="col-12 md:col-12 lg:col-6">
-                <div class="flex flex-column gap-2 form-hook">
-                  <label htmlFor="name">year</label>
-                  <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
-                    [(ngModel)]="selectedEmployee" optionLabel="locationName" [filter]="true" filterBy="id"
-                    [showClear]="true" placeholder="Select Year
-                  ">
-                    <ng-template pTemplate="selectedItem">
-                      <div class="flex align-items-center gap-2" *ngIf="selectedEmployee">
-                        <div>{{ selectedEmployee.id}}</div>
-                      </div>
-                    </ng-template>
-                    <ng-template let-employee pTemplate="item">
-                      <div class="flex align-items-center gap-2">
-                        <div>{{ employee.id }}</div>
-                      </div>
-                    </ng-template>
-                  </p-dropdown>
+                <div class="flex flex-column gap-2">
+                  <label htmlFor="name">Year</label>
+                  <input
+                    pInputText
+                    id="name"
+                    aria-describedby="name-help"
+                    [ngModelOptions]="{standalone:true}"
+                    [(ngModel)]="name"
+                  />
+                  <!-- <small id="name-help"
+                    >{{name}}</small
+                  > -->
                 </div>
               </div>
               <div class="col-12 md:col-12 lg:col-6">
@@ -98,63 +88,48 @@
                 </div>
               </div>
               <div class="col-12 md:col-12 lg:col-6">
-                <div class="flex flex-column gap-2 form-hook">
+                <div class="flex flex-column gap-2">
                   <label htmlFor="name">Model</label>
-                  <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
-                    [(ngModel)]="selectedEmployee" optionLabel="locationName" [filter]="true" filterBy="id"
-                    [showClear]="true" placeholder="Select Model
-                  ">
-                    <ng-template pTemplate="selectedItem">
-                      <div class="flex align-items-center gap-2" *ngIf="selectedEmployee">
-                        <div>{{ selectedEmployee.id}}</div>
-                      </div>
-                    </ng-template>
-                    <ng-template let-employee pTemplate="item">
-                      <div class="flex align-items-center gap-2">
-                        <div>{{ employee.id }}</div>
-                      </div>
-                    </ng-template>
-                  </p-dropdown>
+                  <input
+                    pInputText
+                    id="name"
+                    aria-describedby="name-help"
+                    [ngModelOptions]="{standalone:true}"
+                    [(ngModel)]="name"
+                  />
+                  <!-- <small id="name-help"
+                    >{{name}}</small
+                  > -->
                 </div>
               </div>
               <div class="col-12 md:col-12 lg:col-6">
-                <div class="flex flex-column gap-2 form-hook">
+                <div class="flex flex-column gap-2">
                   <label htmlFor="name">Type</label>
-                  <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
-                    [(ngModel)]="selectedEmployee" optionLabel="locationName" [filter]="true" filterBy="id"
-                    [showClear]="true" placeholder="Select Type
-                  ">
-                    <ng-template pTemplate="selectedItem">
-                      <div class="flex align-items-center gap-2" *ngIf="selectedEmployee">
-                        <div>{{ selectedEmployee.id}}</div>
-                      </div>
-                    </ng-template>
-                    <ng-template let-employee pTemplate="item">
-                      <div class="flex align-items-center gap-2">
-                        <div>{{ employee.id }}</div>
-                      </div>
-                    </ng-template>
-                  </p-dropdown>
+                  <input
+                    pInputText
+                    id="name"
+                    aria-describedby="name-help"
+                    [ngModelOptions]="{standalone:true}"
+                    [(ngModel)]="name"
+                  />
+                  <!-- <small id="name-help"
+                    >{{name}}</small
+                  > -->
                 </div>
               </div>
               <div class="col-12 md:col-12 lg:col-6">
-                <div class="flex flex-column gap-2 form-hook">
+                <div class="flex flex-column gap-2">
                   <label htmlFor="name">Capacity</label>
-                  <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
-                    [(ngModel)]="selectedEmployee" optionLabel="locationName" [filter]="true" filterBy="id"
-                    [showClear]="true" placeholder="Select Capacity
-                  ">
-                    <ng-template pTemplate="selectedItem">
-                      <div class="flex align-items-center gap-2" *ngIf="selectedEmployee">
-                        <div>{{ selectedEmployee.id}}</div>
-                      </div>
-                    </ng-template>
-                    <ng-template let-employee pTemplate="item">
-                      <div class="flex align-items-center gap-2">
-                        <div>{{ employee.id }}</div>
-                      </div>
-                    </ng-template>
-                  </p-dropdown>
+                  <input
+                    pInputText
+                    id="name"
+                    aria-describedby="name-help"
+                    [ngModelOptions]="{standalone:true}"
+                    [(ngModel)]="name"
+                  />
+                  <!-- <small id="name-help"
+                    >{{name}}</small
+                  > -->
                 </div>
               </div>
               <div class="col-12 md:col-12 lg:col-6">
@@ -188,43 +163,33 @@
                 </div>
               </div>
               <div class="col-12 md:col-12 lg:col-6">
-                <div class="flex flex-column gap-2 form-hook">
+                <div class="flex flex-column gap-2">
                   <label htmlFor="name">Fuel Type</label>
-                  <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
-                    [(ngModel)]="selectedEmployee" optionLabel="locationName" [filter]="true" filterBy="id"
-                    [showClear]="true" placeholder="Select Fuel Type
-                  ">
-                    <ng-template pTemplate="selectedItem">
-                      <div class="flex align-items-center gap-2" *ngIf="selectedEmployee">
-                        <div>{{ selectedEmployee.id}}</div>
-                      </div>
-                    </ng-template>
-                    <ng-template let-employee pTemplate="item">
-                      <div class="flex align-items-center gap-2">
-                        <div>{{ employee.id }}</div>
-                      </div>
-                    </ng-template>
-                  </p-dropdown>
+                  <input
+                    pInputText
+                    id="name"
+                    aria-describedby="name-help"
+                    [ngModelOptions]="{standalone:true}"
+                    [(ngModel)]="name"
+                  />
+                  <!-- <small id="name-help"
+                    >{{name}}</small
+                  > -->
                 </div>
               </div>
               <div class="col-12 md:col-12 lg:col-6">
-                <div class="flex flex-column gap-2 form-hook">
+                <div class="flex flex-column gap-2">
                   <label htmlFor="name">Vendor</label>
-                  <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
-                    [(ngModel)]="selectedEmployee" optionLabel="locationName" [filter]="true" filterBy="id"
-                    [showClear]="true" placeholder="Select Plate Number
-                  ">
-                    <ng-template pTemplate="selectedItem">
-                      <div class="flex align-items-center gap-2" *ngIf="selectedEmployee">
-                        <div>{{ selectedEmployee.id}}</div>
-                      </div>
-                    </ng-template>
-                    <ng-template let-employee pTemplate="item">
-                      <div class="flex align-items-center gap-2">
-                        <div>{{ employee.id }}</div>
-                      </div>
-                    </ng-template>
-                  </p-dropdown>
+                  <input
+                    pInputText
+                    id="name"
+                    aria-describedby="name-help"
+                    [ngModelOptions]="{standalone:true}"
+                    [(ngModel)]="name"
+                  />
+                  <!-- <small id="name-help"
+                    >{{name}}</small
+                  > -->
                 </div>
               </div>
               <div class="col-12 md:col-12 lg:col-6">
@@ -288,26 +253,24 @@
                 </div>
               </div>
               <div class="col-12 md:col-12 lg:col-6">
-                <div class="flex flex-column gap-2 form-hook">
+                <div class="flex flex-column gap-2">
                   <label htmlFor="name">Usage Type</label>
-                  <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
-                    [(ngModel)]="selectedEmployee" optionLabel="locationName" [filter]="true" filterBy="id"
-                    [showClear]="true" placeholder="Select Usage Type
-                  ">
-                    <ng-template pTemplate="selectedItem">
-                      <div class="flex align-items-center gap-2" *ngIf="selectedEmployee">
-                        <div>{{ selectedEmployee.id}}</div>
-                      </div>
-                    </ng-template>
-                    <ng-template let-employee pTemplate="item">
-                      <div class="flex align-items-center gap-2">
-                        <div>{{ employee.id }}</div>
-                      </div>
-                    </ng-template>
-                  </p-dropdown>
+                  <input
+                    pInputText
+                    id="name"
+                    aria-describedby="name-help"
+                    [ngModelOptions]="{standalone:true}"
+                    [(ngModel)]="name"
+                  />
+                  <!-- <small id="name-help"
+                    >{{name}}</small
+                  > -->
                 </div>
               </div>
-              <div class="col-12 md:col-12 lg:col-12">
+              <div class="col-12 md:col-12 lg:col-6">
+                
+              </div>
+              <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Attachments</label>
                   <input
@@ -321,102 +284,88 @@
                     >{{name}}</small
                   > -->
                 </div>
-                <div class="col-12 md:col-12 lg:col-6">
-
-                </div>
               </div>
-              <h2 class="mb-4 mt-4">Attachments</h2>
-              <div class="grid">
-                <div class="lg:col-6 md:col-12 sm:col-12">
-                  <div class="flex flex-column gap-2 form-hook">
-                    <h3 for="">Istemara</h3>
-                    <p-fileUpload
-                      name="demo[]"
-                      (onUpload)="onUpload($event)"
-                      accept="image/*"
-                      [maxFileSize]="size"
-                    >
-                      <ng-template pTemplate="content">
-                        <ul *ngIf="uploadedFiles.length">
-                          <li *ngFor="let file of uploadedFiles">
-                            {{ file.name }} - {{ file.size }} bytes
-                          </li>
-                        </ul>
-                      </ng-template>
-                    </p-fileUpload>
-                  </div>
-                </div>
-                <div class="lg:col-6 md:col-12 sm:col-12">
-                  <div class="flex flex-column gap-2 form-hook">
-                    <h3 for="">Insurance</h3>
-                    <p-fileUpload
-                      name="demo[]"
-                      (onUpload)="onUpload($event)"
-                      accept="image/*"
-                      [maxFileSize]="size"
-                    >
-                      <ng-template pTemplate="content">
-                        <ul *ngIf="uploadedFiles.length">
-                          <li *ngFor="let file of uploadedFiles">
-                            {{ file.name }} - {{ file.size }} bytes
-                          </li>
-                        </ul>
-                      </ng-template>
-                    </p-fileUpload>
-                  </div>
-                </div>
-                <div class="lg:col-6 md:col-12 sm:col-12">
-                  <div class="flex flex-column gap-2 form-hook">
-                    <h3 for="">Approved PO</h3>
-                    <p-fileUpload
-                      name="demo[]"
-                      (onUpload)="onUpload($event)"
-                      accept="image/*"
-                      [maxFileSize]="size"
-                    >
-                      <ng-template pTemplate="content">
-                        <ul *ngIf="uploadedFiles.length">
-                          <li *ngFor="let file of uploadedFiles">
-                            {{ file.name }} - {{ file.size }} bytes
-                          </li>
-                        </ul>
-                      </ng-template>
-                    </p-fileUpload>
-                  </div>
-                </div>
-                <div class="lg:col-6 md:col-12 sm:col-12">
-                  <div class="flex flex-column gap-2 form-hook">
-                    <h3 for="">Inspection forms</h3>
-                    <p-fileUpload
-                      name="demo[]"
-                      (onUpload)="onUpload($event)"
-                      accept="image/*"
-                      [maxFileSize]="size"
-                    >
-                      <ng-template pTemplate="content">
-                        <ul *ngIf="uploadedFiles.length">
-                          <li *ngFor="let file of uploadedFiles">
-                            {{ file.name }} - {{ file.size }} bytes
-                          </li>
-                        </ul>
-                      </ng-template>
-                    </p-fileUpload>
-                  </div>
-                </div>
-              </div>
-              <div class="flex align-items-center justify-content-end mt-4">
-                  <p-button label="Cancel" class="bg-o-color mr" routerLink="/vehicle-type" styleClass="p-button-outlined">
-                  </p-button>
-                  <p-button label="Save" class="bg-b-color ml" >
-                  </p-button>
+              <div class="col-12 md:col-12 lg:col-6">
+                
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
+            <h2 class="mb-4 mt-4">Attachments</h2>
+            <div class="grid">
+              <div class="lg:col-6 md:col-12 sm:col-12">
+                <div class="flex flex-column gap-2 form-hook">
+                  <h3 for="">Istemara</h3>
+                  <p-fileUpload
+                    name="demo[]"
+                    (onUpload)="onUpload($event)"
+                    accept="image/*"
+                    [maxFileSize]="size"
+                  >
+                    <ng-template pTemplate="content">
+                      <ul *ngIf="uploadedFiles.length">
+                        <li *ngFor="let file of uploadedFiles">
+                          {{ file.name }} - {{ file.size }} bytes
+                        </li>
+                      </ul>
+                    </ng-template>
+                  </p-fileUpload>
+                </div>
+              </div>
+              <div class="lg:col-6 md:col-12 sm:col-12">
+                <div class="flex flex-column gap-2 form-hook">
+                  <h3 for="">Insurance</h3>
+                  <p-fileUpload
+                    name="demo[]"
+                    (onUpload)="onUpload($event)"
+                    accept="image/*"
+                    [maxFileSize]="size"
+                  >
+                    <ng-template pTemplate="content">
+                      <ul *ngIf="uploadedFiles.length">
+                        <li *ngFor="let file of uploadedFiles">
+                          {{ file.name }} - {{ file.size }} bytes
+                        </li>
+                      </ul>
+                    </ng-template>
+                  </p-fileUpload>
+                </div>
+              </div>
+              <div class="lg:col-6 md:col-12 sm:col-12">
+                <div class="flex flex-column gap-2 form-hook">
+                  <h3 for="">Approved PO</h3>
+                  <p-fileUpload
+                    name="demo[]"
+                    (onUpload)="onUpload($event)"
+                    accept="image/*"
+                    [maxFileSize]="size"
+                  >
+                    <ng-template pTemplate="content">
+                      <ul *ngIf="uploadedFiles.length">
+                        <li *ngFor="let file of uploadedFiles">
+                          {{ file.name }} - {{ file.size }} bytes
+                        </li>
+                      </ul>
+                    </ng-template>
+                  </p-fileUpload>
+                </div>
+              </div>
+              <div class="lg:col-6 md:col-12 sm:col-12">
+                <div class="flex flex-column gap-2 form-hook">
+                  <h3 for="">Inspection forms</h3>
+                  <p-fileUpload
+                    name="demo[]"
+                    (onUpload)="onUpload($event)"
+                    accept="image/*"
+                    [maxFileSize]="size"
+                  >
+                    <ng-template pTemplate="content">
+                      <ul *ngIf="uploadedFiles.length">
+                        <li *ngFor="let file of uploadedFiles">
+                          {{ file.name }} - {{ file.size }} bytes
+                        </li>
+                      </ul>
+                    </ng-template>
+                  </p-fileUpload>
+                </div>
               </div>
             </div>
             <div class="flex align-items-center justify-content-end mt-4">

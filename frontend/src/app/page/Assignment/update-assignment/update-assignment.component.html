@@ -38,55 +38,6 @@
                   />
                 </div>
               </div>
-            <div class="main">
-                <div class="card flex justify-content-center">
-                    <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
-                </div>
-                <div class="body-card">
-                    <div class="card">
-                        <h1 class="mb-4 h-color">Edit Assignment</h1>
-                        <div class="grid">
-                            <div class="col-12 md:col-12 lg:col-6">
-                                <div class="flex flex-column gap-2 form-hook">
-                                    <label htmlFor="name">Vehicle List</label>
-                                    <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
-                                        [(ngModel)]="selectedEmployee" optionLabel="locationName" [filter]="true"
-                                        filterBy="id" [showClear]="true" placeholder="Select vehicle
-                                  ">
-                                        <ng-template pTemplate="selectedItem">
-                                            <div class="flex align-items-center gap-2" *ngIf="selectedEmployee">
-                                                <div>{{ selectedEmployee.id}}</div>
-                                            </div>
-                                        </ng-template>
-                                        <ng-template let-employee pTemplate="item">
-                                            <div class="flex align-items-center gap-2">
-                                                <div>{{ employee.id }}</div>
-                                            </div>
-                                        </ng-template>
-                                    </p-dropdown>
-                                </div>
-                            </div>
-                            <div class="col-12 md:col-12 lg:col-6">
-                                <div class="flex flex-column gap-2 form-hook">
-                                    <label htmlFor="name">Currently Assigned Under (Emp ID)</label>
-                                    <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
-                                        [(ngModel)]="selectedEmployee" optionLabel="locationName" [filter]="true"
-                                        filterBy="id" [showClear]="true" placeholder="Select Currently Assigned Under (Emp ID)
-                                  ">
-                                        <ng-template pTemplate="selectedItem">
-                                            <div class="flex align-items-center gap-2" *ngIf="selectedEmployee">
-                                                <div>{{ selectedEmployee.id}}</div>
-                                            </div>
-                                        </ng-template>
-                                        <ng-template let-employee pTemplate="item">
-                                            <div class="flex align-items-center gap-2">
-                                                <div>{{ employee.id }}</div>
-                                            </div>
-                                        </ng-template>
-                                    </p-dropdown>
-                                </div>
-                            </div>
-
 
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
@@ -112,37 +63,6 @@
                   />
                 </div>
               </div>
-
-                            <div class="col-12 md:col-12 lg:col-6">
-                                <div class="flex flex-column gap-2">
-                                    <label htmlFor="name">Make</label>
-                                    <input pInputText id="name" aria-describedby="name-help"
-                                        [ngModelOptions]="{standalone:true}" [(ngModel)]="name" />
-
-                                </div>
-                            </div>
-
-                            <div class="col-12 md:col-12 lg:col-6">
-                                <div class="flex flex-column gap-2 form-hook">
-                                    <label htmlFor="name">Assign to (Emp ID)</label>
-                                    <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
-                                        [(ngModel)]="selectedEmployee" optionLabel="locationName" [filter]="true"
-                                        filterBy="id" [showClear]="true" placeholder="Select Assign to (Emp ID)
-                                  ">
-                                        <ng-template pTemplate="selectedItem">
-                                            <div class="flex align-items-center gap-2" *ngIf="selectedEmployee">
-                                                <div>{{ selectedEmployee.id}}</div>
-                                            </div>
-                                        </ng-template>
-                                        <ng-template let-employee pTemplate="item">
-                                            <div class="flex align-items-center gap-2">
-                                                <div>{{ employee.id }}</div>
-                                            </div>
-                                        </ng-template>
-                                    </p-dropdown>
-                                </div>
-                            </div>
-
 
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
@@ -284,61 +204,4 @@
       </div>
     </div>
   </div>
-
-                            <div class="col-12 md:col-12 lg:col-6">
-                                <div class="flex flex-column gap-2">
-                                    <label htmlFor="name">year</label>
-                                    <input pInputText id="name" aria-describedby="name-help"
-                                        [ngModelOptions]="{standalone:true}" [(ngModel)]="name" />
-
-                                </div>
-                            </div>
-                            <div class="col-12 md:col-12 lg:col-6">
-
-                            </div>
-                            <div class="col-12 md:col-12 lg:col-6">
-                                <div class="flex flex-column gap-2">
-                                    <label htmlFor="name">Lease Expiry</label>
-                                    <input pInputText id="referenceNumber" aria-describedby="referenceNumber-help"
-                                        [ngModelOptions]="{standalone:true}" [(ngModel)]="referenceNumber" />
-
-                                </div>
-                            </div>
-                            <div class="col-12 md:col-12 lg:col-6">
-
-                            </div>
-
-                            <div class="col-12 md:col-12 lg:col-6">
-                                <div class="flex flex-column gap-2">
-                                    <label htmlFor="name">Lease Cost</label>
-                                    <input pInputText id="name" aria-describedby="name-help"
-                                        [ngModelOptions]="{standalone:true}" [(ngModel)]="name" />
-
-                                </div>
-                            </div>
-                            <div class="col-12 md:col-12 lg:col-6">
-
-                            </div>
-                            <div class="col-12 md:col-12 lg:col-6">
-                                <div class="flex flex-column gap-2">
-                                    <label htmlFor="name">Attachments</label>
-                                    <input pInputText id="referenceNumber" aria-describedby="referenceNumber-help"
-                                        [ngModelOptions]="{standalone:true}" [(ngModel)]="referenceNumber" />
-
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="flex align-items-center justify-content-end mt-4">
-                            <p-button label="Cancel" class="bg-o-color mr" routerLink="/driver"
-                                styleClass="p-button-outlined">
-                            </p-button>
-                            <p-button label="Save" class="bg-b-color ml">
-                            </p-button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>

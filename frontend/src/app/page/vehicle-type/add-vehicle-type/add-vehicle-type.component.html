@@ -30,9 +30,6 @@
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2 form-hook">
                   <label htmlFor="name">Plate Number</label>
-                  <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
-                    [(ngModel)]="selectedEmployee"  placeholder="Select Plate Number
-                  ">
                   <p-dropdown
                     class="w-full"
                     [options]="employee"
@@ -91,9 +88,6 @@
                     placeholder="Select Year
                   "
                   >
-                  <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
-                    [(ngModel)]="selectedEmployee"  placeholder="Select Year
-                  ">
                     <ng-template pTemplate="selectedItem">
                       <div
                         class="flex align-items-center gap-2"
@@ -126,7 +120,7 @@
                 </div>
               </div>
               <div class="col-12 md:col-12 lg:col-6">
-                <div class="flex flex-column gap-2 form-hook">
+                <div class="flex flex-column gap-2">
                   <label htmlFor="name">Model</label>
                   <input
                     pInputText
@@ -138,24 +132,10 @@
                   <!-- <small id="name-help"
                     >{{name}}</small
                   > -->
-                  <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
-                    [(ngModel)]="selectedEmployee"  placeholder="Select Model
-                  ">
-                    <ng-template pTemplate="selectedItem">
-                      <div class="flex align-items-center gap-2" *ngIf="selectedEmployee">
-                        <div>{{ selectedEmployee.id}}</div>
-                      </div>
-                    </ng-template>
-                    <ng-template let-employee pTemplate="item">
-                      <div class="flex align-items-center gap-2">
-                        <div>{{ employee.id }}</div>
-                      </div>
-                    </ng-template>
-                  </p-dropdown>
                 </div>
               </div>
               <div class="col-12 md:col-12 lg:col-6">
-                <div class="flex flex-column gap-2 form-hook">
+                <div class="flex flex-column gap-2">
                   <label htmlFor="name">Type</label>
                   <input
                     pInputText
@@ -167,24 +147,10 @@
                   <!-- <small id="name-help"
                     >{{name}}</small
                   > -->
-                  <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
-                    [(ngModel)]="selectedEmployee"  placeholder="Select Type
-                  ">
-                    <ng-template pTemplate="selectedItem">
-                      <div class="flex align-items-center gap-2" *ngIf="selectedEmployee">
-                        <div>{{ selectedEmployee.id}}</div>
-                      </div>
-                    </ng-template>
-                    <ng-template let-employee pTemplate="item">
-                      <div class="flex align-items-center gap-2">
-                        <div>{{ employee.id }}</div>
-                      </div>
-                    </ng-template>
-                  </p-dropdown>
                 </div>
               </div>
               <div class="col-12 md:col-12 lg:col-6">
-                <div class="flex flex-column gap-2 form-hook">
+                <div class="flex flex-column gap-2">
                   <label htmlFor="name">Capacity</label>
                   <input
                     pInputText
@@ -196,20 +162,6 @@
                   <!-- <small id="name-help"
                     >{{name}}</small
                   > -->
-                  <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
-                    [(ngModel)]="selectedEmployee" placeholder="Select Capacity
-                  ">
-                    <ng-template pTemplate="selectedItem">
-                      <div class="flex align-items-center gap-2" *ngIf="selectedEmployee">
-                        <div>{{ selectedEmployee.id}}</div>
-                      </div>
-                    </ng-template>
-                    <ng-template let-employee pTemplate="item">
-                      <div class="flex align-items-center gap-2">
-                        <div>{{ employee.id }}</div>
-                      </div>
-                    </ng-template>
-                  </p-dropdown>
                 </div>
               </div>
               <div class="col-12 md:col-12 lg:col-6">
@@ -243,7 +195,7 @@
                 </div>
               </div>
               <div class="col-12 md:col-12 lg:col-6">
-                <div class="flex flex-column gap-2 form-hook">
+                <div class="flex flex-column gap-2">
                   <label htmlFor="name">Fuel Type</label>
                   <input
                     pInputText
@@ -255,24 +207,10 @@
                   <!-- <small id="name-help"
                     >{{name}}</small
                   > -->
-                  <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
-                    [(ngModel)]="selectedEmployee" placeholder="Select Fuel Type
-                  ">
-                    <ng-template pTemplate="selectedItem">
-                      <div class="flex align-items-center gap-2" *ngIf="selectedEmployee">
-                        <div>{{ selectedEmployee.id}}</div>
-                      </div>
-                    </ng-template>
-                    <ng-template let-employee pTemplate="item">
-                      <div class="flex align-items-center gap-2">
-                        <div>{{ employee.id }}</div>
-                      </div>
-                    </ng-template>
-                  </p-dropdown>
                 </div>
               </div>
               <div class="col-12 md:col-12 lg:col-6">
-                <div class="flex flex-column gap-2 form-hook">
+                <div class="flex flex-column gap-2">
                   <label htmlFor="name">Vendor</label>
                   <input
                     pInputText
@@ -284,20 +222,6 @@
                   <!-- <small id="name-help"
                     >{{name}}</small
                   > -->
-                  <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
-                    [(ngModel)]="selectedEmployee" placeholder="Select Plate Number
-                  ">
-                    <ng-template pTemplate="selectedItem">
-                      <div class="flex align-items-center gap-2" *ngIf="selectedEmployee">
-                        <div>{{ selectedEmployee.id}}</div>
-                      </div>
-                    </ng-template>
-                    <ng-template let-employee pTemplate="item">
-                      <div class="flex align-items-center gap-2">
-                        <div>{{ employee.id }}</div>
-                      </div>
-                    </ng-template>
-                  </p-dropdown>
                 </div>
               </div>
               <div class="col-12 md:col-12 lg:col-6">
@@ -360,8 +284,8 @@
                   > -->
                 </div>
               </div>
-              <div class="col-12 md:col-12 lg:col-6">
-                <div class="flex flex-column gap-2 form-hook">
+              <div class="col-12 md:col-12 lg:col-12">
+                <div class="flex flex-column gap-2">
                   <label htmlFor="name">Usage Type</label>
                   <input
                     pInputText
@@ -373,20 +297,6 @@
                   <!-- <small id="name-help"
                     >{{name}}</small
                   > -->
-                  <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
-                    [(ngModel)]="selectedEmployee" placeholder="Select Usage Type
-                  ">
-                    <ng-template pTemplate="selectedItem">
-                      <div class="flex align-items-center gap-2" *ngIf="selectedEmployee">
-                        <div>{{ selectedEmployee.id}}</div>
-                      </div>
-                    </ng-template>
-                    <ng-template let-employee pTemplate="item">
-                      <div class="flex align-items-center gap-2">
-                        <div>{{ employee.id }}</div>
-                      </div>
-                    </ng-template>
-                  </p-dropdown>
                 </div>
               </div>
             </div>
@@ -466,20 +376,6 @@
                       </ul>
                     </ng-template>
                   </p-fileUpload>
-              </div>
-              <div class="col-12 md:col-12 lg:col-12">
-                <div class="flex flex-column gap-2">
-                  <label htmlFor="name">Attachments</label>
-                  <input
-                    pInputText
-                    id="name"
-                    aria-describedby="name-help"
-                    [ngModelOptions]="{standalone:true}"
-                    [(ngModel)]="name"
-                  />
-                  <!-- <small id="name-help"
-                    >{{name}}</small
-                  > -->
                 </div>
               </div>
             </div>
