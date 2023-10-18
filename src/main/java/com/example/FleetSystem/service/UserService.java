@@ -3,7 +3,6 @@ package com.example.FleetSystem.service;
 import com.example.FleetSystem.dto.UserDto;
 import com.example.FleetSystem.model.Roles;
 import com.example.FleetSystem.model.User;
-import com.example.FleetSystem.repository.LocationRepository;
 import com.example.FleetSystem.repository.RoleRepository;
 import com.example.FleetSystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +22,6 @@ public class UserService {
     BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     RoleRepository roleRepository;
-    @Autowired
-    LocationRepository locationRepository;
 
     public User addUser(UserDto userDto){
 
@@ -32,9 +29,6 @@ public class UserService {
             Optional<Roles> roles = Optional.ofNullable(roleRepository
                     .findByName(userDto.getRole())
                     .orElseThrow(() -> new RuntimeException("Role is incorrect")));
-
-            Location location = locationRepository.findByLocationName(userDto.getLocation())
-                    .orElseThrow(()-> new RuntimeException("Location is not in record"));
 
             Set<Roles> rolesList = new HashSet<>();
             rolesList.add(roles.get());
@@ -44,7 +38,6 @@ public class UserService {
                     .password(bCryptPasswordEncoder.encode(userDto.getPassword()))
                     .roles(rolesList)
                     .status(Boolean.TRUE)
-                    .location(location)
                     .email(userDto.getEmail())
                     .build();
             return  userRepository.save(user);

@@ -29,8 +29,5 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Roles> roles = new HashSet<>();
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "location_id" , referencedColumnName = "id")
-    private Location location;
 
 }
