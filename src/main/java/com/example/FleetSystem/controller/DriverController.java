@@ -47,7 +47,7 @@ public class DriverController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PatchMapping("/driver/active/{id}")
+    @PatchMapping("/driver-active/{id}")
     public ResponseEntity<DriverDto> makeDriverActive(@PathVariable Long id){
         return ResponseEntity.ok(driverService.makeDriverActive(id));
     }

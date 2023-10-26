@@ -44,7 +44,7 @@ public class SwaggerConfig {
                 .securityContexts(securityContexts())
                 .securitySchemes(Collections.singletonList(apiKeys()))
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.example.CargoTracking"))
+                .apis(RequestHandlerSelectors.basePackage("com.example.FleetSystem"))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo());

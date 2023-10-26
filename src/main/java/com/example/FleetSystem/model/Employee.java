@@ -3,6 +3,7 @@ package com.example.FleetSystem.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.time.LocalDate;
 
 @Getter
@@ -12,28 +13,29 @@ import java.time.LocalDate;
 @ToString
 @Builder
 @Entity
-@Table(name = "driver")
-public class Driver {
+@Table(name = "employee")
+public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String title;
+    private String empName;
+    private String jobTitle;
+    private Date joiningDate;
     private String department;
-    private String section ;
+    private String section;
     private String region;
     private String city;
     private String nationality;
     private String contactNumber;
-    private String emailAddress;
+    private String companyEmailAddress;
     private String grade;
     private String licenseNumber;
-    private Integer vehicleBudget ;
+    private String vehicleBudget;
     private String attachments;
-    private boolean status;
     private LocalDate createdAt;
     private LocalDate updatedAt;
+    private boolean status;
 
     @ManyToOne
     @JoinColumn(name = "created_by")
@@ -42,5 +44,7 @@ public class Driver {
     @ManyToOne
     @JoinColumn(name = "updated_by")
     private User updatedBy;
+
+
 
 }
