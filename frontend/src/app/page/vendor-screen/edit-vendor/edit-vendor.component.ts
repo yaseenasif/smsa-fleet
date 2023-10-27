@@ -2,21 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 
 @Component({
-  selector: 'app-update-vehicle-type',
-  templateUrl: './update-vehicle-type.component.html',
-  styleUrls: ['./update-vehicle-type.component.scss']
+  selector: 'app-edit-vendor',
+  templateUrl: './edit-vendor.component.html',
+  styleUrls: ['./edit-vendor.component.scss']
 })
-export class UpdateVehicleTypeComponent implements OnInit {
-
+export class EditVendorComponent implements OnInit{
   items: MenuItem[] | undefined;
   employee!:Employee[];
   selectedEmployee!:Employee;
   constructor() { }
   name!:string;
+
   size=100000
   uploadedFiles: any[] = [];
 
-  onUpload(event: any) {
+   onUpload(event: any) {
     
   }
 
@@ -27,7 +27,7 @@ export class UpdateVehicleTypeComponent implements OnInit {
   }
   
   ngOnInit(): void {
-    this.items = [{ label: 'Vehicle',routerLink:'/vehicle-type'},{ label: 'Edit Vehicle'}];
+    this.items = [{ label: 'Vendor',routerLink:'/vendor'},{ label: 'Edit Vendor'}];
     this.employee=[
       {
         employeeName:"karachi",
@@ -52,8 +52,8 @@ export class UpdateVehicleTypeComponent implements OnInit {
     ]
   }
 }
-
 interface Employee{
   employeeName:string,
   id:number
+
 }

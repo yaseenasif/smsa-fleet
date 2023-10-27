@@ -1,0 +1,96 @@
+<div class="flex flex-row">
+    <app-sidebar></app-sidebar>
+    <div class="body-position">
+      <div class="body-holder">
+        <app-dashboard-head></app-dashboard-head>
+  
+        <div class="main">
+          <div class="card flex justify-content-center">
+              <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+          </div>
+          <div class="body-card">
+              <div class="table-head">
+                  <p-toolbar>
+                      <div class="p-toolbar-group-start">
+                        <h2 class="h-color">Vehicle</h2>
+                      </div>
+                      <div class="p-toolbar-group-end">
+                          <p-button class="bg-b-color" routerLink="/add-vehicle">
+                            <i class="bi bi-plus-lg" style="font-size: 20px;font-weight: bold;"></i>&nbsp;Add Vehicle
+                          </p-button>
+                      </div>
+                  </p-toolbar>
+              </div>
+            
+  
+            <div class="card">
+              <p-table [value]="vehicles" [tableStyle]="{ 'min-width': '50rem' }">
+                <ng-template pTemplate="header">
+                  <tr>
+
+                    <th class="text-center">ID</th>                    
+                    <th class="text-center">PO Number</th>
+                    <th class="text-center">Plate Number</th>
+                    <th class="text-center">Make</th>
+                    <th class="text-center">Year</th>
+                    <th class="text-center">Design</th>
+                    <th class="text-center">Model</th>
+                    <th class="text-center">Type</th>
+                    <th class="text-center">Capacity</th>
+                    <th class="text-center">Power</th>
+                    <th class="text-center">Registration Expiry</th>
+                    <th class="text-center">Fuel Type</th>
+                    <th class="text-center">Vendor</th>
+                    <th class="text-center">Insurance Expiry</th>
+                    <th class="text-center">Lease Cost</th>
+                    <th class="text-center">Lease Start Date</th>
+                    <th class="text-center">Lease Expiry Date</th>
+                    <th class="text-center">Usage Type</th>
+  
+                    
+                   
+                    <th class="text-center">Actions</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-vehicles>
+                  <tr>
+                    <td class="text-center">{{ vehicles.id }}</td>
+                    <td class="text-center">{{ vehicles.processOrderNumber }}</td>
+                    <td class="text-center">{{ vehicles.plateNumber }}</td>
+                    <td class="text-center">{{ vehicles.make }}</td>
+                    <td class="text-center">{{ vehicles.year }}</td>
+                    <td class="text-center">{{ vehicles.design }}</td>
+                    <td class="text-center">{{ vehicles.model }}</td>
+                    <td class="text-center">{{ vehicles.type }}</td>
+                    <td class="text-center">{{ vehicles.capacity }}</td>
+                    <td class="text-center">{{ vehicles.power }}</td>
+                    <td class="text-center">{{ vehicles.registrationExpiry }}</td>
+                    <td class="text-center">{{ vehicles.fuelType }}</td>
+                    <td class="text-center">{{ vehicles.vendor }}</td>
+                    <td class="text-center">{{ vehicles.insuranceExpiry }}</td>
+                    <td class="text-center">{{ vehicles.leaseCost }}</td>
+                    <td class="text-center">{{ vehicles.leaseStartDate }}</td>
+                    <td class="text-center">{{ vehicles.leaseExpiryDate }}</td>
+                    <td class="text-center">{{ vehicles.usageType }}</td>
+  
+                    <td class="text-center flex"> 
+                       <p-button [routerLink]="['/edit-vehicle/', vehicles.id]" icon="bi bi-pen" class='mr' styleClass="p-button-rounded p-button-success p-button-text p-button-raised">
+                         
+                       </p-button>
+                        <p-button (click)="deleteVehicle(vehicles.id)" icon="bi bi-trash" class='ml' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
+                       
+                        </p-button>
+                        <p-button icon="bi bi-paperclip" class='ml mr' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
+                      
+                        </p-button>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
