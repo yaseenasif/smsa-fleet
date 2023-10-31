@@ -74,7 +74,7 @@ public class DriverService {
                 String username = ((UserDetails) principal).getUsername();
                 User user = userRepository.findByEmail(username);
 
-                driver.get().setName(driverDto.getName());
+                driver.get().setEmpName(driverDto.getEmpName());
                 driver.get().setTitle(driverDto.getTitle());
                 driver.get().setSection(driverDto.getSection());
                 driver.get().setDepartment(driverDto.getDepartment());
