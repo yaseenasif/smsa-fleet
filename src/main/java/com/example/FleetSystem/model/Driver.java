@@ -18,7 +18,7 @@ public class Driver {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    private String empName;
     private String title;
     private String department;
     private String section ;
@@ -34,6 +34,11 @@ public class Driver {
     private boolean status;
     private LocalDate createdAt;
     private LocalDate updatedAt;
+
+    @OneToOne
+    @JoinColumn(name = "emp_id")
+    private Employee empId;
+
 
     @ManyToOne
     @JoinColumn(name = "created_by")
