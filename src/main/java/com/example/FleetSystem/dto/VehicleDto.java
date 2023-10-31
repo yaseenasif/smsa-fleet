@@ -14,7 +14,7 @@ import java.sql.Date;
 public class VehicleDto {
     private Long id;
     private Integer processOrderNumber;
-    private Integer plateNumber;
+    private String plateNumber;
     private String make;
     private String year;
     private String design;
@@ -22,10 +22,12 @@ public class VehicleDto {
     private String type;
     private String capacity;
     private String power;
-    private String registrationExpiry;
+    private Date registrationExpiry;
+    private boolean registrationStatus;
     private String fuelType;
     private String vendor;
     private Date insuranceExpiry;
+    private boolean insuranceStatus;
     private String leaseCost;
     private Date leaseStartDate;
     private Date leaseExpiryDate;

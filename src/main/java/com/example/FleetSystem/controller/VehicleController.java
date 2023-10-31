@@ -1,11 +1,13 @@
 package com.example.FleetSystem.controller;
 
 import com.example.FleetSystem.dto.VehicleDto;
+import com.example.FleetSystem.payload.ResponseMessage;
 import com.example.FleetSystem.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -54,6 +56,11 @@ public class VehicleController {
     @PatchMapping("/vehicle-active/{id}")
     public ResponseEntity<VehicleDto> makeDriverActive(@PathVariable Long id){
         return ResponseEntity.ok(vehicleService.makeVehicleActive(id));
+    }
+
+    @PostMapping("/add-bulk-vehicle")
+    public ResponseEntity<ResponseMessage> addBulkVehicle(@RequestParam("file")MultipartFile file){
+        return ResponseEntity.ok(new ResponseMessage(vehicleService.addBulkVehicle(file)));
     }
 
 
