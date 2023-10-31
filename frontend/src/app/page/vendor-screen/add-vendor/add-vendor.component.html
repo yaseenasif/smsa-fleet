@@ -87,9 +87,11 @@
                       > -->
                     </div>
                   </div>
+              </div>
+              <div class="grid" *ngFor="let contactPerson of contactPersons; let i = index">
                   <div class="col-12 md:col-12 lg:col-6">
                     <div class="flex flex-column gap-2">
-                      <label htmlFor="name">Contact Person 2</label>
+                      <label htmlFor="name">Contact Person {{i + 2}}</label>
                       <input
                         pInputText
                         id="name"
@@ -117,7 +119,7 @@
                       > -->
                     </div>
                   </div>
-                <div class="col-12 md:col-12 lg:col-6">
+                <div class="col-12 md:col-12 lg:col-5">
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">Email</label>
                     <input
@@ -127,12 +129,15 @@
                       [ngModelOptions]="{ standalone: true }"
                       [(ngModel)]="name"
                     />
-                    <!-- <small id="name-help"
-                      >{{name}}</small
-                    > -->
                   </div>
                 </div>
+                <div class="flex align-items-center justify-content-end mt-4 col-12 md:col-12 lg:col-1">
+                    <i class="bi bi-trash3" (click)="removeContactPerson(i)" *ngIf="i >= 1">Remove</i>
+                </div>
               </div>
+              <div class="flex align-items-center justify-content-end mt-4">
+                <p-button type="button" (click)="addContactPerson()">Add More Contact Field</p-button>
+            </div>
               <h2 class="mb-4 mt-4">Attachments</h2>
               <div class="grid">
                 <div class="lg:col-12 md:col-12 sm:col-12">

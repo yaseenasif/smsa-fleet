@@ -14,6 +14,10 @@ export class AddVendorComponent implements OnInit{
   constructor() { }
   name!:string;
 
+  contactPersons: any[] = [
+    {name: '', phone: '', email: '',}
+  ]
+
   size=100000
   uploadedFiles: any[] = [];
 
@@ -51,6 +55,15 @@ export class AddVendorComponent implements OnInit{
         id:5
       },
     ]
+  }
+
+  addContactPerson() {
+    const newContactPerson = { name: '', phone: '', email: '' };
+  this.contactPersons.push(newContactPerson);
+  }
+
+  removeContactPerson(index: number) {
+    this.contactPersons.splice(index, 1);
   }
 }
 

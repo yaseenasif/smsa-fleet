@@ -3,6 +3,7 @@ import { MenuItem } from 'primeng/api';
 import { Employee } from 'src/app/modal/employee';
 import { EmployeeService } from '../service/employee.service';
 import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-add-employee',
@@ -11,7 +12,6 @@ import { Router } from '@angular/router';
 })
 export class AddEmployeeComponent implements OnInit{
   
-  date: Date | undefined;
   items: MenuItem[] | undefined;
   employee: Employee = {
     id: undefined,
@@ -36,7 +36,6 @@ export class AddEmployeeComponent implements OnInit{
     { id: 3, locationName: 'Demo' }
   ]
 
-  selectedEmployee!:Employee;
   name!:string;
   
   size=100000
@@ -65,12 +64,12 @@ export class AddEmployeeComponent implements OnInit{
   }
 
   onSubmit() {
+    
     this.employeeService.addEmployee(this.employee).subscribe((res) => {
       console.log(res);
       
     }) 
       
     }
-
 
   }

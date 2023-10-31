@@ -70,7 +70,7 @@ export class UpdateVehicleComponent implements OnInit{
   }
 
   getVehicleById(id: Number) {
-    this.vehicleService.getAllVehicleById(id).subscribe((res: Vehicle) => {
+    this.vehicleService.getVehicleById(id).subscribe((res: Vehicle) => {
       this.vehicle = res;
 
       console.log(this.vehicle);

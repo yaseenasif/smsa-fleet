@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { DriverService } from '../driver.service';
+import { Driver } from 'src/app/modal/driver';
 
 @Component({
   selector: 'app-add-driver',
@@ -9,9 +11,24 @@ import { MenuItem } from 'primeng/api';
 export class AddDriverComponent implements OnInit {
   items: MenuItem[] | undefined;
 
-  employee!:Employee[];
-  selectedEmployee!:Employee;
-  constructor() { }
+  driver: Driver = {
+    id: undefined,
+    name: undefined,
+    title: undefined,
+    department: undefined,
+    section: undefined,
+    region: undefined,
+    city: undefined,
+    nationality: undefined,
+    contactNumber: undefined,
+    emailAddress: undefined,
+    licenseNumber: undefined,
+    vehicleBudget: undefined,
+    grade: undefined
+  }
+
+  constructor(private driverService: DriverService) { }
+  
   name!:string;
   contactNumber!:string;
   referenceNumber!:string;
@@ -29,32 +46,7 @@ export class AddDriverComponent implements OnInit {
   }
   ngOnInit(): void {
     this.items = [{ label: 'Driver List',routerLink:'/driver'},{ label: 'Add Driver'}];
-    this.employee=[
-      {
-        employeeName:"karachi",
-        id:1
-      },
-      {
-        employeeName:"kaAAi",
-        id:2
-      },
-      {
-        employeeName:"Alld",
-        id:3
-      },
-      {
-        employeeName:"islamabad",
-        id:4
-      },
-      {
-        employeeName:"lahore",
-        id:5
-      },
-    ]
+    
   }
 
-}
-interface Employee{
-  employeeName:string,
-  id:number
 }

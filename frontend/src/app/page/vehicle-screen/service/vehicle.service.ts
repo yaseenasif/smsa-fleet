@@ -21,7 +21,7 @@ export class VehicleService {
     return this.http.get<Vehicle[]>(this.url.concat('/get-all-vehicle'));
   }
 
-  getAllVehicleById(id: Number) {
+  getVehicleById(id: Number) {
     return this.http.get<Vehicle>(`${this.url}/vehicle/${id}`);
   }
 

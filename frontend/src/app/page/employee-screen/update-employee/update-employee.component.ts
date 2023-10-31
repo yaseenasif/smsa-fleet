@@ -1,18 +1,52 @@
 import { Component } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
+import { Employee } from 'src/app/modal/employee';
+import { EmployeeService } from '../service/employee.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-update-employee',
   templateUrl: './update-employee.component.html',
-  styleUrls: ['./update-employee.component.scss']
+  styleUrls: ['./update-employee.component.scss'],
+  providers: [MessageService, DatePipe]
 })
 export class UpdateEmployeeComponent {
 
-  date: Date | undefined;
   items: MenuItem[] | undefined;
-  employee!:Employee[];
-  selectedEmployee!:Employee;
-  constructor() { }
+
+  employee: Employee = {
+    id: undefined,
+    empName: undefined,
+    jobTitle: undefined,
+    joiningDate: undefined,
+    department: undefined,
+    section: undefined,
+    region: undefined,
+    city: undefined,
+    nationality: undefined,
+    contactNumber: undefined,
+    companyEmailAddress: undefined,
+    grade: undefined,
+    licenseNumber: undefined,
+    vehicleBudget: undefined
+  }
+
+  employeeId: Number | undefined;
+
+  dummyData: any = [
+    { id: 1, locationName: 'Demo' },
+    { id: 2, locationName: 'Demo' },
+    { id: 3, locationName: 'Demo' }
+  ]
+
+  constructor(private employeeService: EmployeeService,
+              private router: Router,
+              private messageService: MessageService,
+              private route: ActivatedRoute,
+              private datePipe: DatePipe) { }
+
+
   name!:string;
 
   size=100000
@@ -30,32 +64,36 @@ export class UpdateEmployeeComponent {
   
   ngOnInit(): void {
     this.items = [{ label: 'Employee',routerLink:'/employee'},{ label: 'Edit Employee'}];
-    this.employee=[
-      {
-        employeeName:"karachi",
-        id:1
-      },
-      {
-        employeeName:"kaAAi",
-        id:2
-      },
-      {
-        employeeName:"Alld",
-        id:3
-      },
-      {
-        employeeName:"islamabad",
-        id:4
-      },
-      {
-        employeeName:"lahore",
-        id:5
-      },
-    ]
+    this.employeeId = +this.route.snapshot.paramMap.get('id')!;
+    this.getEmployeeById(this.employeeId)
   }
-}
-interface Employee{
-  employeeName:string,
-  id:number
+
+  getEmployeeById(id: Number) {
+    this.employeeService.getEmployeeById(id).subscribe((res: Employee) => {
+      res.joiningDate = res.joiningDate ? new Date(res.joiningDate) : new Date();
+      this.employee = res;
+
+      console.log(this.employee);
+      
+    })
+  }
+
+  updateEmployee(employee: Employee) {
+
+    this.employeeService.updateEmployee(this.employeeId!, employee).subscribe((res) => {
+
+      this.messageService.add({ severity: 'Update Successfully', summary: 'Update Successfully', detail: 'Message Content' });  
+
+      setTimeout(() => {
+        this.router.navigate(['/employee'])
+      },8000)
+      
+    })
+
+  }
+
+  onSubmit() {
+    this.updateEmployee(this.employee);
+  }
 }
 

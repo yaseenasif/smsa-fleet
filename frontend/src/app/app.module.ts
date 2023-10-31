@@ -35,6 +35,9 @@ import { ProductFieldAddComponent } from './page/product-field/product-field-add
 import { ProductFieldUpdateComponent } from './page/product-field/product-field-update/product-field-update.component';
 import {FormsModule} from'@angular/forms'
 import {DomesticShippingListComponent} from './page/shipping-order/domestic/domestic-shipping-list/domestic-shipping-list.component';
+import { NgxUiLoaderModule, NgxUiLoaderHttpModule } from "ngx-ui-loader";
+
+
 
 import {
   HTTP_INTERCEPTORS,
@@ -166,7 +169,11 @@ import { VendorListComponent } from './page/vendor-screen/vendor-list/vendor-lis
     FileUploadModule,
     ToastModule,
     FileUploadModule,
-    ChartModule
+    ChartModule,
+    NgxUiLoaderModule,
+    NgxUiLoaderHttpModule.forRoot({
+      showForeground:true
+    })
   ],
 
   providers: [

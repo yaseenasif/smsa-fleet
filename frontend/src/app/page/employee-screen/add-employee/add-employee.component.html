@@ -67,9 +67,14 @@
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
-                  <div class="flex flex-column gap-2">
+                  <div class="flex flex-column gap-2 emp-form-date">
                     <label htmlFor="name">Date Of Joining</label>
-                    <p-calendar [(ngModel)]="employee.joiningDate" [showIcon]="true"></p-calendar> 
+                    <p-calendar #joinDate
+                    name="joinDate"
+                    [required]="true"
+                    [(ngModel)]="employee.joiningDate" [showIcon]="true"
+                    [style]="{'width': '100%'}"
+                    ></p-calendar> 
                     <!-- <small id="name-help"
                       >{{name}}</small
                     > -->
