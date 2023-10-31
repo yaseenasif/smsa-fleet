@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
-    @Query("SELECT v FROM Driver v WHERE v.status = true")
+    @Query("SELECT v FROM Vehicle v WHERE v.status = true")
     List<Vehicle> getActiveVehicles();
 }

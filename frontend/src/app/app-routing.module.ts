@@ -17,9 +17,6 @@ import { AddUserComponent } from './page/user/add-user/add-user.component';
 import { AddStatusComponent } from './page/status/add-status/add-status.component';
 import { StatusListComponent } from './page/status/status-list/status-list.component';
 import { UpdateStatusComponent } from './page/status/update-status/update-status.component';
-import { AddVehicleTypeComponent } from './page/vehicle-type/add-vehicle-type/add-vehicle-type.component';
-import { UpdateVehicleTypeComponent } from './page/vehicle-type/update-vehicle-type/update-vehicle-type.component';
-import { VehicleTypeListComponent } from './page/vehicle-type/vehicle-type-list/vehicle-type-list.component';
 import { ProductFieldListComponent } from './page/product-field/product-field-list/product-field-list.component';
 import { ProductFieldAddComponent } from './page/product-field/product-field-add/product-field-add.component';
 import { ProductFieldUpdateComponent } from './page/product-field/product-field-update/product-field-update.component';
@@ -49,6 +46,15 @@ import { InternationalSummaryByRoadComponent } from './page/bounds/international
 import { AssignmentListComponent } from './page/Assignment/assignment-list/assignment-list.component';
 import { AddAssignmentComponent } from './page/Assignment/add-assignment/add-assignment.component';
 import { UpdateAssignmentComponent } from './page/Assignment/update-assignment/update-assignment.component';
+import { VehicleListComponent } from './page/vehicle-screen/vehicle-list/vehicle-list.component';
+import { AddVehicleComponent } from './page/vehicle-screen/add-vehicle/add-vehicle.component';
+import { UpdateVehicleComponent } from './page/vehicle-screen/update-vehicle/update-vehicle.component';
+import { EmployeeListComponent } from './page/employee-screen/employee-list/employee-list.component';
+import { AddEmployeeComponent } from './page/employee-screen/add-employee/add-employee.component';
+import { UpdateEmployeeComponent } from './page/employee-screen/update-employee/update-employee.component';
+import { VendorListComponent } from './page/vendor-screen/vendor-list/vendor-list.component';
+import { AddVendorComponent } from './page/vendor-screen/add-vendor/add-vendor.component';
+import { EditVendorComponent } from './page/vendor-screen/edit-vendor/edit-vendor.component';
 
 const routes: Routes = [
   {
@@ -152,19 +158,49 @@ const routes: Routes = [
     canActivate:[AuthGuard]
   },
   {
-    path:'vehicle-type',
-    component:VehicleTypeListComponent,
+    path:'vehicle',
+    component:VehicleListComponent,
     canActivate:[AuthGuard]
   },
   {
-    path:'add-vehicle-type',
-    component:AddVehicleTypeComponent,
+    path:'add-vehicle',
+    component:AddVehicleComponent,
     canActivate:[AuthGuard]
   },
   {
-    path:'edit-vehicle-type',
-    component:UpdateVehicleTypeComponent,
+    path:'edit-vehicle/:id',
+    component:UpdateVehicleComponent,
     canActivate:[AuthGuard]
+  },
+  {
+    path: 'employee',
+    component: EmployeeListComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'add-employee',
+    component: AddEmployeeComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'edit-employee',
+    component: UpdateEmployeeComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'vendor',
+    component: VendorListComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'add-vendor',
+    component: AddVendorComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'edit-vendor',
+    component: EditVendorComponent,
+    canActivate: [AuthGuard]
   },
   {
     path:'permission',

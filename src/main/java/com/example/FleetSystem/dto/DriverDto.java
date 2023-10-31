@@ -1,5 +1,6 @@
 package com.example.FleetSystem.dto;
 
+import com.example.FleetSystem.model.Employee;
 import lombok.*;
 
 @Getter
@@ -11,7 +12,8 @@ import lombok.*;
 public class DriverDto {
 
     private Long id;
-    private String name;
+    private Employee empId;
+    private String empName;
     private String title;
     private String department;
     private String section ;
