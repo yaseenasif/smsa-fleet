@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { Vendor } from 'src/app/modal/vendor';
 
 @Component({
-  selector: 'app-add-vehicle-type',
-  templateUrl: './add-vehicle-type.component.html',
-  styleUrls: ['./add-vehicle-type.component.scss']
+  selector: 'app-add-vendor',
+  templateUrl: './add-vendor.component.html',
+  styleUrls: ['./add-vendor.component.scss']
 })
-export class AddVehicleTypeComponent implements OnInit {
-
+export class AddVendorComponent implements OnInit{
   items: MenuItem[] | undefined;
-  employee!:Employee[];
-  selectedEmployee!:Employee;
+  employee!:Vendor[];
+  selectedEmployee!:Vendor;
   constructor() { }
   name!:string;
 
@@ -28,7 +28,7 @@ export class AddVehicleTypeComponent implements OnInit {
   }
   
   ngOnInit(): void {
-    this.items = [{ label: 'Vehicle',routerLink:'/vehicle-type'},{ label: 'Add Vehicle'}];
+    this.items = [{ label: 'Vendor',routerLink:'/vendor'},{ label: 'Add Vendor'}];
     this.employee=[
       {
         employeeName:"karachi",
@@ -53,7 +53,4 @@ export class AddVehicleTypeComponent implements OnInit {
     ]
   }
 }
-interface Employee{
-  employeeName:string,
-  id:number
-}
+

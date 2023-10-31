@@ -1,0 +1,474 @@
+<div class="flex flex-row">
+    <app-sidebar></app-sidebar>
+    <div class="body-position">
+      <div class="body-holder">
+        <app-dashboard-head></app-dashboard-head>
+  
+        <div class="main">
+          <div class="card flex justify-content-center">
+            <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+          </div>
+          <div class="body-card">
+            <p-toast></p-toast>
+            <div class="card">
+              <h1 class="mb-4 h-color">Add Vehicle</h1>
+              <form #vehicleForm="ngForm" (ngSubmit)="onSubmit()">
+              <div class="grid">
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">PO Number</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="processOrderNumber"
+                      [(ngModel)]="vehicle.processOrderNumber"
+                      #processOrderNumber="ngModel"
+                      required
+                    />
+                    <small 
+                        id="name-help" class="color-red" 
+                        *ngIf="processOrderNumber.invalid && (processOrderNumber.dirty || processOrderNumber.touched)"
+                    > Process OrderNumber Name is required
+                    </small>
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2 form-hook">
+                    <label htmlFor="name">Plate Number</label>
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="vehicle.plateNumber"
+                      [options]="dummyData"
+                      name="plateNumber"
+                      #plateNumber="ngModel"
+                      [required]="true"
+                      optionLabel="locationName"
+                      optionValue="locationName"
+                      [filter]="true"
+                      filterBy="locationName"
+                      [showClear]="true"
+                      placeholder="Select Plate Number
+                    "
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="vehicle"
+                        >
+                          <div>{{ vehicle.plateNumber }}</div>
+                        </div>
+                      </ng-template>
+                      <ng-template let-dummyData pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                          <div>{{ dummyData.locationName }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Make</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="make"
+                      [(ngModel)]="vehicle.make"
+                      #make="ngModel"
+                      required
+                    />
+                    <small 
+                        id="name-help" class="color-red" 
+                        *ngIf="make.invalid && (make.dirty || make.touched)"
+                    > Make is required
+                    </small>
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2 form-hook">
+                    <label htmlFor="name">year</label>
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="vehicle.year"
+                      [options]="dummyData"
+                      name="year"
+                      #year="ngModel"
+                      [required]="true"
+                      optionLabel="years"
+                      optionValue="years"
+                      [showClear]="true"
+                      placeholder="Select Year
+                    "
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="vehicle"
+                        >
+                          <div>{{ vehicle.year }}</div>
+                        </div>
+                      </ng-template>
+                      <ng-template let-dummyData pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                          <div>{{ dummyData.years }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Design</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="design"
+                      [(ngModel)]="vehicle.design"
+                      #design="ngModel"
+                      required
+                    />
+                    <small 
+                        id="name-help" class="color-red" 
+                        *ngIf="design.invalid && (design.dirty || design.touched)"
+                    > Design is required
+                    </small>
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Model</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="model"
+                      [(ngModel)]="vehicle.model"
+                      #model="ngModel"
+                      required
+                    />
+                    <small 
+                        id="name-help" class="color-red" 
+                        *ngIf="model.invalid && (model.dirty || model.touched)"
+                    > Model is required
+                    </small>
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Type</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="type"
+                      [(ngModel)]="vehicle.type"
+                      #type="ngModel"
+                      required
+                    />
+                    <small 
+                        id="name-help" class="color-red" 
+                        *ngIf="type.invalid && (type.dirty || type.touched)"
+                    > Model is required
+                    </small>
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Capacity</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="capacity"
+                      [(ngModel)]="vehicle.capacity"
+                      #capacity="ngModel"
+                      required
+                    />
+                    <small 
+                        id="name-help" class="color-red" 
+                        *ngIf="capacity.invalid && (capacity.dirty || capacity.touched)"
+                    > Capacity is required
+                    </small>
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Power</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="power"
+                      [(ngModel)]="vehicle.power"
+                      #power="ngModel"
+                      required
+                    />
+                    <small 
+                        id="name-help" class="color-red" 
+                        *ngIf="power.invalid && (power.dirty || power.touched)"
+                    > Power is required
+                    </small>
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Registration Expiry</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="registrationExpiry"
+                      [(ngModel)]="vehicle.registrationExpiry"
+                      #registrationExpiry="ngModel"
+                      required
+                    />
+                    <small 
+                        id="name-help" class="color-red" 
+                        *ngIf="registrationExpiry.invalid && (registrationExpiry.dirty || registrationExpiry.touched)"
+                    > Registration Expiry is required
+                    </small>
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Fuel Type</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="fuelType"
+                      [(ngModel)]="vehicle.fuelType"
+                      #fuelType="ngModel"
+                      required
+                    />
+                    <small 
+                        id="name-help" class="color-red" 
+                        *ngIf="fuelType.invalid && (fuelType.dirty || fuelType.touched)"
+                    > Fuel Type Expiry is required
+                    </small>
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Vendor</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="vendor"
+                      [(ngModel)]="vehicle.vendor"
+                      #vendor="ngModel"
+                      required
+                    />
+                    <small 
+                        id="name-help" class="color-red" 
+                        *ngIf="vendor.invalid && (vendor.dirty || vendor.touched)"
+                    > Vendor Expiry is required
+                    </small>
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Insurance Expiry</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="insuranceExpiry"
+                      [(ngModel)]="vehicle.insuranceExpiry"
+                      #insuranceExpiry="ngModel"
+                      required
+                    />
+                    <small 
+                        id="name-help" class="color-red" 
+                        *ngIf="insuranceExpiry.invalid && (insuranceExpiry.dirty || insuranceExpiry.touched)"
+                    > Insurance Expiry Expiry is required
+                    </small>
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Lease Cost</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="leaseCost"
+                      [(ngModel)]="vehicle.leaseCost"
+                      #leaseCost="ngModel"
+                      required
+                    />
+                    <small 
+                        id="name-help" class="color-red" 
+                        *ngIf="leaseCost.invalid && (leaseCost.dirty || leaseCost.touched)"
+                    > Lease Cost Expiry Expiry is required
+                    </small>
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Lease Start Date</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="leaseStartDate"
+                      [(ngModel)]="vehicle.leaseStartDate"
+                      #leaseStartDate="ngModel"
+                      required
+                    />
+                    <small 
+                        id="name-help" class="color-red" 
+                        *ngIf="leaseStartDate.invalid && (leaseStartDate.dirty || leaseStartDate.touched)"
+                    > Lease Start Date is required
+                    </small>
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Lease Expiry Date</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="leaseExpiryDate"
+                      [(ngModel)]="vehicle.leaseExpiryDate"
+                      #leaseExpiryDate="ngModel"
+                      required
+                    />
+                    <small 
+                        id="name-help" class="color-red" 
+                        *ngIf="leaseExpiryDate.invalid && (leaseExpiryDate.dirty || leaseExpiryDate.touched)"
+                    > Lease Expiry Date Start Date is required
+                    </small>
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Usage Type</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="usageType"
+                      [(ngModel)]="vehicle.usageType"
+                      #usageType="ngModel"
+                      required
+                    />
+                    <small 
+                        id="name-help" class="color-red" 
+                        *ngIf="usageType.invalid && (usageType.dirty || usageType.touched)"
+                    > Lease Expiry Date Start Date is required
+                    </small>
+                  </div>
+                </div>
+                <!-- <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Excel Import</label>
+                    <p-fileUpload mode="basic" chooseLabel="Import"
+                     name="demo[]"
+                     accept="image/*" 
+                     [maxFileSize]="size" (onUpload)="onUpload($event)">
+                    </p-fileUpload>
+                  </div>
+                </div> -->
+              </div>
+              <h2 class="mb-4 mt-4">Attachments</h2>
+              <!-- <div class="grid">
+                <div class="lg:col-6 md:col-12 sm:col-12">
+                  <div class="flex flex-column gap-2 form-hook">
+                    <h3 for="">Istemara</h3>
+                    <p-fileUpload
+                      name="demo[]"
+                      (onUpload)="onUpload($event)"
+                      accept="image/*"
+                      [maxFileSize]="size"
+                    >
+                      <ng-template pTemplate="content">
+                        <ul *ngIf="uploadedFiles.length">
+                          <li *ngFor="let file of uploadedFiles">
+                            {{ file.name }} - {{ file.size }} bytes
+                          </li>
+                        </ul>
+                      </ng-template>
+                    </p-fileUpload>
+                  </div>
+                </div>
+                <div class="lg:col-6 md:col-12 sm:col-12">
+                  <div class="flex flex-column gap-2 form-hook">
+                    <h3 for="">Insurance</h3>
+                    <p-fileUpload
+                      name="demo[]"
+                      (onUpload)="onUpload($event)"
+                      accept="image/*"
+                      [maxFileSize]="size"
+                    >
+                      <ng-template pTemplate="content">
+                        <ul *ngIf="uploadedFiles.length">
+                          <li *ngFor="let file of uploadedFiles">
+                            {{ file.name }} - {{ file.size }} bytes
+                          </li>
+                        </ul>
+                      </ng-template>
+                    </p-fileUpload>
+                  </div>
+                </div>
+                <div class="lg:col-6 md:col-12 sm:col-12">
+                  <div class="flex flex-column gap-2 form-hook">
+                    <h3 for="">Approved PO</h3>
+                    <p-fileUpload
+                      name="demo[]"
+                      (onUpload)="onUpload($event)"
+                      accept="image/*"
+                      [maxFileSize]="size"
+                    >
+                      <ng-template pTemplate="content">
+                        <ul *ngIf="uploadedFiles.length">
+                          <li *ngFor="let file of uploadedFiles">
+                            {{ file.name }} - {{ file.size }} bytes
+                          </li>
+                        </ul>
+                      </ng-template>
+                    </p-fileUpload>
+                  </div>
+                </div>
+                <div class="lg:col-6 md:col-12 sm:col-12">
+                  <div class="flex flex-column gap-2 form-hook">
+                    <h3 for="">Inspection forms</h3>
+                    <p-fileUpload
+                      name="demo[]"
+                      (onUpload)="onUpload($event)"
+                      accept="image/*"
+                      [maxFileSize]="size"
+                    >
+                      <ng-template pTemplate="content">
+                        <ul *ngIf="uploadedFiles.length">
+                          <li *ngFor="let file of uploadedFiles">
+                            {{ file.name }} - {{ file.size }} bytes
+                          </li>
+                        </ul>
+                      </ng-template>
+                    </p-fileUpload>
+                  </div>
+                </div>
+              </div> -->
+              <div class="flex align-items-center justify-content-end mt-4">
+                <p-button
+                  label="Cancel"
+                  class="bg-o-color mr"
+                  routerLink="/vehicle"
+                  styleClass="p-button-outlined"
+                >
+                </p-button>
+                <p-button label="Save" type="submit" class="bg-b-color ml"> </p-button>
+              </div>
+            </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -23,9 +23,6 @@ import { UpdateUserComponent } from './page/user/update-user/update-user.compone
 import { StatusListComponent } from './page/status/status-list/status-list.component';
 import { AddStatusComponent } from './page/status/add-status/add-status.component';
 import { UpdateStatusComponent } from './page/status/update-status/update-status.component';
-import { VehicleTypeListComponent } from './page/vehicle-type/vehicle-type-list/vehicle-type-list.component';
-import { AddVehicleTypeComponent } from './page/vehicle-type/add-vehicle-type/add-vehicle-type.component';
-import { UpdateVehicleTypeComponent } from './page/vehicle-type/update-vehicle-type/update-vehicle-type.component';
 import { PermissionListComponent } from './page/permission/permission-list/permission-list.component';
 import { AddPermissionComponent } from './page/permission/add-permission/add-permission.component';
 import { EditPermissionComponent } from './page/permission/edit-permission/edit-permission.component';
@@ -78,6 +75,15 @@ import { AddAssignmentComponent } from './page/Assignment/add-assignment/add-ass
 import { UpdateAssignmentComponent } from './page/Assignment/update-assignment/update-assignment.component';
 import { AssignmentListComponent } from './page/Assignment/assignment-list/assignment-list.component';
 import { ChartModule } from 'primeng/chart';
+import { AddVehicleComponent } from './page/vehicle-screen/add-vehicle/add-vehicle.component';
+import { UpdateVehicleComponent } from './page/vehicle-screen/update-vehicle/update-vehicle.component';
+import { VehicleListComponent } from './page/vehicle-screen/vehicle-list/vehicle-list.component';
+import { AddEmployeeComponent } from './page/employee-screen/add-employee/add-employee.component';
+import { UpdateEmployeeComponent } from './page/employee-screen/update-employee/update-employee.component';
+import { EmployeeListComponent } from './page/employee-screen/employee-list/employee-list.component';
+import { AddVendorComponent } from './page/vendor-screen/add-vendor/add-vendor.component';
+import { EditVendorComponent } from './page/vendor-screen/edit-vendor/edit-vendor.component';
+import { VendorListComponent } from './page/vendor-screen/vendor-list/vendor-list.component';
 
 @NgModule({
   declarations: [
@@ -101,9 +107,6 @@ import { ChartModule } from 'primeng/chart';
     StatusListComponent,
     AddStatusComponent,
     UpdateStatusComponent,
-    VehicleTypeListComponent,
-    AddVehicleTypeComponent,
-    UpdateVehicleTypeComponent,
     ProductFieldListComponent,
     ProductFieldAddComponent,
     ProductFieldUpdateComponent,
@@ -131,7 +134,16 @@ import { ChartModule } from 'primeng/chart';
     InternationalSummaryByAirComponent,
     AddAssignmentComponent,
     UpdateAssignmentComponent,
-    AssignmentListComponent
+    AssignmentListComponent,
+    AddVehicleComponent,
+    UpdateVehicleComponent,
+    VehicleListComponent,
+    AddEmployeeComponent,
+    UpdateEmployeeComponent,
+    EmployeeListComponent,
+    AddVendorComponent,
+    EditVendorComponent,
+    VendorListComponent
   ],
   imports: [
     BrowserModule,
@@ -154,7 +166,6 @@ import { ChartModule } from 'primeng/chart';
     FileUploadModule,
     ToastModule,
     FileUploadModule,
-    ToastModule,
     ChartModule
   ],
 
