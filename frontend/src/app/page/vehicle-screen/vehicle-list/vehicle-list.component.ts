@@ -1,20 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem, MessageService } from 'primeng/api';
 import { VehicleService } from '../service/vehicle.service';
-import { Vehicle } from 'src/app/modal/vehicle';
+import { Vehicle } from 'src/app/modal/vehicle'
 
 @Component({
   selector: 'app-vehicle-list',
   templateUrl: './vehicle-list.component.html',
-  styleUrls: ['./vehicle-list.component.scss']
+  styleUrls: ['./vehicle-list.component.scss'],
+  providers: [MessageService]
 })
 export class VehicleListComponent implements OnInit{
   
   constructor(
-    private vehicleService: VehicleService
+    private vehicleService: VehicleService,
+    private messageService: MessageService
     ) { }
   
   vehicles!: Vehicle[];
+
+  size: number = 10240000; // Maximum file size (e.g., 10MB)
+
+  uploadedFiles: any[] = [];
+
+  
 
   products:any=[{name:"Demo"},
   {name:"Demo"},
@@ -37,6 +45,10 @@ export class VehicleListComponent implements OnInit{
 
   }
 
+  onUpload( event: any) {
+    console.log(event.files);
+    
+  }
 
   getAllVehicles() {
 

@@ -2,6 +2,7 @@ package com.example.FleetSystem.service;
 
 import com.example.FleetSystem.dto.DriverDto;
 import com.example.FleetSystem.model.Driver;
+import com.example.FleetSystem.model.Employee;
 import com.example.FleetSystem.model.User;
 import com.example.FleetSystem.repository.DriverRepository;
 import com.example.FleetSystem.repository.UserRepository;
@@ -33,6 +34,17 @@ public class DriverService {
             User user = userRepository.findByEmail(username);
 
             Driver driver = toEntity(driverDto);
+            driver.setEmpName(driverDto.getEmpId().getEmpName());
+            driver.setGrade(driverDto.getEmpId().getGrade());
+            driver.setCity(driverDto.getEmpId().getCity());
+            driver.setTitle(driverDto.getEmpId().getJobTitle());
+            driver.setDepartment(driverDto.getEmpId().getDepartment());
+            driver.setContactNumber(driverDto.getEmpId().getContactNumber());
+            driver.setEmailAddress(driverDto.getEmpId().getCompanyEmailAddress());
+            driver.setRegion(driverDto.getEmpId().getRegion());
+            driver.setNationality(driverDto.getEmpId().getNationality());
+            driver.setSection(driverDto.getEmpId().getSection());
+            driver.setJoiningDate(driverDto.getEmpId().getJoiningDate());
             driver.setCreatedAt(LocalDate.now());
             driver.setCreatedBy(user);
             driver.setStatus(Boolean.TRUE);
@@ -77,6 +89,7 @@ public class DriverService {
                 driver.get().setEmpName(driverDto.getEmpName());
                 driver.get().setTitle(driverDto.getTitle());
                 driver.get().setSection(driverDto.getSection());
+                driver.get().setJoiningDate(driver.get().getJoiningDate());
                 driver.get().setDepartment(driverDto.getDepartment());
                 driver.get().setRegion(driverDto.getRegion());
                 driver.get().setCity(driverDto.getCity());

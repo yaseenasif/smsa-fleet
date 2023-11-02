@@ -18,6 +18,11 @@
                           <p-button class="bg-b-color" routerLink="/add-vehicle">
                             <i class="bi bi-plus-lg" style="font-size: 20px;font-weight: bold;"></i>&nbsp;Add Vehicle
                           </p-button>
+                            <div class="flex flex-column gap-2 ml-5">  
+                              <p-fileUpload icon="pi pi-download" iconPos="left" styleClass="p-button-outlined p-button-sm"
+                              mode="basic" chooseLabel="Upload" name="myfile[]"
+                              [customUpload]="true" (uploadHandler)="onUpload($event)" ></p-fileUpload>
+                            </div>
                       </div>
                   </p-toolbar>
               </div>
