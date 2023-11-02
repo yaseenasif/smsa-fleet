@@ -32,18 +32,20 @@ public class Vehicle {
     private Date registrationExpiry;
     private boolean registrationStatus;
     private String fuelType;
-    private String vendor;
     private Date insuranceExpiry;
     private boolean insuranceStatus;
-    private String leaseCost;
+    private Integer leaseCost;
     private Date leaseStartDate;
     private Date leaseExpiryDate;
     private String usageType;
     private String attachments;
-    private UUID uuid;
+    private String uuid;
     private boolean status;
     private LocalDate createdAt;
     private LocalDate updatedAt;
+
+    @ManyToOne
+    private Vendor vendor;
 
     @ManyToOne
     @JoinColumn(name = "created_by")

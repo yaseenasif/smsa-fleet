@@ -58,8 +58,9 @@ public class VehicleController {
         return ResponseEntity.ok(vehicleService.makeVehicleActive(id));
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/add-bulk-vehicle")
-    public ResponseEntity<ResponseMessage> addBulkVehicle(@RequestParam("file")MultipartFile file){
+    public ResponseEntity<ResponseMessage> addBulkVehicle(@RequestParam("file") MultipartFile file){
         return ResponseEntity.ok(new ResponseMessage(vehicleService.addBulkVehicle(file)));
     }
 

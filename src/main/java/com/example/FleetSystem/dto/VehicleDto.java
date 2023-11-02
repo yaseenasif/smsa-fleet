@@ -1,5 +1,6 @@
 package com.example.FleetSystem.dto;
 
+import com.example.FleetSystem.model.Vendor;
 import lombok.*;
 
 import java.sql.Date;
@@ -25,14 +26,15 @@ public class VehicleDto {
     private Date registrationExpiry;
     private boolean registrationStatus;
     private String fuelType;
-    private String vendor;
+    private Vendor vendor;
     private Date insuranceExpiry;
     private boolean insuranceStatus;
-    private String leaseCost;
+    private Integer leaseCost;
     private Date leaseStartDate;
     private Date leaseExpiryDate;
     private String usageType;
     private String attachments;
+    private String uuid;
     private boolean status;
 
 
