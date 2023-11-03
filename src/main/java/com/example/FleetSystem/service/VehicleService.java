@@ -1,6 +1,7 @@
 package com.example.FleetSystem.service;
 
 import com.example.FleetSystem.dto.VehicleDto;
+import com.example.FleetSystem.exception.ExcelException;
 import com.example.FleetSystem.model.FileHistory;
 import com.example.FleetSystem.model.User;
 import com.example.FleetSystem.model.Vehicle;
@@ -26,9 +27,7 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -157,7 +156,9 @@ public class VehicleService {
 
 
     @Transactional
-    public String addBulkVehicle(MultipartFile file){
+    public List<String> addBulkVehicle(MultipartFile file){
+        List<String> messages = new ArrayList<>();
+
         try (InputStream inputStream = file.getInputStream()) {
             Workbook workbook = WorkbookFactory.create(inputStream);
             Sheet sheet = workbook.getSheetAt(0);
@@ -210,7 +211,7 @@ public class VehicleService {
 
                     } catch (ParseException e) {
                         e.printStackTrace();
-                        return "Error processing the Date: " + e.getMessage();
+                        throw new RuntimeException("Error processing the Date: " + e.getMessage());
                     }
 
                     try {
@@ -253,11 +254,12 @@ public class VehicleService {
                             vehicleRepository.save(vehicle);
 
                         }else {
-                            return "UserName not Found";
+                            messages.add("UserName not Found");
+                            return messages;
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                        return "Error processing data in the Excel file: " + e.getMessage();
+                        throw new RuntimeException("Error processing data in the Excel file:" + e.getMessage());
                     }
                 }
                 FileHistory fileHistory = FileHistory.builder()
@@ -266,17 +268,20 @@ public class VehicleService {
                         .build();
                 fileHistoryRepository.save(fileHistory);
 
-                return "File uploaded and data saved successfully.";
+                messages.add("File uploaded and data saved successfully.");
+                return messages;
             }else {
-                    return checkFile.getMessage();
+                    messages.addAll(checkFile.getMessage());
+                    throw new ExcelException(messages);
             }
 
         } catch (IOException e) {
             e.printStackTrace();
-            return "Error uploading the file: " + e.getMessage();
+            throw new RuntimeException("Error uploading the file: " + e.getMessage());
+
         } catch (Exception e) {
             e.printStackTrace();
-            return "Error processing the file: " + e.getMessage();
+            throw new RuntimeException("Error processing the file: " + e.getMessage());
         }
     }
 
@@ -308,7 +313,7 @@ public class VehicleService {
         String fileName = file.getOriginalFilename();
         Optional<FileHistory> fileHistory = Optional.ofNullable(fileHistoryRepository.findByFileName(fileName));
         if (fileHistory.isPresent()){
-            return new ExcelErrorResponse(Boolean.FALSE,fileName+" is already uploaded. Please upload a different File.");
+            return new ExcelErrorResponse(Boolean.FALSE,Arrays.asList(fileName+" is already uploaded. Please upload a different File."));
         }else {
 
             try (InputStream inputStream = file.getInputStream()) {
@@ -328,10 +333,9 @@ public class VehicleService {
                     String actualHeader = headerRow.getCell(i).toString();
 
                     if (!actualHeader.replaceAll("\\s", "").equalsIgnoreCase(expectedHeader)) {
-                        return new ExcelErrorResponse(Boolean.FALSE, "Error in column : " + actualHeader +
-                                "\nRow : " + (headerRow.getRowNum() + 1) +
-                                "\nCell : " + (i + 1) +
-                                "\nPlease check the Sample Format of Excel File");
+                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Error in column : " + actualHeader,
+                                "Row : " + (headerRow.getRowNum() + 1)+" and Cell : " + (i + 1)
+                                , "Please check the Sample Format of Excel File"));
                     }
                 }
 
@@ -340,7 +344,7 @@ public class VehicleService {
 
                     for (int cellNum = 0; cellNum <= row.getLastCellNum() - 1; cellNum++) {
                         if (String.valueOf(row.getCell(cellNum)).isEmpty()) {
-                            return new ExcelErrorResponse(Boolean.FALSE, "Empty Value at Row " + (rowNum + 1) + " and Cell " + (cellNum + 1));
+                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Empty Value at Row " + (rowNum + 1) + " and Cell " + (cellNum + 1)));
                         }
                     }
 
@@ -353,37 +357,37 @@ public class VehicleService {
 
 
                     if (!registrationMatcher.matches()) {
-                        return new ExcelErrorResponse(Boolean.FALSE, "Incorrect Date Format : " + row.getCell(11) + "\nRow" + (rowNum + 1) + " and Cell 12");
+                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(11) ,"Row" + (rowNum + 1) + " and Cell 12"));
                     } else if (!String.valueOf(row.getCell(12)).replaceAll("\\s", "").equalsIgnoreCase("valid")
                             && !String.valueOf(row.getCell(12)).replaceAll("\\s", "").equalsIgnoreCase("invalid")) {
-                        return new ExcelErrorResponse(Boolean.FALSE, "Incorrect Value : " + row.getCell(12) + "\nRow " + (rowNum + 1) + " and Cell 13\nShould be Valid or Invalid");
+                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList( "Incorrect Value : " + row.getCell(12) ,"Row " + (rowNum + 1) + " and Cell 13","Value should be Valid or Invalid"));
                     } else if (!String.valueOf(row.getCell(14)).replaceAll("\\s", "").equalsIgnoreCase("valid")
                             && !String.valueOf(row.getCell(14)).replaceAll("\\s", "").equalsIgnoreCase("invalid")) {
-                        return new ExcelErrorResponse(Boolean.FALSE, "Incorrect Value : " + row.getCell(14) + "\nRow " + (rowNum + 1) + " and Cell 15\nShould be Valid or Invalid");
+                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList( "Incorrect Value : " + row.getCell(14)  ,"Row " + (rowNum + 1) + " and Cell 15","Value should be Valid or Invalid"));
                     } else if (!insuranceMatcher.matches()) {
-                        return new ExcelErrorResponse(Boolean.FALSE, "Incorrect Date Format : " + row.getCell(13) +
-                                "\nRow " + (rowNum + 1) + " and Cell 14");
+                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList( "Incorrect Date Format : " + row.getCell(13)
+                                ,"Row " + (rowNum + 1) + " and Cell 14"));
                     } else if (!leaseStartMatcher.matches()) {
-                        return new ExcelErrorResponse(Boolean.FALSE, "Incorrect Date Format : " + row.getCell(17) +
-                                " \nRow " + (rowNum + 1) + " and Cell 18");
+                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList( "Incorrect Date Format : " + row.getCell(17),
+                                "Row " + (rowNum + 1) + " and Cell 18"));
                     } else if (!leaseExpiryMatcher.matches()) {
-                        return new ExcelErrorResponse(Boolean.FALSE, "Incorrect Date Format : " + row.getCell(18) +
-                                " \nRow " + (rowNum + 1) + " and Cell 19");
+                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList( "Incorrect Date Format : " + row.getCell(18) ,
+                                "Row " + (rowNum + 1) + " and Cell 19"));
                     } else if (getIntegerValue(row.getCell(2)) == null) {
-                        return new ExcelErrorResponse(Boolean.FALSE,"The cell does not contain a numeric value: "+row.getCell(2)+"\nRow "+(rowNum+1)+"and cell 3");
+                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: "+row.getCell(2),"Row "+(rowNum+1)+" and cell 3"));
                     } else if (getIntegerValue(row.getCell(16)) == null) {
-                        return new ExcelErrorResponse(Boolean.FALSE,"The cell does not contain a numeric value: "+row.getCell(16)+"\nRow"+(rowNum+1)+"and cell 17");
+                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: "+row.getCell(16),"Row"+(rowNum+1)+" and cell 17"));
                     }
 
                     Optional<Vendor> vendor = Optional.ofNullable(vendorRepository.findByVendorNameIgnoreCase(getStringValue(row.getCell(15))));
 
                     if (!vendor.isPresent()) {
-                        return new ExcelErrorResponse(Boolean.FALSE, getStringValue(row.getCell(15)) + " vendor does not exist in the record\n Row " + (rowNum + 1) + " and Cell 16");
+                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList( getStringValue(row.getCell(15)) + " vendor does not exist in the record", "Row " + (rowNum + 1) + " and Cell 16"));
                     }
 
                 }
 
-                return new ExcelErrorResponse(Boolean.TRUE, "Excel File is in Correct Format");
+                return new ExcelErrorResponse(Boolean.TRUE, Arrays.asList("Excel File is in Correct Format"));
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new RuntimeException(e);

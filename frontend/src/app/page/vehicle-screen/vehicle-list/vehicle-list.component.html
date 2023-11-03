@@ -9,6 +9,7 @@
               <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
           </div>
           <div class="body-card">
+            <p-toast [showTransitionOptions]="'0ms'" [hideTransitionOptions]="'5000ms'"></p-toast>
               <div class="table-head">
                   <p-toolbar>
                       <div class="p-toolbar-group-start">
@@ -19,9 +20,17 @@
                             <i class="bi bi-plus-lg" style="font-size: 20px;font-weight: bold;"></i>&nbsp;Add Vehicle
                           </p-button>
                             <div class="flex flex-column gap-2 ml-5">  
-                              <p-fileUpload icon="pi pi-download" iconPos="left" styleClass="p-button-outlined p-button-sm"
+                              <p-fileUpload  
+                              #fileUpload
+                              icon="pi pi-download" iconPos="left" styleClass="p-button-outlined p-button-sm"
                               mode="basic" chooseLabel="Upload" name="myfile[]"
-                              [customUpload]="true" (uploadHandler)="onUpload($event)" ></p-fileUpload>
+                              [customUpload]="true" (uploadHandler)="onUpload($event)"
+                              (onSelect)="onFileSelect()"
+                              >
+                            </p-fileUpload>
+                            <ng-container *ngIf="fileSelected">
+                              <button class="p-button p-button-outlined p-button-sm" (click)="onCancel()">Cancel</button>
+                            </ng-container>
                             </div>
                       </div>
                   </p-toolbar>

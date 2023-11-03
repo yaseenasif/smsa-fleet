@@ -33,6 +33,12 @@ export class VehicleService {
     return this.http.delete<any>(`${this.url}/delete-vehicle/${id}`)
   }
 
-  
+  saveFile(file: File): Observable<any> {
+    debugger
+    const formData = new FormData();
+    formData.append('file', file);
 
+    return this.http.post<any>(`${this.url}/add-bulk-vehicle`, formData);
+  }
+  
 }
