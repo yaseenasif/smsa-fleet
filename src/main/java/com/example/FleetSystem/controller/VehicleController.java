@@ -28,7 +28,7 @@ public class VehicleController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/get-all-vehicle")
     public ResponseEntity<List<VehicleDto>> getAllVehicles() {
-        List<VehicleDto> vehicleDtoList = vehicleService.getAll();
+        List<VehicleDto> vehicleDtoList = vehicleService.getActiveVehicles();
         return ResponseEntity.ok(vehicleDtoList);
     }
 

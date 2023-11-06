@@ -1,10 +1,10 @@
 package com.example.FleetSystem.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,5 +21,20 @@ public class Vendor {
     private String vendorName;
     private String officeLocation;
     private String attachments;
+    private LocalDate createdAt;
+    private LocalDate updatedAt;
+    private boolean status;
+
+    @OneToMany(mappedBy = "vendor")
+    @JsonIgnore
+    private List<ContactPerson> contactPersonList;
+
+    @ManyToOne
+    @JoinColumn(name = "created_by")
+    private User createdBy;
+
+    @ManyToOne
+    @JoinColumn(name = "updated_by")
+    private User updatedBy;
 
 }
