@@ -31,7 +31,7 @@ public class Employee {
     private String companyEmailAddress;
     private String grade;
     private String licenseNumber;
-    private String vehicleBudget;
+    private Integer vehicleBudget;
     private String attachments;
     private LocalDate createdAt;
     private LocalDate updatedAt;

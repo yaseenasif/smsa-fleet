@@ -34,7 +34,6 @@ export class VehicleService {
   }
 
   saveFile(file: File): Observable<any> {
-    debugger
     const formData = new FormData();
     formData.append('file', file);
 

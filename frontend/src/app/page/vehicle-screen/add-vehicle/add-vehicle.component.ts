@@ -25,13 +25,18 @@ export class AddVehicleComponent implements OnInit{
     power: undefined,
     registrationExpiry: undefined,
     fuelType: undefined,
-    vendor: undefined,
     insuranceExpiry: undefined,
     leaseCost: undefined,
     leaseStartDate: undefined,
     leaseExpiryDate: undefined,
     usageType: undefined,
-    attachments: undefined
+    attachments: undefined,
+    vendor: {
+      id: undefined,
+      vendorName: undefined,
+      officeLocation: undefined,
+      attachments: undefined
+    }
   };
 
   dummyData: any = [
@@ -69,7 +74,7 @@ export class AddVehicleComponent implements OnInit{
 
       setTimeout(() => {
         this.router.navigate(['/vehicle'])
-      },8000)
+      },5000)
 
     });
   

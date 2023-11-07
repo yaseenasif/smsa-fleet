@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { Employee } from 'src/app/modal/employee';
 import { EmployeeService } from '../service/employee.service';
 import { Router } from '@angular/router';
@@ -8,7 +8,8 @@ import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-add-employee',
   templateUrl: './add-employee.component.html',
-  styleUrls: ['./add-employee.component.scss']
+  styleUrls: ['./add-employee.component.scss'],
+  providers: [MessageService]
 })
 export class AddEmployeeComponent implements OnInit{
   
@@ -54,7 +55,8 @@ export class AddEmployeeComponent implements OnInit{
 
   constructor(
     private employeeService: EmployeeService,
-    private router: Router) { }
+    private router: Router,
+    private messageService: MessageService) { }
 
 
 
@@ -75,7 +77,11 @@ export class AddEmployeeComponent implements OnInit{
   onSubmit() {
     
     this.employeeService.addEmployee(this.employee).subscribe((res) => {
-      console.log(res);
+      this.messageService.add({ severity: 'Add Successfully', summary: 'Add Successfully', detail: 'Message Content' });  
+
+      setTimeout(() => {
+        this.router.navigate(['/employee'])
+      },5000)
       
     }) 
       

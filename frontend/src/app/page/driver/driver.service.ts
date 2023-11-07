@@ -14,7 +14,6 @@ export class DriverService {
   url = environment.baseurl;
 
   addDriver(driver: Driver): Observable<Driver> {
-    debugger
     return this.http.post<Driver>(this.url.concat('/driver'), driver);
 }
 
@@ -31,7 +30,7 @@ updateDriver(id: Number, updatedDriver: Driver): Observable<Driver> {
 }
 
 deleteDriver(id: Number) {
-  return this.http.delete<any>(`${this.url}/delete/${id}`)
+  return this.http.delete<any>(`${this.url}/driver/${id}`)
 }
   
 }

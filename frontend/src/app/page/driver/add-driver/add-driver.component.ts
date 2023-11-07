@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { DriverService } from '../driver.service';
 import { Driver } from 'src/app/modal/driver';
 import { EmployeeService } from '../../employee-screen/service/employee.service';
 import { Employee } from 'src/app/modal/employee';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-driver',
   templateUrl: './add-driver.component.html',
-  styleUrls: ['./add-driver.component.scss']
+  styleUrls: ['./add-driver.component.scss'],
+  providers: [MessageService]
 })
 export class AddDriverComponent implements OnInit {
   items: MenuItem[] | undefined;
@@ -41,7 +43,9 @@ export class AddDriverComponent implements OnInit {
   selectedEmployee!: Employee
 
   constructor(private driverService: DriverService,
-              private employeeService: EmployeeService) { }
+              private employeeService: EmployeeService,
+              private messageService: MessageService,
+              private router: Router) { }
   
   name!:string;
   contactNumber!:string;
@@ -94,11 +98,12 @@ export class AddDriverComponent implements OnInit {
   }
     
   onSubmit() {
-    debugger
     this.driverService.addDriver(this.driver).subscribe((res) => {
-      debugger
-      console.log(res);
-      
+      this.messageService.add({ severity: 'Add Successfully', summary: 'Add Successfully', detail: 'Message Content' });  
+
+      setTimeout(() => {
+        this.router.navigate(['/driver'])
+      },5000)
     })
   }
   

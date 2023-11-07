@@ -93,7 +93,7 @@ export class UpdateEmployeeComponent {
 
       setTimeout(() => {
         this.router.navigate(['/employee'])
-      },8000)
+      },5000)
       
     })
 

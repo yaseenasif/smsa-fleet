@@ -63,15 +63,11 @@ export class VehicleListComponent implements OnInit{
   }
 
   onUpload(event: any) {
-    debugger
     const uploadedFile = event.files[0];
 
     if (uploadedFile) {
-      debugger;
       this.vehicleService.saveFile(uploadedFile).subscribe(
-        (response) => {
-          debugger
-          
+        (response) => {          
    
           if (Array.isArray(response.message)) {
             
@@ -90,7 +86,6 @@ export class VehicleListComponent implements OnInit{
           this.getAllVehicles();
         },
         (error) => {
-          debugger  
           console.error('Error while saving the file:', error);
 
           this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });

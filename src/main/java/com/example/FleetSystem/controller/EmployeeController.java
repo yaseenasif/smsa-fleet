@@ -37,7 +37,7 @@ public class EmployeeController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping("/update-employee/{id}")
+    @PatchMapping("/update-employee/{id}")
     public ResponseEntity<EmployeeDto> updateEmployeeById(@PathVariable Long id, @RequestBody EmployeeDto employeeDto) {
         return ResponseEntity.ok(employeeService.updateEmployee(id,employeeDto));
     }

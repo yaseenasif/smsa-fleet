@@ -25,7 +25,7 @@ public class EmployeeDto {
     private String companyEmailAddress;
     private String grade;
     private String licenseNumber;
-    private String vehicleBudget;
+    private Integer vehicleBudget;
     private String attachments;
     private boolean status;
 
