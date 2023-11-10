@@ -41,7 +41,6 @@ export class UpdateEmployeeComponent {
     portOfDestination: undefined,
     nationality: undefined,
     companyEmailAddress: undefined,
-    mobileNo: undefined,
     grade: undefined,
     licenseNumber: undefined,
     vehicleBudget: undefined,

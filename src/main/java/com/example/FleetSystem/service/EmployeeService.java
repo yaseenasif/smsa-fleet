@@ -57,12 +57,18 @@ public class EmployeeService {
             String username = ((UserDetails) principal).getUsername();
             User user = userRepository.findByEmail(username);
 
-            Employee employee = toEntity(employeeDto);
-            employee.setCreatedBy(user);
-            employee.setCreatedAt(LocalDate.now());
-            employee.setDeleteStatus(Boolean.TRUE);
+            Optional<Employee> employee = employeeRepository.findByEmployeeNumber(employeeDto.getEmployeeNumber());
 
-            return toDto(employeeRepository.save(employee));
+            if (employee.isPresent()){
+                throw new RuntimeException("Employee already exist in the record : "+employeeDto.getEmployeeNumber());
+            }
+
+            Employee employee1 = toEntity(employeeDto);
+            employee1.setCreatedBy(user);
+            employee1.setCreatedAt(LocalDate.now());
+            employee1.setDeleteStatus(Boolean.TRUE);
+
+            return toDto(employeeRepository.save(employee1));
         }
 
         throw new RuntimeException("Error in adding Employee");

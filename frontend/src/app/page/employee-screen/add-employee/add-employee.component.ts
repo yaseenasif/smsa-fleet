@@ -40,7 +40,6 @@ export class AddEmployeeComponent implements OnInit{
     portOfDestination: undefined,
     nationality: undefined,
     companyEmailAddress: undefined,
-    mobileNo: undefined,
     grade: undefined,
     licenseNumber: undefined,
     vehicleBudget: undefined,
@@ -58,6 +57,15 @@ export class AddEmployeeComponent implements OnInit{
     { id: 8, name: 'New York City' },
     { id: 9, name: 'Pakistan' },
     { id: 10, name: 'Quality Assurance Tester' }
+  ]
+
+  employeeStatus: any = [
+    {id: 1, statusName: 'Active'},
+    {id: 2, statusName: 'Resigned'},
+    {id: 3, statusName: 'Terminated'},
+    {id: 4, statusName: 'Deceased'}
+
+,   
   ]
 
   

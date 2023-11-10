@@ -2,10 +2,7 @@ package com.example.FleetSystem.service;
 
 import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.exception.ExcelException;
-import com.example.FleetSystem.model.FileHistory;
-import com.example.FleetSystem.model.User;
-import com.example.FleetSystem.model.Vehicle;
-import com.example.FleetSystem.model.Vendor;
+import com.example.FleetSystem.model.*;
 import com.example.FleetSystem.payload.ExcelErrorResponse;
 import com.example.FleetSystem.repository.FileHistoryRepository;
 import com.example.FleetSystem.repository.UserRepository;
@@ -64,26 +61,32 @@ public class VehicleService {
             String username = ((UserDetails) principal).getUsername();
             User user = userRepository.findByEmail(username);
 
-            Vehicle vehicle = toEntity(vehicleDto);
-            vehicle.setCreatedBy(user);
-            vehicle.setCreatedAt(LocalDate.now());
-            vehicle.setStatus(Boolean.TRUE);
+            Optional<Vehicle> vehicle = vehicleRepository.findByPlateNumber(vehicleDto.getPlateNumber());
+
+            if (vehicle.isPresent()){
+                throw new RuntimeException("Plate number Already exist : "+vehicleDto.getPlateNumber());
+            }
+
+            Vehicle vehicle1 = toEntity(vehicleDto);
+            vehicle1.setCreatedBy(user);
+            vehicle1.setCreatedAt(LocalDate.now());
+            vehicle1.setStatus(Boolean.TRUE);
 
             Date currentDate = Date.valueOf(LocalDate.now());
 
             if(currentDate.before(vehicleDto.getRegistrationExpiry()) || currentDate.equals(vehicleDto.getRegistrationExpiry())){
-                vehicle.setRegistrationStatus(Boolean.TRUE);
+                vehicle1.setRegistrationStatus(Boolean.TRUE);
             }else if(currentDate.after(vehicleDto.getRegistrationExpiry())){
-                vehicle.setRegistrationStatus(Boolean.FALSE);
+                vehicle1.setRegistrationStatus(Boolean.FALSE);
             }
 
             if(currentDate.before(vehicleDto.getInsuranceExpiry()) || currentDate.equals(vehicleDto.getInsuranceExpiry())){
-                vehicle.setInsuranceStatus(Boolean.TRUE);
+                vehicle1.setInsuranceStatus(Boolean.TRUE);
             } else if (currentDate.after(vehicleDto.getInsuranceExpiry())) {
-                vehicle.setInsuranceStatus(Boolean.FALSE);
+                vehicle1.setInsuranceStatus(Boolean.FALSE);
             }
 
-            return toDto(vehicleRepository.save(vehicle));
+            return toDto(vehicleRepository.save(vehicle1));
         }
 
         throw new RuntimeException("Error in adding Vehicle");
@@ -286,9 +289,6 @@ public class VehicleService {
     }
 
     private String getStringValue(Cell cell) {
-        if (cell == null) {
-            return null;
-        }
 
         if (cell.getCellType() == CellType.STRING) {
             return cell.getStringCellValue();
@@ -319,6 +319,7 @@ public class VehicleService {
             try (InputStream inputStream = file.getInputStream()) {
                 Workbook workbook = WorkbookFactory.create(inputStream);
                 Sheet sheet = workbook.getSheetAt(0);
+                Map<Integer, String> plateNumberList = new HashMap<>();
 
                 Row headerRow = sheet.getRow(0);
                 String[] expectedHeaders = {
@@ -341,12 +342,30 @@ public class VehicleService {
 
                 for (int rowNum = 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
                     Row row = sheet.getRow(rowNum);
+                    String plateNumberPattern = "\\d{4} [A-Z]{3}";
 
                     for (int cellNum = 0; cellNum <= row.getLastCellNum() - 1; cellNum++) {
                         if (String.valueOf(row.getCell(cellNum)).isEmpty()) {
                             return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Empty Value at Row " + (rowNum + 1) + " and Cell " + (cellNum + 1)));
                         }
                     }
+
+                    if (!getStringValue(row.getCell(1)).matches(plateNumberPattern)) {
+                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Plate Number Format : " + row.getCell(1),
+                                "Row " + (rowNum + 1) + " and Cell 2", "Correct Format : 1234 ABC"));
+                    }
+
+                    Optional<Vehicle> vehicle = vehicleRepository.findByPlateNumber(getStringValue(row.getCell(1)));
+                    if (vehicle.isPresent()){
+                        return new ExcelErrorResponse(Boolean.FALSE,Arrays.asList("Plate Number : "+getStringValue(row.getCell(1))+
+                                " is already Present in the record","Row : "+ (rowNum+1)));
+                    }
+
+                    ExcelErrorResponse checkDuplicate = checkDuplicateRecord(plateNumberList,row);
+                    if(!checkDuplicate.isStatus()){
+                        return checkDuplicate;
+                    }
+
 
                     String regex = "^(0[1-9]|[1-2][0-9]|3[0-1])-(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)-\\d{4}$";
                     Pattern pattern = Pattern.compile(regex);
@@ -357,7 +376,7 @@ public class VehicleService {
 
 
                     if (!registrationMatcher.matches()) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(11) ,"Row" + (rowNum + 1) + " and Cell 12"));
+                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(11) ,"Row " + (rowNum + 1) + " and Cell 12"));
                     } else if (!String.valueOf(row.getCell(12)).replaceAll("\\s", "").equalsIgnoreCase("valid")
                             && !String.valueOf(row.getCell(12)).replaceAll("\\s", "").equalsIgnoreCase("invalid")) {
                         return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList( "Incorrect Value : " + row.getCell(12) ,"Row " + (rowNum + 1) + " and Cell 13","Value should be Valid or Invalid"));
@@ -395,6 +414,18 @@ public class VehicleService {
         }
     }
 
+    private ExcelErrorResponse checkDuplicateRecord(Map<Integer, String> plateNumberList, Row row) {
+        String plateNumber = getStringValue(row.getCell(1));
+
+        for (Map.Entry<Integer, String> entry : plateNumberList.entrySet()) {
+            if(plateNumber.equals(entry.getValue())){
+                return new ExcelErrorResponse(Boolean.FALSE,Arrays.asList("Duplicate Record in the Row : "+entry.getKey()+" and "+(row.getRowNum()+1),
+                        "Duplicate Plate Number : "+plateNumber));
+            }
+        }
+        plateNumberList.put(row.getRowNum()+1,plateNumber);
+        return new ExcelErrorResponse(Boolean.TRUE,Arrays.asList("No Duplicate Record"));
+    }
 
 
     public List<VehicleDto> toDtoList(List<Vehicle> vehicleList){
