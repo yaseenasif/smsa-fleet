@@ -15,6 +15,25 @@
               <form #employeeForm="ngForm" (ngSubmit)="onSubmit()">
               <div class="grid">
                 <div class="col-12 md:col-12 lg:col-6">
+                    <div class="flex flex-column gap-2">
+                      <label htmlFor="name">Employee Number</label>
+                      <input
+                        pInputText
+                        id="name"
+                        aria-describedby="name-help"
+                        name="employeeNumber"
+                        [(ngModel)]="employee.employeeNumber"
+                        #employeeNumber="ngModel"
+                        required
+                      />
+                      <small 
+                          id="name-help" class="color-red" 
+                          *ngIf="employeeNumber.invalid && (employeeNumber.dirty || employeeNumber.touched)"
+                      > Employee Number is required
+                      </small>
+                    </div>
+                  </div>
+                <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">Employee Name</label>
                     <input
@@ -324,6 +343,41 @@
                       </p-dropdown>
                     </div>
                   </div>
+                  <div class="col-12 md:col-12 lg:col-6">
+                    <div class="flex flex-column gap-2">
+                      <label htmlFor="name">Budget Reference</label>
+                      <input
+                        pInputText
+                        id="name"
+                        aria-describedby="name-help"
+                        name="budgetRef"
+                        [(ngModel)]="employee.budgetRef"
+                        #budgetRef="ngModel"
+                        required
+                      />
+                      <small 
+                          id="name-help" class="color-red" 
+                          *ngIf="budgetRef.invalid && (budgetRef.dirty || budgetRef.touched)"
+                      > Budget Reference is required
+                      </small>
+                    </div>
+                  </div>
+                  <div class="col-12 md:col-12 lg:col-6">
+                    <div class="flex flex-column gap-2">
+                      <label htmlFor="name">Gender</label>
+                      <div class="flex flex-wrap gap-3">
+                        <div class="flex align-items-center">
+                            <p-radioButton name="pizza" value="M" [(ngModel)]="employee.gender" inputId="ingredient1"></p-radioButton>
+                            <label for="ingredient1" class="ml-2">Male</label>
+                        </div>
+                        
+                        <div class="flex align-items-center">
+                            <p-radioButton name="pizza" value="F" [(ngModel)]="employee.gender" inputId="ingredient2"></p-radioButton>
+                            <label for="ingredient2" class="ml-2">Female</label>
+                        </div>
+                    </div>
+                    </div>
+                  </div>  
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">License Number</label>

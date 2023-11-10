@@ -87,6 +87,7 @@ import { EmployeeListComponent } from './page/employee-screen/employee-list/empl
 import { AddVendorComponent } from './page/vendor-screen/add-vendor/add-vendor.component';
 import { EditVendorComponent } from './page/vendor-screen/edit-vendor/edit-vendor.component';
 import { VendorListComponent } from './page/vendor-screen/vendor-list/vendor-list.component';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 @NgModule({
   declarations: [
@@ -169,6 +170,7 @@ import { VendorListComponent } from './page/vendor-screen/vendor-list/vendor-lis
     FileUploadModule,
     ToastModule,
     FileUploadModule,
+    RadioButtonModule,
     ChartModule,
     NgxUiLoaderModule,
     NgxUiLoaderHttpModule.forRoot({

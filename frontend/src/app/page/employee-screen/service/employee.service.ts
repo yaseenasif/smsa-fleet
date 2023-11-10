@@ -34,4 +34,11 @@ export class EmployeeService {
     return this.http.delete<any>(`${this.url}/delete-employee/${id}`)
   }
 
+  saveFile(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post<any>(`${this.url}/add-bulk-employee`, formData);
+  }
+
 }

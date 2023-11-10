@@ -16,19 +16,35 @@ export class AddEmployeeComponent implements OnInit{
   items: MenuItem[] | undefined;
   employee: Employee = {
     id: undefined,
+    employeeNumber: undefined,
+    budgetRef: undefined,
     empName: undefined,
-    jobTitle: undefined,
+    gender: undefined,
+    maritalStatus: undefined,
+    dateOfBirth: undefined,
     joiningDate: undefined,
+    jobTitle: undefined,
+    status: undefined,
+    region: undefined,
+    location: undefined,
+    organization: undefined,
+    division: undefined,
+    deptCode: undefined,
     department: undefined,
     section: undefined,
-    region: undefined,
+    iqamaNumber: undefined,
+    svEmployeeNumber: undefined,
+    svEmployeeName: undefined,
     city: undefined,
+    age: undefined,
+    portOfDestination: undefined,
     nationality: undefined,
-    contactNumber: undefined,
     companyEmailAddress: undefined,
+    mobileNo: undefined,
     grade: undefined,
     licenseNumber: undefined,
-    vehicleBudget: undefined
+    vehicleBudget: undefined,
+    contactNumber: undefined
   };
 
   dummyData: any = [
