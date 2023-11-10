@@ -1,12 +1,8 @@
 package com.example.FleetSystem.dto;
 
-import com.example.FleetSystem.model.User;
 import lombok.*;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import java.sql.Date;
-import java.time.LocalDate;
 
 @Getter
 @Setter

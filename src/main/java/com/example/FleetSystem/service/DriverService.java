@@ -5,6 +5,7 @@ import com.example.FleetSystem.model.Driver;
 import com.example.FleetSystem.model.Employee;
 import com.example.FleetSystem.model.User;
 import com.example.FleetSystem.repository.DriverRepository;
+import com.example.FleetSystem.repository.EmployeeRepository;
 import com.example.FleetSystem.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +28,23 @@ public class DriverService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    EmployeeRepository employeeRepository;
+
     public DriverDto addDriver(DriverDto driverDto) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal instanceof UserDetails) {
             String username = ((UserDetails) principal).getUsername();
             User user = userRepository.findByEmail(username);
 
+            Optional<Employee> employee = employeeRepository.findById(driverDto.getEmpId().getId());
+
+            if(employee.isPresent()) {
+                employee.get().setDriver(Boolean.TRUE);
+            }else throw new RuntimeException("Employee Not Found");
+
             Driver driver = toEntity(driverDto);
+            driver.setEmpId(employee.get());
             driver.setEmpName(driverDto.getEmpId().getEmpName());
             driver.setGrade(driverDto.getEmpId().getGrade());
             driver.setCity(driverDto.getEmpId().getCity());
@@ -48,8 +59,9 @@ public class DriverService {
             driver.setCreatedAt(LocalDate.now());
             driver.setCreatedBy(user);
             driver.setStatus(Boolean.TRUE);
-
-            return toDto(driverRepository.save(driver));
+            Driver save = driverRepository.save(driver);
+            employeeRepository.save(employee.get());
+            return toDto(save);
         }
         throw new RuntimeException("Error adding Driver");
     }

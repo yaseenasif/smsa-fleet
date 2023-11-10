@@ -1,5 +1,7 @@
 package com.example.FleetSystem.dto;
 
+import com.example.FleetSystem.model.Employee;
+import com.example.FleetSystem.model.Vehicle;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -10,20 +12,18 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @ToString
 @Builder
-public class AssignmentDto {
+public class VehicleAssignmentDto {
 
     private Long id;
     private String design;
-    private String currentlyAssignedUnderName;
     private String make;
-    private Long assignToEmpId;
+    private Employee assignToEmpId;
     private String assignToEmpName;
     private String model;
     private String year;
     private LocalDate leaseExpiry;
-    private String leaseCost;
+    private Integer leaseCost;
     private String attachments;
-
-    private DriverDto driver;
-    private VehicleDto vehicle;
+    private boolean status;
+    private Vehicle vehicleId;
 }
