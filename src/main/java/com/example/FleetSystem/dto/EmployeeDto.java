@@ -28,5 +28,6 @@ public class EmployeeDto {
     private Integer vehicleBudget;
     private String attachments;
     private boolean status;
+    private boolean isDriver;
 
 }

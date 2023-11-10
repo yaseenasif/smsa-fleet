@@ -45,6 +45,7 @@ public class EmployeeService {
             User user = userRepository.findByEmail(username);
 
             Employee employee = toEntity(employeeDto);
+            employee.setDriver(Boolean.FALSE);
             employee.setCreatedBy(user);
             employee.setCreatedAt(LocalDate.now());
             employee.setStatus(Boolean.TRUE);

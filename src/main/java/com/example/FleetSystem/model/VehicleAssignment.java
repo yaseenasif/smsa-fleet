@@ -1,13 +1,14 @@
 package com.example.FleetSystem.model;
 
+
 import lombok.*;
 import org.hibernate.envers.Audited;
-import org.hibernate.envers.RelationTargetAuditMode;
+import org.hibernate.envers.NotAudited;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import javax.persistence.*;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -16,45 +17,44 @@ import java.util.UUID;
 @ToString
 @Builder
 @Entity
-@Table(name = "vehicle")
-public class Vehicle {
+@Audited
+@Table(name = "vehicle_assignment")
+public class VehicleAssignment{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Integer processOrderNumber;
-    private String plateNumber;
-    private String make;
-    private String year;
     private String design;
+    private String make;
+    private String assignToEmpName;
     private String model;
-    private String type;
-    private String capacity;
-    private String power;
-    private Date registrationExpiry;
-    private boolean registrationStatus;
-    private String fuelType;
-    private Date insuranceExpiry;
-    private boolean insuranceStatus;
+    private String year;
+    private Date leaseExpiry;
     private Integer leaseCost;
-    private Date leaseStartDate;
-    private Date leaseExpiryDate;
-    private String usageType;
+    private String plateNumber;
     private String attachments;
-    private String uuid;
     private boolean status;
     private LocalDate createdAt;
     private LocalDate updatedAt;
 
     @ManyToOne
-    private Vendor vendor;
+    @JoinColumn(name = "assign_to_emp_id")
+    @NotAudited
+    private Employee assignToEmpId;
+
+    @ManyToOne
+    @JoinColumn(name = "vehicle_id")
+    @NotAudited
+    private Vehicle vehicle;
 
     @ManyToOne
     @JoinColumn(name = "created_by")
+    @NotAudited
     private User createdBy;
 
     @ManyToOne
     @JoinColumn(name = "updated_by")
+    @NotAudited
     private User updatedBy;
 
 }

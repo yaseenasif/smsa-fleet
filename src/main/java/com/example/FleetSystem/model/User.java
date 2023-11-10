@@ -1,6 +1,8 @@
 package com.example.FleetSystem.model;
 
 import lombok.*;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -28,7 +30,5 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id") ,
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Roles> roles = new HashSet<>();
-
-
 
 }

@@ -1,6 +1,8 @@
 package com.example.FleetSystem.model;
 
 import lombok.*;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -36,6 +38,7 @@ public class Employee {
     private LocalDate createdAt;
     private LocalDate updatedAt;
     private boolean status;
+    private boolean isDriver;
 
     @ManyToOne
     @JoinColumn(name = "created_by")
