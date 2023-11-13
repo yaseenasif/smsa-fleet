@@ -38,13 +38,13 @@ public class DriverService {
             User user = userRepository.findByEmail(username);
 
             Optional<Employee> employee = employeeRepository.findById(driverDto.getEmpId().getId());
+            Driver driver = toEntity(driverDto);
 
             if(employee.isPresent()) {
-                employee.get().setDriver(Boolean.TRUE);
+                driver.setEmpId(employee.get());
             }else throw new RuntimeException("Employee Not Found");
 
-            Driver driver = toEntity(driverDto);
-            driver.setEmpId(employee.get());
+
             driver.setEmpName(driverDto.getEmpId().getEmpName());
             driver.setGrade(driverDto.getEmpId().getGrade());
             driver.setCity(driverDto.getEmpId().getCity());

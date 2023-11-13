@@ -182,6 +182,7 @@ public class EmployeeService {
                         if(principal instanceof UserDetails) {
                             String username = ((UserDetails) principal).getUsername();
                             User user = userRepository.findByEmail(username);
+                            DataFormatter dataFormatter = new DataFormatter();
 
                             employee.setEmployeeNumber(getLongValue(row.getCell(1)));
                             employee.setBudgetRef(getStringValue(row.getCell(2)));
@@ -205,8 +206,8 @@ public class EmployeeService {
                             employee.setPortOfDestination(getStringValue(row.getCell(22)));
                             employee.setNationality(getStringValue(row.getCell(23)));
                             employee.setCompanyEmailAddress(getStringValue(row.getCell(24)));
-                            employee.setContactNumber(getStringValue(row.getCell(25)));
-                            employee.setGrade(getStringValue(row.getCell(26)));
+                            employee.setContactNumber(dataFormatter.formatCellValue(row.getCell(25)));
+                            employee.setGrade(getStringValue(row.getCell(26))); 
                             employee.setCreatedBy(user);
                             employee.setCreatedAt(LocalDate.now());
                             employee.setDeleteStatus(Boolean.TRUE);
