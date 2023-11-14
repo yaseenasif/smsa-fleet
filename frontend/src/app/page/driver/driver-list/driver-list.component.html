@@ -29,7 +29,7 @@
               <ng-template pTemplate="header">
                 <tr>
                   
-                  <th class="text-center">Emp ID</th>
+                  <th class="text-center">Emp Number</th>
                   <th class="text-center">Emp Name</th>
                   <th class="text-center">Job Title</th>
                   <th class="text-center">Date of Joining</th>
@@ -48,7 +48,7 @@
               </ng-template>
               <ng-template pTemplate="body" let-driver>
                 <tr>
-                  <td class="text-center">{{ driver.id }}</td>
+                  <td class="text-center">{{ driver.empId.employeeNumber }}</td>
                   <td class="text-center">{{ driver.empName }}</td>
                   <td class="text-center">{{ driver.title }}</td>
                   <td class="text-center">{{ driver.joiningDate }}</td>

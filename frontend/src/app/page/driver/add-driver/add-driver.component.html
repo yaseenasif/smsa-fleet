@@ -12,16 +12,16 @@
         <div class="body-card">
           <div class="card">
             <h1 class="mb-4 h-color">Add Driver</h1>
-            <form #employeeForm="ngForm" (ngSubmit)="onSubmit()">
+            <form #driverForm="ngForm" (ngSubmit)="onSubmit()">
             <div class="grid">
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2 form-hook">
-                  <label htmlFor="name">Select Employee ID</label>
+                  <label htmlFor="name">Select Employee Number</label>
                   <p-dropdown
                     class="w-full"
                     [(ngModel)]="selectedEmployee"
                     [options]="employee"
-                    name="employeeId"
+                    name="employeeNumber"
                     #employeeId="ngModel"
                     [required]="true"
                     optionLabel="id" 
@@ -29,7 +29,7 @@
                     filterBy="id"
                     [showClear]="true"
                     (onChange)="getEmployeeData()"
-                    placeholder="Select Employee ID
+                    placeholder="Select Employee Number
                   "
                   >
                     <ng-template pTemplate="selectedItem">
@@ -37,12 +37,12 @@
                         class="flex align-items-center gap-2"
                         *ngIf="selectedEmployee"
                       >
-                        <div>{{ selectedEmployee.id }}</div>
+                        <div>{{ selectedEmployee.employeeNumber }}</div>
                       </div>
                     </ng-template>
                     <ng-template let-employee pTemplate="item">
                       <div class="flex align-items-center gap-2">
-                        <div>{{ employee.id }}</div>
+                        <div>{{ employee.employeeNumber }}</div>
                       </div>
                     </ng-template>
                   </p-dropdown>
@@ -82,7 +82,7 @@
                   <small 
                       id="name-help" class="color-red" 
                       *ngIf="title.invalid && (title.dirty || title.touched)"
-                  > Employee Name is required
+                  > Job Title is required
                   </small>
                 </div>
               </div>
@@ -115,7 +115,7 @@
                   <small 
                       id="name-help" class="color-red" 
                       *ngIf="department.invalid && (department.dirty || department.touched)"
-                  > Employee Name is required
+                  > Department is required
                   </small>
                 </div>
               </div>
@@ -134,7 +134,7 @@
                   <small 
                       id="name-help" class="color-red" 
                       *ngIf="section.invalid && (section.dirty || section.touched)"
-                  > Employee Name is required
+                  > Section is required
                   </small>
                 </div>
               </div>
@@ -153,7 +153,7 @@
                   <small 
                       id="name-help" class="color-red" 
                       *ngIf="region.invalid && (region.dirty || region.touched)"
-                  > Employee Name is required
+                  > Region is required
                   </small>
                 </div>
               </div>
@@ -172,7 +172,7 @@
                   <small 
                       id="name-help" class="color-red" 
                       *ngIf="city.invalid && (city.dirty || city.touched)"
-                  > Employee Name is required
+                  > City is required
                   </small>
                 </div>
               </div>
@@ -191,7 +191,7 @@
                   <small 
                       id="name-help" class="color-red" 
                       *ngIf="nationality.invalid && (nationality.dirty || nationality.touched)"
-                  > Employee Name is required
+                  > Nationality is required
                   </small>
                 </div>
               </div>
@@ -210,7 +210,7 @@
                   <small 
                       id="name-help" class="color-red" 
                       *ngIf="contactNumber.invalid && (contactNumber.dirty || contactNumber.touched)"
-                  > Employee Name is required
+                  > Contact Number is required
                   </small>
                 </div>
               </div>
@@ -229,7 +229,7 @@
                   <small 
                       id="name-help" class="color-red" 
                       *ngIf="emailAddress.invalid && (emailAddress.dirty || emailAddress.touched)"
-                  > Employee Name is required
+                  > Grade is required
                   </small>
                 </div>
               </div>
@@ -248,7 +248,7 @@
                   <small 
                       id="name-help" class="color-red" 
                       *ngIf="grade.invalid && (grade.dirty || grade.touched)"
-                  > Employee Name is required
+                  > Grade is required
                   </small>
                 </div>
               </div>
@@ -263,9 +263,10 @@
                     [(ngModel)]="driver.licenseNumber"
                     #licenseNumber="ngModel"
                     required
+                    [ngClass]="{'error': licenseNumber.invalid && (licenseNumber.dirty || licenseNumber.touched)}"
                   />
                   <small 
-                      id="name-help" class="color-red" 
+                      id="name-help" class="color-red error" 
                       *ngIf="licenseNumber.invalid && (licenseNumber.dirty || licenseNumber.touched)"
                   > License Number is required
                   </small>
@@ -282,9 +283,10 @@
                     [(ngModel)]="driver.vehicleBudget"
                     #vehicleBudget="ngModel"
                     required
+                    [ngClass]="{'error': vehicleBudget.invalid && (vehicleBudget.dirty || vehicleBudget.touched)}"
                   />
                   <small 
-                      id="name-help" class="color-red" 
+                      id="name-help" class="color-red error" 
                       *ngIf="vehicleBudget.invalid && (vehicleBudget.dirty || vehicleBudget.touched)"
                   > Vehicle Budget is required
                   </small>
@@ -340,7 +342,7 @@
                 styleClass="p-button-outlined"
               >
               </p-button>
-              <p-button label="Save" type="submit" class="bg-b-color ml"> </p-button>
+              <p-button label="Save" type="submit" class="bg-b-color ml" [disabled]="driverForm.invalid || driverForm.invalid === null"> </p-button>
             </div>
           </form>
           </div>

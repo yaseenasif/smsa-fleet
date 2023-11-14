@@ -60,7 +60,7 @@ public class EmployeeService {
             Optional<Employee> employee = employeeRepository.findByEmployeeNumber(employeeDto.getEmployeeNumber());
 
             if (employee.isPresent()){
-                throw new RuntimeException("Employee already exist in the record : "+employeeDto.getEmployeeNumber());
+                throw new RuntimeException("Employee Number already exist in the record : "+employeeDto.getEmployeeNumber());
             }
 
             Employee employee1 = toEntity(employeeDto);

@@ -99,11 +99,14 @@ export class AddDriverComponent implements OnInit {
     
   onSubmit() {
     this.driverService.addDriver(this.driver).subscribe((res) => {
-      this.messageService.add({ severity: 'Add Successfully', summary: 'Add Successfully', detail: 'Message Content' });  
+      this.messageService.add({ severity: 'success', summary: 'Add Successfully', detail: 'Message Content' });  
 
       setTimeout(() => {
         this.router.navigate(['/driver'])
       },5000)
+    },
+    (error) => {
+      this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
     })
   }
   

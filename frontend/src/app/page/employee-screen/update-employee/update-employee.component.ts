@@ -50,16 +50,18 @@ export class UpdateEmployeeComponent {
   employeeId: Number | undefined;
 
   dummyData: any = [
-    { id: 1, name: 'Software Developer' },
-    { id: 2, name: 'Data Analyst' },
-    { id: 3, name: 'Project Manager' },
-    { id: 4, name: 'Web Designer' },
-    { id: 5, name: 'Grade A' },
-    { id: 6, name: 'North America' },
-    { id: 7, name: 'South Asia' },
-    { id: 8, name: 'New York City' },
-    { id: 9, name: 'Pakistan' },
-    { id: 10, name: 'Quality Assurance Tester' }
+    // { id: 1, department: 'Software Developer' },
+    // { id: 2, name: 'Data Analyst' },
+    // { id: 3, name: 'Project Manager' },
+    // { id: 4, name: 'Web Designer' },
+    // { id: 5, name: 'Grade A' },
+    // { id: 6, name: 'North America' },
+    // { id: 7, name: 'South Asia' },
+    // { id: 8, name: 'New York City' },
+    // { id: 9, name: 'Pakistan' },
+    // { id: 10, name: 'Quality Assurance Tester' },
+    // { id: 11, name: 'National Manager - Hub  Linehaul' }
+    { id: '21', name: 'STN' }
   ]
 
   constructor(private employeeService: EmployeeService,

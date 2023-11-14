@@ -99,14 +99,24 @@ export class AddEmployeeComponent implements OnInit{
   }
 
   onSubmit() {
+   
+    console.log('Form submitted:', this.employee);
     
-    this.employeeService.addEmployee(this.employee).subscribe((res) => {
-      this.messageService.add({ severity: 'Add Successfully', summary: 'Add Successfully', detail: 'Message Content' });  
 
+    this.employeeService.addEmployee(this.employee).subscribe((res) => {
+      this.messageService.add({ severity: 'success', summary: 'Employee Added Successfully' });  
+
+  
       setTimeout(() => {
         this.router.navigate(['/employee'])
       },5000)
       
+    },
+    (error) => {
+      console.error('Error while saving the file:', error);
+
+      this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
+      // Handle error
     }) 
       
     }
