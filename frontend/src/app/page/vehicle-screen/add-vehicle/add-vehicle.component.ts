@@ -42,7 +42,10 @@ export class AddVehicleComponent implements OnInit{
   dummyData: any = [
     { id: 1, locationName: 123 },
     { id: 2, years: 2022 },
-    { id: 3, locationName: 123 }
+    { id: 3, locationName: 123 },
+    {id: 4, vendor: 'Hanco'},
+    {id: 5, vendor: 'Al jazirah'},
+    {id: 6, vendor: 'Best'}
   ]
 
   selectedEmployee!:Vehicle;

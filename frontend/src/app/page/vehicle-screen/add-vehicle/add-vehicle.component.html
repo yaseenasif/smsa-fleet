@@ -216,20 +216,12 @@
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">Registration Expiry</label>
-                    <input
-                      pInputText
-                      id="name"
-                      aria-describedby="name-help"
-                      name="registrationExpiry"
-                      [(ngModel)]="vehicle.registrationExpiry"
-                      #registrationExpiry="ngModel"
-                      required
-                    />
-                    <small 
-                        id="name-help" class="color-red" 
-                        *ngIf="registrationExpiry.invalid && (registrationExpiry.dirty || registrationExpiry.touched)"
-                    > Registration Expiry is required
-                    </small>
+                    <p-calendar #registrationExpiry
+                    name="registrationExpiry"
+                    [required]="true"
+                    [(ngModel)]="vehicle.registrationExpiry" [showIcon]="true"
+                    [style]="{'width': '100%'}"
+                    ></p-calendar>
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
@@ -252,41 +244,53 @@
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
-                  <div class="flex flex-column gap-2">
+                  <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Vendor</label>
-                    <input
-                      pInputText
-                      id="name"
-                      aria-describedby="name-help"
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="vehicle.vendor"
+                      [options]="dummyData"
                       name="vendor"
-                      [(ngModel)]="vehicle.vendor.id"
                       #vendor="ngModel"
-                      required
-                    />
+                      [required]="true"
+                      optionLabel="vendor"
+                      optionValue="vendor"
+                      [filter]="true"
+                      filterBy="vendor"
+                      [showClear]="true"
+                      placeholder="Select Vendor
+                    "
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="vehicle"
+                        >
+                          <div>{{ vehicle.vendor }}</div>
+                        </div>
+                      </ng-template>
+                      <ng-template let-dummyData pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                          <div>{{ dummyData.vendor }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
                     <small 
                         id="name-help" class="color-red" 
                         *ngIf="vendor.invalid && (vendor.dirty || vendor.touched)"
-                    > Vendor Expiry is required
+                    > Vendor is required
                     </small>
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">Insurance Expiry</label>
-                    <input
-                      pInputText
-                      id="name"
-                      aria-describedby="name-help"
-                      name="insuranceExpiry"
-                      [(ngModel)]="vehicle.insuranceExpiry"
-                      #insuranceExpiry="ngModel"
-                      required
-                    />
-                    <small 
-                        id="name-help" class="color-red" 
-                        *ngIf="insuranceExpiry.invalid && (insuranceExpiry.dirty || insuranceExpiry.touched)"
-                    > Insurance Expiry Expiry is required
-                    </small>
+                    <p-calendar #insuranceExpiry
+                    name="insuranceExpiry"
+                    [required]="true"
+                    [(ngModel)]="vehicle.insuranceExpiry" [showIcon]="true"
+                    [style]="{'width': '100%'}"
+                    ></p-calendar>
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
@@ -304,46 +308,30 @@
                     <small 
                         id="name-help" class="color-red" 
                         *ngIf="leaseCost.invalid && (leaseCost.dirty || leaseCost.touched)"
-                    > Lease Cost Expiry Expiry is required
+                    > Lease Cost is required
                     </small>
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">Lease Start Date</label>
-                    <input
-                      pInputText
-                      id="name"
-                      aria-describedby="name-help"
-                      name="leaseStartDate"
-                      [(ngModel)]="vehicle.leaseStartDate"
-                      #leaseStartDate="ngModel"
-                      required
-                    />
-                    <small 
-                        id="name-help" class="color-red" 
-                        *ngIf="leaseStartDate.invalid && (leaseStartDate.dirty || leaseStartDate.touched)"
-                    > Lease Start Date is required
-                    </small>
+                    <p-calendar #leaseStartDate
+                    name="leaseStartDate"
+                    [required]="true"
+                    [(ngModel)]="vehicle.leaseStartDate" [showIcon]="true"
+                    [style]="{'width': '100%'}"
+                    ></p-calendar>
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">Lease Expiry Date</label>
-                    <input
-                      pInputText
-                      id="name"
-                      aria-describedby="name-help"
-                      name="leaseExpiryDate"
-                      [(ngModel)]="vehicle.leaseExpiryDate"
-                      #leaseExpiryDate="ngModel"
-                      required
-                    />
-                    <small 
-                        id="name-help" class="color-red" 
-                        *ngIf="leaseExpiryDate.invalid && (leaseExpiryDate.dirty || leaseExpiryDate.touched)"
-                    > Lease Expiry Date Start Date is required
-                    </small>
+                    <p-calendar #leaseExpiryDate
+                    name="leaseExpiryDate"
+                    [required]="true"
+                    [(ngModel)]="vehicle.leaseExpiryDate" [showIcon]="true"
+                    [style]="{'width': '100%'}"
+                    ></p-calendar>
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
@@ -361,7 +349,7 @@
                     <small 
                         id="name-help" class="color-red" 
                         *ngIf="usageType.invalid && (usageType.dirty || usageType.touched)"
-                    > Lease Expiry Date Start Date is required
+                    > Usage Type is required
                     </small>
                   </div>
                 </div>
@@ -453,7 +441,7 @@
                   styleClass="p-button-outlined"
                 >
                 </p-button>
-                <p-button label="Save" type="submit" class="bg-b-color ml"> </p-button>
+                <p-button label="Save" type="submit" class="bg-b-color ml" [disabled]="vehicleForm.invalid || vehicleForm.invalid === null"> </p-button>
               </div>
             </form>
             </div>
