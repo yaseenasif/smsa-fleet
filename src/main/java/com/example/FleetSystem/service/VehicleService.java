@@ -441,4 +441,7 @@ public class VehicleService {
         return modelMapper.map(vehicleDto , Vehicle.class);
     }
 
+    public List<VehicleDto> getAllNotAssignedVehicle() {
+        return toDtoList(vehicleRepository.getNotAssignedVehicle());
+    }
 }

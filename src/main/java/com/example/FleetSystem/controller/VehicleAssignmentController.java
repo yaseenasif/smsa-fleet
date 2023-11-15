@@ -1,6 +1,8 @@
 package com.example.FleetSystem.controller;
 
 import com.example.FleetSystem.dto.VehicleAssignmentDto;
+import com.example.FleetSystem.dto.VehicleDto;
+import com.example.FleetSystem.model.Vehicle;
 import com.example.FleetSystem.service.VehicleAssignmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

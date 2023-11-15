@@ -4,6 +4,7 @@ import com.example.FleetSystem.model.Employee;
 import com.example.FleetSystem.model.Vehicle;
 import lombok.*;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 @Getter
@@ -21,9 +22,9 @@ public class VehicleAssignmentDto {
     private String assignToEmpName;
     private String model;
     private String year;
-    private LocalDate leaseExpiry;
+    private Date leaseExpiry;
     private Integer leaseCost;
     private String attachments;
     private boolean status;
-    private Vehicle vehicleId;
+    private Vehicle vehicle;
 }

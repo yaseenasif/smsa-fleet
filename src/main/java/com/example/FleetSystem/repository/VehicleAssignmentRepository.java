@@ -1,5 +1,6 @@
 package com.example.FleetSystem.repository;
 
+import com.example.FleetSystem.model.Vehicle;
 import com.example.FleetSystem.model.VehicleAssignment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,4 +15,5 @@ public interface VehicleAssignmentRepository extends JpaRepository<VehicleAssign
     List<VehicleAssignment> getActiveVehicleAssignment();
 
     Optional<VehicleAssignment> findByPlateNumber(String plateNumber);
+
 }

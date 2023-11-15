@@ -43,23 +43,13 @@ public class VehicleAssignmentService {
             String username = ((UserDetails) principle).getUsername();
             User user = userRepository.findByEmail(username);
 
-            Optional<Vehicle> vehicle = vehicleRepository.findByPlateNumber(vehicleAssignmentDto.getVehicleId().getPlateNumber());
-
-            VehicleAssignment vehicleAssignment;
+            Optional<Vehicle> vehicle = vehicleRepository.findByPlateNumber(vehicleAssignmentDto.getVehicle().getPlateNumber());
+            Optional<Employee> employee = employeeRepository.findById(vehicleAssignmentDto.getAssignToEmpId().getId());
 
             if(vehicle.isPresent()) {
-                Optional<Employee> employee = employeeRepository.findById(vehicleAssignmentDto.getAssignToEmpId().getId());
-
                 if(employee.isPresent()) {
-                    Optional<VehicleAssignment> existingAssignment = vehicleAssignmentRepository.findByPlateNumber(vehicle.get().getPlateNumber());
 
-                    if(existingAssignment.isPresent()) {
-                        vehicleAssignment = existingAssignment.get();
-                        vehicleAssignment.setAssignToEmpId(employee.get());
-                        vehicleAssignment.setAssignToEmpName(employee.get().getEmpName());
-                    }
-                    else {
-                        vehicleAssignment = toEntity(vehicleAssignmentDto);
+                        VehicleAssignment vehicleAssignment = toEntity(vehicleAssignmentDto);
                         vehicleAssignment.setVehicle(vehicle.get());
                         vehicleAssignment.setYear(vehicle.get().getYear());
                         vehicleAssignment.setPlateNumber(vehicle.get().getPlateNumber());
@@ -70,13 +60,13 @@ public class VehicleAssignmentService {
                         vehicleAssignment.setLeaseExpiry(vehicle.get().getLeaseExpiryDate());
                         vehicleAssignment.setAssignToEmpId(employee.get());
                         vehicleAssignment.setAssignToEmpName(employee.get().getEmpName());
-                    }
-                    vehicleAssignment.setCreatedAt(LocalDate.now());
-                    vehicleAssignment.setStatus(Boolean.TRUE);
-                    vehicleAssignment.setCreatedBy(user);
 
-                    VehicleAssignment save = vehicleAssignmentRepository.save(vehicleAssignment);
-                    return toDto(save);
+                        vehicleAssignment.setCreatedAt(LocalDate.now());
+                        vehicleAssignment.setStatus(Boolean.TRUE);
+                        vehicleAssignment.setCreatedBy(user);
+
+                        VehicleAssignment savedAssignment = vehicleAssignmentRepository.save(vehicleAssignment);
+                        return toDto(savedAssignment);
                 }
                 else {
                     throw new RuntimeException("Employee Not Found");
@@ -122,12 +112,25 @@ public class VehicleAssignmentService {
                 String username = ((UserDetails) principle).getUsername();
                 User user = userRepository.findByEmail(username);
 
+                Optional<Employee> employee = employeeRepository.findById(vehicleAssignmentDto.getAssignToEmpId().getId());
+                if (employee.isPresent()) {
+                    vehicleAssignment.get().setAssignToEmpId(employee.get());
+                    vehicleAssignment.get().setAssignToEmpName(employee.get().getEmpName());
+
+                    vehicleAssignment.get().setCreatedBy(user);
+                    vehicleAssignment.get().setCreatedAt(LocalDate.now());
+
+                    VehicleAssignment updatedVehicleAssignment = vehicleAssignmentRepository.save(vehicleAssignment.get());
+
+                    return toDto(updatedVehicleAssignment);
+                }
+                throw new RuntimeException("EMPLOYEE NOT FOUND");
             }
+
         }
 
-
-        return null;
-    }
+        throw new RuntimeException(String.format("Vehicle Assignment not found for id => %id", id));
+        }
 
     public VehicleAssignmentDto makeVehicleAssignmentActive(Long id) {
         Optional<VehicleAssignment> optionalVehicleAssignment = vehicleAssignmentRepository.findById(id);
@@ -162,5 +165,6 @@ public class VehicleAssignmentService {
     private VehicleAssignment toEntity(VehicleAssignmentDto vehicleAssignmentDto){
         return modelMapper.map(vehicleAssignmentDto , VehicleAssignment.class);
     }
+
 
 }
