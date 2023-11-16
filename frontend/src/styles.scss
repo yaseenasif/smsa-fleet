@@ -116,3 +116,10 @@ p-fileupload>.p-fileupload>.p-fileupload-buttonbar>.p-element>.p-button{
 p-fileupload>.p-fileupload>.p-fileupload-content>.p-fileupload-files>.ng-star-inserted>.p-fileupload-row>div>.p-button{
     background-color: $primary-color;
 }
+.overflow-none{
+overflow: none;
+}
+
+.dialog-hook>.p-dialog-mask>.p-dialog>.p-dialog-content{
+    overflow: hidden!important;  
+}

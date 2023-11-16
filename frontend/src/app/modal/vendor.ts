@@ -1,4 +1,7 @@
 export interface Vendor {
-    id: Number | null | undefined,
-    employeeName: String | null | undefined
+      id:number|null|undefined,
+      vendorName:string|null|undefined,
+      officeLocation:string|null|undefined,
+      attachments:string|null|undefined,
+      status:boolean|null|undefined,
 }

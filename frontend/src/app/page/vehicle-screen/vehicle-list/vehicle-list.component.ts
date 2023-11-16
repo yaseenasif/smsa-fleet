@@ -15,13 +15,18 @@ export class VehicleListComponent implements OnInit{
   fileUpload!: FileUpload;
 
   fileSelected: boolean = false;
+  visible: boolean = false;
+
+
   
   constructor(
     private vehicleService: VehicleService,
     private messageService: MessageService
     ) { }
   
-  vehicles!: Vehicle[];
+  vehicles!: Array<Vehicle>;
+  selectedVehicle!: Vehicle;
+  value!:string
 
   size: number = 10240000; // Maximum file size (e.g., 10MB)
 
@@ -52,6 +57,10 @@ export class VehicleListComponent implements OnInit{
 
   onFileSelect() {
     this.fileSelected = true;
+  }
+
+  showDialog() {
+    this.visible = true;
   }
 
   onCancel() {
@@ -98,8 +107,11 @@ export class VehicleListComponent implements OnInit{
   getAllVehicles() {
 
     this.vehicleService.getAllVehicles().subscribe((res: Vehicle[]) => {
+    
       
-      this.vehicles = res;      
+      this.vehicles=res;
+   
+         
       
     })
 
@@ -112,5 +124,6 @@ export class VehicleListComponent implements OnInit{
       
     })
   }
-
+  
+  
 }

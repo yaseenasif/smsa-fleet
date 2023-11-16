@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Vehicle } from 'src/app/modal/vehicle';
+import { Vendor } from 'src/app/modal/vendor';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -40,4 +41,7 @@ export class VehicleService {
     return this.http.post<any>(`${this.url}/add-bulk-vehicle`, formData);
   }
   
+  getAllVendor():Observable<Vendor[]>{
+    return this.http.get<Vendor[]>(`${this.url}/get-active-vendors/`)
+  }
 }

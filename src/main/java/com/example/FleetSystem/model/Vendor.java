@@ -21,5 +21,6 @@ public class Vendor {
     private String vendorName;
     private String officeLocation;
     private String attachments;
+    private boolean status;
 
 }

@@ -1,3 +1,5 @@
+import { Vendor } from "./vendor"
+
 export interface Vehicle {
     id: Number | null | undefined,
     processOrderNumber: Number | null | undefined
@@ -11,11 +13,13 @@ export interface Vehicle {
     power: String | null | undefined
     registrationExpiry: String | null | undefined
     fuelType: String | null | undefined
-    vendor: {
+     vendor:
+     {
         id: Number| null | undefined
         vendorName: String| null | undefined
         officeLocation: String | null | undefined
         attachments: String | null | undefined
+       
     }
     insuranceExpiry: String | null | undefined
     leaseCost: Number | null | undefined

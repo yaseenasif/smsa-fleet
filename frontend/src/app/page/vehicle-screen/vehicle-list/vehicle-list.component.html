@@ -80,7 +80,7 @@
                     <td class="text-center">{{ vehicles.power }}</td>
                     <td class="text-center">{{ vehicles.registrationExpiry }}</td>
                     <td class="text-center">{{ vehicles.fuelType }}</td>
-                    <td class="text-center">{{ vehicles.vendor }}</td>
+                    <td class="text-center">{{ vehicles.vendor.vendorName }}</td>
                     <td class="text-center">{{ vehicles.insuranceExpiry }}</td>
                     <td class="text-center">{{ vehicles.leaseCost }}</td>
                     <td class="text-center">{{ vehicles.leaseStartDate }}</td>
@@ -97,6 +97,9 @@
                         <p-button icon="bi bi-paperclip" class='ml mr' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
                       
                         </p-button>
+                        <p-button (click)="showDialog()"  icon="bi bi-arrow-repeat" class='ml mr' styleClass="p-button-rounded p-button-info p-button-text p-button-raised">
+                      
+                        </p-button>
                     </td>
                   </tr>
                 </ng-template>
@@ -108,3 +111,61 @@
     </div>
   </div>
   
+
+
+  <p-dialog class="dialog-hook" header="Header" [blockScroll]="true" [(visible)]="visible" [style]="{ width: '50vw',height: '80vh' }">
+    <ng-template pTemplate="header">
+        <span class="text-xl font-bold">Replacement Application</span>
+    </ng-template>
+    <div class="grid overflow-none">
+    <div class="col-6">
+      <div class="flex flex-column gap-2 form-hook">
+        <label htmlFor="name">Plate Number</label>
+        <p-dropdown
+          class="w-full"
+          [(ngModel)]="selectedVehicle"
+          [options]="vehicles"
+          name="plateNumber"
+          #plateNumber="ngModel"
+          [required]="true"
+          optionLabel="plateNumber"
+        
+          [filter]="true"
+          filterBy="plateNumber"
+          [showClear]="true"
+          placeholder="Select Plate Number
+        "
+        >
+          <ng-template pTemplate="selectedItem">
+            <div
+              class="flex align-items-center gap-2"
+              *ngIf="selectedVehicle"
+            >
+              <div>{{ selectedVehicle.plateNumber }}</div>
+            </div>
+          </ng-template>
+          <ng-template let-vehicles pTemplate="item">
+            <div class="flex align-items-center gap-2">
+              <div>{{ vehicles.plateNumber }}</div>
+            </div>
+          </ng-template>
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="col-6">
+      
+<div class="flex flex-column gap-2 form-hook">
+  <label htmlFor="name">Reason</label>
+  <textarea rows="5" cols="30" pInputTextarea [(ngModel)]="value"></textarea>
+</div>
+    </div>
+   </div>
+    <ng-template pTemplate="footer">
+      <p-button label="Cancel" (click)="visible=false" class="bg-o-color mr" styleClass="p-button-outlined">
+      </p-button>
+      <p-button label="Submit" (click)="visible=false" class="bg-b-color">
+          
+      </p-button>
+       
+    </ng-template>
+</p-dialog>
