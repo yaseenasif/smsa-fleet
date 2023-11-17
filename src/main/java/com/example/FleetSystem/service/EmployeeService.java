@@ -395,4 +395,7 @@ public class EmployeeService {
         return modelMapper.map(employeeDto , Employee.class);
     }
 
+    public List<EmployeeDto> getAllUnAssignedEmployee() {
+        return toDtoList(employeeRepository.getUnAssignedEmployee());
+    }
 }

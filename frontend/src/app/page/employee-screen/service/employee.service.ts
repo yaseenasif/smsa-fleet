@@ -41,4 +41,8 @@ export class EmployeeService {
     return this.http.post<any>(`${this.url}/add-bulk-employee`, formData);
   }
 
+  getAllUnAssignedEmployees(): Observable<Employee[]> {
+    return this.http.get<Employee[]>(this.url.concat('/get-all-unassigned-employee'));
+  }
+
 }

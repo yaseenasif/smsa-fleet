@@ -89,7 +89,7 @@
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">year</label>
-                    <p-dropdown
+                    <!-- <p-dropdown
                       class="w-full"
                       [(ngModel)]="vehicle.year"
                       [options]="dummyData"
@@ -115,7 +115,16 @@
                           <div>{{ dummyData.years }}</div>
                         </div>
                       </ng-template>
-                    </p-dropdown>
+                    </p-dropdown> -->
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="year"
+                      [(ngModel)]="vehicle.year"
+                      #year="ngModel"
+                      required
+                    />
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">

@@ -15,4 +15,10 @@ public interface EmployeeRepository extends JpaRepository<Employee,Long> {
     List<Employee> getActiveEmployees();
 
     Optional<Employee> findByEmployeeNumber(Long employeeNumber);
+
+    @Query("SELECT e\n" +
+            "FROM Employee e\n" +
+            "LEFT OUTER JOIN VehicleAssignment va ON va.assignToEmpId = e.id\n" +
+            "WHERE va.assignToEmpId IS NULL AND e.deleteStatus = true")
+    List<Employee> getUnAssignedEmployee();
 }

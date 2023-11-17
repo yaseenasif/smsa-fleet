@@ -62,4 +62,10 @@ public class EmployeeController {
         return ResponseEntity.ok(new ResponseMessage(employeeService.addBulkEmployee(file)));
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/get-all-unassigned-employee")
+    public ResponseEntity<List<EmployeeDto>> getAllUnAssignedEmployee(){
+        return ResponseEntity.ok(employeeService.getAllUnAssignedEmployee());
+    }
+
 }

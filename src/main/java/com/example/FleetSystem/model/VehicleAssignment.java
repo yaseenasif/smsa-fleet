@@ -10,6 +10,8 @@ import javax.persistence.*;
 import java.sql.Date;
 import java.time.LocalDate;
 
+import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -24,37 +26,30 @@ public class VehicleAssignment{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String design;
-    private String make;
     private String assignToEmpName;
-    private String model;
-    private String year;
-    private Date leaseExpiry;
-    private Integer leaseCost;
-    private String plateNumber;
     private String attachments;
-    private boolean status;
+//    private boolean status;
     private LocalDate createdAt;
     private LocalDate updatedAt;
 
+    @Audited(targetAuditMode = NOT_AUDITED)
     @ManyToOne
     @JoinColumn(name = "assign_to_emp_id")
-    @NotAudited
     private Employee assignToEmpId;
 
+    @Audited(targetAuditMode = NOT_AUDITED)
     @ManyToOne
     @JoinColumn(name = "vehicle_id")
-    @NotAudited
     private Vehicle vehicle;
 
+    @Audited(targetAuditMode = NOT_AUDITED)
     @ManyToOne
     @JoinColumn(name = "created_by")
-    @NotAudited
     private User createdBy;
 
+    @Audited(targetAuditMode = NOT_AUDITED)
     @ManyToOne
     @JoinColumn(name = "updated_by")
-    @NotAudited
     private User updatedBy;
 
 }

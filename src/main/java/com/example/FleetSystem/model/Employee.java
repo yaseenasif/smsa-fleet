@@ -8,6 +8,8 @@ import javax.persistence.*;
 import java.sql.Date;
 import java.time.LocalDate;
 
+import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
+
 @Getter
 @Setter
 @AllArgsConstructor

@@ -105,7 +105,7 @@
                     <p-dropdown
                       class="w-full"
                       [(ngModel)]="employee.department"
-                      [options]="dummyData"
+                      [options]="dummyDepartment"
                       name="department"
                       #department="ngModel"
                       [required]="true"
@@ -125,9 +125,9 @@
                           <div>{{ employee.department }}</div>
                         </div>
                       </ng-template>
-                      <ng-template let-dummyData pTemplate="item">
+                      <ng-template let-dummyDepartment pTemplate="item">
                         <div class="flex align-items-center gap-2">
-                          <div>{{ dummyData.name }}</div>
+                          <div>{{ dummyDepartment.name }}</div>
                         </div>
                       </ng-template>
                     </p-dropdown>
@@ -139,7 +139,7 @@
                       <p-dropdown
                         class="w-full"
                         [(ngModel)]="employee.section"
-                        [options]="dummyData"
+                        [options]="dummySection"
                         name="section"
                         #section="ngModel"
                         [required]="true"
@@ -159,9 +159,9 @@
                             <div>{{ employee.section }}</div>
                           </div>
                         </ng-template>
-                        <ng-template let-dummyData pTemplate="item">
+                        <ng-template let-dummySection pTemplate="item">
                           <div class="flex align-items-center gap-2">
-                            <div>{{ dummyData.name }}</div>
+                            <div>{{ dummySection.name }}</div>
                           </div>
                         </ng-template>
                       </p-dropdown>
@@ -207,7 +207,7 @@
                       <p-dropdown
                         class="w-full"
                         [(ngModel)]="employee.city"
-                        [options]="dummyData"
+                        [options]="dummyCity"
                         name="city"
                         #city="ngModel"
                         [required]="true"
@@ -227,9 +227,9 @@
                             <div>{{ employee.city }}</div>
                           </div>
                         </ng-template>
-                        <ng-template let-dummyData pTemplate="item">
+                        <ng-template let-dummyCity pTemplate="item">
                           <div class="flex align-items-center gap-2">
-                            <div>{{ dummyData.name }}</div>
+                            <div>{{ dummyCity.name }}</div>
                           </div>
                         </ng-template>
                       </p-dropdown>

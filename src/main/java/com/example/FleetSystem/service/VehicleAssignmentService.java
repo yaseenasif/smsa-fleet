@@ -1,5 +1,6 @@
 package com.example.FleetSystem.service;
 import com.example.FleetSystem.dto.VehicleAssignmentDto;
+import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.model.Employee;
 import com.example.FleetSystem.model.User;
 import com.example.FleetSystem.model.Vehicle;
@@ -51,18 +52,10 @@ public class VehicleAssignmentService {
 
                         VehicleAssignment vehicleAssignment = toEntity(vehicleAssignmentDto);
                         vehicleAssignment.setVehicle(vehicle.get());
-                        vehicleAssignment.setYear(vehicle.get().getYear());
-                        vehicleAssignment.setPlateNumber(vehicle.get().getPlateNumber());
-                        vehicleAssignment.setLeaseCost(vehicle.get().getLeaseCost());
-                        vehicleAssignment.setModel(vehicle.get().getModel());
-                        vehicleAssignment.setMake(vehicle.get().getMake());
-                        vehicleAssignment.setDesign(vehicle.get().getDesign());
-                        vehicleAssignment.setLeaseExpiry(vehicle.get().getLeaseExpiryDate());
                         vehicleAssignment.setAssignToEmpId(employee.get());
                         vehicleAssignment.setAssignToEmpName(employee.get().getEmpName());
 
                         vehicleAssignment.setCreatedAt(LocalDate.now());
-                        vehicleAssignment.setStatus(Boolean.TRUE);
                         vehicleAssignment.setCreatedBy(user);
 
                         VehicleAssignment savedAssignment = vehicleAssignmentRepository.save(vehicleAssignment);
@@ -81,7 +74,7 @@ public class VehicleAssignmentService {
     }
 
     public List<VehicleAssignmentDto> getActiveVehicleAssignment() {
-        return toDtoList(vehicleAssignmentRepository.getActiveVehicleAssignment());
+        return toDtoList(vehicleAssignmentRepository.findAll());
     }
 
     public VehicleAssignmentDto getById(Long id) {
@@ -93,14 +86,13 @@ public class VehicleAssignmentService {
         throw new RuntimeException(String.format("Vehicle Not Found On this Id => %d", id));
     }
 
-    public VehicleAssignmentDto deleteVehicleAssignmentById(Long id) {
+    public void deleteVehicleAssignmentById(Long id) {
         Optional<VehicleAssignment> optionalVehicleAssignment = vehicleAssignmentRepository.findById(id);
-
         if(optionalVehicleAssignment.isPresent()) {
-            optionalVehicleAssignment.get().setStatus(Boolean.FALSE);
-            return toDto(vehicleAssignmentRepository.save(optionalVehicleAssignment.get()));
+//            optionalVehicleAssignment.get().setStatus(Boolean.FALSE);
+            vehicleAssignmentRepository.delete(optionalVehicleAssignment.get());
         }
-        throw new RuntimeException("Record does not exist");
+        else throw new RuntimeException("Record does not exist");
     }
 
     public VehicleAssignmentDto updateById(Long id, VehicleAssignmentDto vehicleAssignmentDto) {
@@ -117,8 +109,8 @@ public class VehicleAssignmentService {
                     vehicleAssignment.get().setAssignToEmpId(employee.get());
                     vehicleAssignment.get().setAssignToEmpName(employee.get().getEmpName());
 
-                    vehicleAssignment.get().setCreatedBy(user);
-                    vehicleAssignment.get().setCreatedAt(LocalDate.now());
+                    vehicleAssignment.get().setUpdatedBy(user);
+                    vehicleAssignment.get().setUpdatedAt(LocalDate.now());
 
                     VehicleAssignment updatedVehicleAssignment = vehicleAssignmentRepository.save(vehicleAssignment.get());
 
@@ -132,26 +124,31 @@ public class VehicleAssignmentService {
         throw new RuntimeException(String.format("Vehicle Assignment not found for id => %id", id));
         }
 
-    public VehicleAssignmentDto makeVehicleAssignmentActive(Long id) {
-        Optional<VehicleAssignment> optionalVehicleAssignment = vehicleAssignmentRepository.findById(id);
-
-        if(optionalVehicleAssignment.isPresent()) {
-            if(optionalVehicleAssignment.get().isStatus()) {
-                throw new RuntimeException("Record is already Active");
-            }
-            optionalVehicleAssignment.get().setStatus(Boolean.TRUE);
-            return toDto(vehicleAssignmentRepository.save(optionalVehicleAssignment.get()));
-        }
-        throw new RuntimeException(String.format("VehicleAssignment Not Found by this id => %d", id));
-    }
+//    public VehicleAssignmentDto makeVehicleAssignmentActive(Long id) {
+//        Optional<VehicleAssignment> optionalVehicleAssignment = vehicleAssignmentRepository.findById(id);
+//
+//        if(optionalVehicleAssignment.isPresent()) {
+//            if(optionalVehicleAssignment.get().isStatus()) {
+//                throw new RuntimeException("Record is already Active");
+//            }
+//            optionalVehicleAssignment.get().setStatus(Boolean.TRUE);
+//            return toDto(vehicleAssignmentRepository.save(optionalVehicleAssignment.get()));
+//        }
+//        throw new RuntimeException(String.format("VehicleAssignment Not Found by this id => %d", id));
+//    }
 
     public VehicleAssignmentDto getByPlateNumber(String plateNumber){
-        Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByPlateNumber(plateNumber);
+        Optional<Vehicle> vehicle = vehicleRepository.findByPlateNumber(plateNumber);
 
-        if (vehicleAssignment.isPresent()){
-            return toDto(vehicleAssignment.get());
+        if (vehicle.isPresent()) {
+            Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByVehicle(vehicle.get());
+
+            if (vehicleAssignment.isPresent()) {
+                return toDto(vehicleAssignment.get());
+            }
         }
-        else throw new RuntimeException(String.format("Record Not Found By the PlateNumber : %s",plateNumber));
+
+         throw new RuntimeException(String.format("Record Not Found By the PlateNumber : %s",plateNumber));
     }
 
     public List<VehicleAssignmentDto> toDtoList(List<VehicleAssignment> vehicleAssignments){

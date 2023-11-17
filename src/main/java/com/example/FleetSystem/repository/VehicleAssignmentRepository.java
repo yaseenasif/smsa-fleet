@@ -11,9 +11,9 @@ import java.util.Optional;
 
 @Repository
 public interface VehicleAssignmentRepository extends JpaRepository<VehicleAssignment, Long> {
-    @Query("SELECT v FROM VehicleAssignment v WHERE v.status = true")
-    List<VehicleAssignment> getActiveVehicleAssignment();
+//    @Query("SELECT v FROM VehicleAssignment v WHERE v.status = true")
+//    List<VehicleAssignment> getActiveVehicleAssignment();
 
-    Optional<VehicleAssignment> findByPlateNumber(String plateNumber);
+    Optional<VehicleAssignment> findByVehicle(Vehicle vehicle);
 
 }

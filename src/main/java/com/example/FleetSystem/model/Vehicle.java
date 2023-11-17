@@ -2,12 +2,15 @@ package com.example.FleetSystem.model;
 
 import lombok.*;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.hibernate.envers.RelationTargetAuditMode;
 
 import javax.persistence.*;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.UUID;
+
+import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 
 @Getter
 @Setter

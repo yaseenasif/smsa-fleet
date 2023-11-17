@@ -1,13 +1,22 @@
 import { Component } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
+import { VehicleAssignmentService } from '../vehicle-assignment.service';
+import { VehicleAssignment } from 'src/app/modal/vehicle-assignment';
 
 @Component({
   selector: 'app-assignment-list',
   templateUrl: './assignment-list.component.html',
-  styleUrls: ['./assignment-list.component.scss']
+  styleUrls: ['./assignment-list.component.scss'],
+  providers: [MessageService]
 })
 export class AssignmentListComponent {
-  constructor() { }
+  
+  vehicleAssignment !: VehicleAssignment[]
+  
+  constructor(private vehicleAssignmentService: VehicleAssignmentService,
+    private messageService: MessageService) { }
+  
+
   products:any=[{name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
   {name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
   {name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
@@ -23,6 +32,31 @@ export class AssignmentListComponent {
  
 
   ngOnInit() {
-      this.items = [{ label: 'Assignment'}];
+      this.items = [{ label: 'Vehicle Assignment'}];
+    
+      this.getAllVehicleAssignment();
+    }
+
+  getAllVehicleAssignment() {
+    this.vehicleAssignmentService.getAllVehicleAssignment().subscribe((res: VehicleAssignment[]) => {
+
+      this.vehicleAssignment = res
+      console.log(this.vehicleAssignment);
+      
+      
+    })
   }
+
+  deleteVehicleAssignment(id: Number) {
+
+    this.vehicleAssignmentService.deleteVehicleAssignment(id).subscribe((res) => {
+
+      this.messageService.add({ severity: 'Delete Successfully', summary: 'Delete Successfully', detail: 'Employee has been deleted' });  
+
+      this.getAllVehicleAssignment();
+      
+    })
+  
+}
+
 }

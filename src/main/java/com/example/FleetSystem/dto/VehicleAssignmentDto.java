@@ -16,15 +16,9 @@ import java.time.LocalDate;
 public class VehicleAssignmentDto {
 
     private Long id;
-    private String design;
-    private String make;
     private Employee assignToEmpId;
     private String assignToEmpName;
-    private String model;
-    private String year;
-    private Date leaseExpiry;
-    private Integer leaseCost;
     private String attachments;
-    private boolean status;
+//    private boolean status;
     private Vehicle vehicle;
 }
