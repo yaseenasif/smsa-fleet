@@ -23,12 +23,12 @@ public class GradeService {
 
     public GradeDto addGrade(GradeDto gradeDto){
         Grade grade = toEntity(gradeDto);
-        grade.setStatus(Boolean.FALSE);
+        grade.setStatus(Boolean.TRUE);
         return toDto(gradeRepository.save(grade));
     }
 
     public List<GradeDto> getActiveGrades(){
-        return gradeRepository.getActiveGrades();
+        return toDtoList(gradeRepository.getActiveGrades());
     }
 
     public GradeDto getById(Long id){

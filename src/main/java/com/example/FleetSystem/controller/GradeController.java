@@ -1,6 +1,7 @@
 package com.example.FleetSystem.controller;
 
 import com.example.FleetSystem.dto.GradeDto;
+import com.example.FleetSystem.model.Grade;
 import com.example.FleetSystem.service.GradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,13 +36,13 @@ public class GradeController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/update-grade/{id}")
+    @PatchMapping("/update-grade/{id}")
     public ResponseEntity<GradeDto> updateGradeById(@PathVariable Long id, @RequestBody GradeDto gradeDto){
         return ResponseEntity.ok(gradeService.updateGradeById(id,gradeDto));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/delete-grade/{id}")
+    @DeleteMapping("/delete-grade/{id}")
     public ResponseEntity<GradeDto> deleteGradeById(@PathVariable Long id){
         return ResponseEntity.ok(gradeService.deleteById(id));
     }

@@ -90,6 +90,9 @@ import { VendorListComponent } from './page/vendor-screen/vendor-list/vendor-lis
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { GradeListComponent } from './page/grade/grade-list/grade-list.component';
+import { AddGradeComponent } from './page/grade/add-grade/add-grade.component';
+import { EditGradeComponent } from './page/grade/edit-grade/edit-grade.component';
 
 @NgModule({
   declarations: [
@@ -175,8 +178,6 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     RadioButtonModule,
     ChartModule,
     NgxUiLoaderModule,
-    DialogModule,
-    InputTextareaModule,
     NgxUiLoaderHttpModule.forRoot({
       showForeground:true
     })
