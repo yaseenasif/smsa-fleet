@@ -152,7 +152,10 @@ import { EditGradeComponent } from './page/grade/edit-grade/edit-grade.component
     EmployeeListComponent,
     AddVendorComponent,
     EditVendorComponent,
-    VendorListComponent
+    VendorListComponent,
+    GradeListComponent,
+    AddGradeComponent,
+    EditGradeComponent
   ],
   imports: [
     BrowserModule,
@@ -178,6 +181,8 @@ import { EditGradeComponent } from './page/grade/edit-grade/edit-grade.component
     RadioButtonModule,
     ChartModule,
     NgxUiLoaderModule,
+    DialogModule,
+    InputTextareaModule,
     NgxUiLoaderHttpModule.forRoot({
       showForeground:true
     })
