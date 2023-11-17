@@ -88,6 +88,11 @@ import { AddVendorComponent } from './page/vendor-screen/add-vendor/add-vendor.c
 import { EditVendorComponent } from './page/vendor-screen/edit-vendor/edit-vendor.component';
 import { VendorListComponent } from './page/vendor-screen/vendor-list/vendor-list.component';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { GradeListComponent } from './page/grade/grade-list/grade-list.component';
+import { AddGradeComponent } from './page/grade/add-grade/add-grade.component';
+import { EditGradeComponent } from './page/grade/edit-grade/edit-grade.component';
 
 @NgModule({
   declarations: [
@@ -147,7 +152,10 @@ import { RadioButtonModule } from 'primeng/radiobutton';
     EmployeeListComponent,
     AddVendorComponent,
     EditVendorComponent,
-    VendorListComponent
+    VendorListComponent,
+    GradeListComponent,
+    AddGradeComponent,
+    EditGradeComponent
   ],
   imports: [
     BrowserModule,
@@ -173,6 +181,8 @@ import { RadioButtonModule } from 'primeng/radiobutton';
     RadioButtonModule,
     ChartModule,
     NgxUiLoaderModule,
+    DialogModule,
+    InputTextareaModule,
     NgxUiLoaderHttpModule.forRoot({
       showForeground:true
     })

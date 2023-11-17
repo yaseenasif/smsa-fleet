@@ -3,6 +3,7 @@ import { MenuItem, MessageService } from 'primeng/api';
 import { Vehicle } from 'src/app/modal/vehicle';
 import { VehicleService } from '../service/vehicle.service';
 import { Router } from '@angular/router';
+import { Vendor } from 'src/app/modal/vendor';
 
 @Component({
   selector: 'app-add-vehicle',
@@ -11,6 +12,7 @@ import { Router } from '@angular/router';
   providers: [MessageService]
 })
 export class AddVehicleComponent implements OnInit{
+  vendors!:Vendor[];
   items: MenuItem[] | undefined;
   vehicle: Vehicle = {
     id: undefined,
@@ -35,17 +37,19 @@ export class AddVehicleComponent implements OnInit{
       id: undefined,
       vendorName: undefined,
       officeLocation: undefined,
-      attachments: undefined
-    }
+      attachments: undefined,
+    },
+    vehicleReplacement: undefined
   };
 
   dummyData: any = [
     { id: 1, locationName: 123 },
     { id: 2, years: 2022 },
-    { id: 3, locationName: 123 },
-    {id: 4, vendor: 'Hanco'},
-    {id: 5, vendor: 'Al jazirah'},
-    {id: 6, vendor: 'Best'}
+    { id: 3, locationName: 124 },
+    { id: 4, locationName: 125 },
+    {id: 1, vendorName: 'Hanco'},
+    {id: 2, vendorName: 'Al jazirah'},
+    {id: 3, vendorName: 'Best'}
   ]
 
 
@@ -68,7 +72,7 @@ export class AddVehicleComponent implements OnInit{
   
   ngOnInit(): void {
     this.items = [{ label: 'Vehicle',routerLink:'/vehicle'},{ label: 'Add Vehicle'}];
-
+    this.getAllVendor();
   }
 
   onSubmit() {
@@ -82,6 +86,13 @@ export class AddVehicleComponent implements OnInit{
 
     });
   
+  }
+  
+
+  getAllVendor(){
+    this.vehicleService.getAllVendor().subscribe((res:Vendor[])=>{
+      this.vendors=res;
+    },error=>{})
   }
 }
 

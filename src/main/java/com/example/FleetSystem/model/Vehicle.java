@@ -52,6 +52,9 @@ public class Vehicle {
     @ManyToOne
     private Vendor vendor;
 
+    @OneToOne
+    private VehicleReplacement vehicleReplacement;
+
     @ManyToOne
     @JoinColumn(name = "created_by")
     private User createdBy;

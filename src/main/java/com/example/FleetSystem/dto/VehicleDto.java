@@ -1,5 +1,6 @@
 package com.example.FleetSystem.dto;
 
+import com.example.FleetSystem.model.VehicleReplacement;
 import com.example.FleetSystem.model.Vendor;
 import lombok.*;
 
@@ -36,6 +37,6 @@ public class VehicleDto {
     private String attachments;
     private String uuid;
     private boolean status;
-
+    private VehicleReplacement vehicleReplacement;
 
 }

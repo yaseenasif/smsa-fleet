@@ -3,6 +3,7 @@ import { MenuItem, MessageService } from 'primeng/api';
 import { VehicleService } from '../service/vehicle.service';
 import { Vehicle } from 'src/app/modal/vehicle'
 import { FileUpload } from 'primeng/fileupload';
+import { VehicleReplacement } from 'src/app/modal/vehicleReplacement';
 
 @Component({
   selector: 'app-vehicle-list',
@@ -15,13 +16,23 @@ export class VehicleListComponent implements OnInit{
   fileUpload!: FileUpload;
 
   fileSelected: boolean = false;
+  visible: boolean = false;
+
+  vehicleReplacement:VehicleReplacement={
+    id: null,
+    reason: null,
+    vehicle: null
+  }
   
   constructor(
     private vehicleService: VehicleService,
     private messageService: MessageService
     ) { }
   
-  vehicles!: Vehicle[];
+  vehicles!: Array<Vehicle>;
+  replacementVehicles!: Array<Vehicle>;
+  vId!:number
+  
 
   size: number = 10240000; // Maximum file size (e.g., 10MB)
 
@@ -29,16 +40,7 @@ export class VehicleListComponent implements OnInit{
 
   
 
-  products:any=[{name:"Demo"},
-  {name:"Demo"},
-  {name:"Demo"},
-  {name:"Demo"},
-  {name:"Demo"},
-  {name:"Demo"},
-  {name:"Demo"},
-  {name:"Demo"},
-  {name:"Demo"},
-  {name:"Demo"},];
+
   items: MenuItem[] | undefined;
 
  
@@ -54,8 +56,15 @@ export class VehicleListComponent implements OnInit{
     this.fileSelected = true;
   }
 
+  showDialog(vId:number) {
+    this.vId=vId;
+    debugger
+    this.replacementVehicles=this.vehicles.filter(el=>el.id!=vId)
+    this.visible = true;
+  }
+
   onCancel() {
-    // Handle cancel logic here
+    // Handle cancel logic her
     this.fileSelected = false;
 
     this.fileUpload.clear();
@@ -98,8 +107,11 @@ export class VehicleListComponent implements OnInit{
   getAllVehicles() {
 
     this.vehicleService.getAllVehicles().subscribe((res: Vehicle[]) => {
+    
       
-      this.vehicles = res;      
+      this.vehicles=res;
+     
+         
       
     })
 
@@ -112,5 +124,12 @@ export class VehicleListComponent implements OnInit{
       
     })
   }
-
+  
+  onSubmit(){
+    this.vehicleService.replaceVehicle(this.vId,this.vehicleReplacement).subscribe(res=>{
+      this.messageService.add({ severity: 'success', summary: 'Upload Error', detail: 'Vehicle is successfully replaced'});
+    },error=>{
+      this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
+    })
+  }
 }
