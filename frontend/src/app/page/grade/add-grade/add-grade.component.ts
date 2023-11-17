@@ -24,7 +24,6 @@ export class AddGradeComponent {
   }
   
   onSubmit() {
-    debugger
     console.log('Form Values:', this.grade); 
     this.gradeService.addGrade(this.grade).subscribe((res) => {
       console.log('API Response:', res);
