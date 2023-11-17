@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Vehicle } from 'src/app/modal/vehicle';
+import { VehicleReplacement } from 'src/app/modal/vehicleReplacement';
 import { Vendor } from 'src/app/modal/vendor';
 import { environment } from 'src/environments/environment';
 
@@ -43,5 +44,9 @@ export class VehicleService {
   
   getAllVendor():Observable<Vendor[]>{
     return this.http.get<Vendor[]>(`${this.url}/get-active-vendors/`)
+  }
+
+  replaceVehicle(vehicleId:number,replaceWith:VehicleReplacement):Observable<VehicleReplacement>{
+    return this.http.patch<VehicleReplacement>(`${this.url}/replace-vehicle/${vehicleId}`,replaceWith);
   }
 }

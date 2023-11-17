@@ -38,14 +38,15 @@ export class AddVehicleComponent implements OnInit{
       vendorName: undefined,
       officeLocation: undefined,
       attachments: undefined,
-    
-    }
+    },
+    vehicleReplacement: undefined
   };
 
   dummyData: any = [
     { id: 1, locationName: 123 },
     { id: 2, years: 2022 },
-    { id: 3, locationName: 123 },
+    { id: 3, locationName: 124 },
+    { id: 4, locationName: 125 },
     {id: 1, vendorName: 'Hanco'},
     {id: 2, vendorName: 'Al jazirah'},
     {id: 3, vendorName: 'Best'}
