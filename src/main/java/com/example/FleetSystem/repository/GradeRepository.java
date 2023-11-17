@@ -11,5 +11,5 @@ import java.util.List;
 @Repository
 public interface GradeRepository extends JpaRepository<Grade,Long> {
     @Query("SELECT g FROM Grade g WHERE g.status = true")
-    List<GradeDto> getActiveGrades();
+    List<Grade> getActiveGrades();
 }

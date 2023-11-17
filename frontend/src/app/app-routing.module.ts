@@ -55,7 +55,15 @@ import { UpdateEmployeeComponent } from './page/employee-screen/update-employee/
 import { VendorListComponent } from './page/vendor-screen/vendor-list/vendor-list.component';
 import { AddVendorComponent } from './page/vendor-screen/add-vendor/add-vendor.component';
 import { EditVendorComponent } from './page/vendor-screen/edit-vendor/edit-vendor.component';
+import { GradeListComponent } from './page/grade/grade-list/grade-list.component';
+import { AddGradeComponent } from './page/grade/add-grade/add-grade.component';
+import { FormsModule } from '@angular/forms';
+import { EditGradeComponent } from './page/grade/edit-grade/edit-grade.component';
 
+NgModule({
+  imports: [FormsModule],
+  // other module configurations
+})
 const routes: Routes = [
   {
     path:'',
@@ -332,7 +340,22 @@ const routes: Routes = [
   {
     path:'login',
     component:LoginFormComponent
-  }
+  },
+  
+  {
+    path:'grade-list',
+    component:GradeListComponent,
+    canActivate:[AuthGuard]
+  },  {
+    path:'add-grade',
+    component:AddGradeComponent,
+    canActivate:[AuthGuard]
+  },
+  {
+    path:'edit-grade/:id',
+    component:EditGradeComponent,
+    canActivate:[AuthGuard]
+  },
 
 ];
 
