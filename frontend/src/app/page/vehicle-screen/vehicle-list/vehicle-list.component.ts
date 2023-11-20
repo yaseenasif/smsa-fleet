@@ -58,7 +58,6 @@ export class VehicleListComponent implements OnInit{
 
   showDialog(vId:number) {
     this.vId=vId;
-    debugger
     this.replacementVehicles=this.vehicles.filter(el=>el.id!=vId)
     this.visible = true;
   }
@@ -127,7 +126,8 @@ export class VehicleListComponent implements OnInit{
   
   onSubmit(){
     this.vehicleService.replaceVehicle(this.vId,this.vehicleReplacement).subscribe(res=>{
-      this.messageService.add({ severity: 'success', summary: 'Upload Error', detail: 'Vehicle is successfully replaced'});
+      this.messageService.add({ severity: 'success', summary: 'Vehicle Replaced', detail: 'Vehicle is successfully replaced'});
+      this.getAllVehicles();
     },error=>{
       this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
     })

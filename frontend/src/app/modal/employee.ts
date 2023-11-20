@@ -27,6 +27,6 @@ export interface Employee {
     companyEmailAddress: string | null | undefined;
     grade: string | null | undefined;
     licenseNumber: String | null | undefined
-    vehicleBudget: String | null | undefined
+    vehicleBudget: Number | null | undefined
 
 }

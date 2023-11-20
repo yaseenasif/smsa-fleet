@@ -51,7 +51,7 @@ export class AssignmentListComponent {
 
     this.vehicleAssignmentService.deleteVehicleAssignment(id).subscribe((res) => {
 
-      this.messageService.add({ severity: 'Delete Successfully', summary: 'Delete Successfully', detail: 'Employee has been deleted' });  
+      this.messageService.add({ severity: 'success', summary: 'Delete Successfully', detail: 'Employee has been deleted' });  
 
       this.getAllVehicleAssignment();
       

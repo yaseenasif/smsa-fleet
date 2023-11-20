@@ -4,6 +4,8 @@ import { Employee } from 'src/app/modal/employee';
 import { EmployeeService } from '../service/employee.service';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { Grade } from 'src/app/modal/grade';
+import { GradeService } from '../../grade/grade.service';
 
 @Component({
   selector: 'app-add-employee',
@@ -11,9 +13,16 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./add-employee.component.scss'],
   providers: [MessageService]
 })
-export class AddEmployeeComponent implements OnInit{
-  
+export class AddEmployeeComponent implements OnInit {
+
   items: MenuItem[] | undefined;
+
+  grade !: Grade[]
+
+  selectedGrade !: Grade
+  vehicleBudgetFromGrade !: Number | null | undefined
+
+
   employee: Employee = {
     id: undefined,
     employeeNumber: undefined,
@@ -51,79 +60,112 @@ export class AddEmployeeComponent implements OnInit{
   ]
 
   dummyDepartment: any = [
-    { id: 1, name: 'STN'},
+    { id: 1, name: 'STN' },
   ]
 
   dummySection: any = [
-    { id: 1, name: 'Station Management'}
+    { id: 1, name: 'Station Management' }
   ]
 
   dummyCity: any = [
-    { id: 1, name: 'Riyadh'},
-    { id: 1, name: 'Jeddah'},
-    { id: 1, name: 'Mecca'},
+    { id: 1, name: 'Riyadh' },
+    { id: 1, name: 'Jeddah' },
+    { id: 1, name: 'Mecca' },
   ]
 
+  dummyNationality: any = [
+    { id: 1, name: "Sudan-031" },
+    { id: 2, name: "Sudan-032" },
+    { id: 3, name: "Sudan-033" },
+    { id: 4, name: "Sudan-034" },
+    { id: 5, name: "Sudan-035" }
+  ]
+
+  dummyRegion: any = [
+    { id: 1, name: "Head Quarter" }
+  ]
   employeeStatus: any = [
-    {id: 1, statusName: 'Active'},
-    {id: 2, statusName: 'Resigned'},
-    {id: 3, statusName: 'Terminated'},
-    {id: 4, statusName: 'Deceased'}
-
-,   
+    { id: 1, statusName: 'Active' },
+    { id: 2, statusName: 'Resigned' },
+    { id: 3, statusName: 'Terminated' },
+    { id: 4, statusName: 'Deceased' }
   ]
 
-  
+  gradesData: any = [
 
-  name!:string;
-  
-  size=100000
+  ]
+
+
+  name!: string;
+
+  size = 100000
   uploadedFiles: any[] = [];
-  
-  
+
+
 
   constructor(
     private employeeService: EmployeeService,
     private router: Router,
-    private messageService: MessageService) { }
+    private messageService: MessageService,
+    private gradeService: GradeService
+  ) { }
 
 
 
-   onUpload(event: any) {
-    
+  onUpload(event: any) {
+
   }
 
-   onUpload1(event:any) {
-    for(let file of event.files) {
-        this.uploadedFiles.push(file);
+  onUpload1(event: any) {
+    for (let file of event.files) {
+      this.uploadedFiles.push(file);
     }
   }
-  
+
   ngOnInit(): void {
-    this.items = [{ label: 'Employee',routerLink:'/employee'},{ label: 'Add Employee'}];
+    this.items = [{ label: 'Employee', routerLink: '/employee' }, { label: 'Add Employee' }];
+
+    this.getAllGrades();
+  }
+
+  getAllGrades() {
+    this.gradeService.getGrades().subscribe((res: Grade[]) => {
+      this.gradesData = res;
+      // this.employee.vehicleBudget = res
+    })
+  }
+
+  onAutoFilled() {
+    this.gradeService.getGrades().subscribe((res: Grade[]) => {
+      const selectedGrade = res.find((grade) => grade.name === this.employee.grade);
+
+      if (selectedGrade) {
+        this.employee.vehicleBudget = selectedGrade.vehicleBudget
+      }
+    })
   }
 
   onSubmit() {
-   
+
     console.log('Form submitted:', this.employee);
-    
+
 
     this.employeeService.addEmployee(this.employee).subscribe((res) => {
-      this.messageService.add({ severity: 'success', summary: 'Employee Added Successfully' });  
+      this.messageService.add({ severity: 'success', summary: 'Employee Added Successfully' });
 
-  
+
       setTimeout(() => {
         this.router.navigate(['/employee'])
-      },5000)
-      
-    },
-    (error) => {
-      console.error('Error while saving the file:', error);
+      }, 5000)
 
-      this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
-      // Handle error
-    }) 
-      
-    }
+    },
+      (error) => {
+        console.error('Error while saving the file:', error);
+
+        this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
+        // Handle error
+      })
 
   }
+
+}

@@ -4,6 +4,8 @@ import { Vehicle } from 'src/app/modal/vehicle';
 import { VehicleService } from '../service/vehicle.service';
 import { Router } from '@angular/router';
 import { Vendor } from 'src/app/modal/vendor';
+import { GradeService } from '../../grade/grade.service';
+import { Grade } from 'src/app/modal/grade';
 
 @Component({
   selector: 'app-add-vehicle',
@@ -13,6 +15,7 @@ import { Vendor } from 'src/app/modal/vendor';
 })
 export class AddVehicleComponent implements OnInit{
   vendors!:Vendor[];
+
   items: MenuItem[] | undefined;
   vehicle: Vehicle = {
     id: undefined,
@@ -58,7 +61,7 @@ export class AddVehicleComponent implements OnInit{
   constructor( 
     private vehicleService: VehicleService,
     private messageService: MessageService,
-    private router: Router
+    private router: Router,
     ) { }
   
   name!:string;

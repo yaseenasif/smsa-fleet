@@ -173,7 +173,7 @@
                       <p-dropdown
                         class="w-full"
                         [(ngModel)]="employee.region"
-                        [options]="dummyData"
+                        [options]="dummyRegion"
                         name="region"
                         #region="ngModel"
                         [required]="true"
@@ -193,9 +193,9 @@
                             <div>{{ employee.region }}</div>
                           </div>
                         </ng-template>
-                        <ng-template let-dummyData pTemplate="item">
+                        <ng-template let-dummyRegion pTemplate="item">
                           <div class="flex align-items-center gap-2">
-                            <div>{{ dummyData.name }}</div>
+                            <div>{{ dummyRegion.name }}</div>
                           </div>
                         </ng-template>
                       </p-dropdown>
@@ -241,7 +241,7 @@
                       <p-dropdown
                         class="w-full"
                         [(ngModel)]="employee.nationality"
-                        [options]="dummyData"
+                        [options]="dummyNationality"
                         name="nationality"
                         #nationality="ngModel"
                         [required]="true"
@@ -261,9 +261,9 @@
                             <div>{{ employee.nationality }}</div>
                           </div>
                         </ng-template>
-                        <ng-template let-dummyData pTemplate="item">
+                        <ng-template let-dummyNationality pTemplate="item">
                           <div class="flex align-items-center gap-2">
-                            <div>{{ dummyData.name }}</div>
+                            <div>{{ dummyNationality.name }}</div>
                           </div>
                         </ng-template>
                       </p-dropdown>
@@ -309,40 +309,7 @@
                     </small>
                   </div>
                 </div>
-                <div class="col-12 md:col-12 lg:col-6">
-                    <div class="flex flex-column gap-2 form-hook">
-                      <label htmlFor="name">Grade</label>
-                      <p-dropdown
-                        class="w-full"
-                        [(ngModel)]="employee.grade"
-                        [options]="dummyData"
-                        name="grade"
-                        #grade="ngModel"
-                        [required]="true"
-                        optionLabel="name"
-                        optionValue="name"
-                        [filter]="true"
-                        filterBy="name"
-                        [showClear]="true"
-                        placeholder="Select Grade
-                      "
-                      >
-                        <ng-template pTemplate="selectedItem">
-                          <div
-                            class="flex align-items-center gap-2"
-                            *ngIf="employee"
-                          >
-                            <div>{{ employee.grade }}</div>
-                          </div>
-                        </ng-template>
-                        <ng-template let-dummyData pTemplate="item">
-                          <div class="flex align-items-center gap-2">
-                            <div>{{ dummyData.name }}</div>
-                          </div>
-                        </ng-template>
-                      </p-dropdown>
-                    </div>
-                  </div>
+               
                   <div class="col-12 md:col-12 lg:col-6">
                     <div class="flex flex-column gap-2">
                       <label htmlFor="name">Budget Reference</label>
@@ -577,6 +544,41 @@
                     </small>
                   </div>
                 </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                    <div class="flex flex-column gap-2 form-hook">
+                      <label htmlFor="name">Grade</label>
+                      <p-dropdown
+                        class="w-full"
+                        [(ngModel)]="employee.grade"
+                        [options]="gradesData"
+                        name="grade"
+                        #grade="ngModel"
+                        [required]="true"
+                        optionLabel="name"
+                        optionValue="name"
+                        [filter]="true"
+                        filterBy="name"
+                        [showClear]="true"
+                        (onChange)="onAutoFilled()"
+                        placeholder="Select Grade
+                      "
+                      >
+                        <ng-template pTemplate="selectedItem">
+                          <div
+                            class="flex align-items-center gap-2"
+                            *ngIf="employee"
+                          >
+                            <div>{{ employee.grade }}</div>
+                          </div>
+                        </ng-template>
+                        <ng-template let-grade pTemplate="item">
+                          <div class="flex align-items-center gap-2">
+                            <div>{{ grade.name }}</div>
+                          </div>
+                        </ng-template>
+                      </p-dropdown>
+                    </div>
+                  </div>
                 <div class="col-12 md:col-12 lg:col-6">
                     <div class="flex flex-column gap-2">
                       <label htmlFor="name">Vehicle Budget</label>
