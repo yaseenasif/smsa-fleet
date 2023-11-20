@@ -1,11 +1,13 @@
 package com.example.FleetSystem.controller;
 
 import com.example.FleetSystem.dto.EmployeeDto;
+import com.example.FleetSystem.payload.ResponseMessage;
 import com.example.FleetSystem.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -37,7 +39,7 @@ public class EmployeeController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping("/update-employee/{id}")
+    @PatchMapping("/update-employee/{id}")
     public ResponseEntity<EmployeeDto> updateEmployeeById(@PathVariable Long id, @RequestBody EmployeeDto employeeDto) {
         return ResponseEntity.ok(employeeService.updateEmployee(id,employeeDto));
     }
@@ -52,6 +54,18 @@ public class EmployeeController {
     @PatchMapping("/employee-active/{id}")
     public ResponseEntity<EmployeeDto> makeEmployeeActive(@PathVariable Long id){
         return ResponseEntity.ok(employeeService.makeEmployeeActive(id));
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/add-bulk-employee")
+    public ResponseEntity<ResponseMessage> addBulkEmployee(@RequestParam("file") MultipartFile file){
+        return ResponseEntity.ok(new ResponseMessage(employeeService.addBulkEmployee(file)));
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/get-all-unassigned-employee")
+    public ResponseEntity<List<EmployeeDto>> getAllUnAssignedEmployee(){
+        return ResponseEntity.ok(employeeService.getAllUnAssignedEmployee());
     }
 
 }

@@ -3,6 +3,8 @@ package com.example.FleetSystem.dto;
 import com.example.FleetSystem.model.Employee;
 import lombok.*;
 
+import java.sql.Date;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -15,6 +17,7 @@ public class DriverDto {
     private Employee empId;
     private String empName;
     private String title;
+    private Date joiningDate;
     private String department;
     private String section ;
     private String region;

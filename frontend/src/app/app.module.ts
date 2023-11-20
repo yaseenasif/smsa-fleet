@@ -35,6 +35,9 @@ import { ProductFieldAddComponent } from './page/product-field/product-field-add
 import { ProductFieldUpdateComponent } from './page/product-field/product-field-update/product-field-update.component';
 import {FormsModule} from'@angular/forms'
 import {DomesticShippingListComponent} from './page/shipping-order/domestic/domestic-shipping-list/domestic-shipping-list.component';
+import { NgxUiLoaderModule, NgxUiLoaderHttpModule } from "ngx-ui-loader";
+
+
 
 import {
   HTTP_INTERCEPTORS,
@@ -84,6 +87,12 @@ import { EmployeeListComponent } from './page/employee-screen/employee-list/empl
 import { AddVendorComponent } from './page/vendor-screen/add-vendor/add-vendor.component';
 import { EditVendorComponent } from './page/vendor-screen/edit-vendor/edit-vendor.component';
 import { VendorListComponent } from './page/vendor-screen/vendor-list/vendor-list.component';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { GradeListComponent } from './page/grade/grade-list/grade-list.component';
+import { AddGradeComponent } from './page/grade/add-grade/add-grade.component';
+import { EditGradeComponent } from './page/grade/edit-grade/edit-grade.component';
 
 @NgModule({
   declarations: [
@@ -143,7 +152,10 @@ import { VendorListComponent } from './page/vendor-screen/vendor-list/vendor-lis
     EmployeeListComponent,
     AddVendorComponent,
     EditVendorComponent,
-    VendorListComponent
+    VendorListComponent,
+    GradeListComponent,
+    AddGradeComponent,
+    EditGradeComponent
   ],
   imports: [
     BrowserModule,
@@ -166,7 +178,14 @@ import { VendorListComponent } from './page/vendor-screen/vendor-list/vendor-lis
     FileUploadModule,
     ToastModule,
     FileUploadModule,
-    ChartModule
+    RadioButtonModule,
+    ChartModule,
+    NgxUiLoaderModule,
+    DialogModule,
+    InputTextareaModule,
+    NgxUiLoaderHttpModule.forRoot({
+      showForeground:true
+    })
   ],
 
   providers: [

@@ -1,12 +1,17 @@
 package com.example.FleetSystem.model;
 
 import lombok.*;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 import javax.persistence.*;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
+
+import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 
 @Getter
 @Setter
@@ -47,6 +52,9 @@ public class Vehicle {
 
     @ManyToOne
     private Vendor vendor;
+
+    @OneToOne
+    private VehicleReplacement vehicleReplacement;
 
     @ManyToOne
     @JoinColumn(name = "created_by")

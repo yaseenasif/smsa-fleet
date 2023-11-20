@@ -1,5 +1,6 @@
 package com.example.FleetSystem.controller;
 
+import com.example.FleetSystem.dto.VehicleAssignmentDto;
 import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.payload.ResponseMessage;
 import com.example.FleetSystem.service.VehicleService;
@@ -64,5 +65,10 @@ public class VehicleController {
         return ResponseEntity.ok(new ResponseMessage(vehicleService.addBulkVehicle(file)));
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/not-assigned-vehicle")
+    public ResponseEntity<List<VehicleDto>> getAllNotAssignedVehicle(){
+        return ResponseEntity.ok(vehicleService.getAllNotAssignedVehicle());
+    }
 
 }

@@ -1,35 +1,106 @@
-import { Component, OnInit } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MenuItem, MessageService } from 'primeng/api';
+import { Employee } from 'src/app/modal/employee';
+import { EmployeeService } from '../service/employee.service';
+import { FileUpload } from 'primeng/fileupload';
 
 @Component({
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
-  styleUrls: ['./employee-list.component.scss']
+  styleUrls: ['./employee-list.component.scss'],
+  providers: [MessageService]
 })
 export class EmployeeListComponent implements OnInit{
+  @ViewChild('fileUpload', { static: false })
+  fileUpload!: FileUpload;
+  fileSelected: boolean = false;
 
-  constructor() {
 
-  }
+  constructor(
+              private employeeService: EmployeeService,
+              private messageService: MessageService) { }
 
-  employee:any=[{name:"Demo"},
-  {name:"Demo"},
-  {name:"Demo"},
-  {name:"Demo"},
-  {name:"Demo"},
-  {name:"Demo"},
-  {name:"Demo"},
-  {name:"Demo"},
-  {name:"Demo"},
-  {name:"Demo"},];
+  employee!: Employee[];
+
+
   items: MenuItem[] | undefined;
 
   ngOnInit(): void {
+
     this.items = [{
       label: 'Employee'
     }]
+
+    this.getAllEmployees();
+
   }
 
+  onCancel() {
+    // Handle cancel logic here
+    this.fileSelected = false;
+
+    this.fileUpload.clear();
+
+  }
+
+  onFileSelect() {
+    this.fileSelected = true;
+  }
+
+  onUpload(event: any) {
+    const uploadedFile = event.files[0];
+
+    if (uploadedFile) {
+      this.employeeService.saveFile(uploadedFile).subscribe(
+        (response) => {          
+   
+          if (Array.isArray(response.message)) {
+            
+            response.message.forEach((message: any) => {
+              this.messageService.add({ severity: 'success', summary: 'Upload Successful', detail: message });
+            });
+
+          } else if (response.message) {
+            // If response.message is a single message, display it
+            this.messageService.add({ severity: 'success', summary: 'Upload Successful', detail: response.message });
+          } else {
+            // Display a generic success message if no message is provided
+            this.messageService.add({ severity: 'success', summary: 'Upload Successful', detail: 'File uploaded successfully.' });
+          }
+
+          this.getAllEmployees();
+        },
+        (error) => {
+          console.error('Error while saving the file:', error);
+
+          this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
+          // Handle error
+        }
+      );
+    }
+  }
+
+
+  getAllEmployees() {
+
+    this.employeeService.getAllEmployees().subscribe((res: Employee[]) => {
+      
+      this.employee = res;      
+      
+    })
+
+  }
+
+  deleteEmployee(id: Number) {
+
+    this.employeeService.deleteEmployee(id).subscribe((res) => {
+
+      this.messageService.add({ severity: 'Delete Successfully', summary: 'Delete Successfully', detail: 'Employee has been deleted' });  
+
+      this.getAllEmployees();
+      
+    })
+  }
 
 
 }

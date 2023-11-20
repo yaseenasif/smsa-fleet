@@ -5,6 +5,7 @@
       <app-dashboard-head></app-dashboard-head>
 
       <div class="main">
+        <p-toast></p-toast>
         <div class="card flex justify-content-center">
             <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
         </div>
@@ -24,11 +25,11 @@
           
 
           <div class="card">
-            <p-table [value]="products" [tableStyle]="{ 'min-width': '50rem' }">
+            <p-table [value]="driver" [tableStyle]="{ 'min-width': '50rem' }">
               <ng-template pTemplate="header">
                 <tr>
                   
-                  <th class="text-center">Emp ID</th>
+                  <th class="text-center">Emp Number</th>
                   <th class="text-center">Emp Name</th>
                   <th class="text-center">Job Title</th>
                   <th class="text-center">Date of Joining</th>
@@ -45,27 +46,27 @@
                   <th class="text-center"> Actions</th>
                 </tr>
               </ng-template>
-              <ng-template pTemplate="body" let-product>
+              <ng-template pTemplate="body" let-driver>
                 <tr>
-                  <td class="text-center">{{ product.name }}</td>
-                  <td class="text-center">{{ product.contactNumber }}</td>
-                  <td class="text-center">{{ product.referenceNumber }}</td>
-                  <td class="text-center">{{ product.name }}</td>
-                  <td class="text-center">{{ product.contactNumber }}</td>
-                  <td class="text-center">{{ product.referenceNumber }}</td>
-                  <td class="text-center">{{ product.name }}</td>
-                  <td class="text-center">{{ product.contactNumber }}</td>
-                  <td class="text-center">{{ product.referenceNumber }}</td>
-                  <td class="text-center">{{ product.name }}</td>
-                  <td class="text-center">{{ product.contactNumber }}</td>
-                  <td class="text-center">{{ product.referenceNumber }}</td>
-                  <td class="text-center">{{ product.name }}</td>
-                  <td class="text-center">{{ product.contactNumber }}</td>
+                  <td class="text-center">{{ driver.empId.employeeNumber }}</td>
+                  <td class="text-center">{{ driver.empName }}</td>
+                  <td class="text-center">{{ driver.title }}</td>
+                  <td class="text-center">{{ driver.joiningDate }}</td>
+                  <td class="text-center">{{ driver.department }}</td>
+                  <td class="text-center">{{ driver.section }}</td>
+                  <td class="text-center">{{ driver.region }}</td>
+                  <td class="text-center">{{ driver.city }}</td>
+                  <td class="text-center">{{ driver.nationality }}</td>
+                  <td class="text-center">{{ driver.contactNumber }}</td>
+                  <td class="text-center">{{ driver.emailAddress }}</td>
+                  <td class="text-center">{{ driver.grade }}</td>
+                  <td class="text-center">{{ driver.licenseNumber }}</td>
+                  <td class="text-center">{{ driver.vehicleBudget }}</td>
                   <td class="text-center flex"> 
-                    <p-button routerLink="/edit-driver" icon="bi bi-pen" class='mr' styleClass="p-button-rounded p-button-success p-button-text p-button-raised">
+                    <p-button [routerLink]="['/edit-driver/', driver.id]" icon="bi bi-pen" class='mr' styleClass="p-button-rounded p-button-success p-button-text p-button-raised">
                      
                     </p-button>
-                     <p-button icon="bi bi-trash" class='ml' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
+                     <p-button (click)="deleteDriver(driver.id)" icon="bi bi-trash" class='ml' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
                     
                      </p-button>
                      <p-button icon="bi bi-paperclip" class='ml mr' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">

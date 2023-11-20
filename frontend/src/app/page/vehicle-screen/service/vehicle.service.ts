@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Vehicle } from 'src/app/modal/vehicle';
+import { VehicleReplacement } from 'src/app/modal/vehicleReplacement';
+import { Vendor } from 'src/app/modal/vendor';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -21,7 +23,11 @@ export class VehicleService {
     return this.http.get<Vehicle[]>(this.url.concat('/get-all-vehicle'));
   }
 
-  getAllVehicleById(id: Number) {
+  getAllNotAssignedVehicles(): Observable<Vehicle[]> {
+    return this.http.get<Vehicle[]>(this.url.concat('/not-assigned-vehicle'));
+  }
+
+  getVehicleById(id: Number) {
     return this.http.get<Vehicle>(`${this.url}/vehicle/${id}`);
   }
 
@@ -33,4 +39,18 @@ export class VehicleService {
     return this.http.delete<any>(`${this.url}/delete-vehicle/${id}`)
   }
 
+  saveFile(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post<any>(`${this.url}/add-bulk-vehicle`, formData);
+  }
+  
+  getAllVendor():Observable<Vendor[]>{
+    return this.http.get<Vendor[]>(`${this.url}/get-active-vendors/`)
+  }
+
+  replaceVehicle(vehicleId:number,replaceWith:VehicleReplacement):Observable<VehicleReplacement>{
+    return this.http.patch<VehicleReplacement>(`${this.url}/replace-vehicle/${vehicleId}`,replaceWith);
+  }
 }

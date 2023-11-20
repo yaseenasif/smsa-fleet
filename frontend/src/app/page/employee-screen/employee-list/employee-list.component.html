@@ -5,6 +5,7 @@
         <app-dashboard-head></app-dashboard-head>
   
         <div class="main">
+            <p-toast></p-toast>
           <div class="card flex justify-content-center">
               <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
           </div>
@@ -18,6 +19,19 @@
                           <p-button class="bg-b-color" routerLink="/add-employee">
                             <i class="bi bi-plus-lg" style="font-size: 20px;font-weight: bold;"></i>&nbsp;Add Employee
                           </p-button>
+                          <div class="flex flex-column gap-2 ml-5">  
+                            <p-fileUpload  
+                            #fileUpload
+                            icon="pi pi-download" iconPos="left" styleClass="p-button-outlined p-button-sm"
+                            mode="basic" chooseLabel="Upload" name="myfile[]"
+                            [customUpload]="true" (uploadHandler)="onUpload($event)"
+                            (onSelect)="onFileSelect()"
+                            >
+                          </p-fileUpload>
+                          <ng-container *ngIf="fileSelected">
+                            <button class="p-button p-button-outlined p-button-sm" (click)="onCancel()">Cancel</button>
+                          </ng-container>
+                          </div>
                       </div>
                   </p-toolbar>
               </div>
@@ -27,18 +41,32 @@
               <p-table [value]="employee" [tableStyle]="{ 'min-width': '50rem' }">
                 <ng-template pTemplate="header">
                   <tr>
-                    
-                    <th class="text-center">Employee Id</th>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">Employee Number</th>
+                    <th class="text-center">Budget Ref</th>
                     <th class="text-center">Employee Name</th>
+                    <th class="text-center">Gender</th>
+                    <th class="text-center">Marital Status</th>
+                    <th class="text-center">DOB</th>
+                    <th class="text-center">DOJ</th>
                     <th class="text-center">Job Title</th>
-                    <th class="text-center">Date Of Joining</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center">Region</th>
+                    <th class="text-center">Location</th>
+                    <th class="text-center">Organization</th>
+                    <th class="text-center">Division</th>
+                    <th class="text-center">Dept Code</th>
                     <th class="text-center">Department</th>
                     <th class="text-center">Section</th>
-                    <th class="text-center">Region</th>
+                    <th class="text-center">IQAMA NO</th>
+                    <th class="text-center">SV Emp No.</th>
+                    <th class="text-center">SV Emp Name</th>
                     <th class="text-center">City</th>
+                    <th class="text-center">Age</th>
+                    <th class="text-center">Port of Destination</th>
                     <th class="text-center">Nationality</th>
-                    <th class="text-center">Contact Number</th>
-                    <th class="text-center">Company Email Address</th>
+                    <th class="text-center">Email</th>
+                    <th class="text-center">Mobile No</th>
                     <th class="text-center">Grade</th>
                     <th class="text-center">License Number</th>
                     <th class="text-center">Vehicle Budget</th>
@@ -50,27 +78,42 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-employee>
                   <tr>
-                    <td class="text-center">{{ employee.name }}</td>
-                    <td class="text-center">{{ employee.name }}</td>
-                    <td class="text-center">{{ employee.name }}</td>
-                    <td class="text-center">{{ employee.name }}</td>
-                    <td class="text-center">{{ employee.name }}</td>
-                    <td class="text-center">{{ employee.name }}</td>
-                    <td class="text-center">{{ employee.name }}</td>
-                    <td class="text-center">{{ employee.name }}</td>
-                    <td class="text-center">{{ employee.name }}</td>
-                    <td class="text-center">{{ employee.name }}</td>
-                    <td class="text-center">{{ employee.name }}</td>
-                    <td class="text-center">{{ employee.name }}</td>
-                    <td class="text-center">{{ employee.name }}</td>
-                    <td class="text-center">{{ employee.name }}</td>
+                    <td class="text-center">{{ employee.id }}</td>
+                    <td class="text-center">{{ employee.employeeNumber }}</td>
+                    <td class="text-center">{{ employee.budgetRef }}</td>
+                    <td class="text-center">{{ employee.empName }}</td>
+                    <td class="text-center">{{ employee.gender }}</td>
+                    <td class="text-center">{{ employee.maritalStatus }}</td>
+                    <td class="text-center">{{ employee.dateOfBirth }}</td>
+                    <td class="text-center">{{ employee.joiningDate }}</td>
+                    <td class="text-center">{{ employee.jobTitle }}</td>
+                    <td class="text-center">{{ employee.status }}</td>
+                    <td class="text-center">{{ employee.region }}</td>
+                    <td class="text-center">{{ employee.location }}</td>
+                    <td class="text-center">{{ employee.organization }}</td>
+                    <td class="text-center">{{ employee.division }}</td>
+                    <td class="text-center">{{ employee.deptCode }}</td>
+                    <td class="text-center">{{ employee.department }}</td>
+                    <td class="text-center">{{ employee.section }}</td>
+                    <td class="text-center">{{ employee.iqamaNumber }}</td>
+                    <td class="text-center">{{ employee.svEmployeeNumber }}</td>
+                    <td class="text-center">{{ employee.svEmployeeName }}</td>
+                    <td class="text-center">{{ employee.city }}</td>
+                    <td class="text-center">{{ employee.age }}</td>
+                    <td class="text-center">{{ employee.portOfDestination }}</td>
+                    <td class="text-center">{{ employee.nationality }}</td>
+                    <td class="text-center">{{ employee.companyEmailAddress }}</td>
+                    <td class="text-center">{{ employee.contactNumber }}</td>
+                    <td class="text-center">{{ employee.grade }}</td>
+                    <td class="text-center">{{ employee.licenseNumber }}</td>
+                    <td class="text-center">{{ employee.vehicleBudget }}</td>
 
   
                     <td class="text-center flex"> 
-                       <p-button routerLink="/edit-employee" icon="bi bi-pen" class='mr' styleClass="p-button-rounded p-button-success p-button-text p-button-raised">
+                       <p-button [routerLink]="['/edit-employee/', employee.id]" icon="bi bi-pen" class='mr' styleClass="p-button-rounded p-button-success p-button-text p-button-raised">
                          
                        </p-button>
-                        <p-button icon="bi bi-trash" class='ml' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
+                        <p-button (click)="deleteEmployee(employee.id)" icon="bi bi-trash" class='ml' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
                        
                         </p-button>
                         <p-button icon="bi bi-paperclip" class='ml mr' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">

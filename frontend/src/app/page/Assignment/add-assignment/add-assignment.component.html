@@ -5,40 +5,65 @@
       <app-dashboard-head></app-dashboard-head>
 
       <div class="main">
+        <p-toast></p-toast>
         <div class="card flex justify-content-center">
           <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
         </div>
         <div class="body-card">
           <div class="card">
-            <h1 class="mb-4 h-color">Add Assignment</h1>
+            <h1 class="mb-4 h-color">Add Vehicle Assignment</h1>
+            <form #vehicleAssignmentForm="ngForm" (ngSubmit)="onSubmit()">
             <div class="grid">
               <div class="col-12 md:col-12 lg:col-6">
-                <div class="flex flex-column gap-2">
+                <div class="flex flex-column gap-2 form-hook">
                   <label htmlFor="name">Vehicle List</label>
+                  <p-dropdown
+                  class="w-full"
+                  [(ngModel)]="selectedVehicle"
+                  [options]="vehicle"
+                  name="plateNumber"
+                  #plateNumber="ngModel"
+                  [required]="true"
+                  optionLabel="plateNumber"
+                  [filter]="true"
+                  filterBy="id"
+                  [showClear]="true"
+                  (onChange)="getVehicleData()"
+                  placeholder="Select Plate Number
+                "
+                >
+                  <ng-template pTemplate="selectedItem">
+                    <div
+                      class="flex align-items-center gap-2"
+                      *ngIf="selectedVehicle"
+                    >
+                      <div>{{ selectedVehicle.plateNumber }}</div>
+                    </div>
+                  </ng-template>
+                  <ng-template let-vehicle pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                      <div>{{ vehicle.plateNumber }}</div>
+                    </div>
+                  </ng-template>
+                </p-dropdown>
+                </div>
+              </div>
+              <div class="col-12 md:col-12 lg:col-6">
+                <div class="flex flex-column gap-2">
+                  <label htmlFor="name">Currently Assigned Under (Emp Number)</label>
                   <input
                     pInputText
                     id="name"
                     aria-describedby="name-help"
-                    [ngModelOptions]="{ standalone: true }"
-                    [(ngModel)]="name"
+                    name="assignToEmpId"
+                    [(ngModel)]="assignedEmployeeNumber"
+                    #assignToEmpId="ngModel"
+                    [placeholder]="!assignedEmployeeNumber ? 'Not assigned' : ''"
+                    [attr.readonly]="true"
+                    required
                   />
                 </div>
               </div>
-              <div class="col-12 md:col-12 lg:col-6">
-                <div class="flex flex-column gap-2">
-                  <label htmlFor="name"
-                    >Currently Assigned Under (Emp ID)</label
-                  >
-                  <input
-                    pInputText
-                    id="referenceNumber"
-                    aria-describedby="referenceNumber-help"
-                    [ngModelOptions]="{ standalone: true }"
-                    [(ngModel)]="referenceNumber"
-                  />
-                </div>
-              </div>
-
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Design</label>
@@ -46,24 +71,29 @@
                     pInputText
                     id="name"
                     aria-describedby="name-help"
-                    [ngModelOptions]="{ standalone: true }"
-                    [(ngModel)]="name"
+                    name="design"
+                    [(ngModel)]="vehicleAssignment.design"
+                    #design="ngModel"
+                    required
                   />
                 </div>
               </div>
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
-                  <label htmlFor="name">Currently Assigned Under (Name)</label>
+                  <label htmlFor="name">Currently Assigned Under (Emp Name)</label>
                   <input
                     pInputText
-                    id="referenceNumber"
-                    aria-describedby="referenceNumber-help"
-                    [ngModelOptions]="{ standalone: true }"
-                    [(ngModel)]="referenceNumber"
+                    id="name"
+                    aria-describedby="name-help"
+                    name="assignToEmpName"
+                    [(ngModel)]="assignedEmployeeName"
+                    #assignToEmpName="ngModel"
+                    [placeholder]="!assignedEmployeeNumber ? 'Not assigned' : ''"
+                    [attr.readonly]="true"
+                    required
                   />
                 </div>
               </div>
-
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Make</label>
@@ -71,24 +101,51 @@
                     pInputText
                     id="name"
                     aria-describedby="name-help"
-                    [ngModelOptions]="{ standalone: true }"
-                    [(ngModel)]="name"
+                    name="make"
+                    [(ngModel)]="vehicleAssignment.make"
+                    #make="ngModel"
+                    required
                   />
                 </div>
               </div>
               <div class="col-12 md:col-12 lg:col-6">
-                <div class="flex flex-column gap-2">
-                  <label htmlFor="name">Assign to (Emp ID)</label>
-                  <input
-                    pInputText
-                    id="referenceNumber"
-                    aria-describedby="referenceNumber-help"
-                    [ngModelOptions]="{ standalone: true }"
-                    [(ngModel)]="referenceNumber"
-                  />
+                <div class="flex flex-column gap-2 form-hook">
+                  <label htmlFor="name"
+                    >Assign To (Emp Number)</label
+                  >
+                  <p-dropdown
+                  class="w-full"
+                  [(ngModel)]="unAssignedEmployeeId"
+                  [options]="unAssignedEmployee"
+                  name="employeeNumber"
+                  #employeeNumber="ngModel"
+                  [required]="true"
+                  optionLabel="employeeNumber"
+                  optionValue="id"
+                  [filter]="true"
+                  filterBy="id"
+                  [showClear]="true"
+                  (onChange)="getUnAssignedEmployeeData()"
+                  placeholder="Select Employee Number
+                "
+                >
+                  <ng-template pTemplate="selectedItem">
+                    <div
+                      class="flex align-items-center gap-2"
+                      *ngIf="selecteUnAssigneddEmployee"
+                    >
+                      <div>{{ selecteUnAssigneddEmployee.employeeNumber }}</div>
+                    </div>
+                  </ng-template>
+                  <ng-template let-unAssignedEmployee pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                      <div>{{ unAssignedEmployee.employeeNumber }}</div>
+                    </div>
+                  </ng-template>
+                </p-dropdown>
                 </div>
               </div>
-
+              
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Model</label>
@@ -96,24 +153,28 @@
                     pInputText
                     id="name"
                     aria-describedby="name-help"
-                    [ngModelOptions]="{ standalone: true }"
-                    [(ngModel)]="name"
+                    name="model"
+                    [(ngModel)]="vehicleAssignment.model"
+                    #model="ngModel"
+                    required
                   />
                 </div>
-              </div>
+              </div>       
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
-                  <label htmlFor="name">Assign to (Emp ID)</label>
+                  <label htmlFor="name">Assign To (Emp Name)</label>
                   <input
                     pInputText
-                    id="referenceNumber"
-                    aria-describedby="referenceNumber-help"
-                    [ngModelOptions]="{ standalone: true }"
-                    [(ngModel)]="referenceNumber"
+                    id="name"
+                    aria-describedby="name-help"
+                    name="employeeName"
+                    [(ngModel)]="vehicleAssignment.assignToEmpName"
+                    #employeeName="ngModel"
+                    required
                   />
                 </div>
               </div>
-
+              
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">year</label>
@@ -121,8 +182,10 @@
                     pInputText
                     id="name"
                     aria-describedby="name-help"
-                    [ngModelOptions]="{ standalone: true }"
-                    [(ngModel)]="name"
+                    name="year"
+                    [(ngModel)]="vehicleAssignment.year"
+                    #year="ngModel"
+                    required
                   />
                 </div>
               </div>
@@ -132,10 +195,12 @@
                   <label htmlFor="name">Lease Expiry</label>
                   <input
                     pInputText
-                    id="referenceNumber"
-                    aria-describedby="referenceNumber-help"
-                    [ngModelOptions]="{ standalone: true }"
-                    [(ngModel)]="referenceNumber"
+                    id="name"
+                    aria-describedby="name-help"
+                    name="leaseExpiry"
+                    [(ngModel)]="vehicleAssignment.leaseExpiry"
+                    #leaseExpiry="ngModel"
+                    required
                   />
                 </div>
               </div>
@@ -148,8 +213,10 @@
                     pInputText
                     id="name"
                     aria-describedby="name-help"
-                    [ngModelOptions]="{ standalone: true }"
-                    [(ngModel)]="name"
+                    name="leaseCost"
+                    [(ngModel)]="vehicleAssignment.leaseCost"
+                    #leaseCost="ngModel"
+                    required
                   />
                 </div>
               </div>     
@@ -181,12 +248,14 @@
               <p-button
                 label="Cancel"
                 class="bg-o-color mr"
-                routerLink="/driver"
+                routerLink="/assignment"
                 styleClass="p-button-outlined"
               >
               </p-button>
-              <p-button label="Save" class="bg-b-color ml"> </p-button>
+              <p-button type="submit" *ngIf="!assignedEmployeeNumber" label="Save" class="bg-b-color ml"> </p-button>
+              <p-button type="submit" *ngIf="assignedEmployeeNumber" label="Update" class="bg-b-color ml"> </p-button>
             </div>
+            </form>
           </div>
         </div>
       </div>

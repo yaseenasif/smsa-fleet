@@ -5,6 +5,7 @@
         <app-dashboard-head></app-dashboard-head>
   
         <div class="main">
+          <p-toast></p-toast>
           <div class="card flex justify-content-center">
               <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
           </div>
@@ -12,11 +13,11 @@
               <div class="table-head">
                   <p-toolbar>
                       <div class="p-toolbar-group-start">
-                        <h2 class="h-color">Assignments</h2>
+                        <h2 class="h-color">Vehicle Assignments</h2>
                       </div>
                       <div class="p-toolbar-group-end">
                           <p-button class="bg-b-color" routerLink="/add-assignment">
-                            <i class="bi bi-plus-lg" style="font-size: 20px;font-weight: bold;"></i>&nbsp;Add Assignment
+                            <i class="bi bi-plus-lg" style="font-size: 20px;font-weight: bold;"></i>&nbsp;Add Vehicle Assignment
                           </p-button>
                       </div>
                   </p-toolbar>
@@ -24,18 +25,16 @@
             
   
             <div class="card">
-              <p-table [value]="products" [tableStyle]="{ 'min-width': '50rem' }">
+              <p-table [value]="vehicleAssignment" [tableStyle]="{ 'min-width': '50rem' }">
                 <ng-template pTemplate="header">
                   <tr>
                     
-                    <th class="text-center">Vehicle list</th>
-                    <th class="text-center">Currently Assigned Under (Emp ID)</th>
+                    <th class="text-center">Vehicle Plate Number</th>
+                    <th class="text-center">Assigned (Emp NO)</th>
+                    <th class="text-center">Assigned (Emp Name)</th>
                     <th class="text-center">Design</th>
-                    <th class="text-center">Currently Assigned Under (Name)</th>
                     <th class="text-center">Make</th>
-                    <th class="text-center">Assign to (Emp ID)</th>
                     <th class="text-center">Model</th>
-                    <th class="text-center">Assign to (Emp ID)</th>
                     <th class="text-center">Year</th>
                     <th class="text-center">Lease Expiry</th>
                     <th class="text-center">Lease Cost</th>
@@ -44,25 +43,21 @@
                     <th class="text-center"> Actions</th>
                   </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-product>
+                <ng-template pTemplate="body" let-vehicleAssignment>
                   <tr>
-                    <td class="text-center">{{ product.name }}</td>
-                    <td class="text-center">{{ product.contactNumber }}</td>
-                    <td class="text-center">{{ product.referenceNumber }}</td>
-                    <td class="text-center">{{ product.name }}</td>
-                    <td class="text-center">{{ product.contactNumber }}</td>
-                    <td class="text-center">{{ product.referenceNumber }}</td>
-                    <td class="text-center">{{ product.name }}</td>
-                    <td class="text-center">{{ product.contactNumber }}</td>
-                    <td class="text-center">{{ product.referenceNumber }}</td>
-                    <td class="text-center">{{ product.name }}</td>
-                    <td class="text-center">{{ product.contactNumber }}</td>
+                    <td class="text-center">{{ vehicleAssignment.vehicle.plateNumber }}</td>
+                    <td class="text-center">{{ vehicleAssignment.assignToEmpId.employeeNumber }}</td>
+                    <td class="text-center">{{ vehicleAssignment.assignToEmpName }}</td>
+                    <td class="text-center">{{ vehicleAssignment.vehicle.design }}</td>
+                    <td class="text-center">{{ vehicleAssignment.vehicle.make }}</td>
+                    <td class="text-center">{{ vehicleAssignment.vehicle.model }}</td>
+                    <td class="text-center">{{ vehicleAssignment.vehicle.year }}</td>
+                    <td class="text-center">{{ vehicleAssignment.vehicle.leaseExpiryDate }}</td>
+                    <td class="text-center">{{ vehicleAssignment.vehicle.leaseCost }}</td>
                     
                     <td class="text-center flex"> 
-                      <p-button routerLink="/edit-assignment" icon="bi bi-pen" class='mr' styleClass="p-button-rounded p-button-success p-button-text p-button-raised">
                        
-                      </p-button>
-                       <p-button icon="bi bi-trash" class='ml' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
+                       <p-button (click)="deleteVehicleAssignment(vehicleAssignment.id)" icon="bi bi-trash" class='ml' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
                       
                        </p-button>
                        <p-button icon="bi bi-paperclip" class='ml mr' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">

@@ -3,6 +3,7 @@ package com.example.FleetSystem.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.time.LocalDate;
 
 @Getter
@@ -20,6 +21,7 @@ public class Driver {
     private Long id;
     private String empName;
     private String title;
+    private Date joiningDate;
     private String department;
     private String section ;
     private String region;

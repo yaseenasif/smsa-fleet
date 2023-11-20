@@ -1,15 +1,15 @@
 package com.example.FleetSystem.controller;
 
-import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.dto.VendorDto;
-import com.example.FleetSystem.payload.ResponseMessage;
-import com.example.FleetSystem.service.VehicleService;
 import com.example.FleetSystem.service.VendorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import com.example.FleetSystem.model.Vendor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -25,11 +25,7 @@ public class VendorController {
             return ResponseEntity.ok(vendorService.save(vendorDto));
         }
 
-        @PreAuthorize("hasRole('ROLE_ADMIN')")
-        @GetMapping("/get-active-vendor")
-        public ResponseEntity<List<VendorDto>> getActiveVendors() {
-            return ResponseEntity.ok(vendorService.getActiveVendors());
-        }
+
 
         @PreAuthorize("hasRole('ROLE_ADMIN')")
         @GetMapping("/vendor/{id}")
@@ -55,5 +51,9 @@ public class VendorController {
             return ResponseEntity.ok(vendorService.makeVendorActive(id));
         }
 
+    @GetMapping("/get-active-vendors")
+    public ResponseEntity<List<Vendor>> getActiveVendors(){
+        return ResponseEntity.ok(vendorService.getAll());
+    }
 
 }

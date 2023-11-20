@@ -2,8 +2,10 @@ package com.example.FleetSystem.service;
 
 import com.example.FleetSystem.dto.DriverDto;
 import com.example.FleetSystem.model.Driver;
+import com.example.FleetSystem.model.Employee;
 import com.example.FleetSystem.model.User;
 import com.example.FleetSystem.repository.DriverRepository;
+import com.example.FleetSystem.repository.EmployeeRepository;
 import com.example.FleetSystem.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,18 +28,40 @@ public class DriverService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    EmployeeRepository employeeRepository;
+
     public DriverDto addDriver(DriverDto driverDto) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal instanceof UserDetails) {
             String username = ((UserDetails) principal).getUsername();
             User user = userRepository.findByEmail(username);
 
+            Optional<Employee> employee = employeeRepository.findById(driverDto.getEmpId().getId());
             Driver driver = toEntity(driverDto);
+
+            if(employee.isPresent()) {
+                driver.setEmpId(employee.get());
+            }else throw new RuntimeException("Employee Not Found");
+
+
+            driver.setEmpName(driverDto.getEmpId().getEmpName());
+            driver.setGrade(driverDto.getEmpId().getGrade());
+            driver.setCity(driverDto.getEmpId().getCity());
+            driver.setTitle(driverDto.getEmpId().getJobTitle());
+            driver.setDepartment(driverDto.getEmpId().getDepartment());
+            driver.setContactNumber(driverDto.getEmpId().getContactNumber());
+            driver.setEmailAddress(driverDto.getEmpId().getCompanyEmailAddress());
+            driver.setRegion(driverDto.getEmpId().getRegion());
+            driver.setNationality(driverDto.getEmpId().getNationality());
+            driver.setSection(driverDto.getEmpId().getSection());
+            driver.setJoiningDate(driverDto.getEmpId().getJoiningDate());
             driver.setCreatedAt(LocalDate.now());
             driver.setCreatedBy(user);
             driver.setStatus(Boolean.TRUE);
-
-            return toDto(driverRepository.save(driver));
+            Driver save = driverRepository.save(driver);
+            employeeRepository.save(employee.get());
+            return toDto(save);
         }
         throw new RuntimeException("Error adding Driver");
     }
@@ -74,18 +98,19 @@ public class DriverService {
                 String username = ((UserDetails) principal).getUsername();
                 User user = userRepository.findByEmail(username);
 
-                driver.get().setEmpName(driverDto.getEmpName());
-                driver.get().setTitle(driverDto.getTitle());
-                driver.get().setSection(driverDto.getSection());
-                driver.get().setDepartment(driverDto.getDepartment());
-                driver.get().setRegion(driverDto.getRegion());
-                driver.get().setCity(driverDto.getCity());
-                driver.get().setNationality(driverDto.getNationality());
-                driver.get().setContactNumber(driverDto.getContactNumber());
-                driver.get().setEmailAddress(driverDto.getEmailAddress());
-                driver.get().setGrade(driverDto.getGrade());
-                driver.get().setLicenseNumber(driverDto.getLicenseNumber());
-                driver.get().setVehicleBudget(driverDto.getVehicleBudget());
+                driver.get().setEmpName(driverDto.getEmpId().getEmpName());
+                driver.get().setTitle(driverDto.getEmpId().getJobTitle());
+                driver.get().setSection(driverDto.getEmpId().getSection());
+                driver.get().setJoiningDate(driverDto.getEmpId().getJoiningDate());
+                driver.get().setDepartment(driverDto.getEmpId().getDepartment());
+                driver.get().setRegion(driverDto.getEmpId().getRegion());
+                driver.get().setCity(driverDto.getEmpId().getCity());
+                driver.get().setNationality(driverDto.getEmpId().getNationality());
+                driver.get().setContactNumber(driverDto.getEmpId().getContactNumber());
+                driver.get().setEmailAddress(driverDto.getEmpId().getCompanyEmailAddress());
+                driver.get().setGrade(driverDto.getEmpId().getGrade());
+                driver.get().setLicenseNumber(driverDto.getEmpId().getLicenseNumber());
+                driver.get().setVehicleBudget(driverDto.getEmpId().getVehicleBudget());
                 driver.get().setAttachments(driverDto.getAttachments());
                 driver.get().setUpdatedAt(LocalDate.now());
                 driver.get().setUpdatedBy(user);

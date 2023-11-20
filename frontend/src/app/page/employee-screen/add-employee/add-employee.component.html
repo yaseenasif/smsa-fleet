@@ -5,6 +5,7 @@
         <app-dashboard-head></app-dashboard-head>
   
         <div class="main">
+            <p-toast></p-toast>
           <div class="card flex justify-content-center">
             <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
           </div>
@@ -13,6 +14,26 @@
               <h1 class="mb-4 h-color">Add Employee</h1>
               <form #employeeForm="ngForm" (ngSubmit)="onSubmit()">
               <div class="grid">
+                <div class="col-12 md:col-12 lg:col-6">
+                    <div class="flex flex-column gap-2">
+                      <label htmlFor="name">Employee Number</label>
+                      <input
+                        pInputText
+                        id="name"
+                        aria-describedby="name-help"
+                        name="employeeNumber"
+                        [(ngModel)]="employee.employeeNumber"
+                        #employeeNumber="ngModel"
+                        required
+                        [ngClass]="{'error': employeeNumber.invalid && (employeeNumber.dirty || employeeNumber.touched)}"
+                      />
+                      <small 
+                          id="name-help" class="color-red error" 
+                          *ngIf="employeeNumber.invalid && (employeeNumber.dirty || employeeNumber.touched)"
+                      > Employee Number is required
+                      </small>
+                    </div>
+                  </div>
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">Employee Name</label>
@@ -24,9 +45,10 @@
                       [(ngModel)]="employee.empName"
                       #empName="ngModel"
                       required
+                      [ngClass]="{'error': empName.invalid && (empName.dirty || empName.touched)}"
                     />
                     <small 
-                        id="name-help" class="color-red" 
+                        id="name-help" class="color-red error" 
                         *ngIf="empName.invalid && (empName.dirty || empName.touched)"
                     > Employee Name is required
                     </small>
@@ -42,12 +64,12 @@
                       name="jobTitle"
                       #jobTitle="ngModel"
                       [required]="true"
-                      optionLabel="locationName"
-                      optionValue="locationName"
+                      optionLabel="name"
+                      optionValue="name"
                       [filter]="true"
-                      filterBy="locationName"
+                      filterBy="name"
                       [showClear]="true"
-                      placeholder="Select Plate Number
+                      placeholder="Select Job Title
                     "
                     >
                       <ng-template pTemplate="selectedItem">
@@ -60,19 +82,21 @@
                       </ng-template>
                       <ng-template let-dummyData pTemplate="item">
                         <div class="flex align-items-center gap-2">
-                          <div>{{ dummyData.locationName }}</div>
+                          <div>{{ dummyData.name }}</div>
                         </div>
                       </ng-template>
                     </p-dropdown>
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
-                  <div class="flex flex-column gap-2">
+                  <div class="flex flex-column gap-2 emp-form-date">
                     <label htmlFor="name">Date Of Joining</label>
-                    <p-calendar [(ngModel)]="employee.joiningDate" [showIcon]="true"></p-calendar> 
-                    <!-- <small id="name-help"
-                      >{{name}}</small
-                    > -->
+                    <p-calendar #joinDate
+                    name="joinDate"
+                    [required]="true"
+                    [(ngModel)]="employee.joiningDate" [showIcon]="true"
+                    [style]="{'width': '100%'}"
+                    ></p-calendar>
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
@@ -81,14 +105,14 @@
                     <p-dropdown
                       class="w-full"
                       [(ngModel)]="employee.department"
-                      [options]="dummyData"
+                      [options]="dummyDepartment"
                       name="department"
                       #department="ngModel"
                       [required]="true"
-                      optionLabel="locationName"
-                      optionValue="locationName"
+                      optionLabel="name"
+                      optionValue="name"
                       [filter]="true"
-                      filterBy="locationName"
+                      filterBy="name"
                       [showClear]="true"
                       placeholder="Select Department
                     "
@@ -101,9 +125,9 @@
                           <div>{{ employee.department }}</div>
                         </div>
                       </ng-template>
-                      <ng-template let-dummyData pTemplate="item">
+                      <ng-template let-dummyDepartment pTemplate="item">
                         <div class="flex align-items-center gap-2">
-                          <div>{{ dummyData.locationName }}</div>
+                          <div>{{ dummyDepartment.name }}</div>
                         </div>
                       </ng-template>
                     </p-dropdown>
@@ -115,14 +139,14 @@
                       <p-dropdown
                         class="w-full"
                         [(ngModel)]="employee.section"
-                        [options]="dummyData"
+                        [options]="dummySection"
                         name="section"
                         #section="ngModel"
                         [required]="true"
-                        optionLabel="locationName"
-                        optionValue="locationName"
+                        optionLabel="name"
+                        optionValue="name"
                         [filter]="true"
-                        filterBy="locationName"
+                        filterBy="name"
                         [showClear]="true"
                         placeholder="Select Section
                       "
@@ -135,9 +159,9 @@
                             <div>{{ employee.section }}</div>
                           </div>
                         </ng-template>
-                        <ng-template let-dummyData pTemplate="item">
+                        <ng-template let-dummySection pTemplate="item">
                           <div class="flex align-items-center gap-2">
-                            <div>{{ dummyData.locationName }}</div>
+                            <div>{{ dummySection.name }}</div>
                           </div>
                         </ng-template>
                       </p-dropdown>
@@ -149,14 +173,14 @@
                       <p-dropdown
                         class="w-full"
                         [(ngModel)]="employee.region"
-                        [options]="dummyData"
+                        [options]="dummyRegion"
                         name="region"
                         #region="ngModel"
                         [required]="true"
-                        optionLabel="locationName"
-                        optionValue="locationName"
+                        optionLabel="name"
+                        optionValue="name"
                         [filter]="true"
-                        filterBy="locationName"
+                        filterBy="name"
                         [showClear]="true"
                         placeholder="Select Region
                       "
@@ -169,9 +193,9 @@
                             <div>{{ employee.region }}</div>
                           </div>
                         </ng-template>
-                        <ng-template let-dummyData pTemplate="item">
+                        <ng-template let-dummyRegion pTemplate="item">
                           <div class="flex align-items-center gap-2">
-                            <div>{{ dummyData.locationName }}</div>
+                            <div>{{ dummyRegion.name }}</div>
                           </div>
                         </ng-template>
                       </p-dropdown>
@@ -183,14 +207,14 @@
                       <p-dropdown
                         class="w-full"
                         [(ngModel)]="employee.city"
-                        [options]="dummyData"
+                        [options]="dummyCity"
                         name="city"
                         #city="ngModel"
                         [required]="true"
-                        optionLabel="locationName"
-                        optionValue="locationName"
+                        optionLabel="name"
+                        optionValue="name"
                         [filter]="true"
-                        filterBy="locationName"
+                        filterBy="name"
                         [showClear]="true"
                         placeholder="Select City
                       "
@@ -203,9 +227,9 @@
                             <div>{{ employee.city }}</div>
                           </div>
                         </ng-template>
-                        <ng-template let-dummyData pTemplate="item">
+                        <ng-template let-dummyCity pTemplate="item">
                           <div class="flex align-items-center gap-2">
-                            <div>{{ dummyData.locationName }}</div>
+                            <div>{{ dummyCity.name }}</div>
                           </div>
                         </ng-template>
                       </p-dropdown>
@@ -217,14 +241,14 @@
                       <p-dropdown
                         class="w-full"
                         [(ngModel)]="employee.nationality"
-                        [options]="dummyData"
+                        [options]="dummyNationality"
                         name="nationality"
                         #nationality="ngModel"
                         [required]="true"
-                        optionLabel="locationName"
-                        optionValue="locationName"
+                        optionLabel="name"
+                        optionValue="name"
                         [filter]="true"
-                        filterBy="locationName"
+                        filterBy="name"
                         [showClear]="true"
                         placeholder="Select Nationality
                       "
@@ -237,9 +261,9 @@
                             <div>{{ employee.nationality }}</div>
                           </div>
                         </ng-template>
-                        <ng-template let-dummyData pTemplate="item">
+                        <ng-template let-dummyNationality pTemplate="item">
                           <div class="flex align-items-center gap-2">
-                            <div>{{ dummyData.locationName }}</div>
+                            <div>{{ dummyNationality.name }}</div>
                           </div>
                         </ng-template>
                       </p-dropdown>
@@ -256,9 +280,10 @@
                       [(ngModel)]="employee.contactNumber"
                       #contactNumber="ngModel"
                       required
+                      [ngClass]="{'error': contactNumber.invalid && (contactNumber.dirty || contactNumber.touched)}"
                     />
                     <small 
-                        id="name-help" class="color-red" 
+                        id="name-help" class="color-red error" 
                         *ngIf="contactNumber.invalid && (contactNumber.dirty || contactNumber.touched)"
                     > Contact Number is required
                     </small>
@@ -284,38 +309,219 @@
                     </small>
                   </div>
                 </div>
-                <div class="col-12 md:col-12 lg:col-6">
-                    <div class="flex flex-column gap-2 form-hook">
-                      <label htmlFor="name">Grade</label>
-                      <p-dropdown
-                        class="w-full"
-                        [(ngModel)]="employee.grade"
-                        [options]="dummyData"
-                        name="grade"
-                        #grade="ngModel"
-                        [required]="true"
-                        optionLabel="locationName"
-                        optionValue="locationName"
-                        [filter]="true"
-                        filterBy="locationName"
-                        [showClear]="true"
-                        placeholder="Select Grade
-                      "
-                      >
-                        <ng-template pTemplate="selectedItem">
-                          <div
-                            class="flex align-items-center gap-2"
-                            *ngIf="employee"
-                          >
-                            <div>{{ employee.grade }}</div>
-                          </div>
-                        </ng-template>
-                        <ng-template let-dummyData pTemplate="item">
-                          <div class="flex align-items-center gap-2">
-                            <div>{{ dummyData.locationName }}</div>
-                          </div>
-                        </ng-template>
-                      </p-dropdown>
+               
+                  <div class="col-12 md:col-12 lg:col-6">
+                    <div class="flex flex-column gap-2">
+                      <label htmlFor="name">Budget Reference</label>
+                      <input
+                        pInputText
+                        id="name"
+                        aria-describedby="name-help"
+                        name="budgetRef"
+                        [(ngModel)]="employee.budgetRef"
+                        #budgetRef="ngModel"
+                        required
+                        [ngClass]="{'error': budgetRef.invalid && (budgetRef.dirty || budgetRef.touched)}"
+                      />
+                      <small 
+                          id="name-help" class="color-red error" 
+                          *ngIf="budgetRef.invalid && (budgetRef.dirty || budgetRef.touched)"
+                      > Budget Reference is required
+                      </small>
+                    </div>
+                  </div>
+                  <div class="col-12 md:col-12 lg:col-6">
+                    <div class="flex flex-column gap-2 emp-form-date">
+                      <label htmlFor="name">Date Of Birth</label>
+                      <p-calendar 
+                      #dateOfBirth="ngModel" 
+                      name="dateOfBirth"
+                      [required]="true"
+                      [(ngModel)]="employee.dateOfBirth" [showIcon]="true"
+                      [style]="{'width': '100%'}"
+                      [required] = true
+                      ></p-calendar>
+                    </div>
+                  </div>
+                  <div class="col-12 md:col-12 lg:col-6">
+                    <div class="flex flex-column gap-2">
+                      <label htmlFor="name">Location</label>
+                      <input
+                        pInputText
+                        id="name"
+                        aria-describedby="name-help"
+                        name="location"
+                        [(ngModel)]="employee.location"
+                        #location="ngModel"
+                        required
+                        [ngClass]="{'error': location.invalid && (location.dirty || location.touched)}"
+                      />
+                      <small 
+                          id="name-help" class="color-red error" 
+                          *ngIf="location.invalid && (location.dirty || location.touched)"
+                      > Location is required
+                      </small>
+                    </div>
+                  </div>
+                  <div class="col-12 md:col-12 lg:col-6">
+                    <div class="flex flex-column gap-2">
+                      <label htmlFor="name">Organization</label>
+                      <input
+                        pInputText
+                        id="name"
+                        aria-describedby="name-help"
+                        name="organization"
+                        [(ngModel)]="employee.organization"
+                        #organization="ngModel"
+                        required
+                        [ngClass]="{'error': organization.invalid && (organization.dirty || organization.touched)}"
+                      />
+                      <small 
+                          id="name-help" class="color-red error" 
+                          *ngIf="organization.invalid && (organization.dirty || organization.touched)"
+                      > Organization is required
+                      </small>
+                    </div>
+                  </div>
+                  <div class="col-12 md:col-12 lg:col-6">
+                    <div class="flex flex-column gap-2">
+                      <label htmlFor="name">Division</label>
+                      <input
+                        pInputText
+                        id="name"
+                        aria-describedby="name-help"
+                        name="division"
+                        [(ngModel)]="employee.division"
+                        #division="ngModel"
+                        required
+                        [ngClass]="{'error': division.invalid && (division.dirty || division.touched)}"
+                      />
+                      <small 
+                          id="name-help" class="color-red error" 
+                          *ngIf="division.invalid && (division.dirty || division.touched)"
+                      > division is required
+                      </small>
+                    </div>
+                  </div>
+                  <div class="col-12 md:col-12 lg:col-6">
+                    <div class="flex flex-column gap-2">
+                      <label htmlFor="name">DeptCode</label>
+                      <input
+                        pInputText
+                        id="name"
+                        aria-describedby="name-help"
+                        name="deptCode"
+                        [(ngModel)]="employee.deptCode"
+                        #deptCode="ngModel"
+                        required
+                        [ngClass]="{'error': deptCode.invalid && (deptCode.dirty || deptCode.touched)}"
+                      />
+                      <small 
+                          id="name-help" class="color-red error" 
+                          *ngIf="deptCode.invalid && (deptCode.dirty || deptCode.touched)"
+                      > deptCode is required
+                      </small>
+                    </div>
+                  </div>
+                  <div class="col-12 md:col-12 lg:col-6">
+                    <div class="flex flex-column gap-2">
+                      <label htmlFor="name">Iqama Number</label>
+                      <input
+                        pInputText
+                        id="name"
+                        aria-describedby="name-help"
+                        name="iqamaNumber"
+                        [(ngModel)]="employee.iqamaNumber"
+                        #iqamaNumber="ngModel"
+                        required
+                        [ngClass]="{'error': iqamaNumber.invalid && (iqamaNumber.dirty || iqamaNumber.touched)}"
+                      />
+                      <small 
+                          id="name-help" class="color-red error" 
+                          *ngIf="iqamaNumber.invalid && (iqamaNumber.dirty || iqamaNumber.touched)"
+                      > iqamaNumber is required
+                      </small>
+                    </div>
+                  </div>
+                  <div class="col-12 md:col-12 lg:col-6">
+                    <div class="flex flex-column gap-2">
+                      <label htmlFor="name">Sv Employee Number</label>
+                      <input
+                        pInputText
+                        id="name"
+                        aria-describedby="name-help"
+                        name="svEmployeeNumber"
+                        [(ngModel)]="employee.svEmployeeNumber"
+                        #svEmployeeNumber="ngModel"
+                        required
+                        [ngClass]="{'error': svEmployeeNumber.invalid && (svEmployeeNumber.dirty || svEmployeeNumber.touched)}"
+                      />
+                      <small 
+                          id="name-help" class="color-red error" 
+                          *ngIf="svEmployeeNumber.invalid && (svEmployeeNumber.dirty || svEmployeeNumber.touched)"
+                      > svEmployeeNumber is required
+                      </small>
+                    </div>
+                  </div>
+                  <div class="col-12 md:col-12 lg:col-6">
+                    <div class="flex flex-column gap-2">
+                      <label htmlFor="name">Sv Employee Name</label>
+                      <input
+                        pInputText
+                        id="name"
+                        aria-describedby="name-help"
+                        name="svEmployeeName"
+                        [(ngModel)]="employee.svEmployeeName"
+                        #svEmployeeName="ngModel"
+                        required
+                        [ngClass]="{'error': svEmployeeName.invalid && (svEmployeeName.dirty || svEmployeeName.touched)}"
+                      />
+                      <small 
+                          id="name-help" class="color-red error" 
+                          *ngIf="svEmployeeName.invalid && (svEmployeeName.dirty || svEmployeeName.touched)"
+                      > svEmployeeName is required
+                      </small>
+                    </div>
+                  </div>
+                  
+                  <div class="col-12 md:col-12 lg:col-6">
+                    <div class="flex flex-column gap-2">
+                      <label htmlFor="name">Age</label>
+                      <input
+                        pInputText
+                        id="name"
+                        aria-describedby="name-help"
+                        name="age"
+                        [(ngModel)]="employee.age"
+                        #age="ngModel"
+                        required
+                        [ngClass]="{'error': age.invalid && (age.dirty || age.touched)}"
+                      />
+                      <small 
+                          id="name-help" class="color-red error" 
+                          *ngIf="age.invalid && (age.dirty || age.touched)"
+                      > Age is required
+                      </small>
+                    </div>
+                  </div>
+                  <div class="col-12 md:col-12 lg:col-6">
+                    <div class="flex flex-column gap-2">
+                      <label htmlFor="name">Port Of Destination</label>
+                      <input
+                        pInputText
+                        id="name"
+                        aria-describedby="name-help"
+                        name="portOfDestination"
+                        [(ngModel)]="employee.portOfDestination"
+                        #portOfDestination="ngModel"
+                        required
+                        [ngClass]="{'error': portOfDestination.invalid && (portOfDestination.dirty || portOfDestination.touched)}"
+                      />
+                      <small 
+                          id="name-help" class="color-red error" 
+                          *ngIf="portOfDestination.invalid && (portOfDestination.dirty || portOfDestination.touched)"
+                      > Port Of Destination is required
+                      </small>
                     </div>
                   </div>
                 <div class="col-12 md:col-12 lg:col-6">
@@ -329,34 +535,142 @@
                       [(ngModel)]="employee.licenseNumber"
                       #licenseNumber="ngModel"
                       required
+                      [ngClass]="{'error': licenseNumber.invalid && (licenseNumber.dirty || licenseNumber.touched)}"
                     />
                     <small 
-                        id="name-help" class="color-red" 
+                        id="name-help" class="color-red error" 
                         *ngIf="licenseNumber.invalid && (licenseNumber.dirty || licenseNumber.touched)"
                     > License Number is required
                     </small>
                   </div>
                 </div>
-                <div class="col-12 md:col-12 lg:col-12">
-                  <div class="flex flex-column gap-2">
-                    <label htmlFor="name">Vehicle Budget</label>
-                    <input
-                      pInputText
-                      id="name"
-                      aria-describedby="name-help"
-                      name="vehicleBudget"
-                      [(ngModel)]="employee.vehicleBudget"
-                      #vehicleBudget="ngModel"
-                      required
-                    />
-                    <small 
-                        id="name-help" class="color-red" 
-                        *ngIf="vehicleBudget.invalid && (vehicleBudget.dirty || vehicleBudget.touched)"
-                    > Vehicle Budget is required
-                    </small>
+                <div class="col-12 md:col-12 lg:col-6">
+                    <div class="flex flex-column gap-2 form-hook">
+                      <label htmlFor="name">Grade</label>
+                      <p-dropdown
+                        class="w-full"
+                        [(ngModel)]="employee.grade"
+                        [options]="gradesData"
+                        name="grade"
+                        #grade="ngModel"
+                        [required]="true"
+                        optionLabel="name"
+                        optionValue="name"
+                        [filter]="true"
+                        filterBy="name"
+                        [showClear]="true"
+                        (onChange)="onAutoFilled()"
+                        placeholder="Select Grade
+                      "
+                      >
+                        <ng-template pTemplate="selectedItem">
+                          <div
+                            class="flex align-items-center gap-2"
+                            *ngIf="employee"
+                          >
+                            <div>{{ employee.grade }}</div>
+                          </div>
+                        </ng-template>
+                        <ng-template let-grade pTemplate="item">
+                          <div class="flex align-items-center gap-2">
+                            <div>{{ grade.name }}</div>
+                          </div>
+                        </ng-template>
+                      </p-dropdown>
+                    </div>
                   </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                    <div class="flex flex-column gap-2">
+                      <label htmlFor="name">Vehicle Budget</label>
+                      <input
+                        pInputText
+                        id="name"
+                        aria-describedby="name-help"
+                        name="vehicleBudget"
+                        [(ngModel)]="employee.vehicleBudget"
+                        #vehicleBudget="ngModel"
+                        required
+                        [ngClass]="{'error': vehicleBudget.invalid && (vehicleBudget.dirty || vehicleBudget.touched)}"
+                      />
+                      <small 
+                          id="name-help" class="color-red error" 
+                          *ngIf="vehicleBudget.invalid && (vehicleBudget.dirty || vehicleBudget.touched)"
+                      > Vehicle Budget is required
+                      </small>
+                    </div>
                 </div>
+                
               </div>
+              <div class="grid mt-3" >
+                <div class="col-12 md:col-12 lg:col-4" >
+                    <div class="flex flex-column gap-2" >
+                      <label htmlFor="name" >Marital Status</label>
+                      <div class="flex flex-wrap gap-3">
+                        <div class="flex align-items-center">
+                            <p-radioButton name="md" value="M" #radioBtn="ngModel"
+                            [(ngModel)]="employee.maritalStatus" [required]="true" inputId="ingredient1"></p-radioButton>
+                            <label for="ingredient1" class="ml-2">Married</label>
+                        </div>
+                        
+                        <div class="flex align-items-center">
+                            <p-radioButton name="u" value="U" [required]="true" [(ngModel)]="employee.maritalStatus" inputId="ingredient2"></p-radioButton>
+                            <label for="ingredient2" class="ml-2">Unmarried</label>
+                        </div>
+                    </div>
+                    </div>
+                  </div>
+            
+                <div class="col-12 md:col-12 lg:col-4">
+                    <div class="flex flex-column gap-2">
+                      <label htmlFor="name">Gender</label>
+                      <div class="flex flex-wrap gap-3">
+                        <div class="flex align-items-center">
+                            <p-radioButton name="m" value="M" [required]="true" [(ngModel)]="employee.gender" inputId="ingredient3"></p-radioButton>
+                            <label for="ingredient3" class="ml-2">Male</label>
+                        </div>
+                        
+                        <div class="flex align-items-center">
+                            <p-radioButton name="f" value="F" [required]="true" [(ngModel)]="employee.gender" inputId="ingredient4"></p-radioButton>
+                            <label for="ingredient4" class="ml-2">Female</label>
+                        </div>
+                    </div>
+                    </div>
+                  </div>
+                  <div class="col-12 md:col-12 lg:col-4" >
+                    <div class="flex flex-column gap-2" >
+                      <label htmlFor="name" >Status</label>
+                      <div class="flex flex-wrap gap-3">
+                        <div class="grid">
+                            <div class="col-12 md:col-12 lg:col-4" >
+                        <div class="flex align-items-center">
+                            <p-radioButton name="a" value="A" [required]="true" [(ngModel)]="employee.status" inputId="ingredient5"></p-radioButton>
+                            <label for="ingredient5" class="ml-2">Active</label>
+                        </div>
+                    </div>
+                    <div class="col-12 md:col-12 lg:col-6" >
+                        <div class="flex align-items-center">
+                            <p-radioButton name="t" value="T" [required]="true" [(ngModel)]="employee.status" inputId="ingredient6"></p-radioButton>
+                            <label for="ingredient6" class="ml-2">Terminated</label>
+                        </div>
+                    </div>
+                    <div class="col-12 md:col-12 lg:col-4" >
+                        <div class="flex align-items-center">
+                            <p-radioButton name="r" value="R" [required]="true" [(ngModel)]="employee.status" inputId="ingredient7"></p-radioButton>
+                            <label for="ingredient7" class="ml-2">Resigned</label>
+                        </div>
+                    </div>
+                    <div class="col-12 md:col-12 lg:col-6" >
+                        <div class="flex align-items-center">
+                            <p-radioButton name="d" value="D" [required]="true" [(ngModel)]="employee.status" inputId="ingredient8"></p-radioButton>
+                            <label for="ingredient8" class="ml-2">Deceased</label>
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                  </div>
+              </div>
+              
               <h2 class="mb-4 mt-4">Attachments</h2>
               <div class="grid">
                 <!-- <div class="lg:col-6 md:col-12 sm:col-12">
@@ -406,7 +720,7 @@
                   styleClass="p-button-outlined"
                 >
                 </p-button>
-                <p-button label="Save" type="submit" class="bg-b-color ml"> </p-button>
+                <p-button label="Save" type="submit" class="bg-b-color ml" [disabled]="employeeForm.invalid || employeeForm.invalid === null"> </p-button>
               </div>
             </form>
             </div>

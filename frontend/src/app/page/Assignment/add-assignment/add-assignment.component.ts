@@ -1,15 +1,118 @@
 import { Component } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
+import { VehicleAssignment } from 'src/app/modal/vehicle-assignment';
+import { VehicleService } from '../../vehicle-screen/service/vehicle.service';
+import { Vehicle } from 'src/app/modal/vehicle';
+import { Employee } from 'src/app/modal/employee';
+import { EmployeeService } from '../../employee-screen/service/employee.service';
+import { VehicleAssignmentService } from '../vehicle-assignment.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-assignment',
   templateUrl: './add-assignment.component.html',
-  styleUrls: ['./add-assignment.component.scss']
+  styleUrls: ['./add-assignment.component.scss'],
+  providers: [MessageService]
 })
 export class AddAssignmentComponent {
+
+  isUpdateMode: boolean = false;
+
+  assignedEmployeeNumber !: Number | null | undefined
+  assignedEmployeeName !: String | null | undefined
+
+  vehiclePlateNumber !: String | undefined | null
+
+  employeeId !: Number
+
+  unAssignedEmployeeId !: Number
+
+  vehicleId !: number
+
+  selecteUnAssigneddEmployee !: Employee
+
+  vehicle !: Vehicle[]
+
+  selectedVehicle !: Vehicle
+
+  employee !: Employee[]
+
+  unAssignedEmployee !: Employee[]
+
+  vehicleAssignmentId: Number | undefined | null
+  
+  vehicleAssignment: VehicleAssignment = {
+    id: undefined,
+    design: undefined,
+    make: undefined,
+    assignToEmpName: undefined,
+    model: undefined,
+    year: undefined,
+    leaseExpiry: undefined,
+    leaseCost: undefined,
+    plateNumber: undefined,
+    attachments: undefined,
+    assignToEmpId: {
+      id: undefined,
+      employeeNumber: undefined,
+      budgetRef: undefined,
+      empName: undefined,
+      gender: undefined,
+      maritalStatus: undefined,
+      dateOfBirth: undefined,
+      joiningDate: undefined,
+      jobTitle: undefined,
+      status: undefined,
+      region: undefined,
+      location: undefined,
+      organization: undefined,
+      division: undefined,
+      deptCode: undefined,
+      department: undefined,
+      contactNumber: undefined,
+      section: undefined,
+      iqamaNumber: undefined,
+      svEmployeeNumber: undefined,
+      svEmployeeName: undefined,
+      city: undefined,
+      age: undefined,
+      portOfDestination: undefined,
+      nationality: undefined,
+      companyEmailAddress: undefined,
+      grade: undefined,
+      licenseNumber: undefined,
+      vehicleBudget: undefined
+    },
+    vehicle: {
+      id: undefined,
+      processOrderNumber: undefined,
+      plateNumber: undefined,
+      make: undefined,
+      year: undefined,
+      design: undefined,
+      model: undefined,
+      type: undefined,
+      capacity: undefined,
+      power: undefined,
+      registrationExpiry: undefined,
+      fuelType: undefined,
+      vendor: {
+        id: undefined,
+        vendorName: undefined,
+        officeLocation: undefined,
+        attachments: undefined
+      },
+      insuranceExpiry: undefined,
+      leaseCost: undefined,
+      leaseStartDate: undefined,
+      leaseExpiryDate: undefined,
+      usageType: undefined,
+      attachments: undefined
+    }
+  }
+
   items: MenuItem[] | undefined;
-  employee!:Employee[];
-  selectedEmployee!:Employee;
+  
     size=100000
   uploadedFiles: any[] = [];
 
@@ -23,37 +126,117 @@ export class AddAssignmentComponent {
     }
   }
 
-  constructor() { }
+  constructor( private vehicleService: VehicleService, private employeeService: EmployeeService,
+     private vehicleAssignmentService: VehicleAssignmentService,
+     private route: ActivatedRoute,
+     private router: Router,
+     private messageService: MessageService) { }
+
+
   name!:string;
   contactNumber!:string;
   referenceNumber!:string;
   ngOnInit(): void {
-    this.items = [{ label: 'Assignment',routerLink:'/assignment'},{ label: 'Add Assignment'}];
-    this.employee=[
-      {
-        employeeName:"karachi",
-        id:1
-      },
-      {
-        employeeName:"kaAAi",
-        id:2
-      },
-      {
-        employeeName:"Alld",
-        id:3
-      },
-      {
-        employeeName:"islamabad",
-        id:4
-      },
-      {
-        employeeName:"lahore",
-        id:5
-      },
-    ]
+    this.items = [{ label: 'Vehicle Assignment',routerLink:'/assignment'},{ label: 'Add Vehicle Assignment'}];
+    
+    this.getAllVehicles();
+
+    this.getAllEmployee();
+
+    this.getAllUnAssignedEmployees();
+
   }
+
+  getVehicleAssignmentById(id: Number) {
+    this.vehicleAssignmentService.getVehicleAssignmentById(id).subscribe((res: VehicleAssignment) => {
+      this.vehicleAssignment = res;
+    })
+  }
+
+  getAllVehicles() {
+    this.vehicleService.getAllVehicles().subscribe((res : Vehicle[]) => {
+      console.log(res);
+      
+      this.vehicle = res;
+
+    })
+  }
+
+  getAllEmployee() {
+    this.employeeService.getAllEmployees().subscribe((res: Employee[]) => {
+      this.employee = res;
+    })
+  }
+
+  getVehicleData() {
+
+    this.vehicleAssignment.vehicle = this.selectedVehicle;
+    this.vehicleAssignment.make = this.selectedVehicle.make;
+    this.vehicleAssignment.design = this.selectedVehicle.design;
+    this.vehicleAssignment.model = this.selectedVehicle.model;
+    this.vehicleAssignment.year = this.selectedVehicle.year;
+    this.vehicleAssignment.leaseExpiry = this.selectedVehicle.leaseExpiryDate;
+    this.vehicleAssignment.leaseCost = this.selectedVehicle.leaseCost;
+    // this.vehicleAssignment.plateNumber = this.selectedVehicle.plateNumber;
+    this.vehiclePlateNumber = this.selectedVehicle.plateNumber;
+    
+    this.assignedEmployeeNumber = null
+    this.assignedEmployeeName = null
+
+    this.vehicleAssignmentService.getAllVehicleAssignmentByPlateNumber(this.vehiclePlateNumber!).subscribe((res) => {
+      
+      this.assignedEmployeeNumber = res.assignToEmpId.employeeNumber
+      this.assignedEmployeeName = res.assignToEmpId.empName;
+      this.vehicleAssignmentId = res.id
+      console.log(res);
+      
+
+    })
+  }
+
+  onSubmit() {
+
+    if(!this.assignedEmployeeNumber) {
+
+      this.vehicleAssignmentService.addVehicleAssignment(this.vehicleAssignment).subscribe((res) => {
+
+        this.messageService.add({ severity: 'success', summary: 'Vehicle Assigned Successfully' });
+
+        setTimeout(() => {
+          this.router.navigate(['/assignment'])
+        },3000)
+        
+      })
+
+    }
+
+    else {
+      debugger
+      this.vehicleAssignmentService.updateVehicleAssignment(this.vehicleAssignmentId!, this.vehicleAssignment).subscribe((res) => {
+      
+        this.messageService.add({ severity: 'success', summary: 'Update Successfully' });
+
+        setTimeout(() => {
+          this.router.navigate(['/assignment'])
+        },3000)
+
+      })
+    }
+
+    
+  }
+
+  getAllUnAssignedEmployees() {
+    this.employeeService.getAllUnAssignedEmployees().subscribe((res: Employee[]) => {
+      this.unAssignedEmployee = res;
+    })
+  }
+
+  getUnAssignedEmployeeData() {
+    this.selecteUnAssigneddEmployee = (this.unAssignedEmployee.find((el) => {return el.id == this.unAssignedEmployeeId}))!
+    this.vehicleAssignment.assignToEmpName = this.selecteUnAssigneddEmployee.empName
+    this.vehicleAssignment.assignToEmpId = this.selecteUnAssigneddEmployee
+  }
+
 }
-interface Employee{
-  employeeName:string,
-  id:number
-}
+

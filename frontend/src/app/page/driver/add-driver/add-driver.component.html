@@ -5,28 +5,44 @@
       <app-dashboard-head></app-dashboard-head>
 
       <div class="main">
+        <p-toast></p-toast>
         <div class="card flex justify-content-center">
           <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
         </div>
         <div class="body-card">
           <div class="card">
             <h1 class="mb-4 h-color">Add Driver</h1>
+            <form #driverForm="ngForm" (ngSubmit)="onSubmit()">
             <div class="grid">
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2 form-hook">
-                  <label htmlFor="name">Emp ID</label>
-                  <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
-                    [(ngModel)]="selectedEmployee" optionLabel="locationName" [filter]="true" filterBy="id"
-                    [showClear]="true" placeholder="Select Employee ID
-                  ">
+                  <label htmlFor="name">Select Employee Number</label>
+                  <p-dropdown
+                    class="w-full"
+                    [(ngModel)]="selectedEmployee"
+                    [options]="employee"
+                    name="employeeNumber"
+                    #employeeId="ngModel"
+                    [required]="true"
+                    optionLabel="id" 
+                    [filter]="true"
+                    filterBy="id"
+                    [showClear]="true"
+                    (onChange)="getEmployeeData()"
+                    placeholder="Select Employee Number
+                  "
+                  >
                     <ng-template pTemplate="selectedItem">
-                      <div class="flex align-items-center gap-2" *ngIf="selectedEmployee">
-                        <div>{{ selectedEmployee.id}}</div>
+                      <div
+                        class="flex align-items-center gap-2"
+                        *ngIf="selectedEmployee"
+                      >
+                        <div>{{ selectedEmployee.employeeNumber }}</div>
                       </div>
                     </ng-template>
                     <ng-template let-employee pTemplate="item">
                       <div class="flex align-items-center gap-2">
-                        <div>{{ employee.id }}</div>
+                        <div>{{ employee.employeeNumber }}</div>
                       </div>
                     </ng-template>
                   </p-dropdown>
@@ -34,163 +50,252 @@
               </div>
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
-                  <label htmlFor="name">Emp Name</label>
-                  <input pInputText id="referenceNumber" aria-describedby="referenceNumber-help"
-                    [ngModelOptions]="{standalone:true}" [(ngModel)]="referenceNumber" />
-                  <!-- <small id="name-help"
-                      >{{name}}</small
-                    > -->
+                  <label htmlFor="name">Employee Name</label>
+                  <input
+                    pInputText
+                    id="name"
+                    aria-describedby="name-help"
+                    name="empName"
+                    [(ngModel)]="driver.empId.empName"
+                    #empName="ngModel"
+                    required
+                  />
+                  <small 
+                      id="name-help" class="color-red" 
+                      *ngIf="empName.invalid && (empName.dirty || empName.touched)"
+                  > Employee Name is required
+                  </small>
                 </div>
               </div>
-
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
-                  <label htmlFor="name">Job title</label>
-                  <input pInputText id="name" aria-describedby="name-help" [ngModelOptions]="{standalone:true}"
-                    [(ngModel)]="name" />
+                  <label htmlFor="name">Job Title</label>
+                  <input
+                    pInputText
+                    id="name"
+                    aria-describedby="name-help"
+                    name="title"
+                    [(ngModel)]="driver.empId.jobTitle"
+                    #title="ngModel"
+                    required
+                  />
+                  <small 
+                      id="name-help" class="color-red" 
+                      *ngIf="title.invalid && (title.dirty || title.touched)"
+                  > Job Title is required
+                  </small>
+                </div>
+              </div>
+              <div class="col-12 md:col-12 lg:col-6">
+                <div class="flex flex-column gap-2 emp-form-date">
+                  <label htmlFor="name">Date Of Joining</label>
+                  <p-calendar #joinDate
+                  name="joinDate"
+                  [required]="true"
+                  [(ngModel)]="driver.empId.joiningDate" [showIcon]="true"
+                  [style]="{'width': '100%'}"
+                  ></p-calendar> 
                   <!-- <small id="name-help"
                     >{{name}}</small
                   > -->
                 </div>
               </div>
-              <div class="col-12 md:col-12 lg:col-6">
-                <div class="flex flex-column gap-2">
-                  <label htmlFor="name">Date of joining</label>
-                  <input pInputText id="referenceNumber" aria-describedby="referenceNumber-help"
-                    [ngModelOptions]="{standalone:true}" [(ngModel)]="referenceNumber" />
-                  <!-- <small id="name-help"
-                      >{{name}}</small
-                    > -->
-                </div>
-              </div>
-
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Department</label>
-                  <input pInputText id="name" aria-describedby="name-help" [ngModelOptions]="{standalone:true}"
-                    [(ngModel)]="name" />
-                  <!-- <small id="name-help"
-                    >{{name}}</small
-                  > -->
+                  <input
+                    pInputText
+                    id="name"
+                    aria-describedby="name-help"
+                    name="department"
+                    [(ngModel)]="driver.empId.department"
+                    #department="ngModel"
+                    required
+                  />
+                  <small 
+                      id="name-help" class="color-red" 
+                      *ngIf="department.invalid && (department.dirty || department.touched)"
+                  > Department is required
+                  </small>
                 </div>
               </div>
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Section</label>
-                  <input pInputText id="referenceNumber" aria-describedby="referenceNumber-help"
-                    [ngModelOptions]="{standalone:true}" [(ngModel)]="referenceNumber" />
-                  <!-- <small id="name-help"
-                      >{{name}}</small
-                    > -->
+                  <input
+                    pInputText
+                    id="name"
+                    aria-describedby="name-help"
+                    name="section"
+                    [(ngModel)]="driver.empId.section"
+                    #section="ngModel"
+                    required
+                  />
+                  <small 
+                      id="name-help" class="color-red" 
+                      *ngIf="section.invalid && (section.dirty || section.touched)"
+                  > Section is required
+                  </small>
                 </div>
               </div>
-
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Region</label>
-                  <input pInputText id="name" aria-describedby="name-help" [ngModelOptions]="{standalone:true}"
-                    [(ngModel)]="name" />
-                  <!-- <small id="name-help"
-                    >{{name}}</small
-                  > -->
+                  <input
+                    pInputText
+                    id="name"
+                    aria-describedby="name-help"
+                    name="region"
+                    [(ngModel)]="driver.empId.region"
+                    #region="ngModel"
+                    required
+                  />
+                  <small 
+                      id="name-help" class="color-red" 
+                      *ngIf="region.invalid && (region.dirty || region.touched)"
+                  > Region is required
+                  </small>
                 </div>
               </div>
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">City</label>
-                  <input pInputText id="referenceNumber" aria-describedby="referenceNumber-help"
-                    [ngModelOptions]="{standalone:true}" [(ngModel)]="referenceNumber" />
-                  <!-- <small id="name-help"
-                      >{{name}}</small
-                    > -->
+                  <input
+                    pInputText
+                    id="name"
+                    aria-describedby="name-help"
+                    name="city"
+                    [(ngModel)]="driver.empId.city"
+                    #city="ngModel"
+                    required
+                  />
+                  <small 
+                      id="name-help" class="color-red" 
+                      *ngIf="city.invalid && (city.dirty || city.touched)"
+                  > City is required
+                  </small>
                 </div>
               </div>
-
-
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Nationality</label>
-                  <input pInputText id="name" aria-describedby="name-help" [ngModelOptions]="{standalone:true}"
-                    [(ngModel)]="name" />
-                  <!-- <small id="name-help"
-                    >{{name}}</small
-                  > -->
+                  <input
+                    pInputText
+                    id="name"
+                    aria-describedby="name-help"
+                    name="nationality"
+                    [(ngModel)]="driver.empId.nationality"
+                    #nationality="ngModel"
+                    required
+                  />
+                  <small 
+                      id="name-help" class="color-red" 
+                      *ngIf="nationality.invalid && (nationality.dirty || nationality.touched)"
+                  > Nationality is required
+                  </small>
                 </div>
               </div>
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Contact Number</label>
-                  <input pInputText id="referenceNumber" aria-describedby="referenceNumber-help"
-                    [ngModelOptions]="{standalone:true}" [(ngModel)]="referenceNumber" />
-                  <!-- <small id="name-help"
-                      >{{name}}</small
-                    > -->
+                  <input
+                    pInputText
+                    id="name"
+                    aria-describedby="name-help"
+                    name="contactNumber"
+                    [(ngModel)]="driver.empId.contactNumber"
+                    #contactNumber="ngModel"
+                    required
+                  />
+                  <small 
+                      id="name-help" class="color-red" 
+                      *ngIf="contactNumber.invalid && (contactNumber.dirty || contactNumber.touched)"
+                  > Contact Number is required
+                  </small>
                 </div>
               </div>
-
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
-                  <label htmlFor="name">Company email address</label>
-                  <input pInputText id="name" aria-describedby="name-help" [ngModelOptions]="{standalone:true}"
-                    [(ngModel)]="name" />
-                  <!-- <small id="name-help"
-                    >{{name}}</small
-                  > -->
+                  <label htmlFor="name">Email Address</label>
+                  <input
+                    pInputText
+                    id="name"
+                    aria-describedby="name-help"
+                    name="emailAddress"
+                    [(ngModel)]="driver.empId.companyEmailAddress"
+                    #emailAddress="ngModel"
+                    required
+                  />
+                  <small 
+                      id="name-help" class="color-red" 
+                      *ngIf="emailAddress.invalid && (emailAddress.dirty || emailAddress.touched)"
+                  > Grade is required
+                  </small>
                 </div>
               </div>
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Grade</label>
-                  <input pInputText id="referenceNumber" aria-describedby="referenceNumber-help"
-                    [ngModelOptions]="{standalone:true}" [(ngModel)]="referenceNumber" />
-                  <!-- <small id="name-help"
-                      >{{name}}</small
-                    > -->
+                  <input
+                    pInputText
+                    id="name"
+                    aria-describedby="name-help"
+                    name="grade"
+                    [(ngModel)]="driver.empId.grade"
+                    #grade="ngModel"
+                    required
+                  />
+                  <small 
+                      id="name-help" class="color-red" 
+                      *ngIf="grade.invalid && (grade.dirty || grade.touched)"
+                  > Grade is required
+                  </small>
                 </div>
               </div>
-
               <div class="col-12 md:col-12 lg:col-6">
-                <div class="flex flex-column gap-2 form-hook">
+                <div class="flex flex-column gap-2">
                   <label htmlFor="name">License Number</label>
-                  <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
-                    [(ngModel)]="selectedEmployee" placeholder="Select License Number
-                  ">
-                    <ng-template pTemplate="selectedItem">
-                      <div class="flex align-items-center gap-2" *ngIf="selectedEmployee">
-                        <div>{{ selectedEmployee.id}}</div>
-                      </div>
-                    </ng-template>
-                    <ng-template let-employee pTemplate="item">
-                      <div class="flex align-items-center gap-2">
-                        <div>{{ employee.id }}</div>
-                      </div>
-                    </ng-template>
-                  </p-dropdown>
+                  <input
+                    pInputText
+                    id="name"
+                    aria-describedby="name-help"
+                    name="licenseNumber"
+                    [(ngModel)]="driver.licenseNumber"
+                    #licenseNumber="ngModel"
+                    required
+                    [ngClass]="{'error': licenseNumber.invalid && (licenseNumber.dirty || licenseNumber.touched)}"
+                  />
+                  <small 
+                      id="name-help" class="color-red error" 
+                      *ngIf="licenseNumber.invalid && (licenseNumber.dirty || licenseNumber.touched)"
+                  > License Number is required
+                  </small>
                 </div>
               </div>
               <div class="col-12 md:col-12 lg:col-6">
-                <div class="flex flex-column gap-2 form-hook">
+                <div class="flex flex-column gap-2">
                   <label htmlFor="name">Vehicle Budget</label>
-                  <p-dropdown class="w-full" [options]="employee" [ngModelOptions]="{standalone:true}"
-                    [(ngModel)]="selectedEmployee"  placeholder="Select vehicle Budget
-                  ">
-                    <ng-template pTemplate="selectedItem">
-                      <div class="flex align-items-center gap-2" *ngIf="selectedEmployee">
-                        <div>{{ selectedEmployee.id}}</div>
-                      </div>
-                    </ng-template>
-                    <ng-template let-employee pTemplate="item">
-                      <div class="flex align-items-center gap-2">
-                        <div>{{ employee.id }}</div>
-                      </div>
-                    </ng-template>
-                  </p-dropdown>
+                  <input
+                    pInputText
+                    id="name"
+                    aria-describedby="name-help"
+                    name="vehicleBudget"
+                    [(ngModel)]="driver.vehicleBudget"
+                    #vehicleBudget="ngModel"
+                    required
+                    [ngClass]="{'error': vehicleBudget.invalid && (vehicleBudget.dirty || vehicleBudget.touched)}"
+                  />
+                  <small 
+                      id="name-help" class="color-red error" 
+                      *ngIf="vehicleBudget.invalid && (vehicleBudget.dirty || vehicleBudget.touched)"
+                  > Vehicle Budget is required
+                  </small>
                 </div>
               </div>
             </div>
             <h2 class="mb-4 mt-4">Attachments</h2>
             <div class="grid">
-              <div class="lg:col-6 md:col-12 sm:col-12">
+              <!-- <div class="lg:col-6 md:col-12 sm:col-12">
                 <div class="flex flex-column gap-2 form-hook">
                   <h3 for="">ID Copy</h3>
                   <p-fileUpload
@@ -227,14 +332,19 @@
                     </ng-template>
                   </p-fileUpload>
                 </div>
-              </div>
+              </div> -->
             </div>
             <div class="flex align-items-center justify-content-end mt-4">
-              <p-button label="Cancel" class="bg-o-color mr" routerLink="/driver" styleClass="p-button-outlined">
+              <p-button
+                label="Cancel"
+                class="bg-o-color mr"
+                routerLink="/driver"
+                styleClass="p-button-outlined"
+              >
               </p-button>
-              <p-button label="Save" class="bg-b-color ml">
-              </p-button>
+              <p-button label="Save" type="submit" class="bg-b-color ml" [disabled]="driverForm.invalid || driverForm.invalid === null"> </p-button>
             </div>
+          </form>
           </div>
         </div>
       </div>

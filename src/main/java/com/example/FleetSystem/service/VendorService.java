@@ -113,4 +113,7 @@ public class VendorService {
         return modelMapper.map(vendorDto , Vendor.class);
     }
 
+    public List<Vendor> getAll(){
+        return vendorRepository.getActiveVendors();
+    }
 }
