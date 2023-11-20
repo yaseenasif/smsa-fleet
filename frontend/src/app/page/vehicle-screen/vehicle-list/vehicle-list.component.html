@@ -94,7 +94,10 @@
                         <p-button (click)="deleteVehicle(vehicles.id)" icon="bi bi-trash" class='ml' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
                        
                         </p-button>
-                        <p-button icon="bi bi-paperclip" class='ml mr' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
+                        <p-button routerLink="/vehicle-attachment" icon="bi bi-paperclip" class='ml mr' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
+                      
+                        </p-button>
+                        <p-button routerLink="/vehicle-history"  icon="bi bi-clock-history" class='ml mr' styleClass="p-button-rounded p-button-warning p-button-text p-button-raised">
                       
                         </p-button>
                         <p-button (click)="showDialog(vehicles.id)"  icon="bi bi-arrow-repeat" class='ml mr' styleClass="p-button-rounded p-button-info p-button-text p-button-raised">

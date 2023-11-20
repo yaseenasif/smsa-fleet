@@ -59,6 +59,10 @@ import { GradeListComponent } from './page/grade/grade-list/grade-list.component
 import { AddGradeComponent } from './page/grade/add-grade/add-grade.component';
 import { FormsModule } from '@angular/forms';
 import { EditGradeComponent } from './page/grade/edit-grade/edit-grade.component';
+import { VehicleHistoryComponent } from './page/vehicle-screen/vehicle-history/vehicle-history.component';
+import { VehicleAttachmentComponent } from './page/vehicle-screen/vehicle-attachment/vehicle-attachment.component';
+import { DriverAttachmentComponent } from './page/driver/driver-attachment/driver-attachment.component';
+import { AssigmentAttachmentComponent } from './page/Assignment/assigment-attachment/assigment-attachment.component';
 
 NgModule({
   imports: [FormsModule],
@@ -93,6 +97,11 @@ const routes: Routes = [
   {
     path:'driver',
     component:DriverListComponent,
+    canActivate:[AuthGuard]
+  },
+  {
+    path:'driver-attachment',
+    component:DriverAttachmentComponent,
     canActivate:[AuthGuard]
   },
   {
@@ -168,6 +177,16 @@ const routes: Routes = [
   {
     path:'vehicle',
     component:VehicleListComponent,
+    canActivate:[AuthGuard]
+  },
+   {
+    path:'vehicle-history',
+    component:VehicleHistoryComponent,
+    canActivate:[AuthGuard]
+  },
+    {
+    path:'vehicle-attachment',
+    component:VehicleAttachmentComponent,
     canActivate:[AuthGuard]
   },
   {
@@ -324,6 +343,11 @@ const routes: Routes = [
   {
     path:'assignment',
     component:AssignmentListComponent,
+    canActivate:[AuthGuard]
+  },
+  {
+    path:'assignment-attachment',
+    component:AssigmentAttachmentComponent,
     canActivate:[AuthGuard]
   },
   {

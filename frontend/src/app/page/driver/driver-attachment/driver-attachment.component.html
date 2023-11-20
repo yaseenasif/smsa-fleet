@@ -1,0 +1,44 @@
+
+<div class="flex flex-row">
+    <app-sidebar></app-sidebar>
+    <div class="body-position">
+        <div class="body-holder">
+            <app-dashboard-head></app-dashboard-head>
+
+            <div class="main">
+                <div class="card flex justify-content-center">
+                    <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+                </div>
+                <div class="body-card">
+                    <p-toast></p-toast>
+                    <div class="card">
+                        <h1 class="mb-4 h-color">Add Vehicle Attachments</h1>
+                        <form #domesticShipmentForm="ngForm">
+
+                            <div class="grid">
+                                <h2 class="sm:col-12  mb-4 mt-4">Attachments</h2>
+                                    <div class=" lg:col-6 md:col-12 sm:col-12 ">
+                                        <div class="flex flex-column gap-2 form-hook">
+                                            <h3 for="">ID Copy</h3>
+                                            <p-fileUpload name="file" method="post" [headers]="headers" (onError)="onError($event)" [url]="url.concat('/Istemara')" (onUpload)="onUpload($event,'ID Copy')" accept=".pdf,.png,.jpeg,.xlsx"
+                                                [maxFileSize]="size">                                            
+                                            </p-fileUpload>
+                                        </div>
+                                    </div>
+                                    <div class=" lg:col-6 md:col-12 sm:col-12 ">
+                                        <div class="flex flex-column gap-2 form-hook">
+                                            <h3 for="">Driving License</h3>
+                                            <p-fileUpload name="file" method="post" [headers]="headers" (onError)="onError($event)" [url]="url.concat('/Driving License')" (onUpload)="onUpload($event,'Other Attachments')" accept=".pdf,.png,.jpeg"
+                                                [maxFileSize]="size">                                            
+                                            </p-fileUpload>
+                                        </div>
+                                    </div> 
+                                   
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
