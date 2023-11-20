@@ -45,8 +45,8 @@ public class VendorService {
         throw new RuntimeException("Error Adding Vendor");
     }
 
-    public List<VendorDto> getActiveVendors() {
-        return toDtoList(vendorRepository.getActiveVendors());
+    public List<Vendor> getAll(){
+        return vendorRepository.getActiveVendors();
     }
 
     public VendorDto getById(Long id) {
@@ -113,7 +113,4 @@ public class VendorService {
         return modelMapper.map(vendorDto , Vendor.class);
     }
 
-    public List<Vendor> getAll(){
-        return vendorRepository.getActiveVendors();
-    }
 }

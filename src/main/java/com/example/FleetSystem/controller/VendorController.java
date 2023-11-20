@@ -25,8 +25,6 @@ public class VendorController {
             return ResponseEntity.ok(vendorService.save(vendorDto));
         }
 
-
-
         @PreAuthorize("hasRole('ROLE_ADMIN')")
         @GetMapping("/vendor/{id}")
         public ResponseEntity<VendorDto> getVehicleById(@PathVariable Long id) {
@@ -51,9 +49,9 @@ public class VendorController {
             return ResponseEntity.ok(vendorService.makeVendorActive(id));
         }
 
-    @GetMapping("/get-active-vendors")
-    public ResponseEntity<List<Vendor>> getActiveVendors(){
-        return ResponseEntity.ok(vendorService.getAll());
-    }
+       @GetMapping("/get-active-vendors")
+         public ResponseEntity<List<Vendor>> getActiveVendors(){
+         return ResponseEntity.ok(vendorService.getAll());
+       }
 
 }
