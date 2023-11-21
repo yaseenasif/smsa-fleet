@@ -98,7 +98,7 @@ public class VehicleService {
     }
 
 
-    public List<VehicleDto> getAll() {
+    public List<VehicleDto> getActiveVehicles() {
         return toDtoList(vehicleRepository.getActiveVehicles());
     }
 

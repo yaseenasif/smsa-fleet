@@ -8,6 +8,7 @@ import org.hibernate.envers.RelationTargetAuditMode;
 import javax.persistence.*;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
@@ -62,5 +63,7 @@ public class Vehicle {
     @ManyToOne
     @JoinColumn(name = "updated_by")
     private User updatedBy;
+
+
 
 }
