@@ -99,6 +99,7 @@ import { VehicleAttachmentComponent } from './page/vehicle-screen/vehicle-attach
 import { DriverAttachmentComponent } from './page/driver/driver-attachment/driver-attachment.component';
 import { AssigmentAttachmentComponent } from './page/Assignment/assigment-attachment/assigment-attachment.component';
 import { VendorAttachmentComponent } from './page/vendor-screen/vendor-attachment/vendor-attachment.component';
+import { EmployeeAttachmentComponent } from './page/employee-screen/employee-attachment/employee-attachment.component';
 
 @NgModule({
   declarations: [
@@ -167,6 +168,7 @@ import { VendorAttachmentComponent } from './page/vendor-screen/vendor-attachmen
     DriverAttachmentComponent,
     AssigmentAttachmentComponent,
     VendorAttachmentComponent,
+    EmployeeAttachmentComponent,
     
   ],
   imports: [

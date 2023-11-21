@@ -63,6 +63,8 @@ import { VehicleHistoryComponent } from './page/vehicle-screen/vehicle-history/v
 import { VehicleAttachmentComponent } from './page/vehicle-screen/vehicle-attachment/vehicle-attachment.component';
 import { DriverAttachmentComponent } from './page/driver/driver-attachment/driver-attachment.component';
 import { AssigmentAttachmentComponent } from './page/Assignment/assigment-attachment/assigment-attachment.component';
+import { VendorAttachmentComponent } from './page/vendor-screen/vendor-attachment/vendor-attachment.component';
+import { EmployeeAttachmentComponent } from './page/employee-screen/employee-attachment/employee-attachment.component';
 
 NgModule({
   imports: [FormsModule],
@@ -205,6 +207,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'employee-attachment',
+    component: EmployeeAttachmentComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'add-employee',
     component: AddEmployeeComponent,
     canActivate: [AuthGuard]
@@ -217,6 +224,11 @@ const routes: Routes = [
   {
     path: 'vendor',
     component: VendorListComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'vendor-attachment',
+    component: VendorAttachmentComponent,
     canActivate: [AuthGuard]
   },
   {
@@ -304,7 +316,6 @@ const routes: Routes = [
     component:UpdateInternationalShippingComponent,
     canActivate:[AuthGuard]
   },
-  
   {
     path:'international-shipment-by-air',
     component:InternationalShipmentListAirComponent,
@@ -360,12 +371,10 @@ const routes: Routes = [
     component:UpdateAssignmentComponent,
     canActivate:[AuthGuard]
   },
-  
   {
     path:'login',
     component:LoginFormComponent
   },
-  
   {
     path:'grade-list',
     component:GradeListComponent,

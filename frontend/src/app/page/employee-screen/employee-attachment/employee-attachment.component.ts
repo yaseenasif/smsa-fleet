@@ -1,17 +1,17 @@
-import { Component } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MenuItem, MessageService } from 'primeng/api';
 import { FileUploadErrorEvent, FileUploadEvent } from 'primeng/fileupload';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-vendor-attachment',
-  templateUrl: './vendor-attachment.component.html',
-  styleUrls: ['./vendor-attachment.component.scss'],
+  selector: 'app-employee-attachment',
+  templateUrl: './employee-attachment.component.html',
+  styleUrls: ['./employee-attachment.component.scss'],
   providers:[MessageService]
 })
-export class VendorAttachmentComponent {
+export class EmployeeAttachmentComponent {
   items: MenuItem[] | undefined;
 
   constructor(
@@ -36,6 +36,6 @@ export class VendorAttachmentComponent {
     this.messageService.add({severity: 'error', summary: 'File Uploaded', detail: event.error?.error.body});
   }
   ngOnInit(): void {  
-    this.items = [{ label: 'Vendor',routerLink:'/vendor'},{ label: 'Vendor Attachments'}];
+    this.items = [{ label: 'Employee',routerLink:'/employee'},{ label: 'Employee Attachments'}];
   }
 }
