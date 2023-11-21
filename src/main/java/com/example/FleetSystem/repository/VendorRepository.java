@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public interface VendorRepository extends JpaRepository<Vendor,Long> {
+
     Vendor findByVendorNameIgnoreCase(String vendorName);
 
     @Query("SELECT v FROM Vendor v WHERE v.status = true")

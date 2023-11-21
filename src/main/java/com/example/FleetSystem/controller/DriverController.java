@@ -1,12 +1,17 @@
 package com.example.FleetSystem.controller;
 
 import com.example.FleetSystem.dto.DriverDto;
+import com.example.FleetSystem.payload.ResponseMessage;
 import com.example.FleetSystem.service.DriverService;
+import com.example.FleetSystem.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -15,6 +20,9 @@ public class DriverController {
 
     @Autowired
     DriverService driverService;
+
+    @Autowired
+    StorageService storageService;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/driver")
@@ -52,5 +60,21 @@ public class DriverController {
         return ResponseEntity.ok(driverService.makeDriverActive(id));
     }
 
+    @PostMapping("/add-driver-attachments/{id}/{attachmentType}")
+    public ResponseEntity<ResponseMessage> addAttachments(@PathVariable Long id, @PathVariable String attachmentType, @RequestParam("file") MultipartFile multipartFile) throws IOException {
+        return ResponseEntity.ok(driverService.addAttachment(id, attachmentType, multipartFile));
+    }
+
+    @GetMapping("/driver-download/{fileName}")
+    public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable String fileName) {
+        byte[] data = storageService.downloadFile(fileName);
+        ByteArrayResource resource = new ByteArrayResource(data);
+        return ResponseEntity
+                .ok()
+                .contentLength(data.length)
+                .header("Content-type", "application/octet-stream")
+                .header("Content-disposition", "attachment; filename=\"" + fileName + "\"")
+                .body(resource);
+    }
 
 }
