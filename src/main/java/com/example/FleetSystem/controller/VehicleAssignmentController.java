@@ -4,12 +4,16 @@ import com.example.FleetSystem.dto.VehicleAssignmentDto;
 import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.model.Vehicle;
 import com.example.FleetSystem.payload.ResponseMessage;
+import com.example.FleetSystem.service.StorageService;
 import com.example.FleetSystem.service.VehicleAssignmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,6 +23,9 @@ public class VehicleAssignmentController {
 
     @Autowired
     VehicleAssignmentService vehicleAssignmentService;
+
+    @Autowired
+    StorageService storageService;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/add-vehicle-assignment")
@@ -61,6 +68,23 @@ public class VehicleAssignmentController {
     @GetMapping("/vehicle-assignment-plateNumber/{plateNumber}")
     public ResponseEntity<VehicleAssignmentDto> getByPlateNumber(@PathVariable String plateNumber){
         return ResponseEntity.ok(vehicleAssignmentService.getByPlateNumber(plateNumber));
+    }
+
+    @PostMapping("/add-vehicle-assignment-attachments/{id}/{attachmentType}")
+    public ResponseEntity<ResponseMessage> addAttachments(@PathVariable Long id, @PathVariable String attachmentType, @RequestParam("file") MultipartFile multipartFile) throws IOException {
+        return ResponseEntity.ok(vehicleAssignmentService.addAttachment(id, attachmentType, multipartFile));
+    }
+
+    @GetMapping("/vehicle-assignment-download/{fileName}")
+    public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable String fileName) {
+        byte[] data = storageService.downloadFile(fileName);
+        ByteArrayResource resource = new ByteArrayResource(data);
+        return ResponseEntity
+                .ok()
+                .contentLength(data.length)
+                .header("Content-type", "application/octet-stream")
+                .header("Content-disposition", "attachment; filename=\"" + fileName + "\"")
+                .body(resource);
     }
 
 }

@@ -4,10 +4,8 @@ import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.exception.ExcelException;
 import com.example.FleetSystem.model.*;
 import com.example.FleetSystem.payload.ExcelErrorResponse;
-import com.example.FleetSystem.repository.FileHistoryRepository;
-import com.example.FleetSystem.repository.UserRepository;
-import com.example.FleetSystem.repository.VehicleRepository;
-import com.example.FleetSystem.repository.VendorRepository;
+import com.example.FleetSystem.payload.ResponseMessage;
+import com.example.FleetSystem.repository.*;
 import org.apache.poi.ss.usermodel.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +40,12 @@ public class VehicleService {
     FileHistoryRepository fileHistoryRepository;
     @Autowired
     VendorRepository vendorRepository;
+
+    @Autowired
+    FileMetaDataRepository fileMetaDataRepository;
+
+    @Autowired
+    StorageService storageService;
 
     public VehicleDto deleteVehicleById(Long id) {
         Optional<Vehicle> vehicle = vehicleRepository.findById(id);
@@ -444,4 +448,30 @@ public class VehicleService {
     public List<VehicleDto> getAllNotAssignedVehicle() {
         return toDtoList(vehicleRepository.getNotAssignedVehicle());
     }
+
+    public ResponseMessage addAttachment(Long id, String attachmentType, MultipartFile multipartFile) throws IOException {
+        Optional<Vehicle> vehicle = vehicleRepository.findById(id);
+        FileMetaData byFileName = fileMetaDataRepository.findByFileName(multipartFile.getOriginalFilename());
+
+        if(byFileName == null) {
+            String fileUrl = storageService.uploadFile(multipartFile.getBytes(), multipartFile.getOriginalFilename());
+            String originalFileName = multipartFile.getOriginalFilename();
+            String fileExtension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
+            FileMetaData fileMetaData = new FileMetaData();
+            fileMetaData.setFileUrl(fileUrl);
+            fileMetaData.setFileExtension(fileExtension);
+            fileMetaData.setFileName(multipartFile.getOriginalFilename());
+            fileMetaData.setVehicle(vehicle.get());
+            fileMetaData.setAttachmentType(attachmentType);
+            fileMetaDataRepository.save(fileMetaData);
+
+            return ResponseMessage.builder()
+                    .message(Collections.singletonList("File uploaded to the server successfully"))
+                    .build();
+        }
+        else {
+            throw new RuntimeException(String.format("File already exists on the bucket with the same name"));
+        }
+    }
+
 }

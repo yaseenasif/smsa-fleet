@@ -1,12 +1,13 @@
 package com.example.FleetSystem.payload;
 
 import com.fasterxml.jackson.annotation.JsonRawValue;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
+@Builder
+@Getter
+@Setter
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
