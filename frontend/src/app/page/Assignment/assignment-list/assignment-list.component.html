@@ -60,9 +60,11 @@
                        <p-button (click)="deleteVehicleAssignment(vehicleAssignment.id)" icon="bi bi-trash" class='ml' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
                       
                        </p-button>
-                       <p-button routerLink="/assignment-attachment" icon="bi bi-paperclip" class='ml mr' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
+                       <p-button [routerLink]="['/assignment-attachment',vehicleAssignment.id]" icon="bi bi-paperclip" class='ml mr' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
                      
                        </p-button>
+                       <p-button [routerLink]="['/individual-file-list-component/','vehicle-assignment',vehicleAssignment.id]" icon="bi bi-download" class='ml mr' styleClass="p-button-rounded p-button-success p-button-text p-button-raised">
+                      </p-button>
                     </td>
                   </tr>
                 </ng-template>

@@ -20,7 +20,7 @@ export class AssigmentAttachmentComponent {
   ) { }
   
   size=environment.fileSize;
-  url=environment.baseurl.concat('/add-attachments/',this.route.snapshot.paramMap.get('id')!)
+  url=environment.baseurl.concat('/add-vehicle-assignment-attachments/',this.route.snapshot.paramMap.get('id')!)
   uploadedFiles!:any[];
 
   headers = new HttpHeaders({
@@ -33,7 +33,7 @@ export class AssigmentAttachmentComponent {
  
 
   onError(event:FileUploadErrorEvent){
-    this.messageService.add({severity: 'error', summary: 'File Uploaded', detail: event.error?.error.body});
+    this.messageService.add({severity: 'error', summary: 'File Uploaded', detail: event.error?.error});
   }
   ngOnInit(): void {  
     this.items = [{ label: 'Assignment',routerLink:'/assignment'},{ label: 'Assignment Attachments'}];

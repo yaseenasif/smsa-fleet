@@ -65,6 +65,7 @@ import { DriverAttachmentComponent } from './page/driver/driver-attachment/drive
 import { AssigmentAttachmentComponent } from './page/Assignment/assigment-attachment/assigment-attachment.component';
 import { VendorAttachmentComponent } from './page/vendor-screen/vendor-attachment/vendor-attachment.component';
 import { EmployeeAttachmentComponent } from './page/employee-screen/employee-attachment/employee-attachment.component';
+import { IndividualFileListComponent } from './page/individual-file-list/individual-file-list/individual-file-list.component';
 
 NgModule({
   imports: [FormsModule],
@@ -102,7 +103,7 @@ const routes: Routes = [
     canActivate:[AuthGuard]
   },
   {
-    path:'driver-attachment',
+    path:'driver-attachment/:id',
     component:DriverAttachmentComponent,
     canActivate:[AuthGuard]
   },
@@ -187,7 +188,7 @@ const routes: Routes = [
     canActivate:[AuthGuard]
   },
     {
-    path:'vehicle-attachment',
+    path:'vehicle-attachment/:id',
     component:VehicleAttachmentComponent,
     canActivate:[AuthGuard]
   },
@@ -207,7 +208,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'employee-attachment',
+    path: 'employee-attachment/:id',
     component: EmployeeAttachmentComponent,
     canActivate: [AuthGuard]
   },
@@ -357,7 +358,7 @@ const routes: Routes = [
     canActivate:[AuthGuard]
   },
   {
-    path:'assignment-attachment',
+    path:'assignment-attachment/:id',
     component:AssigmentAttachmentComponent,
     canActivate:[AuthGuard]
   },
@@ -389,6 +390,12 @@ const routes: Routes = [
     component:EditGradeComponent,
     canActivate:[AuthGuard]
   },
+  {
+    path:'individual-file-list-component/:call-type/:id',
+    component:IndividualFileListComponent,
+    canActivate:[AuthGuard]
+  },
+  
 
 ];
 

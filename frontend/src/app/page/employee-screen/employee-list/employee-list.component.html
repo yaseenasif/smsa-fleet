@@ -116,7 +116,9 @@
                         <p-button (click)="deleteEmployee(employee.id)" icon="bi bi-trash" class='ml' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
                        
                         </p-button>
-                        <p-button routerLink="/employee-attachment" icon="bi bi-paperclip" class='ml mr' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
+                        <p-button [routerLink]="['/employee-attachment',employee.id]" icon="bi bi-paperclip" class='ml mr' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
+                        </p-button>
+                        <p-button [routerLink]="['/individual-file-list-component/','employee',employee.id]" icon="bi bi-download" class='ml mr' styleClass="p-button-rounded p-button-success p-button-text p-button-raised">
                         </p-button>
                     </td>
                   </tr>

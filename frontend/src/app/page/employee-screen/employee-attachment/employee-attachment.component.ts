@@ -33,7 +33,7 @@ export class EmployeeAttachmentComponent {
  
 
   onError(event:FileUploadErrorEvent){
-    this.messageService.add({severity: 'error', summary: 'File Uploaded', detail: event.error?.error.body});
+    this.messageService.add({severity: 'error', summary: 'File Uploaded', detail: event.error?.error});
   }
   ngOnInit(): void {  
     this.items = [{ label: 'Employee',routerLink:'/employee'},{ label: 'Employee Attachments'}];

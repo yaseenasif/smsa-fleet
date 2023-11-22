@@ -100,6 +100,7 @@ import { DriverAttachmentComponent } from './page/driver/driver-attachment/drive
 import { AssigmentAttachmentComponent } from './page/Assignment/assigment-attachment/assigment-attachment.component';
 import { VendorAttachmentComponent } from './page/vendor-screen/vendor-attachment/vendor-attachment.component';
 import { EmployeeAttachmentComponent } from './page/employee-screen/employee-attachment/employee-attachment.component';
+import { IndividualFileListComponent } from './page/individual-file-list/individual-file-list/individual-file-list.component';
 
 @NgModule({
   declarations: [
@@ -169,6 +170,7 @@ import { EmployeeAttachmentComponent } from './page/employee-screen/employee-att
     AssigmentAttachmentComponent,
     VendorAttachmentComponent,
     EmployeeAttachmentComponent,
+    IndividualFileListComponent,
     
   ],
   imports: [
