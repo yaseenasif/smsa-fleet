@@ -215,7 +215,7 @@ public class EmployeeService {
                             employee.setNationality(getStringValue(row.getCell(23)));
                             employee.setCompanyEmailAddress(getStringValue(row.getCell(24)));
                             employee.setContactNumber(dataFormatter.formatCellValue(row.getCell(25)));
-                            employee.setGrade(getStringValue(row.getCell(26))); 
+                            employee.setGrade(Integer.parseInt(getStringValue(row.getCell(26)).replaceAll("\\D+", "")));
                             employee.setCreatedBy(user);
                             employee.setCreatedAt(LocalDate.now());
                             employee.setDeleteStatus(Boolean.TRUE);

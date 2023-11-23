@@ -102,7 +102,7 @@ import { VendorAttachmentComponent } from './page/vendor-screen/vendor-attachmen
 import { EmployeeAttachmentComponent } from './page/employee-screen/employee-attachment/employee-attachment.component';
 import { IndividualFileListComponent } from './page/individual-file-list/individual-file-list/individual-file-list.component';
 import { KeyFilterModule } from 'primeng/keyfilter';
-
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @NgModule({
   declarations: [
@@ -204,6 +204,7 @@ import { KeyFilterModule } from 'primeng/keyfilter';
     DialogModule,
     InputTextareaModule,
     KeyFilterModule,
+    InputNumberModule,
     NgxUiLoaderHttpModule.forRoot({
       showForeground:true
     })

@@ -46,7 +46,7 @@ public class Employee {
     private String contactNumber;
     private String companyEmailAddress;
     private Integer age;
-    private String grade;
+    private Integer grade;
     private String licenseNumber;
     private Integer vehicleBudget;
     private String budgetRef;

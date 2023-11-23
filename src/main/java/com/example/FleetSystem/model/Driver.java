@@ -29,7 +29,7 @@ public class Driver {
     private String nationality;
     private String contactNumber;
     private String emailAddress;
-    private String grade;
+    private Integer grade;
     private String licenseNumber;
     private Integer vehicleBudget ;
     private String attachments;
