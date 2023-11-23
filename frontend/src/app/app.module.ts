@@ -101,6 +101,8 @@ import { AssigmentAttachmentComponent } from './page/Assignment/assigment-attach
 import { VendorAttachmentComponent } from './page/vendor-screen/vendor-attachment/vendor-attachment.component';
 import { EmployeeAttachmentComponent } from './page/employee-screen/employee-attachment/employee-attachment.component';
 import { IndividualFileListComponent } from './page/individual-file-list/individual-file-list/individual-file-list.component';
+import { KeyFilterModule } from 'primeng/keyfilter';
+
 
 @NgModule({
   declarations: [
@@ -201,6 +203,7 @@ import { IndividualFileListComponent } from './page/individual-file-list/individ
     NgxUiLoaderModule,
     DialogModule,
     InputTextareaModule,
+    KeyFilterModule,
     NgxUiLoaderHttpModule.forRoot({
       showForeground:true
     })
