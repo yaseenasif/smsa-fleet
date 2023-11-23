@@ -22,6 +22,9 @@ export class VehicleService {
   getAllVehicles(): Observable<Vehicle[]> {
     return this.http.get<Vehicle[]>(this.url.concat('/get-all-vehicle'));
   }
+  availableForReplacement(): Observable<Vehicle[]> {
+    return this.http.get<Vehicle[]>(this.url.concat('/vehicle-available-for-replacement'));
+  }
 
   getAllNotAssignedVehicles(): Observable<Vehicle[]> {
     return this.http.get<Vehicle[]>(this.url.concat('/not-assigned-vehicle'));

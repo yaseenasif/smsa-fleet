@@ -474,4 +474,9 @@ public class VehicleService {
         }
     }
 
+    public List<VehicleDto> availableForReplacement (){
+       return toDtoList(vehicleRepository.availableForReplacement());
+    }
+
+
 }

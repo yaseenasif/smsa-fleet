@@ -23,4 +23,8 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
             "on va.vehicle = v.id\n" +
             "WHERE va.vehicle IS NULL AND v.status = true")
     List<Vehicle> getNotAssignedVehicle();
+
+    @Query("select v from Vehicle v\n" +
+            "WHERE v.vehicleReplacement IS NULL AND v.status=1")
+    List<Vehicle> availableForReplacement();
 }

@@ -93,4 +93,9 @@ public class VehicleController {
                 .body(resource);
     }
 
+    @GetMapping("/vehicle-available-for-replacement")
+    public ResponseEntity<List<VehicleDto>> availableForReplacement(){
+        return ResponseEntity.ok(vehicleService.availableForReplacement());
+    }
+
 }
