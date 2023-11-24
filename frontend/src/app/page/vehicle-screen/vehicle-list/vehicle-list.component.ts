@@ -4,51 +4,60 @@ import { VehicleService } from '../service/vehicle.service';
 import { Vehicle } from 'src/app/modal/vehicle'
 import { FileUpload } from 'primeng/fileupload';
 import { VehicleReplacement } from 'src/app/modal/vehicleReplacement';
-
+import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
+import { PageEvent } from 'src/app/modal/pageEvent';
 @Component({
   selector: 'app-vehicle-list',
   templateUrl: './vehicle-list.component.html',
   styleUrls: ['./vehicle-list.component.scss'],
   providers: [MessageService]
 })
-export class VehicleListComponent implements OnInit{
+export class VehicleListComponent implements OnInit {
   @ViewChild('fileUpload', { static: false })
   fileUpload!: FileUpload;
 
   fileSelected: boolean = false;
   visible: boolean = false;
 
-  vehicleReplacement:VehicleReplacement={
+  query !: {
+    page: number,
+    size: number
+  };
+
+  value: string | null = null;
+  totalRecords: number = 0;
+
+  vehicleReplacement: VehicleReplacement = {
     id: null,
     reason: null,
     vehicle: null
   }
-  
+
   constructor(
     private vehicleService: VehicleService,
     private messageService: MessageService
-    ) { }
-  
+  ) { }
+
   vehicles!: Array<Vehicle>;
   replacementVehicles!: Array<Vehicle>;
-  vId!:number
-  
+  vId!: number
+
 
   size: number = 10240000; // Maximum file size (e.g., 10MB)
 
   uploadedFiles: any[] = [];
 
-  
+
 
 
   items: MenuItem[] | undefined;
 
- 
+
 
   ngOnInit() {
-      this.items = [{ label: 'Vehicle'}];
+    this.items = [{ label: 'Vehicle' }];
 
-      this.getAllVehicles();
+    this.getAllVehicles();
 
   }
 
@@ -56,9 +65,9 @@ export class VehicleListComponent implements OnInit{
     this.fileSelected = true;
   }
 
-  showDialog(vId:number) {
-    this.vId=vId;
-    this.replacementVehicles=this.vehicles.filter(el=>el.id!=vId)
+  showDialog(vId: number) {
+    this.vId = vId;
+    this.replacementVehicles = this.vehicles.filter(el => el.id != vId)
     this.visible = true;
   }
 
@@ -75,10 +84,10 @@ export class VehicleListComponent implements OnInit{
 
     if (uploadedFile) {
       this.vehicleService.saveFile(uploadedFile).subscribe(
-        (response) => {          
-   
+        (response) => {
+
           if (Array.isArray(response.message)) {
-            
+
             response.message.forEach((message: any) => {
               this.messageService.add({ severity: 'success', summary: 'Upload Successful', detail: message });
             });
@@ -104,14 +113,10 @@ export class VehicleListComponent implements OnInit{
   }
 
   getAllVehicles() {
-
-    this.vehicleService.getAllVehicles().subscribe((res: Vehicle[]) => {
-    
-      
-      this.vehicles=res;
-     
-         
-      
+    this.vehicleService.searchVehicle(this.value, this.query).subscribe((res: PaginatedResponse<Vehicle>) => {
+      this.vehicles = res.content;
+      this.query = { page: res.pageable.pageNumber, size: res.size }
+      this.totalRecords = res.totalElements;
     })
 
   }
@@ -120,16 +125,23 @@ export class VehicleListComponent implements OnInit{
 
     this.vehicleService.deleteVehicle(id).subscribe((res) => {
       this.getAllVehicles();
-      
+
     })
   }
-  
-  onSubmit(){
-    this.vehicleService.replaceVehicle(this.vId,this.vehicleReplacement).subscribe(res=>{
-      this.messageService.add({ severity: 'success', summary: 'Vehicle Replaced', detail: 'Vehicle is successfully replaced'});
+
+  onSubmit() {
+    this.vehicleService.replaceVehicle(this.vId, this.vehicleReplacement).subscribe(res => {
+      this.messageService.add({ severity: 'success', summary: 'Vehicle Replaced', detail: 'Vehicle is successfully replaced' });
       this.getAllVehicles();
-    },error=>{
+    }, error => {
       this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
     })
   }
+
+  onPageChange(value?: string | null, event?: any) {
+    this.query.page = event.page;
+    this.query.size = event.rows;
+    this.getAllVehicles()
+  }
+
 }

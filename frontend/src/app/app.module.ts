@@ -93,6 +93,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { GradeListComponent } from './page/grade/grade-list/grade-list.component';
 import { AddGradeComponent } from './page/grade/add-grade/add-grade.component';
 import { EditGradeComponent } from './page/grade/edit-grade/edit-grade.component';
+import { PaginatorModule } from 'primeng/paginator';
 
 @NgModule({
   declarations: [
@@ -182,6 +183,7 @@ import { EditGradeComponent } from './page/grade/edit-grade/edit-grade.component
     ChartModule,
     NgxUiLoaderModule,
     DialogModule,
+    PaginatorModule,
     InputTextareaModule,
     NgxUiLoaderHttpModule.forRoot({
       showForeground:true

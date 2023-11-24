@@ -1,10 +1,13 @@
 package com.example.FleetSystem.controller;
 
-import com.example.FleetSystem.dto.VehicleAssignmentDto;
+import com.example.FleetSystem.criteria.VehicleSearchCriteria;
 import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.payload.ResponseMessage;
 import com.example.FleetSystem.service.VehicleService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -27,10 +30,18 @@ public class VehicleController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/search-vehicle")
+    public ResponseEntity<Page<VehicleDto>> searchVehicles(@RequestParam(value = "value",required = false) String value,
+                                                           @RequestParam(defaultValue = "0") int page,
+                                                           @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
+        VehicleSearchCriteria vehicleSearchCriteria = new ObjectMapper().readValue(value, VehicleSearchCriteria.class);
+        return ResponseEntity.ok(vehicleService.searchVehicles(vehicleSearchCriteria,page, size));
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/get-all-vehicle")
-    public ResponseEntity<List<VehicleDto>> getAllVehicles() {
-        List<VehicleDto> vehicleDtoList = vehicleService.getActiveVehicles();
-        return ResponseEntity.ok(vehicleDtoList);
+    public ResponseEntity<List<VehicleDto>> getAllVehicle() {
+        return ResponseEntity.ok(vehicleService.getActiveVehicles());
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

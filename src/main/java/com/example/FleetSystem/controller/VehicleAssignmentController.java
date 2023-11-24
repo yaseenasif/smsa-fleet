@@ -1,11 +1,16 @@
 package com.example.FleetSystem.controller;
 
+import com.example.FleetSystem.criteria.EmployeeSearchCriteria;
+import com.example.FleetSystem.criteria.VehicleSearchCriteria;
+import com.example.FleetSystem.dto.DriverDto;
 import com.example.FleetSystem.dto.VehicleAssignmentDto;
 import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.model.Vehicle;
 import com.example.FleetSystem.payload.ResponseMessage;
 import com.example.FleetSystem.service.VehicleAssignmentService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -61,6 +66,16 @@ public class VehicleAssignmentController {
     @GetMapping("/vehicle-assignment-plateNumber/{plateNumber}")
     public ResponseEntity<VehicleAssignmentDto> getByPlateNumber(@PathVariable String plateNumber){
         return ResponseEntity.ok(vehicleAssignmentService.getByPlateNumber(plateNumber));
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/search-assignment")
+    public ResponseEntity<Page<VehicleAssignmentDto>> searchAssignmentByPlateNumber(@RequestParam(value = "value",required = false) String value,
+                                                        @RequestParam(defaultValue = "0") int page,
+                                                        @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
+        VehicleSearchCriteria vehicleSearchCriteria = new VehicleSearchCriteria();
+        vehicleSearchCriteria.setValue(value);
+        return ResponseEntity.ok(vehicleAssignmentService.searchAssignmentByPlateNumber(vehicleSearchCriteria,page, size));
     }
 
 }

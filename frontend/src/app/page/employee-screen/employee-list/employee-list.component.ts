@@ -3,6 +3,7 @@ import { MenuItem, MessageService } from 'primeng/api';
 import { Employee } from 'src/app/modal/employee';
 import { EmployeeService } from '../service/employee.service';
 import { FileUpload } from 'primeng/fileupload';
+import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
 
 @Component({
   selector: 'app-employee-list',
@@ -22,6 +23,13 @@ export class EmployeeListComponent implements OnInit{
 
   employee!: Employee[];
 
+  query !: {
+    page: number,
+    size: number
+  };
+
+  value: number | null = null;
+  totalRecords: number = 0;
 
   items: MenuItem[] | undefined;
 
@@ -83,10 +91,10 @@ export class EmployeeListComponent implements OnInit{
 
   getAllEmployees() {
 
-    this.employeeService.getAllEmployees().subscribe((res: Employee[]) => {
-      
-      this.employee = res;      
-      
+    this.employeeService.searchEmployee(this.value, this.query).subscribe((res: PaginatedResponse<Employee>) => {
+      this.employee = res.content;
+      this.query = { page: res.pageable.pageNumber, size: res.size }
+      this.totalRecords = res.totalElements;
     })
 
   }
@@ -102,5 +110,10 @@ export class EmployeeListComponent implements OnInit{
     })
   }
 
+  onPageChange(event?: any) {
+    this.query.page = event.page;
+    this.query.size = event.rows;
+    this.getAllEmployees()
+  }
 
 }

@@ -1,174 +1,202 @@
 <div class="flex flex-row">
-    <app-sidebar></app-sidebar>
-    <div class="body-position">
-      <div class="body-holder">
-        <app-dashboard-head></app-dashboard-head>
-  
-        <div class="main">
-          <div class="card flex justify-content-center">
-              <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
-          </div>
-          <div class="body-card">
-            <p-toast [showTransitionOptions]="'0ms'" [hideTransitionOptions]="'5000ms'"></p-toast>
-              <div class="table-head">
-                  <p-toolbar>
-                      <div class="p-toolbar-group-start">
-                        <h2 class="h-color">Vehicle</h2>
-                      </div>
-                      <div class="p-toolbar-group-end">
-                          <p-button class="bg-b-color" routerLink="/add-vehicle">
-                            <i class="bi bi-plus-lg" style="font-size: 20px;font-weight: bold;"></i>&nbsp;Add Vehicle
-                          </p-button>
-                            <div class="flex flex-column gap-2 ml-5">  
-                              <p-fileUpload  
-                              #fileUpload
-                              icon="pi pi-download" iconPos="left" styleClass="p-button-outlined p-button-sm"
-                              mode="basic" chooseLabel="Upload" name="myfile[]"
-                              [customUpload]="true" (uploadHandler)="onUpload($event)"
-                              (onSelect)="onFileSelect()"
-                              >
-                            </p-fileUpload>
-                            <ng-container *ngIf="fileSelected">
-                              <button class="p-button p-button-outlined p-button-sm" (click)="onCancel()">Cancel</button>
-                            </ng-container>
-                            </div>
-                      </div>
-                  </p-toolbar>
+  <app-sidebar></app-sidebar>
+  <div class="body-position">
+    <div class="body-holder">
+      <app-dashboard-head></app-dashboard-head>
+
+      <div class="main">
+        <div class="card flex justify-content-center">
+          <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+        </div>
+        <div class="body-card">
+          <p-toast [showTransitionOptions]="'0ms'" [hideTransitionOptions]="'5000ms'"></p-toast>
+          <div class="table-head">
+            <div class="flex mb-2 align-items-center gap-1" style="justify-content: flex-end; align-items: flex-end;">            
+            
+              <p-button class="bg-b-color" routerLink="/add-vehicle">
+                <i class=" bi bi-plus-lg" style="font-size: 20px;font-weight: bold;"></i>&nbsp;Add Vehicle
+              </p-button>
+              <div class="flex flex-column gap-2 ml-5">
+                <p-fileUpload #fileUpload icon="pi pi-download" iconPos="left"
+                  styleClass="p-button-outlined p-button-sm" mode="basic" chooseLabel="Upload" name="myfile[]"
+                  [customUpload]="true" (uploadHandler)="onUpload($event)" (onSelect)="onFileSelect()">
+                </p-fileUpload>
+                <ng-container *ngIf="fileSelected">
+                  <button class="p-button p-button-outlined p-button-sm" (click)="onCancel()">Cancel</button>
+                </ng-container>
+              
               </div>
             
-  
-            <div class="card">
-              <p-table [value]="vehicles" [tableStyle]="{ 'min-width': '50rem' }">
-                <ng-template pTemplate="header">
-                  <tr>
+            </div>
+            <p-toolbar>
+              <div class="p-toolbar-group-start">
+                <h2 class="h-color">Vehicle</h2>
+              </div>
+              <div class="card flex flex-wrap justify-content-center gap-3">
+                <span class="p-input-icon-left">
+                  <i class="my-relative bi bi-search"></i>
+                  <input type="text" pInputText [(ngModel)]="value" (input)="getAllVehicles()"
+                    placeholder="Search Plate Number" />
+                </span>
+              </div>
+            
+            </p-toolbar>
+          </div>
 
-                    <th class="text-center">ID</th>                    
-                    <th class="text-center">PO Number</th>
-                    <th class="text-center">Plate Number</th>
-                    <th class="text-center">Make</th>
-                    <th class="text-center">Year</th>
-                    <th class="text-center">Design</th>
-                    <th class="text-center">Model</th>
-                    <th class="text-center">Type</th>
-                    <th class="text-center">Capacity</th>
-                    <th class="text-center">Power</th>
-                    <th class="text-center">Registration Expiry</th>
-                    <th class="text-center">Fuel Type</th>
-                    <th class="text-center">Vendor</th>
-                    <th class="text-center">Insurance Expiry</th>
-                    <th class="text-center">Lease Cost</th>
-                    <th class="text-center">Lease Start Date</th>
-                    <th class="text-center">Lease Expiry Date</th>
-                    <th class="text-center">Usage Type</th>
-                    <th class="text-center">Replace Vehicle</th>
-                    
-                   
-                    <th class="text-center">Actions</th>
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-vehicles>
-                  <tr>
-                    <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.id }}</td>
-                    <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.processOrderNumber }}</td>
-                    <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.plateNumber }}</td>
-                    <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.make }}</td>
-                    <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.year }}</td>
-                    <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.design }}</td>
-                    <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.model }}</td>
-                    <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.type }}</td>
-                    <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.capacity }}</td>
-                    <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.power }}</td>
-                    <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.registrationExpiry }}</td>
-                    <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.fuelType }}</td>
-                    <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.vendor.vendorName }}</td>
-                    <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.insuranceExpiry }}</td>
-                    <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.leaseCost }}</td>
-                    <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.leaseStartDate }}</td>
-                    <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.leaseExpiryDate }}</td>
-                    <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.usageType }}</td>
-                    <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.vehicleReplacement?vehicles.vehicleReplacement.vehicle.plateNumber:'-----'}}</td>
-                    <td class="text-center flex"> 
-                       <p-button [routerLink]="['/edit-vehicle/', vehicles.id]" icon="bi bi-pen" class='mr' styleClass="p-button-rounded p-button-success p-button-text p-button-raised">
-                         
-                       </p-button>
-                        <p-button (click)="deleteVehicle(vehicles.id)" icon="bi bi-trash" class='ml' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
-                       
-                        </p-button>
-                        <p-button icon="bi bi-paperclip" class='ml mr' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
-                      
-                        </p-button>
-                        <p-button (click)="showDialog(vehicles.id)"  icon="bi bi-arrow-repeat" class='ml mr' styleClass="p-button-rounded p-button-info p-button-text p-button-raised">
-                      
-                        </p-button>
-                    </td>
-                  </tr>
-                </ng-template>
-              </p-table>
+
+          <div class="card">
+            <p-table [value]="vehicles" [tableStyle]="{ 'min-width': '50rem' }">
+              <ng-template pTemplate="header">
+                <tr>
+
+                  <th class="text-center">ID</th>
+                  <th class="text-center">PO Number</th>
+                  <th class="text-center">Plate Number</th>
+                  <th class="text-center">Make</th>
+                  <th class="text-center">Year</th>
+                  <th class="text-center">Design</th>
+                  <th class="text-center">Model</th>
+                  <th class="text-center">Type</th>
+                  <th class="text-center">Capacity</th>
+                  <th class="text-center">Power</th>
+                  <th class="text-center">Registration Expiry</th>
+                  <th class="text-center">Fuel Type</th>
+                  <th class="text-center">Vendor</th>
+                  <th class="text-center">Insurance Expiry</th>
+                  <th class="text-center">Lease Cost</th>
+                  <th class="text-center">Lease Start Date</th>
+                  <th class="text-center">Lease Expiry Date</th>
+                  <th class="text-center">Usage Type</th>
+                  <th class="text-center">Replace Vehicle</th>
+
+
+                  <th class="text-center">Actions</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-vehicles>
+                <tr>
+                  <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.id
+                    }}</td>
+                  <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{
+                    vehicles.processOrderNumber }}</td>
+                  <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{
+                    vehicles.plateNumber }}</td>
+                  <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.make
+                    }}</td>
+                  <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.year
+                    }}</td>
+                  <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{
+                    vehicles.design }}</td>
+                  <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{
+                    vehicles.model }}</td>
+                  <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.type
+                    }}</td>
+                  <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{
+                    vehicles.capacity }}</td>
+                  <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{
+                    vehicles.power }}</td>
+                  <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{
+                    vehicles.registrationExpiry }}</td>
+                  <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{
+                    vehicles.fuelType }}</td>
+                  <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{
+                    vehicles.vendor.vendorName }}</td>
+                  <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{
+                    vehicles.insuranceExpiry }}</td>
+                  <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{
+                    vehicles.leaseCost }}</td>
+                  <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{
+                    vehicles.leaseStartDate }}</td>
+                  <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{
+                    vehicles.leaseExpiryDate }}</td>
+                  <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{
+                    vehicles.usageType }}</td>
+                  <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{
+                    vehicles.vehicleReplacement?vehicles.vehicleReplacement.vehicle.plateNumber:'-----'}}</td>
+                  <td class="text-center flex">
+                    <p-button [routerLink]="['/edit-vehicle/', vehicles.id]" icon="bi bi-pen" class='mr'
+                      styleClass="p-button-rounded p-button-success p-button-text p-button-raised">
+
+                    </p-button>
+                    <p-button (click)="deleteVehicle(vehicles.id)" icon="bi bi-trash" class='ml'
+                      styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
+
+                    </p-button>
+                    <p-button icon="bi bi-paperclip" class='ml mr'
+                      styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
+
+                    </p-button>
+                    <p-button (click)="showDialog(vehicles.id)" icon="bi bi-arrow-repeat" class='ml mr'
+                      styleClass="p-button-rounded p-button-info p-button-text p-button-raised">
+
+                    </p-button>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+            <div class="card flex justify-content-center">
+              
+              <p-paginator [rows]="query.size" [first]="query.page * query.size" [totalRecords]="totalRecords"
+                (onPageChange)="onPageChange(value,$event)" [alwaysShow]="false" [pageLinkSize]="4"
+                [showCurrentPageReport]="true">
+              </p-paginator>
+
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  
+</div>
 
 
-  <p-dialog class="dialog-hook" header="Header" [blockScroll]="true" [(visible)]="visible" [style]="{ width: '50vw',height: '80vh' }">
-    <ng-template pTemplate="header">
-        <span class="text-xl font-bold">Replacement Application</span>
-    </ng-template>
-    <form #vehicleFormReplacement="ngForm" >
+
+<p-dialog class="dialog-hook" header="Header" [blockScroll]="true" [(visible)]="visible"
+  [style]="{ width: '50vw',height: '80vh' }">
+  <ng-template pTemplate="header">
+    <span class="text-xl font-bold">Replacement Application</span>
+  </ng-template>
+  <form #vehicleFormReplacement="ngForm">
     <div class="grid overflow-none">
-    <div class="col-6">
-      <div class="flex flex-column gap-2 form-hook">
-        <label htmlFor="name">Plate Number</label>
-        <p-dropdown
-          class="w-full"
-          [(ngModel)]="vehicleReplacement.vehicle"
-          [options]="replacementVehicles"
-          name="plateNumber"
-          #plateNumber="ngModel"
-          [required]="true"
-          optionLabel="plateNumber"
-        
-          [filter]="true"
-          filterBy="plateNumber"
-          [showClear]="true"
-          placeholder="Select Plate Number
-        "
-        >
-          <ng-template pTemplate="selectedItem">
-            <div
-              class="flex align-items-center gap-2"
-              *ngIf="vehicleReplacement.vehicle"
-            >
-              <div>{{ vehicleReplacement.vehicle.plateNumber }}</div>
-            </div>
-          </ng-template>
-          <ng-template let-replacementVehicles pTemplate="item">
-            <div class="flex align-items-center gap-2">
-              <div>{{ replacementVehicles.plateNumber }}</div>
-            </div>
-          </ng-template>
-        </p-dropdown>
+      <div class="col-6">
+        <div class="flex flex-column gap-2 form-hook">
+          <label htmlFor="name">Plate Number</label>
+          <p-dropdown class="w-full" [(ngModel)]="vehicleReplacement.vehicle" [options]="replacementVehicles"
+            name="plateNumber" #plateNumber="ngModel" [required]="true" optionLabel="plateNumber" [filter]="true"
+            filterBy="plateNumber" [showClear]="true" placeholder="Select Plate Number
+        ">
+            <ng-template pTemplate="selectedItem">
+              <div class="flex align-items-center gap-2" *ngIf="vehicleReplacement.vehicle">
+                <div>{{ vehicleReplacement.vehicle.plateNumber }}</div>
+              </div>
+            </ng-template>
+            <ng-template let-replacementVehicles pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <div>{{ replacementVehicles.plateNumber }}</div>
+              </div>
+            </ng-template>
+          </p-dropdown>
+        </div>
+      </div>
+      <div class="col-6">
+
+        <div class="flex flex-column gap-2 form-hook">
+          <label htmlFor="name">Reason</label>
+          <textarea #reason="ngModel" name="reason" [required]="true" rows="5" cols="30" pInputTextarea
+            [(ngModel)]="vehicleReplacement.reason"></textarea>
+        </div>
       </div>
     </div>
-    <div class="col-6">
-      
-<div class="flex flex-column gap-2 form-hook">
-  <label htmlFor="name">Reason</label>
-  <textarea #reason="ngModel" name="reason"   [required]="true" rows="5" cols="30" pInputTextarea [(ngModel)]="vehicleReplacement.reason"></textarea>
-</div>
-    </div>
-    </div>
   </form>
-    <ng-template pTemplate="footer">
-      <p-button label="Cancel" (click)="visible=false" class="bg-o-color mr" styleClass="p-button-outlined">
-      </p-button>
-      <p-button label="Submit"  (click)="onSubmit()" [disabled]="vehicleFormReplacement.invalid || vehicleFormReplacement.invalid === null" (click)="visible=false" class="bg-b-color">
-          
-      </p-button>
-       
-    </ng-template>
- 
+  <ng-template pTemplate="footer">
+    <p-button label="Cancel" (click)="visible=false" class="bg-o-color mr" styleClass="p-button-outlined">
+    </p-button>
+    <p-button label="Submit" (click)="onSubmit()"
+      [disabled]="vehicleFormReplacement.invalid || vehicleFormReplacement.invalid === null" (click)="visible=false"
+      class="bg-b-color">
+
+    </p-button>
+
+  </ng-template>
+
 </p-dialog>

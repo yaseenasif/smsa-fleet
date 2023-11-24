@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MenuItem, MessageService } from 'primeng/api';
 import { DriverService } from '../driver.service';
 import { Driver } from 'src/app/modal/driver';
+import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
 
 @Component({
   selector: 'app-driver-list',
@@ -17,6 +18,13 @@ export class DriverListComponent implements OnInit {
   
   items: MenuItem[] | undefined;
 
+  query !: {
+    page: number,
+    size: number
+  };
+
+  value: number | null = null;
+  totalRecords: number = 0;
  
 
   ngOnInit() {
@@ -26,11 +34,11 @@ export class DriverListComponent implements OnInit {
   }
 
   getAllDrivers() {
-    this.driverService.getAllDriver().subscribe((res) => {
-      
-      this.driver = res;
-      
-    })
+    this.driverService.searchDriver(this.value, this.query).subscribe((res: PaginatedResponse<Driver>) => {
+      this.driver = res.content;
+      this.query = { page: res.pageable.pageNumber, size: res.size }
+      this.totalRecords = res.totalElements;
+    })  
   }
 
   deleteDriver(id: Number) {
@@ -43,6 +51,12 @@ export class DriverListComponent implements OnInit {
         
       })
     
+  }
+
+  onPageChange(event?: any) {
+    this.query.page = event.page;
+    this.query.size = event.rows;
+    this.getAllDrivers()
   }
 
 }

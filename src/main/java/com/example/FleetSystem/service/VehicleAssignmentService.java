@@ -1,4 +1,5 @@
 package com.example.FleetSystem.service;
+import com.example.FleetSystem.criteria.VehicleSearchCriteria;
 import com.example.FleetSystem.dto.VehicleAssignmentDto;
 import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.model.Employee;
@@ -9,8 +10,14 @@ import com.example.FleetSystem.repository.EmployeeRepository;
 import com.example.FleetSystem.repository.UserRepository;
 import com.example.FleetSystem.repository.VehicleAssignmentRepository;
 import com.example.FleetSystem.repository.VehicleRepository;
+import com.example.FleetSystem.specification.VehicleAssignmentSpecification;
+import com.example.FleetSystem.specification.VehicleSpecification;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -164,4 +171,10 @@ public class VehicleAssignmentService {
     }
 
 
+    public Page<VehicleAssignmentDto> searchAssignmentByPlateNumber(VehicleSearchCriteria vehicleSearchCriteria, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<VehicleAssignment> vehicleAssignmentSpecification = VehicleAssignmentSpecification.getSearchSpecification(vehicleSearchCriteria);
+        Page<VehicleAssignment> vehicleAssignmentPage = vehicleAssignmentRepository.findAll(vehicleAssignmentSpecification,pageable);
+        return vehicleAssignmentPage.map(this::toDto);
+    }
 }
