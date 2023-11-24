@@ -48,7 +48,7 @@
                 </div>
                 <div class="flex align-items-center justify-content-end mt-4">
                   <p-button label="Cancel" class="bg-o-color mr" routerLink="/grade-list" styleClass="p-button-outlined"></p-button>
-                  <p-button label="Save" type="submit"  class="bg-b-color ml"></p-button>
+                  <p-button label="Save" type="submit" [disabled]="gradeForm.invalid || gradeForm.invalid === null"  class="bg-b-color ml"></p-button>
                 </div>
               </form>
               
