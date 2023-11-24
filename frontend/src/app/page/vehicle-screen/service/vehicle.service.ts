@@ -24,6 +24,9 @@ export class VehicleService {
     return this.http.get<Vehicle[]>(`${this.url}/get-all-vehicle`);
 
   }
+  availableForReplacement(): Observable<Vehicle[]> {
+    return this.http.get<Vehicle[]>(this.url.concat('/vehicle-available-for-replacement'));
+  }
 
   searchVehicle(value?: string | null, query?: { page: number, size: number }): Observable<PaginatedResponse<Vehicle>> {
     if(value){

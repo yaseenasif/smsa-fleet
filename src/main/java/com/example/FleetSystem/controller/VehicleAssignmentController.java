@@ -7,15 +7,19 @@ import com.example.FleetSystem.dto.VehicleAssignmentDto;
 import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.model.Vehicle;
 import com.example.FleetSystem.payload.ResponseMessage;
+import com.example.FleetSystem.service.StorageService;
 import com.example.FleetSystem.service.VehicleAssignmentService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,6 +29,9 @@ public class VehicleAssignmentController {
 
     @Autowired
     VehicleAssignmentService vehicleAssignmentService;
+
+    @Autowired
+    StorageService storageService;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/add-vehicle-assignment")
@@ -69,13 +76,28 @@ public class VehicleAssignmentController {
         return ResponseEntity.ok(vehicleAssignmentService.getByPlateNumber(plateNumber));
     }
 
+    @PostMapping("/add-vehicle-assignment-attachments/{id}/{attachmentType}")
+    public ResponseEntity<ResponseMessage> addAttachments(@PathVariable Long id, @PathVariable String attachmentType, @RequestParam("file") MultipartFile multipartFile) throws IOException {
+        return ResponseEntity.ok(vehicleAssignmentService.addAttachment(id, attachmentType, multipartFile));
+    }
+
+    @GetMapping("/vehicle-assignment-download/{fileName}")
+    public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable String fileName) {
+        byte[] data = storageService.downloadFile(fileName);
+        ByteArrayResource resource = new ByteArrayResource(data);
+        return ResponseEntity
+                .ok()
+                .contentLength(data.length)
+                .header("Content-type", "application/octet-stream")
+                .header("Content-disposition", "attachment; filename=\"" + fileName + "\"")
+                .body(resource);
+    }
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/search-assignment")
     public ResponseEntity<Page<VehicleAssignmentDto>> searchAssignmentByPlateNumber(@RequestParam(value = "value",required = false) String value,
-                                                        @RequestParam(defaultValue = "0") int page,
-                                                        @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
+                                                                                    @RequestParam(defaultValue = "0") int page,
+                                                                                    @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
         VehicleSearchCriteria vehicleSearchCriteria = new ObjectMapper().readValue(value, VehicleSearchCriteria.class);
         return ResponseEntity.ok(vehicleAssignmentService.searchAssignmentByPlateNumber(vehicleSearchCriteria,page, size));
     }
-
 }

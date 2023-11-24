@@ -11,8 +11,8 @@
         <div class="body-card">
           <p-toast [showTransitionOptions]="'0ms'" [hideTransitionOptions]="'5000ms'"></p-toast>
           <div class="table-head">
-            <div class="flex mb-2 align-items-center gap-1" style="justify-content: flex-end; align-items: flex-end;">            
-            
+            <div class="flex mb-2 align-items-center gap-1" style="justify-content: flex-end; align-items: flex-end;">
+
               <p-button class="bg-b-color" routerLink="/add-vehicle">
                 <i class=" bi bi-plus-lg" style="font-size: 20px;font-weight: bold;"></i>&nbsp;Add Vehicle
               </p-button>
@@ -24,9 +24,9 @@
                 <ng-container *ngIf="fileSelected">
                   <button class="p-button p-button-outlined p-button-sm" (click)="onCancel()">Cancel</button>
                 </ng-container>
-              
+
               </div>
-            
+
             </div>
             <p-toolbar>
               <div class="p-toolbar-group-start">
@@ -39,7 +39,7 @@
                     placeholder="Search Plate Number" />
                 </span>
               </div>
-            
+
             </p-toolbar>
           </div>
 
@@ -135,7 +135,7 @@
               </ng-template>
             </p-table>
             <div class="card flex justify-content-center">
-              
+
               <p-paginator [rows]="query.size" [first]="query.page * query.size" [totalRecords]="totalRecords"
                 (onPageChange)="onPageChange(value,$event)" [alwaysShow]="false" [pageLinkSize]="4"
                 [showCurrentPageReport]="true">

@@ -6,8 +6,10 @@ import com.example.FleetSystem.dto.EmployeeDto;
 import com.example.FleetSystem.exception.ExcelException;
 import com.example.FleetSystem.model.*;
 import com.example.FleetSystem.payload.ExcelErrorResponse;
+import com.example.FleetSystem.payload.ResponseMessage;
 import com.example.FleetSystem.repository.EmployeeRepository;
 import com.example.FleetSystem.repository.FileHistoryRepository;
+import com.example.FleetSystem.repository.FileMetaDataRepository;
 import com.example.FleetSystem.repository.UserRepository;
 import com.example.FleetSystem.specification.EmployeeSpecification;
 import org.apache.poi.ss.usermodel.*;
@@ -45,6 +47,12 @@ public class EmployeeService {
     ModelMapper modelMapper;
     @Autowired
     FileHistoryRepository fileHistoryRepository;
+
+    @Autowired
+    FileMetaDataRepository fileMetaDataRepository;
+
+    @Autowired
+    StorageService storageService;
 
     public EmployeeDto deleteEmployeeById(Long id) {
         Optional<Employee> employee = employeeRepository.findById(id);
@@ -214,7 +222,7 @@ public class EmployeeService {
                             employee.setNationality(getStringValue(row.getCell(23)));
                             employee.setCompanyEmailAddress(getStringValue(row.getCell(24)));
                             employee.setContactNumber(dataFormatter.formatCellValue(row.getCell(25)));
-                            employee.setGrade(getStringValue(row.getCell(26))); 
+                            employee.setGrade(Integer.parseInt(getStringValue(row.getCell(26)).replaceAll("\\D+", "")));
                             employee.setCreatedBy(user);
                             employee.setCreatedAt(LocalDate.now());
                             employee.setDeleteStatus(Boolean.TRUE);
@@ -404,6 +412,31 @@ public class EmployeeService {
 
     public List<EmployeeDto> getAllUnAssignedEmployee() {
         return toDtoList(employeeRepository.getUnAssignedEmployee());
+    }
+
+    public ResponseMessage addAttachment(Long id, String attachmentType, MultipartFile multipartFile) throws IOException{
+        Optional<Employee> employee = employeeRepository.findById(id);
+        FileMetaData byFileName = fileMetaDataRepository.findByFileName(multipartFile.getOriginalFilename());
+
+        if(byFileName == null) {
+            String fileUrl = storageService.uploadFile(multipartFile.getBytes(), multipartFile.getOriginalFilename());
+            String originalFileName = multipartFile.getOriginalFilename();
+            String fileExtension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
+            FileMetaData fileMetaData = new FileMetaData();
+            fileMetaData.setFileUrl(fileUrl);
+            fileMetaData.setFileExtension(fileExtension);
+            fileMetaData.setFileName(multipartFile.getOriginalFilename());
+            fileMetaData.setEmployee(employee.get());
+            fileMetaData.setAttachmentType(attachmentType);
+            fileMetaDataRepository.save(fileMetaData);
+
+            return ResponseMessage.builder()
+                    .message(Collections.singletonList("File uploaded to the server successfully"))
+                    .build();
+        }
+        else {
+            throw new RuntimeException(String.format("File already exists on the bucket with the same name"));
+        }
     }
 
     public Page<EmployeeDto> searchEmployee(EmployeeSearchCriteria employeeSearchCriteria, int page, int size) {

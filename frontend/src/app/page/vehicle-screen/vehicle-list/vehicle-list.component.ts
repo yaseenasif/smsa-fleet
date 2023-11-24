@@ -12,7 +12,7 @@ import { PageEvent } from 'src/app/modal/pageEvent';
   styleUrls: ['./vehicle-list.component.scss'],
   providers: [MessageService]
 })
-export class VehicleListComponent implements OnInit {
+export class VehicleListComponent implements OnInit{
   @ViewChild('fileUpload', { static: false })
   fileUpload!: FileUpload;
 
@@ -36,7 +36,7 @@ export class VehicleListComponent implements OnInit {
   constructor(
     private vehicleService: VehicleService,
     private messageService: MessageService
-  ) { }
+    ) { }
 
   vehicles!: Array<Vehicle>;
   replacementVehicles!: Array<Vehicle>;
@@ -55,9 +55,9 @@ export class VehicleListComponent implements OnInit {
 
 
   ngOnInit() {
-    this.items = [{ label: 'Vehicle' }];
+      this.items = [{ label: 'Vehicle'}];
 
-    this.getAllVehicles();
+      this.getAllVehicles();
 
   }
 
@@ -65,9 +65,10 @@ export class VehicleListComponent implements OnInit {
     this.fileSelected = true;
   }
 
-  showDialog(vId: number) {
-    this.vId = vId;
-    this.replacementVehicles = this.vehicles.filter(el => el.id != vId)
+  showDialog(vId:number) {
+    this.vId=vId;
+    this.availableForReplacement();
+
     this.visible = true;
   }
 
@@ -129,11 +130,11 @@ export class VehicleListComponent implements OnInit {
     })
   }
 
-  onSubmit() {
-    this.vehicleService.replaceVehicle(this.vId, this.vehicleReplacement).subscribe(res => {
-      this.messageService.add({ severity: 'success', summary: 'Vehicle Replaced', detail: 'Vehicle is successfully replaced' });
+  onSubmit(){
+    this.vehicleService.replaceVehicle(this.vId,this.vehicleReplacement).subscribe(res=>{
+      this.messageService.add({ severity: 'success', summary: 'Vehicle Replaced', detail: 'Vehicle is successfully replaced'});
       this.getAllVehicles();
-    }, error => {
+    },error=>{
       this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
     })
   }
@@ -144,4 +145,10 @@ export class VehicleListComponent implements OnInit {
     this.getAllVehicles()
   }
 
+
+  availableForReplacement(){
+    this.vehicleService.availableForReplacement().subscribe((res:Vehicle[])=>{
+      this.replacementVehicles=res;
+    },(error)=>{})
+  }
 }

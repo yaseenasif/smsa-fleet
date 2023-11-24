@@ -12,6 +12,9 @@ import com.example.FleetSystem.repository.VehicleAssignmentRepository;
 import com.example.FleetSystem.repository.VehicleRepository;
 import com.example.FleetSystem.specification.VehicleAssignmentSpecification;
 import com.example.FleetSystem.specification.VehicleSpecification;
+import com.example.FleetSystem.model.*;
+import com.example.FleetSystem.payload.ResponseMessage;
+import com.example.FleetSystem.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,8 +24,11 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -44,6 +50,12 @@ public class VehicleAssignmentService {
 
     @Autowired
     EmployeeRepository employeeRepository;
+
+    @Autowired
+    FileMetaDataRepository fileMetaDataRepository;
+
+    @Autowired
+    StorageService storageService;
 
     public VehicleAssignmentDto save(VehicleAssignmentDto vehicleAssignmentDto) {
         Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -171,6 +183,30 @@ public class VehicleAssignmentService {
     }
 
 
+    public ResponseMessage addAttachment(Long id, String attachmentType, MultipartFile multipartFile) throws IOException {
+        Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findById(id);
+        FileMetaData byFileName = fileMetaDataRepository.findByFileName(multipartFile.getOriginalFilename());
+
+        if(byFileName == null) {
+            String fileUrl = storageService.uploadFile(multipartFile.getBytes(), multipartFile.getOriginalFilename());
+            String originalFileName = multipartFile.getOriginalFilename();
+            String fileExtension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
+            FileMetaData fileMetaData = new FileMetaData();
+            fileMetaData.setFileUrl(fileUrl);
+            fileMetaData.setFileExtension(fileExtension);
+            fileMetaData.setFileName(multipartFile.getOriginalFilename());
+            fileMetaData.setVehicleAssignment(vehicleAssignment.get());
+            fileMetaData.setAttachmentType(attachmentType);
+            fileMetaDataRepository.save(fileMetaData);
+
+            return ResponseMessage.builder()
+                    .message(Collections.singletonList("File uploaded to the server successfully"))
+                    .build();
+        }
+        else {
+            throw new RuntimeException(String.format("File already exists on the bucket with the same name"));
+        }
+    }
     public Page<VehicleAssignmentDto> searchAssignmentByPlateNumber(VehicleSearchCriteria vehicleSearchCriteria, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Specification<VehicleAssignment> vehicleAssignmentSpecification = VehicleAssignmentSpecification.getSearchSpecification(vehicleSearchCriteria);

@@ -2,11 +2,11 @@ package com.example.FleetSystem.service;
 
 import com.example.FleetSystem.criteria.EmployeeSearchCriteria;
 import com.example.FleetSystem.dto.DriverDto;
-import com.example.FleetSystem.model.Driver;
-import com.example.FleetSystem.model.Employee;
-import com.example.FleetSystem.model.User;
+import com.example.FleetSystem.model.*;
+import com.example.FleetSystem.payload.ResponseMessage;
 import com.example.FleetSystem.repository.DriverRepository;
 import com.example.FleetSystem.repository.EmployeeRepository;
+import com.example.FleetSystem.repository.FileMetaDataRepository;
 import com.example.FleetSystem.repository.UserRepository;
 import com.example.FleetSystem.specification.DriverSpecification;
 import com.example.FleetSystem.specification.EmployeeSpecification;
@@ -19,8 +19,11 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,6 +40,12 @@ public class DriverService {
 
     @Autowired
     EmployeeRepository employeeRepository;
+
+    @Autowired
+    FileMetaDataRepository fileMetaDataRepository;
+
+    @Autowired
+    StorageService storageService;
 
     public DriverDto addDriver(DriverDto driverDto) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -157,5 +166,29 @@ public class DriverService {
         Specification<Driver> driverSpecification = DriverSpecification.getSearchSpecification(employeeSearchCriteria);
         Page<Driver> driverPage = driverRepository.findAll(driverSpecification,pageable);
         return driverPage.map(this::toDto);
+    }
+    public ResponseMessage addAttachment(Long id, String attachmentType, MultipartFile multipartFile) throws IOException {
+        Optional<Driver> driver = driverRepository.findById(id);
+        FileMetaData byFileName = fileMetaDataRepository.findByFileName(multipartFile.getOriginalFilename());
+
+        if(byFileName == null) {
+            String fileUrl = storageService.uploadFile(multipartFile.getBytes(), multipartFile.getOriginalFilename());
+            String originalFileName = multipartFile.getOriginalFilename();
+            String fileExtension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
+            FileMetaData fileMetaData = new FileMetaData();
+            fileMetaData.setFileUrl(fileUrl);
+            fileMetaData.setFileExtension(fileExtension);
+            fileMetaData.setFileName(multipartFile.getOriginalFilename());
+            fileMetaData.setDriver(driver.get());
+            fileMetaData.setAttachmentType(attachmentType);
+            fileMetaDataRepository.save(fileMetaData);
+
+            return ResponseMessage.builder()
+                    .message(Collections.singletonList("File uploaded to the server successfully"))
+                    .build();
+        }
+        else {
+            throw new RuntimeException(String.format("File already exists on the bucket with the same name"));
+        }
     }
 }

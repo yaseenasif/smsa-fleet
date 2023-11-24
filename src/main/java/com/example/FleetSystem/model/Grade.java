@@ -19,7 +19,7 @@ public class Grade {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    private Integer name;
     private Integer vehicleBudget;
     private boolean status;
 }

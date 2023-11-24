@@ -7,13 +7,16 @@ import com.example.FleetSystem.payload.ResponseMessage;
 import com.example.FleetSystem.service.EmployeeService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.FleetSystem.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -24,6 +27,8 @@ public class EmployeeController {
     @Autowired
     EmployeeService employeeService;
 
+    @Autowired
+    StorageService storageService;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/add-employee")
@@ -71,6 +76,23 @@ public class EmployeeController {
     @GetMapping("/get-all-unassigned-employee")
     public ResponseEntity<List<EmployeeDto>> getAllUnAssignedEmployee(){
         return ResponseEntity.ok(employeeService.getAllUnAssignedEmployee());
+    }
+
+    @PostMapping("/add-attachments/{id}/{attachmentType}")
+    public ResponseEntity<ResponseMessage> addAttachments(@PathVariable Long id, @PathVariable String attachmentType, @RequestParam("file") MultipartFile multipartFile) throws IOException {
+        return ResponseEntity.ok(employeeService.addAttachment(id, attachmentType, multipartFile));
+    }
+
+    @GetMapping("/download/{fileName}")
+    public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable String fileName) {
+        byte[] data = storageService.downloadFile(fileName);
+        ByteArrayResource resource = new ByteArrayResource(data);
+        return ResponseEntity
+                .ok()
+                .contentLength(data.length)
+                .header("Content-type", "application/octet-stream")
+                .header("Content-disposition", "attachment; filename=\"" + fileName + "\"")
+                .body(resource);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
