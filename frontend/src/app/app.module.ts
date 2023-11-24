@@ -170,7 +170,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
     AddGradeComponent,
     EditGradeComponent,
     VendorDetailComponent,
-    VehicleDetailComponent,
+    VehicleDetailComponent
+    EditGradeComponent,
     VehicleHistoryComponent,
     VehicleAttachmentComponent,
     DriverAttachmentComponent,

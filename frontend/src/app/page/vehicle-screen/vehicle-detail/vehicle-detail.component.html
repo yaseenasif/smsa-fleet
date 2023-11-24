@@ -77,3 +77,64 @@
     </div>
   </div>
   
+
+
+  <p-dialog class="dialog-hook" header="Header" [blockScroll]="true" [(visible)]="visible" [style]="{ width: '50vw',height: '80vh' }">
+    <ng-template pTemplate="header">
+        <span class="text-xl font-bold">Replacement Application</span>
+    </ng-template>
+    <form #vehicleFormReplacement="ngForm" >
+    <div class="grid overflow-none">
+    <div class="col-6">
+      <div class="flex flex-column gap-2 form-hook">
+        <label htmlFor="name">Plate Number</label>
+        <p-dropdown
+          class="w-full"
+          [(ngModel)]="vehicleReplacement.vehicle"
+          [options]="replacementVehicles"
+          name="plateNumber"
+          #plateNumber="ngModel"
+          [required]="true"
+          optionLabel="plateNumber"
+        
+          [filter]="true"
+          filterBy="plateNumber"
+          [showClear]="true"
+          placeholder="Select Plate Number
+        "
+        >
+          <ng-template pTemplate="selectedItem">
+            <div
+              class="flex align-items-center gap-2"
+              *ngIf="vehicleReplacement.vehicle"
+            >
+              <div>{{ vehicleReplacement.vehicle.plateNumber }}</div>
+            </div>
+          </ng-template>
+          <ng-template let-replacementVehicles pTemplate="item">
+            <div class="flex align-items-center gap-2">
+              <div>{{ replacementVehicles.plateNumber }}</div>
+            </div>
+          </ng-template>
+        </p-dropdown>
+      </div>
+    </div>
+    <div class="col-6">
+      
+<div class="flex flex-column gap-2 form-hook">
+  <label htmlFor="name">Reason</label>
+  <textarea #reason="ngModel" name="reason"   [required]="true" rows="5" cols="30" pInputTextarea [(ngModel)]="vehicleReplacement.reason"></textarea>
+</div>
+    </div>
+    </div>
+  </form>
+    <ng-template pTemplate="footer">
+      <p-button label="Cancel" (click)="visible=false" class="bg-o-color mr" styleClass="p-button-outlined">
+      </p-button>
+      <p-button label="Submit"  (click)="onSubmit()" [disabled]="vehicleFormReplacement.invalid || vehicleFormReplacement.invalid === null" (click)="visible=false" class="bg-b-color">
+          
+      </p-button>
+       
+    </ng-template>
+ 
+</p-dialog>
