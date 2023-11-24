@@ -211,7 +211,7 @@ export class AddAssignmentComponent {
     }
 
     else {
-      debugger
+      
       this.vehicleAssignmentService.updateVehicleAssignment(this.vehicleAssignmentId!, this.vehicleAssignment).subscribe((res) => {
       
         this.messageService.add({ severity: 'success', summary: 'Update Successfully' });

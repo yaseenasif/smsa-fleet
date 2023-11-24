@@ -25,7 +25,7 @@ public class Vendor {
     private LocalDate updatedAt;
     private boolean status;
 
-    @OneToMany(mappedBy = "vendor")
+    @OneToMany(mappedBy = "vendor" , cascade = CascadeType.ALL)
     @JsonIgnore
     private List<ContactPerson> contactPersonList;
 

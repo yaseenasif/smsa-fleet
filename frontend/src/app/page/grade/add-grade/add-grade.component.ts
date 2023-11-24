@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { GradeService } from '../grade.service';
 import { Grade } from 'src/app/modal/grade';
 
 @Component({
   selector: 'app-add-grade',
   templateUrl: './add-grade.component.html',
-  styleUrls: ['./add-grade.component.scss']
+  styleUrls: ['./add-grade.component.scss'],
+  providers: [MessageService]
 })
 export class AddGradeComponent {
   items: MenuItem[] | undefined;
@@ -17,16 +18,18 @@ export class AddGradeComponent {
     vehicleBudget: undefined
   };
 
-  constructor(private gradeService: GradeService) { }
+  constructor(private gradeService: GradeService,private messageService: MessageService ) { }
 
   ngOnInit(): void {
     this.items = [{ label: 'Grade List', routerLink: '/grade-list' }, { label: 'Add Grade' }];
   }
   
   onSubmit() {
-    console.log('Form Values:', this.grade); 
     this.gradeService.addGrade(this.grade).subscribe((res) => {
-      console.log('API Response:', res);
+      this.messageService.add({ severity: 'success', summary: ' Added Successfully', detail: 'grade has been added' });  
+    },
+    (error) => {
+      this.messageService.add({ severity: 'error', summary: 'Add Error', detail: error.error });
     });
   }
 }

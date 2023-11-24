@@ -93,6 +93,8 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { GradeListComponent } from './page/grade/grade-list/grade-list.component';
 import { AddGradeComponent } from './page/grade/add-grade/add-grade.component';
 import { EditGradeComponent } from './page/grade/edit-grade/edit-grade.component';
+import { VendorDetailComponent } from './page/vendor-screen/vendor-detail/vendor-detail.component';
+import { VehicleDetailComponent } from './page/vehicle-screen/vehicle-detail/vehicle-detail.component';
 
 @NgModule({
   declarations: [
@@ -155,7 +157,9 @@ import { EditGradeComponent } from './page/grade/edit-grade/edit-grade.component
     VendorListComponent,
     GradeListComponent,
     AddGradeComponent,
-    EditGradeComponent
+    EditGradeComponent,
+    VendorDetailComponent,
+    VehicleDetailComponent
   ],
   imports: [
     BrowserModule,

@@ -59,6 +59,8 @@ import { GradeListComponent } from './page/grade/grade-list/grade-list.component
 import { AddGradeComponent } from './page/grade/add-grade/add-grade.component';
 import { FormsModule } from '@angular/forms';
 import { EditGradeComponent } from './page/grade/edit-grade/edit-grade.component';
+import { VendorDetailComponent } from './page/vendor-screen/vendor-detail/vendor-detail.component';
+import { VehicleDetailComponent } from './page/vehicle-screen/vehicle-detail/vehicle-detail.component';
 
 NgModule({
   imports: [FormsModule],
@@ -181,6 +183,11 @@ const routes: Routes = [
     canActivate:[AuthGuard]
   },
   {
+    path:'vehicle-detail/:id',
+    component: VehicleDetailComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'employee',
     component: EmployeeListComponent,
     canActivate: [AuthGuard]
@@ -206,10 +213,15 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'edit-vendor',
+    path: 'edit-vendor/:id',
     component: EditVendorComponent,
     canActivate: [AuthGuard]
   },
+  // {
+  //   path: 'vendor-detail/:id',
+  //   component: VendorDetailComponent,
+  //   canActivate: [AuthGuard]
+  // },
   {
     path:'permission',
     component:PermissionListComponent,

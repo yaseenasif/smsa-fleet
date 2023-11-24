@@ -26,7 +26,7 @@ export class VehicleAssignmentService {
   }
 
 updateVehicleAssignment(id: Number, updateVehicleAssignment: VehicleAssignment): Observable<VehicleAssignment> {
-  debugger
+  
   return this.http.patch<VehicleAssignment>(`${this.url}/vehicle-assignment/${id}`, updateVehicleAssignment);
 }
 

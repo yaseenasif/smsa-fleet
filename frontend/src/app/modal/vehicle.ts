@@ -1,5 +1,4 @@
 import { VehicleReplacement } from "./vehicleReplacement"
-import { Vendor } from "./vendor"
 
 export interface Vehicle {
     id: Number | null | undefined,

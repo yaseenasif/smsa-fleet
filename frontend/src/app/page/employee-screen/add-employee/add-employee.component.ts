@@ -131,7 +131,7 @@ export class AddEmployeeComponent implements OnInit {
   getAllGrades() {
     this.gradeService.getGrades().subscribe((res: Grade[]) => {
       this.gradesData = res;
-      // this.employee.vehicleBudget = res
+      this.messageService.add({ severity: 'success', summary: ' Added Successfully', detail: 'vendor has been added' });  
     })
   }
 
@@ -163,7 +163,6 @@ export class AddEmployeeComponent implements OnInit {
         console.error('Error while saving the file:', error);
 
         this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
-        // Handle error
       })
 
   }
