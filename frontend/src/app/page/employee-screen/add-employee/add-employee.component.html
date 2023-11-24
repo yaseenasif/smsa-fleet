@@ -530,6 +530,8 @@
                     <input
                       pInputText
                       id="name"
+                      pattern="[0-9]*"
+                      maxlength="10"
                       aria-describedby="name-help"
                       name="licenseNumber"
                       [(ngModel)]="employee.licenseNumber"
@@ -537,10 +539,12 @@
                       required
                       [ngClass]="{'error': licenseNumber.invalid && (licenseNumber.dirty || licenseNumber.touched)}"
                     />
-                    <small 
-                        id="name-help" class="color-red error" 
-                        *ngIf="licenseNumber.invalid && (licenseNumber.dirty || licenseNumber.touched)"
-                    > License Number is required
+               
+                    <small class="color-red error"  *ngIf="licenseNumber.invalid && (licenseNumber.dirty || licenseNumber.touched )&&licenseNumber?.errors?.['required']">
+                      License Number is required.
+                    </small>
+                    <small class="color-red error"  *ngIf="licenseNumber.invalid && (licenseNumber.dirty || licenseNumber.touched )&&licenseNumber?.errors?.['pattern']">
+                      must be number
                     </small>
                   </div>
                 </div>

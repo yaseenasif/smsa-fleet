@@ -59,7 +59,8 @@ export class VehicleListComponent implements OnInit{
   showDialog(vId:number, event: Event) {
     event.stopPropagation();
     this.vId=vId;
-    this.replacementVehicles=this.vehicles.filter(el=>el.id!=vId)
+    this.availableForReplacement();
+  
     this.visible = true;
   }
 
@@ -133,5 +134,11 @@ export class VehicleListComponent implements OnInit{
     },error=>{
       this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
     })
+  }
+
+  availableForReplacement(){
+    this.vehicleService.availableForReplacement().subscribe((res:Vehicle[])=>{
+      this.replacementVehicles=res;
+    },(error)=>{})
   }
 }

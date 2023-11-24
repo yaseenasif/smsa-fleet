@@ -69,9 +69,11 @@
                      <p-button (click)="deleteDriver(driver.id)" icon="bi bi-trash" class='ml' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
                     
                      </p-button>
-                     <p-button icon="bi bi-paperclip" class='ml mr' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
+                     <p-button [routerLink]="['/driver-attachment',driver.id]"  icon="bi bi-paperclip" class='ml mr' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
                    
                      </p-button>
+                     <p-button [routerLink]="['/individual-file-list-component/','driver',driver.id]" icon="bi bi-download" class='ml mr' styleClass="p-button-rounded p-button-success p-button-text p-button-raised">
+                    </p-button>
                   </td>
                 </tr>
               </ng-template>
