@@ -9,6 +9,7 @@ import com.example.FleetSystem.model.Vehicle;
 import com.example.FleetSystem.payload.ResponseMessage;
 import com.example.FleetSystem.service.VehicleAssignmentService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -73,8 +74,7 @@ public class VehicleAssignmentController {
     public ResponseEntity<Page<VehicleAssignmentDto>> searchAssignmentByPlateNumber(@RequestParam(value = "value",required = false) String value,
                                                         @RequestParam(defaultValue = "0") int page,
                                                         @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
-        VehicleSearchCriteria vehicleSearchCriteria = new VehicleSearchCriteria();
-        vehicleSearchCriteria.setValue(value);
+        VehicleSearchCriteria vehicleSearchCriteria = new ObjectMapper().readValue(value, VehicleSearchCriteria.class);
         return ResponseEntity.ok(vehicleAssignmentService.searchAssignmentByPlateNumber(vehicleSearchCriteria,page, size));
     }
 

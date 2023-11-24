@@ -17,7 +17,7 @@ public class VehicleAssignmentSpecification {
             if (vehicleSearchCriteria == null || vehicleSearchCriteria.getValue() == null || vehicleSearchCriteria
                     .getValue().isEmpty()) {
                 query.orderBy(criteriaBuilder.desc(root.get("id")));
-                return criteriaBuilder.and();
+                return criteriaBuilder.conjunction();
             }
 
             Join<VehicleAssignment, Vehicle> vehicleJoin = root.join("vehicle");
