@@ -3,10 +3,8 @@ package com.example.FleetSystem.service;
 import com.example.FleetSystem.dto.DriverDto;
 import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.dto.VendorDto;
-import com.example.FleetSystem.model.Driver;
-import com.example.FleetSystem.model.User;
-import com.example.FleetSystem.model.Vehicle;
-import com.example.FleetSystem.model.Vendor;
+import com.example.FleetSystem.model.*;
+import com.example.FleetSystem.repository.ContactPersonRepository;
 import com.example.FleetSystem.repository.UserRepository;
 import com.example.FleetSystem.repository.VendorRepository;
 import org.modelmapper.ModelMapper;
@@ -29,6 +27,8 @@ public class VendorService {
     VendorRepository vendorRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    ContactPersonRepository contactPersonRepository;
 
     public VendorDto save(VendorDto vendorDto) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -37,6 +37,9 @@ public class VendorService {
             User user = userRepository.findByEmail(username);
 
             Vendor vendor = toEntity(vendorDto);
+            for (ContactPerson contactPerson: vendor.getContactPersonList()) {
+                contactPerson.setVendor(vendor);
+            }
             vendor.setCreatedAt(LocalDate.now());
             vendor.setCreatedBy(user);
             vendor.setStatus(Boolean.TRUE);
@@ -45,8 +48,10 @@ public class VendorService {
         throw new RuntimeException("Error Adding Vendor");
     }
 
-    public List<Vendor> getAll(){
-        return vendorRepository.getActiveVendors();
+    public List<VendorDto> getAll(){
+//        return vendorRepository.getActiveVendors();
+        List<Vendor> vendors = vendorRepository.getActiveVendors();
+        return toDtoList(vendors);
     }
 
     public VendorDto getById(Long id) {

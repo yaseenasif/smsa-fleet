@@ -24,7 +24,6 @@ export class GradeListComponent implements OnInit {
   loadGrades() {
     this.gradeService.getGrades().subscribe((grades: Grade[]) => {
       this.grade = grades;
-      console.log('Grades:', grades);
     });
   }
   deleteGradeById(id: Number) {
@@ -36,6 +35,9 @@ export class GradeListComponent implements OnInit {
       });
 
       this.loadGrades();
+    },
+    (error) => {
+      this.messageService.add({ severity: 'error', summary: 'Delete Error', detail: error.error });
     });
 }
 }

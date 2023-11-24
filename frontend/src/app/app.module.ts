@@ -94,6 +94,8 @@ import { GradeListComponent } from './page/grade/grade-list/grade-list.component
 import { AddGradeComponent } from './page/grade/add-grade/add-grade.component';
 import { EditGradeComponent } from './page/grade/edit-grade/edit-grade.component';
 import { PaginatorModule } from 'primeng/paginator';
+import { VendorDetailComponent } from './page/vendor-screen/vendor-detail/vendor-detail.component';
+import { VehicleDetailComponent } from './page/vehicle-screen/vehicle-detail/vehicle-detail.component';
 import { VehicleHistoryComponent } from './page/vehicle-screen/vehicle-history/vehicle-history.component';
 import { CardModule } from 'primeng/card';
 import { VehicleAttachmentComponent } from './page/vehicle-screen/vehicle-attachment/vehicle-attachment.component';
@@ -167,6 +169,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
     GradeListComponent,
     AddGradeComponent,
     EditGradeComponent,
+    VendorDetailComponent,
+    VehicleDetailComponent,
     VehicleHistoryComponent,
     VehicleAttachmentComponent,
     DriverAttachmentComponent,

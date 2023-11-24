@@ -65,7 +65,8 @@ export class VehicleListComponent implements OnInit{
     this.fileSelected = true;
   }
 
-  showDialog(vId:number) {
+  showDialog(vId:number, event: Event) {
+    event.stopPropagation();
     this.vId=vId;
     this.availableForReplacement();
 
@@ -122,7 +123,8 @@ export class VehicleListComponent implements OnInit{
 
   }
 
-  deleteVehicle(id: Number) {
+  deleteVehicle(id: Number, event: Event) {
+    event.stopPropagation();
 
     this.vehicleService.deleteVehicle(id).subscribe((res) => {
       this.getAllVehicles();

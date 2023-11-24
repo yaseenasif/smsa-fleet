@@ -1,104 +1,86 @@
 <div class="flex flex-row">
-    <app-sidebar></app-sidebar>
-    <div class="body-position">
-      <div class="body-holder">
-        <app-dashboard-head></app-dashboard-head>
-  
-        <div class="main">
-          <div class="card flex justify-content-center">
-            <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
-          </div>
-          <div class="body-card">
-            <div class="card">
-              <h1 class="mb-4 h-color">Add Vendor</h1>
+  <app-sidebar></app-sidebar>
+  <div class="body-position">
+    <div class="body-holder">
+      <app-dashboard-head></app-dashboard-head>
+
+      <div class="main">
+        <p-toast></p-toast>
+        <div class="card flex justify-content-center">
+          <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+        </div>
+        <div class="body-card">
+          <div class="card">
+            <h1 class="mb-4 h-color">Add Vendor</h1>
+            <form #vendorForm="ngForm" (ngSubmit)="onSubmit()">
               <div class="grid">
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2">
-                    <label htmlFor="name">Vendor Name</label>
+                    <label htmlFor="vendorName">Vendor Name</label>
                     <input
                       pInputText
-                      id="name"
-                      aria-describedby="name-help"
-                      [ngModelOptions]="{ standalone: true }"
-                      [(ngModel)]="name"
+                      id="vendorName"
+                      aria-describedby="vendorName-help"
+                      [(ngModel)]="vendor.vendorName"
+                      name="vendorName"
                     />
-                    <!-- <small id="name-help"
-                      >{{name}}</small
-                    > -->
                   </div>
                 </div>
-                <div class="col-12 md:col-12 lg:col-6">
-                    <div class="flex flex-column gap-2">
-                      <label htmlFor="name">Office Location</label>
-                      <input
-                        pInputText
-                        id="name"
-                        aria-describedby="name-help"
-                        [ngModelOptions]="{ standalone: true }"
-                        [(ngModel)]="name"
-                      />
-                      <!-- <small id="name-help"
-                        >{{name}}</small
-                      > -->
-                    </div>
-                  </div>
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2">
-                    <label htmlFor="name">Contact Person 1</label>
+                    <label htmlFor="officeLocation">Office Location</label>
                     <input
                       pInputText
-                      id="name"
-                      aria-describedby="name-help"
-                      [ngModelOptions]="{ standalone: true }"
-                      [(ngModel)]="name"
+                      id="officeLocation"
+                      aria-describedby="officeLocation-help"
+                      [(ngModel)]="vendor.officeLocation"
+                      name="officeLocation"
                     />
-                    <!-- <small id="name-help"
-                      >{{name}}</small
-                    > -->
                   </div>
                 </div>
-                <div class="col-12 md:col-12 lg:col-6">
-                    <div class="flex flex-column gap-2">
-                      <label htmlFor="name">Phone</label>
-                      <input
-                        pInputText
-                        id="name"
-                        aria-describedby="name-help"
-                        [ngModelOptions]="{ standalone: true }"
-                        [(ngModel)]="name"
-                      />
-                      <!-- <small id="name-help"
-                        >{{name}}</small
-                      > -->
-                    </div>
+                <!-- <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="contactPerson1">Contact Person 1</label>
+                    <input
+                      pInputText
+                      id="contactPerson1"
+                      aria-describedby="contactPerson1-help"
+                      [(ngModel)]="vendor.contactPersonList[0].name"
+                      name="contactPerson1"
+                    />
                   </div>
-                  <div class="col-12 md:col-12 lg:col-6">
-                    <div class="flex flex-column gap-2">
-                      <label htmlFor="name">Email</label>
-                      <input
-                        pInputText
-                        id="name"
-                        aria-describedby="name-help"
-                        [ngModelOptions]="{ standalone: true }"
-                        [(ngModel)]="name"
-                      />
-                      <!-- <small id="name-help"
-                        >{{name}}</small
-                      > -->
-                    </div>
+                </div> -->
+                <!-- <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="phone">Phone</label>
+                    <input
+                      pInputText
+                      id="phone"
+                      aria-describedby="phone-help"
+                      [(ngModel)]="vendor.contactPersonList[0].phoneNumber"
+                      name="phone"
+                    />
                   </div>
+                </div> -->
+                <!-- <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="email">Email</label>
+                    <input
+                      pInputText
+                      id="email"
+                      aria-describedby="email-help"
+                      [(ngModel)]="vendor.contactPersonList[0].email"
+                      name="email"
+                    />
+                  </div>
+                </div> -->
               </div>
-              <div class="grid" *ngFor="let contactPerson of contactPersons; let i = index">
+
+              <div class="grid" *ngFor="let contactPersonList of vendor.contactPersonList; let i = index">
                   <div class="col-12 md:col-12 lg:col-6">
                     <div class="flex flex-column gap-2">
-                      <label htmlFor="name">Contact Person {{i + 2}}</label>
-                      <input
-                        pInputText
-                        id="name"
-                        aria-describedby="name-help"
-                        [ngModelOptions]="{ standalone: true }"
-                        [(ngModel)]="name"
-                      />
+                      <label htmlFor="name">Contact Person {{i + 1}}</label>
+                      <input pInputText id="name" aria-describedby="name-help" [(ngModel)]="contactPersonList.name" name="contactPersonName{{i}}" />
                       <!-- <small id="name-help"
                         >{{name}}</small
                       > -->
@@ -107,13 +89,7 @@
                   <div class="col-12 md:col-12 lg:col-6">
                     <div class="flex flex-column gap-2">
                       <label htmlFor="name">Phone</label>
-                      <input
-                        pInputText
-                        id="name"
-                        aria-describedby="name-help"
-                        [ngModelOptions]="{ standalone: true }"
-                        [(ngModel)]="name"
-                      />
+                        <input pInputText id="phone" aria-describedby="phone-help" [(ngModel)]="contactPersonList.phoneNumber" name="contactPersonPhone{{i}}" />
                       <!-- <small id="name-help"
                         >{{name}}</small
                       > -->
@@ -126,21 +102,20 @@
                       pInputText
                       id="name"
                       aria-describedby="name-help"
-                      [ngModelOptions]="{ standalone: true }"
-                      [(ngModel)]="name"
+                      [(ngModel)]="contactPersonList.email" name="contactPersonEmail{{i}}"
                     />
                   </div>
                 </div>
                 <div class="flex align-items-center justify-content-end mt-4 col-12 md:col-12 lg:col-1">
-                    <i class="bi bi-trash3" (click)="removeContactPerson(i)" *ngIf="i >= 1">Remove</i>
+                    <i class="bi bi-trash3" (click)="removeContactPerson(i)" *ngIf="i >= 2">Remove</i>
                 </div>
               </div>
               <div class="flex align-items-center justify-content-end mt-4">
                 <p-button type="button" (click)="addContactPerson()">Add More Contact Field</p-button>
             </div>
-              <h2 class="mb-4 mt-4">Attachments</h2>
+              <!-- <h2 class="mb-4 mt-4">Attachments</h2> -->
               <div class="grid">
-                <div class="lg:col-12 md:col-12 sm:col-12">
+                <!-- <div class="lg:col-12 md:col-12 sm:col-12">
                   <div class="flex flex-column gap-2 form-hook">
                     <h3 for="">Agreements</h3>
                     <p-fileUpload
@@ -158,7 +133,7 @@
                       </ng-template>
                     </p-fileUpload>
                   </div>
-                </div>
+                </div> -->
               </div>
               <div class="flex align-items-center justify-content-end mt-4">
                 <p-button
@@ -168,8 +143,9 @@
                   styleClass="p-button-outlined"
                 >
                 </p-button>
-                <p-button label="Save" class="bg-b-color ml"> </p-button>
+                <p-button label="Save" type="submit" class="bg-b-color ml"> </p-button>
               </div>
+              </form>
             </div>
           </div>
         </div>
