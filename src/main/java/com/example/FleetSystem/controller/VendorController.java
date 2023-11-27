@@ -50,7 +50,7 @@ public class VendorController {
         }
 
        @GetMapping("/get-active-vendors")
-         public ResponseEntity<List<Vendor>> getActiveVendors(){
+         public ResponseEntity<List<VendorDto>> getActiveVendors(){
          return ResponseEntity.ok(vendorService.getAll());
        }
 

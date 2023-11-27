@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Employee } from 'src/app/modal/employee';
+import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -44,5 +45,12 @@ export class EmployeeService {
   getAllUnAssignedEmployees(): Observable<Employee[]> {
     return this.http.get<Employee[]>(this.url.concat('/get-all-unassigned-employee'));
   }
+
+  searchEmployee(value?: number | null, query?: { page: number, size: number }): Observable<PaginatedResponse<Employee>> {
+    if(value){
+      query = {page: 0 , size:10};
+    }
+    return this.http.get<PaginatedResponse<Employee>>(`${this.url}/search-employee?value=${value ? value : ''}&page=${query?.page ? query.page : ''}&size=${query?.size ? query.size : ''}`);
+}
 
 }

@@ -113,6 +113,9 @@ export class UpdateEmployeeComponent {
         this.router.navigate(['/employee'])
       },5000)
       
+    },
+    (error) => {
+      this.messageService.add({ severity: 'error', summary: 'Edit Error', detail: error.error });
     })
 
   }

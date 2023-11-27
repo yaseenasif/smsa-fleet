@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MenuItem, MessageService } from 'primeng/api';
 import { VehicleAssignmentService } from '../vehicle-assignment.service';
 import { VehicleAssignment } from 'src/app/modal/vehicle-assignment';
+import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
 
 @Component({
   selector: 'app-assignment-list',
@@ -12,7 +13,15 @@ import { VehicleAssignment } from 'src/app/modal/vehicle-assignment';
 export class AssignmentListComponent {
   
   vehicleAssignment !: VehicleAssignment[]
-  
+
+  query !: {
+    page: number,
+    size: number
+  };
+
+  value: string | null = null;
+  totalRecords: number = 0;
+
   constructor(private vehicleAssignmentService: VehicleAssignmentService,
     private messageService: MessageService) { }
   
@@ -38,13 +47,12 @@ export class AssignmentListComponent {
     }
 
   getAllVehicleAssignment() {
-    this.vehicleAssignmentService.getAllVehicleAssignment().subscribe((res: VehicleAssignment[]) => {
-
-      this.vehicleAssignment = res
-      console.log(this.vehicleAssignment);
-      
-      
+    this.vehicleAssignmentService.searchAssignmentByPlateNumber(this.value, this.query).subscribe((res: PaginatedResponse<VehicleAssignment>) => {
+      this.vehicleAssignment = res.content;
+      this.query = { page: res.pageable.pageNumber, size: res.size }
+      this.totalRecords = res.totalElements;
     })
+
   }
 
   deleteVehicleAssignment(id: Number) {
@@ -58,5 +66,10 @@ export class AssignmentListComponent {
     })
   
 }
+  onPageChange(event?: any) {
+    this.query.page = event.page;
+    this.query.size = event.rows;
+    this.getAllVehicleAssignment()
+  }
 
 }

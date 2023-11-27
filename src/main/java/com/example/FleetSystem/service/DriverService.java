@@ -1,5 +1,6 @@
 package com.example.FleetSystem.service;
 
+import com.example.FleetSystem.criteria.EmployeeSearchCriteria;
 import com.example.FleetSystem.dto.DriverDto;
 import com.example.FleetSystem.model.*;
 import com.example.FleetSystem.payload.ResponseMessage;
@@ -7,8 +8,14 @@ import com.example.FleetSystem.repository.DriverRepository;
 import com.example.FleetSystem.repository.EmployeeRepository;
 import com.example.FleetSystem.repository.FileMetaDataRepository;
 import com.example.FleetSystem.repository.UserRepository;
+import com.example.FleetSystem.specification.DriverSpecification;
+import com.example.FleetSystem.specification.EmployeeSpecification;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -154,6 +161,12 @@ public class DriverService {
         return modelMapper.map(driverDto , Driver.class);
     }
 
+    public Page<DriverDto> searchDriver(EmployeeSearchCriteria employeeSearchCriteria, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<Driver> driverSpecification = DriverSpecification.getSearchSpecification(employeeSearchCriteria);
+        Page<Driver> driverPage = driverRepository.findAll(driverSpecification,pageable);
+        return driverPage.map(this::toDto);
+    }
     public ResponseMessage addAttachment(Long id, String attachmentType, MultipartFile multipartFile) throws IOException {
         Optional<Driver> driver = driverRepository.findById(id);
         FileMetaData byFileName = fileMetaDataRepository.findByFileName(multipartFile.getOriginalFilename());

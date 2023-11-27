@@ -1,5 +1,7 @@
 package com.example.FleetSystem.service;
 
+import com.example.FleetSystem.criteria.EmployeeSearchCriteria;
+import com.example.FleetSystem.criteria.VehicleSearchCriteria;
 import com.example.FleetSystem.dto.EmployeeDto;
 import com.example.FleetSystem.exception.ExcelException;
 import com.example.FleetSystem.model.*;
@@ -9,9 +11,14 @@ import com.example.FleetSystem.repository.EmployeeRepository;
 import com.example.FleetSystem.repository.FileHistoryRepository;
 import com.example.FleetSystem.repository.FileMetaDataRepository;
 import com.example.FleetSystem.repository.UserRepository;
+import com.example.FleetSystem.specification.EmployeeSpecification;
 import org.apache.poi.ss.usermodel.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -215,7 +222,7 @@ public class EmployeeService {
                             employee.setNationality(getStringValue(row.getCell(23)));
                             employee.setCompanyEmailAddress(getStringValue(row.getCell(24)));
                             employee.setContactNumber(dataFormatter.formatCellValue(row.getCell(25)));
-                            employee.setGrade(getStringValue(row.getCell(26))); 
+                            employee.setGrade(Integer.parseInt(getStringValue(row.getCell(26)).replaceAll("\\D+", "")));
                             employee.setCreatedBy(user);
                             employee.setCreatedAt(LocalDate.now());
                             employee.setDeleteStatus(Boolean.TRUE);
@@ -430,5 +437,12 @@ public class EmployeeService {
         else {
             throw new RuntimeException(String.format("File already exists on the bucket with the same name"));
         }
+    }
+
+    public Page<EmployeeDto> searchEmployee(EmployeeSearchCriteria employeeSearchCriteria, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<Employee> employeeSpecification = EmployeeSpecification.getSearchSpecification(employeeSearchCriteria);
+        Page<Employee> employeePage = employeeRepository.findAll(employeeSpecification,pageable);
+        return employeePage.map(this::toDto);
     }
 }

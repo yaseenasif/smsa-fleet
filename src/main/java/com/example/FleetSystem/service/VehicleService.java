@@ -1,22 +1,31 @@
 package com.example.FleetSystem.service;
 
+import com.example.FleetSystem.criteria.VehicleSearchCriteria;
 import com.example.FleetSystem.dto.VehicleCountPerVendorDto;
 import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.exception.ExcelException;
 import com.example.FleetSystem.model.*;
 import com.example.FleetSystem.payload.ExcelErrorResponse;
+import com.example.FleetSystem.repository.FileHistoryRepository;
+import com.example.FleetSystem.repository.UserRepository;
+import com.example.FleetSystem.repository.VehicleRepository;
+import com.example.FleetSystem.repository.VendorRepository;
+import com.example.FleetSystem.specification.VehicleSpecification;
 import com.example.FleetSystem.payload.ResponseMessage;
 import com.example.FleetSystem.repository.*;
 import org.apache.poi.ss.usermodel.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Date;
@@ -99,8 +108,11 @@ public class VehicleService {
     }
 
 
-    public List<VehicleDto> getActiveVehicles() {
-        return toDtoList(vehicleRepository.getActiveVehicles());
+    public Page<VehicleDto> searchVehicles(VehicleSearchCriteria vehicleSearchCriteria, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<Vehicle> vehicleSpecification = VehicleSpecification.getSearchSpecification(vehicleSearchCriteria);
+        Page<Vehicle> vehiclePage = vehicleRepository.findAll(vehicleSpecification,pageable);
+        return vehiclePage.map(this::toDto);
     }
 
     public VehicleDto findById(Long id) {
@@ -450,6 +462,10 @@ public class VehicleService {
         return toDtoList(vehicleRepository.getNotAssignedVehicle());
     }
 
+    public List<VehicleDto> getActiveVehicles() {
+        return toDtoList(vehicleRepository.getActiveVehicles());
+    }
+
     public ResponseMessage addAttachment(Long id, String attachmentType, MultipartFile multipartFile) throws IOException {
         Optional<Vehicle> vehicle = vehicleRepository.findById(id);
         FileMetaData byFileName = fileMetaDataRepository.findByFileName(multipartFile.getOriginalFilename());
@@ -474,6 +490,11 @@ public class VehicleService {
             throw new RuntimeException(String.format("File already exists on the bucket with the same name"));
         }
     }
+
+    public List<VehicleDto> availableForReplacement (){
+       return toDtoList(vehicleRepository.availableForReplacement());
+    }
+
 
     public Map<String, Object> getCounts() {
         Map<String, Object> counts = new HashMap<>();

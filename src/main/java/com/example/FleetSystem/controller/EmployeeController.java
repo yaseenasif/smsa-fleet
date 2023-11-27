@@ -1,10 +1,15 @@
 package com.example.FleetSystem.controller;
 
+import com.example.FleetSystem.criteria.EmployeeSearchCriteria;
+import com.example.FleetSystem.criteria.VehicleSearchCriteria;
 import com.example.FleetSystem.dto.EmployeeDto;
 import com.example.FleetSystem.payload.ResponseMessage;
 import com.example.FleetSystem.service.EmployeeService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.example.FleetSystem.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -90,4 +95,13 @@ public class EmployeeController {
                 .body(resource);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/search-employee")
+    public ResponseEntity<Page<EmployeeDto>> searchEmployee(@RequestParam(value = "value",required = false) Long value,
+                                                           @RequestParam(defaultValue = "0") int page,
+                                                           @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
+        EmployeeSearchCriteria employeeSearchCriteria = new EmployeeSearchCriteria();
+        employeeSearchCriteria.setValue(value);
+        return ResponseEntity.ok(employeeService.searchEmployee(employeeSearchCriteria,page, size));
+    }
 }

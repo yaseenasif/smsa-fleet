@@ -36,7 +36,7 @@ import { ProductFieldUpdateComponent } from './page/product-field/product-field-
 import {FormsModule} from'@angular/forms'
 import {DomesticShippingListComponent} from './page/shipping-order/domestic/domestic-shipping-list/domestic-shipping-list.component';
 import { NgxUiLoaderModule, NgxUiLoaderHttpModule } from "ngx-ui-loader";
-
+import { TimelineModule } from 'primeng/timeline';
 
 
 import {
@@ -93,6 +93,19 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { GradeListComponent } from './page/grade/grade-list/grade-list.component';
 import { AddGradeComponent } from './page/grade/add-grade/add-grade.component';
 import { EditGradeComponent } from './page/grade/edit-grade/edit-grade.component';
+import { PaginatorModule } from 'primeng/paginator';
+import { VendorDetailComponent } from './page/vendor-screen/vendor-detail/vendor-detail.component';
+import { VehicleDetailComponent } from './page/vehicle-screen/vehicle-detail/vehicle-detail.component';
+import { VehicleHistoryComponent } from './page/vehicle-screen/vehicle-history/vehicle-history.component';
+import { CardModule } from 'primeng/card';
+import { VehicleAttachmentComponent } from './page/vehicle-screen/vehicle-attachment/vehicle-attachment.component';
+import { DriverAttachmentComponent } from './page/driver/driver-attachment/driver-attachment.component';
+import { AssigmentAttachmentComponent } from './page/Assignment/assigment-attachment/assigment-attachment.component';
+import { VendorAttachmentComponent } from './page/vendor-screen/vendor-attachment/vendor-attachment.component';
+import { EmployeeAttachmentComponent } from './page/employee-screen/employee-attachment/employee-attachment.component';
+import { IndividualFileListComponent } from './page/individual-file-list/individual-file-list/individual-file-list.component';
+import { KeyFilterModule } from 'primeng/keyfilter';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @NgModule({
   declarations: [
@@ -155,9 +168,22 @@ import { EditGradeComponent } from './page/grade/edit-grade/edit-grade.component
     VendorListComponent,
     GradeListComponent,
     AddGradeComponent,
-    EditGradeComponent
+    EditGradeComponent,
+    VendorDetailComponent,
+    VehicleDetailComponent,
+    EditGradeComponent,
+    VehicleHistoryComponent,
+    VehicleAttachmentComponent,
+    DriverAttachmentComponent,
+    AssigmentAttachmentComponent,
+    VendorAttachmentComponent,
+    EmployeeAttachmentComponent,
+    IndividualFileListComponent,
+
   ],
   imports: [
+    CardModule,
+    TimelineModule,
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
@@ -182,7 +208,10 @@ import { EditGradeComponent } from './page/grade/edit-grade/edit-grade.component
     ChartModule,
     NgxUiLoaderModule,
     DialogModule,
+    PaginatorModule,
     InputTextareaModule,
+    KeyFilterModule,
+    InputNumberModule,
     NgxUiLoaderHttpModule.forRoot({
       showForeground:true
     })

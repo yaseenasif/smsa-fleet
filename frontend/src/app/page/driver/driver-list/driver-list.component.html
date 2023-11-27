@@ -11,19 +11,25 @@
         </div>
         <div class="body-card">
             <div class="table-head">
+              <div class="flex mb-2 align-items-center gap-1" style="justify-content: flex-end; align-items: flex-end;">            
+                <p-button class="bg-b-color" routerLink="/add-driver">
+                    <i class="bi bi-plus-lg" style="font-size: 20px;font-weight: bold;"></i>&nbsp;Add Driver
+                  </p-button>
+              </div>
                 <p-toolbar>
                     <div class="p-toolbar-group-start">
                       <h2 class="h-color">Driver List</h2>
                     </div>
-                    <div class="p-toolbar-group-end">
-                        <p-button class="bg-b-color" routerLink="/add-driver">
-                          <i class="bi bi-plus-lg" style="font-size: 20px;font-weight: bold;"></i>&nbsp;Add Driver
-                        </p-button>
+                    <div class="card flex flex-wrap justify-content-center gap-3">
+                      <span class="p-input-icon-left">
+                        <i class="my-relative bi bi-search"></i>
+                        <input type="text" pInputText [(ngModel)]="value" (input)="getAllDrivers()"
+                          placeholder="Search Employee Number" />
+                      </span>
                     </div>
+                    
                 </p-toolbar>
             </div>
-          
-
           <div class="card">
             <p-table [value]="driver" [tableStyle]="{ 'min-width': '50rem' }">
               <ng-template pTemplate="header">
@@ -69,13 +75,20 @@
                      <p-button (click)="deleteDriver(driver.id)" icon="bi bi-trash" class='ml' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
                     
                      </p-button>
-                     <p-button icon="bi bi-paperclip" class='ml mr' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
+                     <p-button [routerLink]="['/driver-attachment',driver.id]"  icon="bi bi-paperclip" class='ml mr' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
                    
                      </p-button>
+                     <p-button [routerLink]="['/individual-file-list-component/','driver',driver.id]" icon="bi bi-download" class='ml mr' styleClass="p-button-rounded p-button-success p-button-text p-button-raised">
+                    </p-button>
                   </td>
                 </tr>
               </ng-template>
             </p-table>
+            <p-paginator [rows]="query.size" [first]="query.page * query.size" [totalRecords]="totalRecords"
+            (onPageChange)="onPageChange($event)" [alwaysShow]="false" [pageLinkSize]="4"
+            [showCurrentPageReport]="true">
+          </p-paginator>
+
           </div>
         </div>
       </div>
