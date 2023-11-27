@@ -1,5 +1,6 @@
 package com.example.FleetSystem.service;
 
+import com.example.FleetSystem.dto.VehicleCountPerVendorDto;
 import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.exception.ExcelException;
 import com.example.FleetSystem.model.*;
@@ -472,6 +473,22 @@ public class VehicleService {
         else {
             throw new RuntimeException(String.format("File already exists on the bucket with the same name"));
         }
+    }
+
+    public Map<String, Object> getCounts() {
+        Map<String, Object> counts = new HashMap<>();
+        // Get total count of active vehicles
+        Long totalActiveVehicles = vehicleRepository.getActiveVehicleCount();
+        counts.put("totalActiveVehicles", totalActiveVehicles);
+
+        // Get count of active vehicles per vendor
+        List<Object[]> activeVehiclesPerVendor = vehicleRepository.getActiveVehiclePerVendor();
+        List<VehicleCountPerVendorDto> vehicleCountPerVendorDtoList = activeVehiclesPerVendor.stream()
+                .map(objects -> new VehicleCountPerVendorDto((Long) objects[0], (Long) objects[1]))
+                .collect(Collectors.toList());
+        counts.put("activeVehiclesPerVendor", vehicleCountPerVendorDtoList);
+
+        return counts;
     }
 
 }

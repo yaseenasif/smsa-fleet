@@ -1,12 +1,14 @@
 package com.example.FleetSystem.controller;
 
 import com.example.FleetSystem.dto.VehicleAssignmentDto;
+import com.example.FleetSystem.dto.VehicleCountPerVendorDto;
 import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.payload.ResponseMessage;
 import com.example.FleetSystem.service.StorageService;
 import com.example.FleetSystem.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -91,6 +94,12 @@ public class VehicleController {
                 .header("Content-type", "application/octet-stream")
                 .header("Content-disposition", "attachment; filename=\"" + fileName + "\"")
                 .body(resource);
+    }
+
+    @GetMapping("/counts")
+    public ResponseEntity<Map<String, Object>> getVehicleCounts() {
+        Map<String, Object> counts = vehicleService.getCounts();
+        return new ResponseEntity<>(counts, HttpStatus.OK);
     }
 
 }
