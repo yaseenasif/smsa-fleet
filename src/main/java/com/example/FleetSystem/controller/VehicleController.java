@@ -3,6 +3,7 @@ package com.example.FleetSystem.controller;
 import com.example.FleetSystem.criteria.VehicleSearchCriteria;
 import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.payload.ResponseMessage;
+import com.example.FleetSystem.payload.VehicleHistoryResponse;
 import com.example.FleetSystem.service.StorageService;
 import com.example.FleetSystem.service.VehicleService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -108,6 +109,11 @@ public class VehicleController {
     @GetMapping("/vehicle-available-for-replacement")
     public ResponseEntity<List<VehicleDto>> availableForReplacement(){
         return ResponseEntity.ok(vehicleService.availableForReplacement());
+    }
+
+    @GetMapping("/vehicle-history/{id}")
+    public ResponseEntity<List<VehicleHistoryResponse>> getVehicleHistoryById(@PathVariable Long id){
+        return ResponseEntity.ok(vehicleService.getVehicleHistoryById(id));
     }
 
 }

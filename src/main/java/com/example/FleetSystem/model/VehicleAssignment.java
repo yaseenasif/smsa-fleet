@@ -2,6 +2,7 @@ package com.example.FleetSystem.model;
 
 
 import lombok.*;
+import org.hibernate.envers.AuditOverride;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
@@ -20,8 +21,9 @@ import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 @Builder
 @Entity
 @Audited
+@AuditOverride(forClass = Auditable.class, isAudited = true)
 @Table(name = "vehicle_assignment")
-public class VehicleAssignment{
+public class VehicleAssignment implements Auditable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,4 +54,23 @@ public class VehicleAssignment{
     @JoinColumn(name = "updated_by")
     private User updatedBy;
 
+    @Override
+    public LocalDate getDeletedAt() {
+        return null;
+    }
+
+    @Override
+    public void setDeletedAt(LocalDate deletedAt) {
+
+    }
+
+    @Override
+    public User getDeletedBy() {
+        return null;
+    }
+
+    @Override
+    public void setDeletedBy(User deletedBy) {
+
+    }
 }

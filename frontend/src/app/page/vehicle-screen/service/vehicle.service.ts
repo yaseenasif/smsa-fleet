@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
 import { Vehicle } from 'src/app/modal/vehicle';
+import { VehicleHistory } from 'src/app/modal/vehicle-history';
 import { VehicleReplacement } from 'src/app/modal/vehicleReplacement';
 import { Vendor } from 'src/app/modal/vendor';
 import { environment } from 'src/environments/environment';
@@ -64,5 +65,9 @@ export class VehicleService {
 
   replaceVehicle(vehicleId: number, replaceWith: VehicleReplacement): Observable<VehicleReplacement> {
     return this.http.patch<VehicleReplacement>(`${this.url}/replace-vehicle/${vehicleId}`, replaceWith);
+  }
+
+  vehicleHistory(id: Number): Observable<VehicleHistory[]>{
+    return this.http.get<VehicleHistory[]>(`${this.url}/vehicle-history/${id}`)
   }
 }

@@ -40,12 +40,21 @@ public class VehicleReplacementService {
                 String username = ((UserDetails) principal).getUsername();
                 User user = userRepository.findByEmail(username);
 
-                VehicleReplacement vehicleReplacement = VehicleReplacement.builder()
+                VehicleReplacement vehicleReplacement = VehicleReplacement
+                        .builder()
                         .replacedAt(LocalDate.now())
                         .replacedBy(user)
-                        .vehicle(existingVehicle.get())
                         .reason(vehicleReplacementDto.getReason())
                         .build();
+
+                if (existingVehicle.get().getVehicleReplacement() == null) {
+                    vehicleReplacement.setVehicle(existingVehicle.get());
+                }else{
+                    Optional<VehicleReplacement> vehicleReplacement1 = vehicleReplacementRepository.findById(existingVehicle.get().getVehicleReplacement().getId());
+                    vehicleReplacement1.ifPresent(replacement -> vehicleReplacement.setVehicle(replacement
+                            .getVehicle()));
+                }
+
                 vehicleReplacementRepository.save(vehicleReplacement);
 
                 existingVehicle.get().setStatus(Boolean.FALSE);

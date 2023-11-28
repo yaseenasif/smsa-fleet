@@ -5,6 +5,7 @@ import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.exception.ExcelException;
 import com.example.FleetSystem.model.*;
 import com.example.FleetSystem.payload.ExcelErrorResponse;
+import com.example.FleetSystem.payload.VehicleHistoryResponse;
 import com.example.FleetSystem.repository.FileHistoryRepository;
 import com.example.FleetSystem.repository.UserRepository;
 import com.example.FleetSystem.repository.VehicleRepository;
@@ -13,6 +14,10 @@ import com.example.FleetSystem.specification.VehicleSpecification;
 import com.example.FleetSystem.payload.ResponseMessage;
 import com.example.FleetSystem.repository.*;
 import org.apache.poi.ss.usermodel.*;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
+import org.hibernate.envers.query.AuditEntity;
+import org.hibernate.envers.query.AuditQuery;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,6 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Date;
@@ -32,6 +38,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -55,6 +62,14 @@ public class VehicleService {
 
     @Autowired
     StorageService storageService;
+    @Autowired
+    VehicleAssignmentRepository vehicleAssignmentRepository;
+    @Autowired
+    VehicleAssignmentAuditService vehicleAssignmentAuditService;
+    @Autowired
+    VehicleReplacementRepository vehicleReplacementRepository;
+    @Autowired
+    EmployeeRepository employeeRepository;
 
     public VehicleDto deleteVehicleById(Long id) {
         Optional<Vehicle> vehicle = vehicleRepository.findById(id);
@@ -494,5 +509,39 @@ public class VehicleService {
        return toDtoList(vehicleRepository.availableForReplacement());
     }
 
+    public List<VehicleHistoryResponse> getVehicleHistoryById(Long id) {
+
+        Optional<Vehicle> vehicle = vehicleRepository.findById(id);
+        Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findHistoryByVehicle(vehicle.get());
+
+        List<VehicleAssignment> assignmentList = vehicleAssignmentAuditService.retrieveAuditData(vehicleAssignment.get()
+                .getId());
+
+        List<Vehicle> vehicleReplacementList = vehicleReplacementRepository.findReplacementByVehicle(vehicle.get());
+
+       List<VehicleHistoryResponse> vehicleHistoryList = new ArrayList<>();
+
+        for (VehicleAssignment assignment: assignmentList) {
+            VehicleHistoryResponse vehicleHistoryResponse = new VehicleHistoryResponse();
+            vehicleHistoryResponse.setType("Assignment");
+            vehicleHistoryResponse.setEmpNo(assignment.getAssignToEmpId().getEmployeeNumber());
+            vehicleHistoryResponse.setEmpName(assignment.getAssignToEmpName());
+            vehicleHistoryResponse.setCreatedAt(assignment.getCreatedAt());
+            vehicleHistoryResponse.setCreatedBy(assignment.getCreatedBy().getName());
+            vehicleHistoryList.add(vehicleHistoryResponse);
+        }
+
+        for (Vehicle replacement: vehicleReplacementList) {
+            VehicleHistoryResponse vehicleHistoryResponse = new VehicleHistoryResponse();
+            vehicleHistoryResponse.setType("Replacement");
+            vehicleHistoryResponse.setPlateNumber(replacement.getPlateNumber());
+            vehicleHistoryResponse.setCreatedAt(replacement.getVehicleReplacement().getReplacedAt());
+            vehicleHistoryResponse.setCreatedBy(replacement.getVehicleReplacement().getReplacedBy().getName());
+            vehicleHistoryList.add(vehicleHistoryResponse);
+        }
+
+        vehicleHistoryList.sort(Comparator.comparing(VehicleHistoryResponse::getCreatedAt));
+        return vehicleHistoryList;
+    }
 
 }

@@ -1,9 +1,12 @@
 package com.example.FleetSystem.model;
 
 import lombok.*;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+
+import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 
 @Getter
 @Setter
@@ -11,6 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @ToString
 @Builder
+@Audited
 @Entity
 public class VehicleReplacement {
 
@@ -21,8 +25,10 @@ public class VehicleReplacement {
     private LocalDate replacedAt;
 
     @OneToOne
+    @Audited(targetAuditMode = NOT_AUDITED)
     private Vehicle vehicle;
 
     @ManyToOne
+    @Audited(targetAuditMode = NOT_AUDITED)
     private User replacedBy;
 }
