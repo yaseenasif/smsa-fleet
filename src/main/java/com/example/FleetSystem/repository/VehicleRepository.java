@@ -1,5 +1,6 @@
 package com.example.FleetSystem.repository;
 
+import com.example.FleetSystem.dto.VehicleCountPerVendorDto;
 import com.example.FleetSystem.model.Employee;
 import com.example.FleetSystem.model.Vehicle;
 import com.example.FleetSystem.model.VehicleAssignment;
@@ -28,4 +29,10 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long>, JpaSpec
     @Query("select v from Vehicle v\n" +
             "WHERE v.vehicleReplacement IS NULL AND v.status=1")
     List<Vehicle> availableForReplacement();
+
+    @Query("SELECT COUNT(v) AS total_vehicles FROM Vehicle v WHERE v.status = true")
+    Long getActiveVehicleCount();
+
+    @Query("SELECT v.vendor.id AS id, v.vendor.vendorName AS name, COUNT(v) AS total_vehicles FROM Vehicle v GROUP BY v.vendor.id")
+    List<Object[]> getActiveVehiclePerVendor();
 }

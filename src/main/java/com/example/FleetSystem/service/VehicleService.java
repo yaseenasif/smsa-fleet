@@ -1,6 +1,7 @@
 package com.example.FleetSystem.service;
 
 import com.example.FleetSystem.criteria.VehicleSearchCriteria;
+import com.example.FleetSystem.dto.VehicleCountPerVendorDto;
 import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.exception.ExcelException;
 import com.example.FleetSystem.model.*;

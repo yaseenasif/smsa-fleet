@@ -1,6 +1,8 @@
 package com.example.FleetSystem.controller;
 
 import com.example.FleetSystem.criteria.VehicleSearchCriteria;
+import com.example.FleetSystem.dto.VehicleAssignmentDto;
+import com.example.FleetSystem.dto.VehicleCountPerVendorDto;
 import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.payload.ResponseMessage;
 import com.example.FleetSystem.payload.VehicleHistoryResponse;
@@ -11,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")

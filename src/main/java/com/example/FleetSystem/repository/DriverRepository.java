@@ -13,4 +13,7 @@ import java.util.List;
 public interface DriverRepository extends JpaRepository<Driver, Long>,JpaSpecificationExecutor<Driver> {
     @Query("SELECT d FROM Driver d WHERE d.status = true")
     List<Driver> getActiveDrivers();
+
+    @Query("SELECT COUNT(d) AS total_drivers FROM Driver d WHERE d.status = true")
+    Long getActiveDriversCount();
 }
