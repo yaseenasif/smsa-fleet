@@ -9,5 +9,6 @@ import lombok.*;
 @ToString
 public class VehicleCountPerVendorDto {
     private Long id;
+    private String name;
     private Long totalVehicles;
 }

@@ -496,20 +496,4 @@ public class VehicleService {
     }
 
 
-    public Map<String, Object> getCounts() {
-        Map<String, Object> counts = new HashMap<>();
-        // Get total count of active vehicles
-        Long totalActiveVehicles = vehicleRepository.getActiveVehicleCount();
-        counts.put("totalActiveVehicles", totalActiveVehicles);
-
-        // Get count of active vehicles per vendor
-        List<Object[]> activeVehiclesPerVendor = vehicleRepository.getActiveVehiclePerVendor();
-        List<VehicleCountPerVendorDto> vehicleCountPerVendorDtoList = activeVehiclesPerVendor.stream()
-                .map(objects -> new VehicleCountPerVendorDto((Long) objects[0], (Long) objects[1]))
-                .collect(Collectors.toList());
-        counts.put("activeVehiclesPerVendor", vehicleCountPerVendorDtoList);
-
-        return counts;
-    }
-
 }

@@ -114,10 +114,5 @@ public class VehicleController {
         return ResponseEntity.ok(vehicleService.availableForReplacement());
     }
 
-    @GetMapping("/counts")
-    public ResponseEntity<Map<String, Object>> getVehicleCounts() {
-        Map<String, Object> counts = vehicleService.getCounts();
-        return new ResponseEntity<>(counts, HttpStatus.OK);
-    }
 
 }
