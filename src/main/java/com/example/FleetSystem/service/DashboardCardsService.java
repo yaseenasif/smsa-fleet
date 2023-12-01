@@ -2,6 +2,7 @@ package com.example.FleetSystem.service;
 
 import com.example.FleetSystem.dto.VehicleCountPerVendorDto;
 import com.example.FleetSystem.repository.DriverRepository;
+import com.example.FleetSystem.repository.VehicleAssignmentRepository;
 import com.example.FleetSystem.repository.VehicleReplacementRepository;
 import com.example.FleetSystem.repository.VehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class DashboardCardsService {
     @Autowired
     VehicleReplacementRepository vehicleReplacementRepository;
 
+    @Autowired
+    VehicleAssignmentRepository vehicleAssignmentRepository;
+
     public Map<String, Object> getCounts() {
         Map<String, Object> counts = new HashMap<>();
         // Get total count of active vehicles
@@ -42,6 +46,9 @@ public class DashboardCardsService {
 
         Long totalVehicleReplacement = vehicleReplacementRepository.getVehicleReplacementCount();
         counts.put("totalVehicleReplacement", totalVehicleReplacement);
+
+        Long totalVehiclesPerRegion = vehicleAssignmentRepository.getActiveVehiclePerRegionCount();
+        counts.put("totalVehiclesPerRegion", totalVehiclesPerRegion);
 
         return counts;
     }
