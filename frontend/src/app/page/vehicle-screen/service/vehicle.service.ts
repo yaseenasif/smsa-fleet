@@ -67,7 +67,15 @@ export class VehicleService {
     return this.http.patch<VehicleReplacement>(`${this.url}/replace-vehicle/${vehicleId}`, replaceWith);
   }
 
-  vehicleHistory(id: Number): Observable<VehicleHistory[]>{
+  getVehicleHistoryById(id: Number): Observable<VehicleHistory[]>{
     return this.http.get<VehicleHistory[]>(`${this.url}/vehicle-history/${id}`)
   }
+
+  searchInactiveVehicle(value?: string | null, query?: { page: number, size: number }): Observable<PaginatedResponse<Vehicle>> {
+    if(value){
+      query = {page: 0 , size:10};
+    }
+    return this.http.get<PaginatedResponse<Vehicle>>(`${this.url}/search-vehicle-inactive?value=${JSON.stringify(value ? value : '')}&page=${query?.page ? query.page : ''}&size=${query?.size ? query.size : ''}`);
+}
+
 }

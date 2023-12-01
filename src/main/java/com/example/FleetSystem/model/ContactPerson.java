@@ -24,4 +24,13 @@ public class ContactPerson {
     @JoinColumn(name = "vendor_id")
     private Vendor vendor;
 
+    @Override
+    public String toString() {
+        return "ContactPerson{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                '}';
+    }
 }

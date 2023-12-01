@@ -45,7 +45,7 @@ export class UpdateVehicleComponent implements OnInit{
     { id: 2, locationName: 123 },
     { id: 3, locationName: 123 }
   ]
-  vehicleId: Number | undefined;
+    vehicleId: Number | undefined;
 
   constructor(private vehicleService: VehicleService,
               private route: ActivatedRoute,

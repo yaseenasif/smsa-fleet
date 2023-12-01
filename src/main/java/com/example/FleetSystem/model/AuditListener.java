@@ -29,16 +29,4 @@ public class AuditListener {
         }
     }
 
-    @PreRemove
-    public void preRemove(Object object) {
-        if (object instanceof Auditable) {
-            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            if(principal instanceof UserDetails) {
-                String username = ((UserDetails) principal).getUsername();
-                User user = userRepository.findByEmail(username);
-                ((Auditable) object).setDeletedBy(user);
-                ((Auditable) object).setDeletedAt(LocalDate.now());
-            }
-        }
-    }
 }

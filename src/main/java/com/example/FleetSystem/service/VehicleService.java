@@ -1,7 +1,7 @@
 package com.example.FleetSystem.service;
 
 import com.example.FleetSystem.criteria.VehicleSearchCriteria;
-import com.example.FleetSystem.dto.VehicleCountPerVendorDto;
+import com.example.FleetSystem.dto.AuditDataWrapper;
 import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.exception.ExcelException;
 import com.example.FleetSystem.model.*;
@@ -15,10 +15,7 @@ import com.example.FleetSystem.specification.VehicleSpecification;
 import com.example.FleetSystem.payload.ResponseMessage;
 import com.example.FleetSystem.repository.*;
 import org.apache.poi.ss.usermodel.*;
-import org.hibernate.envers.AuditReader;
-import org.hibernate.envers.AuditReaderFactory;
-import org.hibernate.envers.query.AuditEntity;
-import org.hibernate.envers.query.AuditQuery;
+import org.hibernate.envers.RevisionType;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,7 +28,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Date;
@@ -39,7 +35,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -513,23 +508,34 @@ public class VehicleService {
     public List<VehicleHistoryResponse> getVehicleHistoryById(Long id) {
 
         Optional<Vehicle> vehicle = vehicleRepository.findById(id);
-        Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findHistoryByVehicle(vehicle.get());
+//        Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findHistoryByVehicle(vehicle.get());
 
-        List<VehicleAssignment> assignmentList = vehicleAssignmentAuditService.retrieveAuditData(vehicleAssignment.get()
-                .getId());
+        List<AuditDataWrapper> assignmentList = vehicleAssignmentAuditService.retrieveAuditData(vehicle.get().getId());
 
         List<Vehicle> vehicleReplacementList = vehicleReplacementRepository.findReplacementByVehicle(vehicle.get());
 
        List<VehicleHistoryResponse> vehicleHistoryList = new ArrayList<>();
 
-        for (VehicleAssignment assignment: assignmentList) {
+        for (AuditDataWrapper assignment: assignmentList) {
             VehicleHistoryResponse vehicleHistoryResponse = new VehicleHistoryResponse();
-            vehicleHistoryResponse.setType("Assignment");
-            vehicleHistoryResponse.setEmpNo(assignment.getAssignToEmpId().getEmployeeNumber());
-            vehicleHistoryResponse.setEmpName(assignment.getAssignToEmpName());
-            vehicleHistoryResponse.setCreatedAt(assignment.getCreatedAt());
-            vehicleHistoryResponse.setCreatedBy(assignment.getCreatedBy().getName());
-            vehicleHistoryList.add(vehicleHistoryResponse);
+
+            if (assignment.getEntity().isStatus()) {
+                vehicleHistoryResponse.setType("Assignment");
+                vehicleHistoryResponse.setEmpNo(assignment.getEntity().getAssignToEmpId().getEmployeeNumber());
+                vehicleHistoryResponse.setEmpName(assignment.getEntity().getAssignToEmpName());
+                if (assignment.getRevisionType() == RevisionType.ADD) {
+                    vehicleHistoryResponse.setCreatedBy(assignment.getEntity().getCreatedBy().getName());
+                } else
+                    vehicleHistoryResponse.setCreatedBy(assignment.getEntity().getUpdatedBy().getName());
+            }else {
+                vehicleHistoryResponse.setType("Released");
+                vehicleHistoryResponse.setCreatedBy(assignment.getEntity().getDeletedBy().getName());
+            }
+
+                vehicleHistoryResponse.setCreatedAt(assignment.getRevisionTimeStamp());
+
+                vehicleHistoryList.add(vehicleHistoryResponse);
+
         }
 
         for (Vehicle replacement: vehicleReplacementList) {
@@ -545,4 +551,10 @@ public class VehicleService {
         return vehicleHistoryList;
     }
 
+    public Page<VehicleDto> searchInactiveVehicles(VehicleSearchCriteria vehicleSearchCriteria, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<Vehicle> vehicleSpecification = VehicleSpecification.getInactiveSearchSpecification(vehicleSearchCriteria);
+        Page<Vehicle> vehiclePage = vehicleRepository.findAll(vehicleSpecification,pageable);
+        return vehiclePage.map(this::toDto);
+    }
 }

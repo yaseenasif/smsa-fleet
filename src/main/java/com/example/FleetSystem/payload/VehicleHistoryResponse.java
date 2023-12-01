@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -12,9 +12,9 @@ import java.time.LocalDate;
 public class VehicleHistoryResponse {
 
     private String type;
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
     private String createdBy;
-    private Long EmpNo;
-    private String EmpName;
+    private Long empNo;
+    private String empName;
     private String plateNumber;
 }

@@ -21,4 +21,21 @@ public class VehicleSpecification {
                                 .getValue().toLowerCase() + "%"),criteriaBuilder.isTrue(root.get("status")));
             };
         }
+
+        public static Specification<Vehicle> getInactiveSearchSpecification(VehicleSearchCriteria vehicleSearchCriteria) {
+
+            return (root, query, criteriaBuilder) -> {
+                if (vehicleSearchCriteria == null || vehicleSearchCriteria.getValue() == null || vehicleSearchCriteria
+                        .getValue().isEmpty()) {
+                    query.orderBy(criteriaBuilder.desc(root.get("id")));
+                    return criteriaBuilder.and(criteriaBuilder.isFalse(root.get("status")));
+                }
+
+                // Adjust the field name based on your entity
+                return criteriaBuilder.and
+                        (criteriaBuilder.like(criteriaBuilder.lower(root.get("plateNumber")),
+                        "%" + vehicleSearchCriteria
+                                .getValue().toLowerCase() + "%"),criteriaBuilder.isFalse(root.get("status")));
+            };
+        }
     }

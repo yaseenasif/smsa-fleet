@@ -1,9 +1,14 @@
-export interface VehicleHistory {
+export interface    VehicleHistory {
 
     type: String,
-    createdAt: Date,
+    createdAt: String,
+    createdAtTime: String,
+    createdAtDate: String,
     createdBy: String,
     empNo: Number,
     empName: String,
-    plateNumber: String
+    plateNumber: String,
+    icon: String,
+    color: String 
+
 }
