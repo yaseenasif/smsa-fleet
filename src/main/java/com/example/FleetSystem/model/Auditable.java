@@ -11,9 +11,4 @@ public interface Auditable {
 
     void setUpdatedAt(LocalDate updatedAt);
 
-    LocalDate getDeletedAt();
-    void setDeletedAt(LocalDate deletedAt);
-
-    User getDeletedBy();
-    void setDeletedBy(User deletedBy);
 }

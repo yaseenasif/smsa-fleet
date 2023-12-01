@@ -21,18 +21,18 @@ import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 @Builder
 @Entity
 @Audited
-@AuditOverride(forClass = Auditable.class, isAudited = true)
 @Table(name = "vehicle_assignment")
-public class VehicleAssignment implements Auditable{
+public class VehicleAssignment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String assignToEmpName;
     private String attachments;
-//    private boolean status;
+    private boolean status;
     private LocalDate createdAt;
     private LocalDate updatedAt;
+    private LocalDate deletedAt;
 
     @Audited(targetAuditMode = NOT_AUDITED)
     @ManyToOne
@@ -54,23 +54,9 @@ public class VehicleAssignment implements Auditable{
     @JoinColumn(name = "updated_by")
     private User updatedBy;
 
-    @Override
-    public LocalDate getDeletedAt() {
-        return null;
-    }
+    @Audited(targetAuditMode = NOT_AUDITED)
+    @ManyToOne
+    @JoinColumn(name = "deleted_by")
+    private User deletedBy;
 
-    @Override
-    public void setDeletedAt(LocalDate deletedAt) {
-
-    }
-
-    @Override
-    public User getDeletedBy() {
-        return null;
-    }
-
-    @Override
-    public void setDeletedBy(User deletedBy) {
-
-    }
 }

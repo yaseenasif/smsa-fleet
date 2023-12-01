@@ -185,7 +185,7 @@ const routes: Routes = [
     canActivate:[AuthGuard]
   },
    {
-    path:'vehicle-history',
+    path:'vehicle-history/:id',
     component:VehicleHistoryComponent,
     canActivate:[AuthGuard]
   },

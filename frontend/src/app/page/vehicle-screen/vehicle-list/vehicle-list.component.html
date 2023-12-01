@@ -32,10 +32,40 @@
               <div class="p-toolbar-group-start">
                 <h2 class="h-color">Vehicle</h2>
               </div>
+              <div class="form-hook">
+              <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="selectedStatus"
+                      [options]="vehicleStatus"
+                      name="selectedStatus1"
+                      #selectedStatus1="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                      (onChange) = "OnSelectChange()"
+                    >
+                     
+                    <ng-template pTemplate="selectedItem">
+                      <div
+                        class="flex align-items-center gap-2"
+                        *ngIf="selectedStatus"
+                      >
+                        <div>{{ selectedStatus.name }}</div>
+                      </div>
+                    </ng-template>
+                    <ng-template let-vehicleStatus pTemplate="item">
+                      <div class="flex align-items-center gap-2">
+                        <div>{{ vehicleStatus.name }}</div>
+                      </div>
+                    </ng-template>
+                  </p-dropdown>
+                </div>
               <div class="card flex flex-wrap justify-content-center gap-3">
                 <span class="p-input-icon-left">
                   <i class="my-relative bi bi-search"></i>
-                  <input type="text" pInputText [(ngModel)]="value" (input)="getAllVehicles()"
+                  <input type="text" pInputText [(ngModel)]="value" (input)="OnSelectChange()"
                     placeholder="Search Plate Number" />
                 </span>
               </div>
@@ -106,7 +136,7 @@
                       </p-button>
                       <p-button [routerLink]="['/individual-file-list-component/','vehicle',vehicles.id]" icon="bi bi-download" class='ml mr' styleClass="p-button-rounded p-button-success p-button-text p-button-raised">
                       </p-button>
-                      <p-button routerLink="/vehicle-history"  icon="bi bi-clock-history" class='ml mr' styleClass="p-button-rounded p-button-warning p-button-text p-button-raised">
+                      <p-button [routerLink]="['/vehicle-history/',vehicles.id]"  icon="bi bi-clock-history" class='ml mr' styleClass="p-button-rounded p-button-warning p-button-text p-button-raised">
                     
                       </p-button>
                       <p-button (click)="showDialog(vehicles.id, $event)"  icon="bi bi-arrow-repeat" class='ml mr' styleClass="p-button-rounded p-button-info p-button-text p-button-raised">

@@ -37,4 +37,5 @@ public class Vendor {
     @JoinColumn(name = "updated_by")
     private User updatedBy;
 
-}
+
+ }

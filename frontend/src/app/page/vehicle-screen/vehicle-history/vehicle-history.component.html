@@ -6,7 +6,8 @@
   
         <div class="main">
           <div class="card flex justify-content-center">
-              <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+              <p-breadcrumb class="max-w-full" [model]="items">
+            </p-breadcrumb>
           </div>
           <div class="body-card">
             
@@ -39,29 +40,40 @@
   
             <div class="card">
                 <h1 class="mb-4 h-color text-center">Vehicle History</h1>
-                <h2 class="mb-4  text-center">Plate Number : 1238238</h2>
+                <h2 class="mb-4 text-center">
+                  Plate Number: {{ vehicle.plateNumber }} &nbsp;&nbsp;&nbsp;&nbsp;
+                  Vendor: {{ vehicle.vendor.vendorName }} &nbsp;&nbsp;&nbsp;&nbsp;
+                  Lease Expiry: {{ vehicle.leaseExpiryDate }}
+                </h2>
                 <div class="card">
-                    <p-timeline [value]="events" align="alternate" styleClass="customized-timeline">
-                        <ng-template pTemplate="marker" let-event>
-                            <span class="custom-marker flex justify-content-center align-items-center border-circle h-3rem w-3rem shadow-2" [style.backgroundColor]="event.color">
-                                <i style="color: white;" class="text-lg" [ngClass]="event.icon"></i>
+                    <p-timeline [value]="vehicleHistory" align="alternate" styleClass="customized-timeline">
+                        <ng-template pTemplate="marker" let-vehicleHistory>
+                            <span class="custom-marker flex justify-content-center align-items-center border-circle h-3rem w-3rem shadow-2" [style.backgroundColor]="vehicleHistory.color">
+                                <i style="color: white;" class="text-lg" [ngClass]="vehicleHistory.icon"></i>
                             </span>
                         </ng-template>
-                        <ng-template pTemplate="content" let-event>
-                            <p-card [header]="event.event" [subheader]="event.date">
-                               <h3 *ngIf="event.plateNumber">Plate Number: {{event.plateNumber}}</h3>
-                               <h3 *ngIf="event.employ">Name: {{event.employ.name}}</h3>
-                               <h3 *ngIf="event.employ">Employ Number: {{event.employ.employNumber}}</h3>
+                        <ng-template pTemplate="content" let-vehicleHistory>
+                            <p-card [header]="vehicleHistory.type">
+                              <p><strong><i class="bi bi-calendar" style="color: #4400ff;"></i></strong> {{vehicleHistory.createdAtDate}}</p>
+                              <p><strong><i class="bi bi-clock" style="color: #4400ff;"></i></strong> {{vehicleHistory.createdAtTime}}</p><br>
+                               <h3 *ngIf="vehicleHistory.type === 'Replacement'">
+                                <p><strong>Replaced By : </strong> {{vehicleHistory.createdBy}}</p><br>
+                                 <h3>Replaced with</h3>Plate Number: {{vehicleHistory.plateNumber}}</h3>
+                               <h3 *ngIf="vehicleHistory.type === 'Assignment'">
+                                <p><strong>Assigned By : </strong> {{vehicleHistory.createdBy}}</p><br>
+                                 <h3>Assigned To:</h3>Employ Number: {{vehicleHistory.empNo}}</h3>
+                               <h3 *ngIf="vehicleHistory.type === 'Assignment'">Name: {{vehicleHistory.empName}}</h3>
+                               <h3 *ngIf="vehicleHistory.type === 'Released'">Released By: {{vehicleHistory.createdBy}}</h3>
                             </p-card>
                         </ng-template>
                     </p-timeline>
                 </div>
             </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
+</div>
+</div>
+</div>
   
 
 

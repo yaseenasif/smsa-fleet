@@ -120,4 +120,12 @@ public class VehicleController {
         return ResponseEntity.ok(vehicleService.getVehicleHistoryById(id));
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/search-vehicle-inactive")
+    public ResponseEntity<Page<VehicleDto>> searchInactiveVehicles(@RequestParam(value = "value",required = false) String value,
+                                                           @RequestParam(defaultValue = "0") int page,
+                                                           @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
+        VehicleSearchCriteria vehicleSearchCriteria = new ObjectMapper().readValue(value, VehicleSearchCriteria.class);
+        return ResponseEntity.ok(vehicleService.searchInactiveVehicles(vehicleSearchCriteria,page, size));
+    }
 }

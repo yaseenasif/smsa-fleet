@@ -73,7 +73,7 @@ public class VehicleAssignmentService {
                         vehicleAssignment.setVehicle(vehicle.get());
                         vehicleAssignment.setAssignToEmpId(employee.get());
                         vehicleAssignment.setAssignToEmpName(employee.get().getEmpName());
-
+                        vehicleAssignment.setStatus(Boolean.TRUE);
                         vehicleAssignment.setCreatedAt(LocalDate.now());
                         vehicleAssignment.setCreatedBy(user);
 
@@ -93,7 +93,7 @@ public class VehicleAssignmentService {
     }
 
     public List<VehicleAssignmentDto> getActiveVehicleAssignment() {
-        return toDtoList(vehicleAssignmentRepository.findAll());
+        return toDtoList(vehicleAssignmentRepository.getActiveVehicleAssignment());
     }
 
     public VehicleAssignmentDto getById(Long id) {
@@ -108,8 +108,17 @@ public class VehicleAssignmentService {
     public void deleteVehicleAssignmentById(Long id) {
         Optional<VehicleAssignment> optionalVehicleAssignment = vehicleAssignmentRepository.findById(id);
         if(optionalVehicleAssignment.isPresent()) {
-//            optionalVehicleAssignment.get().setStatus(Boolean.FALSE);
-            vehicleAssignmentRepository.delete(optionalVehicleAssignment.get());
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (principal instanceof UserDetails) {
+                String username = ((UserDetails) principal).getUsername();
+                User user = userRepository.findByEmail(username);
+
+                optionalVehicleAssignment.get().setStatus(Boolean.FALSE);
+                optionalVehicleAssignment.get().setDeletedAt(LocalDate.now());
+                optionalVehicleAssignment.get().setDeletedBy(user);
+                optionalVehicleAssignment.get().setAssignToEmpId(null);
+                optionalVehicleAssignment.get().setAssignToEmpName(null);
+            }
         }
         else throw new RuntimeException("Record does not exist");
     }
@@ -127,6 +136,10 @@ public class VehicleAssignmentService {
                 if (employee.isPresent()) {
                     vehicleAssignment.get().setAssignToEmpId(employee.get());
                     vehicleAssignment.get().setAssignToEmpName(employee.get().getEmpName());
+
+                    if(!vehicleAssignmentDto.isStatus()){
+                     vehicleAssignment.get().setStatus(Boolean.TRUE);
+                    }
 
                     vehicleAssignment.get().setUpdatedBy(user);
                     vehicleAssignment.get().setUpdatedAt(LocalDate.now());
@@ -210,6 +223,13 @@ public class VehicleAssignmentService {
     public Page<VehicleAssignmentDto> searchAssignmentByPlateNumber(VehicleSearchCriteria vehicleSearchCriteria, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Specification<VehicleAssignment> vehicleAssignmentSpecification = VehicleAssignmentSpecification.getSearchSpecification(vehicleSearchCriteria);
+        Page<VehicleAssignment> vehicleAssignmentPage = vehicleAssignmentRepository.findAll(vehicleAssignmentSpecification,pageable);
+        return vehicleAssignmentPage.map(this::toDto);
+    }
+
+    public Page<VehicleAssignmentDto> searchInactiveAssignmentByPlateNumber(VehicleSearchCriteria vehicleSearchCriteria, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<VehicleAssignment> vehicleAssignmentSpecification = VehicleAssignmentSpecification.getInactiveSearchSpecification(vehicleSearchCriteria);
         Page<VehicleAssignment> vehicleAssignmentPage = vehicleAssignmentRepository.findAll(vehicleAssignmentSpecification,pageable);
         return vehicleAssignmentPage.map(this::toDto);
     }

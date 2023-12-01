@@ -7,12 +7,13 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface VehicleAssignmentRepository extends JpaRepository<VehicleAssignment, Long>, JpaSpecificationExecutor<VehicleAssignment> {
-//    @Query("SELECT v FROM VehicleAssignment v WHERE v.status = true")
-//    List<VehicleAssignment> getActiveVehicleAssignment();
+    @Query("SELECT v FROM VehicleAssignment v WHERE v.status = true")
+    List<VehicleAssignment> getActiveVehicleAssignment();
 
     Optional<VehicleAssignment> findByVehicle(Vehicle vehicle);
 

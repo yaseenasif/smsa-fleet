@@ -19,6 +19,6 @@ public class VehicleAssignmentDto {
     private Employee assignToEmpId;
     private String assignToEmpName;
     private String attachments;
-//    private boolean status;
+    private boolean status;
     private Vehicle vehicle;
 }

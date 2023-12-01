@@ -5,6 +5,7 @@ import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 
@@ -14,7 +15,6 @@ import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 @NoArgsConstructor
 @ToString
 @Builder
-@Audited
 @Entity
 public class VehicleReplacement {
 
@@ -22,13 +22,11 @@ public class VehicleReplacement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String reason;
-    private LocalDate replacedAt;
+    private LocalDateTime replacedAt;
 
     @OneToOne
-    @Audited(targetAuditMode = NOT_AUDITED)
     private Vehicle vehicle;
 
     @ManyToOne
-    @Audited(targetAuditMode = NOT_AUDITED)
     private User replacedBy;
 }

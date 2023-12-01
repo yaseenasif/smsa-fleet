@@ -17,7 +17,7 @@ public class VehicleAssignmentSpecification {
             if (vehicleSearchCriteria == null || vehicleSearchCriteria.getValue() == null || vehicleSearchCriteria
                     .getValue().isEmpty()) {
                 query.orderBy(criteriaBuilder.desc(root.get("id")));
-                return criteriaBuilder.conjunction();
+                return criteriaBuilder.and(criteriaBuilder.isTrue(root.get("status")));
             }
 
             Join<VehicleAssignment, Vehicle> vehicleJoin = root.join("vehicle");
@@ -26,7 +26,25 @@ public class VehicleAssignmentSpecification {
             return criteriaBuilder.and
                     (criteriaBuilder.like(criteriaBuilder.lower(vehicleJoin.get("plateNumber")),
                             "%" + vehicleSearchCriteria
-                                    .getValue().toLowerCase() + "%"));
+                                    .getValue().toLowerCase() + "%"),criteriaBuilder.isTrue(root.get("status")));
+        };
+    }
+
+    public static Specification<VehicleAssignment> getInactiveSearchSpecification(VehicleSearchCriteria vehicleSearchCriteria) {
+
+        return (root, query, criteriaBuilder) -> {
+            if (vehicleSearchCriteria == null || vehicleSearchCriteria.getValue() == null || vehicleSearchCriteria
+                    .getValue().isEmpty()) {
+                query.orderBy(criteriaBuilder.desc(root.get("id")));
+                return criteriaBuilder.and(criteriaBuilder.isFalse(root.get("status")));
+            }
+
+            Join<VehicleAssignment, Vehicle> vehicleJoin = root.join("vehicle");
+
+            return criteriaBuilder.and
+                    (criteriaBuilder.like(criteriaBuilder.lower(vehicleJoin.get("plateNumber")),
+                            "%" + vehicleSearchCriteria
+                                    .getValue().toLowerCase() + "%"),criteriaBuilder.isFalse(root.get("status")));
         };
     }
 }

@@ -6,6 +6,7 @@ import { FileUpload } from 'primeng/fileupload';
 import { VehicleReplacement } from 'src/app/modal/vehicleReplacement';
 import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
 import { PageEvent } from 'src/app/modal/pageEvent';
+
 @Component({
   selector: 'app-vehicle-list',
   templateUrl: './vehicle-list.component.html',
@@ -42,6 +43,8 @@ export class VehicleListComponent implements OnInit{
   replacementVehicles!: Array<Vehicle>;
   vId!: number
 
+  vehicleStatus : any;
+  selectedStatus = {name:'Active'};
 
   size: number = 10240000; // Maximum file size (e.g., 10MB)
 
@@ -56,7 +59,14 @@ export class VehicleListComponent implements OnInit{
 
   ngOnInit() {
       this.items = [{ label: 'Vehicle'}];
-
+      this.vehicleStatus = [
+        {
+          name: 'Active'
+        },
+        {
+          name: 'Inactive'
+        }
+      ]
       this.getAllVehicles();
 
   }
@@ -123,6 +133,15 @@ export class VehicleListComponent implements OnInit{
 
   }
 
+  getAllInactiveVehicles(){
+    this.vehicleService.searchInactiveVehicle(this.value, this.query).subscribe((res: PaginatedResponse<Vehicle>) => {
+      this.vehicles = res.content;
+      this.query = { page: res.pageable.pageNumber, size: res.size }
+      this.totalRecords = res.totalElements;
+    })
+
+  }
+
   deleteVehicle(id: Number, event: Event) {
     event.stopPropagation();
 
@@ -144,9 +163,27 @@ export class VehicleListComponent implements OnInit{
   onPageChange(value?: string | null, event?: any) {
     this.query.page = event.page;
     this.query.size = event.rows;
-    this.getAllVehicles()
+    if(this.selectedStatus.name == 'Active'){
+      this.getAllVehicles()
+      }else{
+        this.getAllInactiveVehicles()
+      }
   }
 
+
+  flag='Active'
+  OnSelectChange(){
+    if(this.selectedStatus.name!=this.flag){
+     this.query.page=0
+     this.flag=this.selectedStatus.name
+    }
+
+    if(this.selectedStatus.name == 'Active'){
+      this.getAllVehicles()
+      }else{
+        this.getAllInactiveVehicles()
+      }
+  }
 
   availableForReplacement(){
     this.vehicleService.availableForReplacement().subscribe((res:Vehicle[])=>{

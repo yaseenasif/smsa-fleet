@@ -64,6 +64,4 @@ public class Vehicle {
     @JoinColumn(name = "updated_by")
     private User updatedBy;
 
-
-
-}
+   }
