@@ -1,6 +1,7 @@
 package com.example.FleetSystem.service;
 
 import com.example.FleetSystem.dto.VehicleCountPerVendorDto;
+import com.example.FleetSystem.dto.VehiclePerRegionCountDto;
 import com.example.FleetSystem.repository.DriverRepository;
 import com.example.FleetSystem.repository.VehicleAssignmentRepository;
 import com.example.FleetSystem.repository.VehicleReplacementRepository;
@@ -47,8 +48,11 @@ public class DashboardCardsService {
         Long totalVehicleReplacement = vehicleReplacementRepository.getVehicleReplacementCount();
         counts.put("totalVehicleReplacement", totalVehicleReplacement);
 
-        Long totalVehiclesPerRegion = vehicleAssignmentRepository.getActiveVehiclePerRegionCount();
-        counts.put("totalVehiclesPerRegion", totalVehiclesPerRegion);
+        List<Object[]> totalVehiclesPerRegion = vehicleAssignmentRepository.getActiveVehiclePerRegionCount();
+        List<VehiclePerRegionCountDto> vehiclePerRegionCountDtoList = totalVehiclesPerRegion.stream()
+                .map(objects -> new VehiclePerRegionCountDto((String) objects[0], (Long) objects[1]))
+                .collect(Collectors.toList());
+        counts.put("totalVehiclesPerRegion", vehiclePerRegionCountDtoList);
 
         return counts;
     }
