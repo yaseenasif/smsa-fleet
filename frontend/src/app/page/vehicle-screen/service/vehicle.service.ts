@@ -78,4 +78,9 @@ export class VehicleService {
     return this.http.get<PaginatedResponse<Vehicle>>(`${this.url}/search-vehicle-inactive?value=${JSON.stringify(value ? value : '')}&page=${query?.page ? query.page : ''}&size=${query?.size ? query.size : ''}`);
 }
 
+   generateVehicleHistoryPdf(id: Number): Observable<Blob>{
+    return this.http.get(`${this.url}/vehicle-history-download/${id}`,{
+      responseType: 'blob'
+       });
+  }
 }

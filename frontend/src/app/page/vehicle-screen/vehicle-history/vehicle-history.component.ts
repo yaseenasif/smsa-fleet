@@ -4,6 +4,7 @@ import { MenuItem } from 'primeng/api';
 import { Vehicle } from 'src/app/modal/vehicle';
 import { VehicleHistory } from 'src/app/modal/vehicle-history';
 import { VehicleService } from '../service/vehicle.service';
+import { saveAs } from 'file-saver';
 
 
 // import { DatePipe } from '@angular/common';
@@ -74,5 +75,8 @@ export class VehicleHistoryComponent {
       this.vehicle = res;
     });
   }
-      
+   
+  downloadPdf(id: Number){
+    this.vehicleService.generateVehicleHistoryPdf(id).subscribe(blob => saveAs(blob,"vehicle_history_"+id));
+  }
 }

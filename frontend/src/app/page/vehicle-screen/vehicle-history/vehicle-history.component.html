@@ -11,35 +11,18 @@
           </div>
           <div class="body-card">
             
-              <div class="table-head">
-                  <!-- <p-toolbar>
-                      <div class="p-toolbar-group-start">
-                        <h2 class="h-color">Vehicle</h2>
-                      </div>
-                      <div class="p-toolbar-group-end">
-                          <p-button class="bg-b-color" routerLink="/add-vehicle">
-                            <i class="bi bi-plus-lg" style="font-size: 20px;font-weight: bold;"></i>&nbsp;Add Vehicle
-                          </p-button>
-                            <div class="flex flex-column gap-2 ml-5">  
-                              <p-fileUpload  
-                              #fileUpload
-                              icon="pi pi-download" iconPos="left" styleClass="p-button-outlined p-button-sm"
-                              mode="basic" chooseLabel="Upload" name="myfile[]"
-                              [customUpload]="true" (uploadHandler)="onUpload($event)"
-                              (onSelect)="onFileSelect()"
-                              >
-                            </p-fileUpload>
-                            <ng-container *ngIf="fileSelected">
-                              <button class="p-button p-button-outlined p-button-sm" (click)="onCancel()">Cancel</button>
-                            </ng-container>
-                            </div>
-                      </div>
-                  </p-toolbar> -->
-              </div>
-            
-  
+              
             <div class="card">
-                <h1 class="mb-4 h-color text-center">Vehicle History</h1>
+              <div class="grid">
+                <div class="col-11">
+                <h1 class="mb-4 h-color text-center ml-8">Vehicle History</h1>
+              </div>
+              <div class="col-1">
+                <p-button icon="bi bi-download" severity="success" Style="float:right;"
+                 (click)="downloadPdf(vehicleId!)"> 
+                  </p-button>
+                </div>
+                  </div>
                 <h2 class="mb-4 text-center">
                   Plate Number: {{ vehicle.plateNumber }} &nbsp;&nbsp;&nbsp;&nbsp;
                   Vendor: {{ vehicle.vendor.vendorName }} &nbsp;&nbsp;&nbsp;&nbsp;
