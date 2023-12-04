@@ -439,10 +439,30 @@ public class EmployeeService {
         }
     }
 
+    public ResponseMessage deleteAttachment(Long id) {
+        Optional<FileMetaData> fileMetaData = fileMetaDataRepository.findById(id);
+        if(fileMetaData.isPresent()) {
+            FileMetaData existingFileMetaData = fileMetaData.get();
+            String fileName = existingFileMetaData.getFileName();
+
+            fileMetaDataRepository.deleteById(id);
+
+            storageService.deleteFile(fileName);
+
+            return ResponseMessage.builder()
+                    .message(Collections.singletonList("Attachment deleted successfully"))
+                    .build();
+        }
+        else {
+            throw new RuntimeException(String.format("Attachment with ID %d not found", id));
+        }
+    }
+
     public Page<EmployeeDto> searchEmployee(EmployeeSearchCriteria employeeSearchCriteria, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Specification<Employee> employeeSpecification = EmployeeSpecification.getSearchSpecification(employeeSearchCriteria);
         Page<Employee> employeePage = employeeRepository.findAll(employeeSpecification,pageable);
         return employeePage.map(this::toDto);
     }
+
 }

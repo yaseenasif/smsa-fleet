@@ -19,4 +19,7 @@ public interface VehicleAssignmentRepository extends JpaRepository<VehicleAssign
 
     @Query
     Optional<VehicleAssignment> findHistoryByVehicle(Vehicle vehicle);
+
+    @Query("SELECT e.region, COUNT(va) AS totalVehicles FROM Employee e INNER JOIN VehicleAssignment va ON e.id = va.assignToEmpId GROUP BY e.region")
+    List<Object[]> getActiveVehiclePerRegionCount();
 }

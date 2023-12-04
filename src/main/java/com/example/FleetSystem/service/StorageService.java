@@ -1,5 +1,6 @@
 package com.example.FleetSystem.service;
 
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -55,5 +56,15 @@ public class StorageService {
             e.printStackTrace();
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    public void deleteFile(String fileName) {
+        try {
+            s3Client.deleteObject(BUCKET_NAME, fileName);
+        } catch (AmazonServiceException e) {
+            logger.error("Error deleting file from S3 bucket", e);
+            throw new RuntimeException("Error deleting file from S3 bucket");
+        }
+
     }
 }

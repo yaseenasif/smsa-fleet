@@ -83,6 +83,11 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.addAttachment(id, attachmentType, multipartFile));
     }
 
+    @DeleteMapping("/delete-attachment/{id}")
+    public ResponseEntity<ResponseMessage> deleteAttachment(@PathVariable Long id) {
+        return ResponseEntity.ok(employeeService.deleteAttachment(id));
+    }
+
     @GetMapping("/download/{fileName}")
     public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable String fileName) {
         byte[] data = storageService.downloadFile(fileName);
