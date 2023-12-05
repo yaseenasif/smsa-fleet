@@ -37,6 +37,7 @@ import {FormsModule} from'@angular/forms'
 import {DomesticShippingListComponent} from './page/shipping-order/domestic/domestic-shipping-list/domestic-shipping-list.component';
 import { NgxUiLoaderModule, NgxUiLoaderHttpModule } from "ngx-ui-loader";
 import { TimelineModule } from 'primeng/timeline';
+import { TooltipModule } from 'primeng/tooltip';
 
 
 
@@ -108,6 +109,7 @@ import { IndividualFileListComponent } from './page/individual-file-list/individ
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogBoxComponent } from './components/dialog-box/dialog-box.component';
+import { ViewVehicleComponent } from './page/vehicle-screen/view-vehicle/view-vehicle.component';
 
 @NgModule({
   declarations: [
@@ -182,6 +184,7 @@ import { DialogBoxComponent } from './components/dialog-box/dialog-box.component
     EmployeeAttachmentComponent,
     IndividualFileListComponent,
     DialogBoxComponent,
+    ViewVehicleComponent,
 
   ],
   imports: [
@@ -215,6 +218,7 @@ import { DialogBoxComponent } from './components/dialog-box/dialog-box.component
     InputTextareaModule,
     KeyFilterModule,
     InputNumberModule,
+    TooltipModule,
     NgxUiLoaderHttpModule.forRoot({
       showForeground:true
     })

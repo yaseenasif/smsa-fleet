@@ -68,6 +68,7 @@ import { AssigmentAttachmentComponent } from './page/Assignment/assigment-attach
 import { VendorAttachmentComponent } from './page/vendor-screen/vendor-attachment/vendor-attachment.component';
 import { EmployeeAttachmentComponent } from './page/employee-screen/employee-attachment/employee-attachment.component';
 import { IndividualFileListComponent } from './page/individual-file-list/individual-file-list/individual-file-list.component';
+import { ViewVehicleComponent } from './page/vehicle-screen/view-vehicle/view-vehicle.component';
 
 NgModule({
   imports: [FormsModule],
@@ -405,6 +406,11 @@ const routes: Routes = [
   {
     path:'individual-file-list-component/:call-type/:id',
     component:IndividualFileListComponent,
+    canActivate:[AuthGuard]
+  },
+  {
+    path:'view-vehicle/:id',
+    component:ViewVehicleComponent,
     canActivate:[AuthGuard]
   },
 
