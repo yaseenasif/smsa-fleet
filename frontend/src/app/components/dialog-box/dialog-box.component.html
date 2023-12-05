@@ -1,0 +1,44 @@
+<p-dialog [closable]="false" [(visible)]="visible" [breakpoints]="{ '960px': '75vw' }" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+    <div *ngIf="modelId === 'region'">
+        <h1 class="text-centre">Total Vehicles Per Region</h1><br>
+        <p-table [value]="regionCount" [tableStyle]="{ 'min-width': '5rem' }">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Region</th>
+                    <th>Total Vehicles</th>
+                </tr>
+            </ng-template>
+    <!-- <div *ngFor="let count of regionCount">
+        <h2>{{count.name}}</h2>
+        <p>Total Vehicles: {{ count.totalVehicles }}</p><br>
+      </div> -->
+      <ng-template pTemplate="body" let-regionCount>
+        <tr>
+            <td>{{regionCount.name}}</td>
+            <td>{{regionCount.totalVehicles}}</td>
+        </tr>
+    </ng-template>
+</p-table>
+      </div>
+
+      <div *ngIf="modelId === 'vendor'">
+        <h1 class="text-centre">Total Vehicles Per Vendor</h1><br>
+        <p-table [value]="vendorCount" [tableStyle]="{ 'min-width': '5rem' }">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Vendor</th>
+                    <th>Total Vehicles</th>
+                </tr>
+            </ng-template>
+      <ng-template pTemplate="body" let-vendorCount>
+        <tr>
+            <td>{{vendorCount.name}}</td>
+            <td>{{vendorCount.totalVehicles}}</td>
+        </tr>
+    </ng-template>
+</p-table>
+      </div>
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" (click)="closeModal()" label="Close" styleClass="p-button-text"></p-button>
+    </ng-template>
+</p-dialog>
