@@ -16,8 +16,9 @@
                             <i class="bi bi-car-front-fill"></i>
                         </div >
                         <div  class="card-section-c flex align-items-center justify-content-around flex-column">
-                            <h3 class="bg-w">total vehicles</h3>
-                            <p><b class="bg-w">100.0</b></p>
+                            <h3 class="bg-w">Total Vehicles</h3>
+                            <p><b class="bg-w" style="font-size: 24px;"><strong>{{ dashboardcounts.totalActiveVehicles }}</strong>
+                            </b></p>
                         </div>
                      </div>
                 </div>
@@ -27,30 +28,28 @@
                             <i class="bi bi-person-fill"></i>
                         </div >
                         <div  class="card-section-c flex align-items-center justify-content-around flex-column">
-                            <h3 class="bg-w">total drivers</h3>
-                            <p><b class="bg-w">100.0</b></p>
+                            <h3 class="bg-w">Total drivers</h3>
+                            <p><b class="bg-w" style="font-size: 24px;"><strong>{{ dashboardcounts.totalActiveDrivers }}</strong></b></p>
                         </div>
                      </div>
                 </div>
-                <div class="box">
+                <div class="box" (click)="showDialouge('region')">
                     <div class="w-full h-10rem border-round-2xl  flex align-items-center justify-content-around  bg-c-yellow">
                         <div class="card-section-i flex align-items-center justify-content-around ">
                             <i class="bi bi-geo-alt-fill"></i>
                         </div >
-                        <div  class="card-section-c flex align-items-center justify-content-around flex-column">
-                            <h3 class="bg-w">vehicles per region</h3>
-                            <p><b class="bg-w">100.0</b></p>
+                        <div class="card-section-c flex align-items-center justify-content-around flex-column">
+                            <h3 class="bg-w">Vehicles per Region</h3>
                         </div>
                      </div>
                 </div>
-                <div class="box">
+                <div (click)="showDialouge('vendor')" class="box">
                     <div class="w-full h-10rem border-round-2xl  flex align-items-center justify-content-around  bg-c-pink">
                         <div class="card-section-i flex align-items-center justify-content-around ">
                             <i class="bi bi-person-fill-add"></i>
                         </div >
                         <div  class="card-section-c flex align-items-center justify-content-around flex-column">
-                            <h3 class="bg-w">vehicles per vendor</h3>
-                            <p><b class="bg-w">100.0</b></p>
+                            <h3 class="bg-w">Vehicles per Vendor</h3>
                         </div>
                      </div>
                 </div>
@@ -60,8 +59,8 @@
                             <i class="bi bi-arrow-counterclockwise"></i>
                         </div >
                         <div  class="card-section-c flex align-items-center justify-content-around flex-column">
-                            <h3 class="bg-w">total replacement vehicles</h3>
-                            <p><b class="bg-w">100.0</b></p>
+                            <h3 class="bg-w">Total Replacement vehicles</h3>
+                            <p><b class="bg-w" style="font-size: 24px;"><strong>{{ dashboardcounts.totalVehicleReplacement }}</strong></b></p>
                         </div>
                      </div>
                 </div>
@@ -97,6 +96,12 @@
         </div>      
           </div>
         </div>
+        <app-dialog-box [modelId]="modelId" [visible]="dialogVisibleRegion" (dialogClosed)="onDialogClosed()"
+        [regionCount]="dashboardcounts.totalVehiclesPerRegion">
+        </app-dialog-box>
+        <app-dialog-box [modelId]="modelId" [visible]="dialogVisibleVendor" (dialogClosed)="onDialogClosed()"
+        [vendorCount]="dashboardcounts.activeVehiclesPerVendor">
+        </app-dialog-box>
       </div>
     </div>
   

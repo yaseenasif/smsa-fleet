@@ -39,6 +39,7 @@ import { NgxUiLoaderModule, NgxUiLoaderHttpModule } from "ngx-ui-loader";
 import { TimelineModule } from 'primeng/timeline';
 
 
+
 import {
   HTTP_INTERCEPTORS,
   HttpClientModule
@@ -106,6 +107,7 @@ import { EmployeeAttachmentComponent } from './page/employee-screen/employee-att
 import { IndividualFileListComponent } from './page/individual-file-list/individual-file-list/individual-file-list.component';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { DialogBoxComponent } from './components/dialog-box/dialog-box.component';
 
 @NgModule({
   declarations: [
@@ -179,6 +181,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
     VendorAttachmentComponent,
     EmployeeAttachmentComponent,
     IndividualFileListComponent,
+    DialogBoxComponent,
 
   ],
   imports: [
