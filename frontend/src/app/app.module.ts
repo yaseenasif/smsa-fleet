@@ -110,6 +110,7 @@ import { KeyFilterModule } from 'primeng/keyfilter';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogBoxComponent } from './components/dialog-box/dialog-box.component';
 import { ViewVehicleComponent } from './page/vehicle-screen/view-vehicle/view-vehicle.component';
+import { ViewEmployeeComponent } from './page/employee-screen/view-employee/view-employee.component';
 
 @NgModule({
   declarations: [
@@ -185,6 +186,7 @@ import { ViewVehicleComponent } from './page/vehicle-screen/view-vehicle/view-ve
     IndividualFileListComponent,
     DialogBoxComponent,
     ViewVehicleComponent,
+    ViewEmployeeComponent,
 
   ],
   imports: [

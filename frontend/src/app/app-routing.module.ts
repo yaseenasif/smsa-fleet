@@ -69,6 +69,7 @@ import { VendorAttachmentComponent } from './page/vendor-screen/vendor-attachmen
 import { EmployeeAttachmentComponent } from './page/employee-screen/employee-attachment/employee-attachment.component';
 import { IndividualFileListComponent } from './page/individual-file-list/individual-file-list/individual-file-list.component';
 import { ViewVehicleComponent } from './page/vehicle-screen/view-vehicle/view-vehicle.component';
+import { ViewEmployeeComponent } from './page/employee-screen/view-employee/view-employee.component';
 
 NgModule({
   imports: [FormsModule],
@@ -411,6 +412,11 @@ const routes: Routes = [
   {
     path:'view-vehicle/:id',
     component:ViewVehicleComponent,
+    canActivate:[AuthGuard]
+  },
+  {
+    path:'view-employee/:id',
+    component:ViewEmployeeComponent,
     canActivate:[AuthGuard]
   },
 
