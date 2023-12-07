@@ -20,7 +20,16 @@
                                         <div class="flex flex-column gap-2 form-hook">
                                             <h3 for="">Istemara</h3>
                                             <p-fileUpload name="file" method="post" [headers]="headers" (onError)="onError($event)" [url]="url.concat('/Istemara')" (onUpload)="onUpload($event,'Istemara')" accept=".pdf,.png,.jpeg,.jpg"
-                                                [maxFileSize]="size">                                            
+                                                [maxFileSize]="size">            
+                                                <ng-template pTemplate="content" >
+                                                    <div class="w-full">
+                                                        <div class="grid" style="background-color: #f8f9fa; border:1px solid #dee2e6" *ngFor="let file of fileMetaDataForIstemara">
+                                                            <div class="col-10 flex align-items-center justify-content-center"><h3 class="text-center">{{ file.fileName }}</h3></div>
+                                                            <div class="col-2">   <p-button pTooltip="Delete" (click)="confirm1(file.fileName,file.id)" tooltipPosition="top" icon="bi bi-trash" class='ml' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
+                                                            </p-button></div>
+                                                        </div>
+                                                    </div>
+                                                </ng-template>                                  
                                             </p-fileUpload>
                                         </div>
                                     </div>
@@ -28,7 +37,16 @@
                                         <div class="flex flex-column gap-2 form-hook">
                                             <h3 for="">Insurance</h3>
                                             <p-fileUpload name="file" method="post" [headers]="headers" (onError)="onError($event)" [url]="url.concat('/Insurance')" (onUpload)="onUpload($event,'Insurance')" accept=".pdf,.png,.jpeg,.jpg"
-                                                [maxFileSize]="size">                                            
+                                                [maxFileSize]="size">      
+                                                <ng-template pTemplate="content" >
+                                                    <div class="w-full">
+                                                        <div class="grid" style="background-color: #f8f9fa; border:1px solid #dee2e6" *ngFor="let file of fileMetaDataForInsurance">
+                                                            <div class="col-10 flex align-items-center justify-content-center"><h3 class="text-center">{{ file.fileName }}</h3></div>
+                                                            <div class="col-2">   <p-button pTooltip="Delete" (click)="confirm1(file.fileName,file.id)" tooltipPosition="top" icon="bi bi-trash" class='ml' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
+                                                            </p-button></div>
+                                                        </div>
+                                                    </div>
+                                                </ng-template>                                        
                                             </p-fileUpload>
                                         </div>
                                     </div> 
@@ -36,7 +54,16 @@
                                         <div class="flex flex-column gap-2 form-hook">
                                             <h3 for="">Approved PO</h3>
                                             <p-fileUpload name="file" method="post" [headers]="headers" (onError)="onError($event)" [url]="url.concat('/Approved PO')" (onUpload)="onUpload($event,'Approved PO')" accept=".pdf,.png,.jpeg,.jpg"
-                                                [maxFileSize]="size">                                            
+                                                [maxFileSize]="size">  
+                                                <ng-template pTemplate="content" >
+                                                    <div class="w-full">
+                                                        <div class="grid" style="background-color: #f8f9fa; border:1px solid #dee2e6" *ngFor="let file of fileMetaDataForApprovedPO">
+                                                            <div class="col-10 flex align-items-center justify-content-center"><h3 class="text-center">{{ file.fileName }}</h3></div>
+                                                            <div class="col-2">   <p-button pTooltip="Delete" (click)="confirm1(file.fileName,file.id)" tooltipPosition="top" icon="bi bi-trash" class='ml' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
+                                                            </p-button></div>
+                                                        </div>
+                                                    </div>
+                                                </ng-template>                                            
                                             </p-fileUpload>
                                         </div>
                                     </div> 
@@ -44,7 +71,16 @@
                                         <div class="flex flex-column gap-2 form-hook">
                                             <h3 for="">Inspection forms</h3>
                                             <p-fileUpload name="file" method="post" [headers]="headers" (onError)="onError($event)" [url]="url.concat('/Inspection forms')" (onUpload)="onUpload($event,'Inspection forms')" accept=".pdf,.png,.jpeg,.jpg"
-                                                [maxFileSize]="size">                                            
+                                                [maxFileSize]="size">  
+                                                <ng-template pTemplate="content" >
+                                                    <div class="w-full">
+                                                        <div class="grid" style="background-color: #f8f9fa; border:1px solid #dee2e6" *ngFor="let file of fileMetaDataForInspectionForms">
+                                                            <div class="col-10 flex align-items-center justify-content-center"><h3 class="text-center">{{ file.fileName }}</h3></div>
+                                                            <div class="col-2">   <p-button pTooltip="Delete" (click)="confirm1(file.fileName,file.id)" tooltipPosition="top" icon="bi bi-trash" class='ml' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
+                                                            </p-button></div>
+                                                        </div>
+                                                    </div>
+                                                </ng-template>                                            
                                             </p-fileUpload>
                                         </div>
                                     </div> 
@@ -56,3 +92,6 @@
         </div>
     </div>
 </div>
+
+
+<p-confirmDialog [rejectVisible]="false" [style]="{width: '50vw'}"></p-confirmDialog>

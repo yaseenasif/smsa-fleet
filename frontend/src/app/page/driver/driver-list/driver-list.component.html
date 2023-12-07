@@ -68,18 +68,20 @@
                   <td class="text-center">{{ driver.grade }}</td>
                   <td class="text-center">{{ driver.licenseNumber }}</td>
                   <td class="text-center">{{ driver.vehicleBudget }}</td>
-                  <td class="text-center flex"> 
-                    <p-button [routerLink]="['/edit-driver/', driver.id]" icon="bi bi-pen" class='mr' styleClass="p-button-rounded p-button-success p-button-text p-button-raised">
+                  <td class="text-center "> 
+                    <div class="w-full flex">
+                      <p-button [routerLink]="['/edit-driver/', driver.id]" icon="bi bi-pen" class='mr' styleClass="p-button-rounded p-button-success p-button-text p-button-raised">
                      
-                    </p-button>
-                     <p-button (click)="deleteDriver(driver.id)" icon="bi bi-trash" class='ml' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
-                    
-                     </p-button>
-                     <p-button [routerLink]="['/driver-attachment',driver.id]"  icon="bi bi-paperclip" class='ml mr' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
-                   
-                     </p-button>
-                     <p-button [routerLink]="['/individual-file-list-component/','driver',driver.id]" icon="bi bi-download" class='ml mr' styleClass="p-button-rounded p-button-success p-button-text p-button-raised">
-                    </p-button>
+                      </p-button>
+                       <p-button (click)="deleteDriver(driver.id)" icon="bi bi-trash" class='ml' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
+                      
+                       </p-button>
+                       <p-button [routerLink]="['/driver-attachment',driver.id]"  icon="bi bi-paperclip" class='ml mr' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
+                     
+                       </p-button>
+                       <p-button [routerLink]="['/individual-file-list-component/','driver',driver.id]" icon="bi bi-download" class='ml mr' styleClass="p-button-rounded p-button-success p-button-text p-button-raised">
+                      </p-button>
+                    </div>
                   </td>
                 </tr>
               </ng-template>
