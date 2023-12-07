@@ -118,15 +118,17 @@
 
   
                     <td class="text-center flex"> 
-                       <p-button [routerLink]="['/edit-employee/', employee.id]" icon="bi bi-pen" class='mr' styleClass="p-button-rounded p-button-success p-button-text p-button-raised">
+                      <p-button [routerLink]="['/view-employee/', employee.id]" pTooltip="View" tooltipPosition="top" icon="bi bi-eye" class='ml mr' styleClass="p-button-rounded p-button-info p-button-text p-button-raised">
+                      </p-button> 
+                       <p-button [routerLink]="['/edit-employee/', employee.id]" pTooltip="Edit" tooltipPosition="top" icon="bi bi-pen" class='mr' styleClass="p-button-rounded p-button-success p-button-text p-button-raised">
                          
                        </p-button>
-                        <p-button (click)="deleteEmployee(employee.id)" icon="bi bi-trash" class='ml' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
+                        <!-- <p-button (click)="deleteEmployee(employee.id)" pTooltip="Delete" tooltipPosition="top" icon="bi bi-trash" class='ml' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
                        
+                        </p-button> -->
+                        <p-button [routerLink]="['/employee-attachment',employee.id]" pTooltip="Add Attachments" tooltipPosition="top" icon="bi bi-paperclip" class='ml mr' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
                         </p-button>
-                        <p-button [routerLink]="['/employee-attachment',employee.id]" icon="bi bi-paperclip" class='ml mr' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
-                        </p-button>
-                        <p-button [routerLink]="['/individual-file-list-component/','employee',employee.id]" icon="bi bi-download" class='ml mr' styleClass="p-button-rounded p-button-success p-button-text p-button-raised">
+                        <p-button [routerLink]="['/individual-file-list-component/','employee',employee.id]" pTooltip="Download Attachments" tooltipPosition="top" icon="bi bi-download" class='ml mr' styleClass="p-button-rounded p-button-success p-button-text p-button-raised">
                         </p-button>
                     </td>
                   </tr>

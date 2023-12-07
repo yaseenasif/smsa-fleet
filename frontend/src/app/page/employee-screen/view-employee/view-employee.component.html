@@ -1,0 +1,142 @@
+<div class="flex flex-row">
+    <app-sidebar></app-sidebar>
+    <div class="body-position">
+      <div class="body-holder">
+        <app-dashboard-head></app-dashboard-head>
+  
+        <div class="main">
+          <div class="card flex justify-content-center">
+            <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+          </div>
+          <div class="body-card">
+          <div class="card">
+            <h1 class="mb-4 h-color">View Employee</h1><br>
+
+            <div class="grid">
+
+                <div class="col-12 md:col-12 lg:col-6">
+                    <label htmlFor="name" Style="color: #2e026d"><strong>Employee Number: </strong></label>
+                    <label for="">{{employee.employeeNumber}}</label>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                    <label htmlFor="name" Style="color: #2e026d"><strong> Employee Name: </strong></label>
+                    <label for="">{{employee.empName}}</label>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                    <label htmlFor="name" Style="color: #2e026d"><strong> Job Title: </strong></label>
+                    <label for="">{{employee.jobTitle}}</label>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                    <label htmlFor="name" Style="color: #2e026d"><strong> Date Of Joining: </strong></label>
+                    <label for="">{{employee.joiningDate}}</label>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                    <label htmlFor="name" Style="color: #2e026d"><strong>Dept Code: </strong></label>
+                    <label for="">{{employee.deptCode}}</label>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                    <label htmlFor="name" Style="color: #2e026d"><strong>Department: </strong></label>
+                    <label for="">{{employee.department}}</label>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                    <label htmlFor="name" Style="color: #2e026d"><strong>Section: </strong></label>
+                    <label for="">{{employee.section}}</label>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                    <label htmlFor="name" Style="color: #2e026d"><strong>Region: </strong></label>
+                    <label for="">{{employee.region}}</label>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                    <label htmlFor="name" Style="color: #2e026d"><strong>City: </strong></label>
+                    <label for="">{{employee.city}}</label>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                    <label htmlFor="name" Style="color: #2e026d"><strong>Nationality: </strong></label>
+                    <label for="">{{employee.nationality}}</label>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                    <label htmlFor="name" Style="color: #2e026d"><strong>Contact Number: </strong></label>
+                    <label for="">{{employee.contactNumber}}</label>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                    <label htmlFor="name" Style="color: #2e026d"><strong>Company Email Address: </strong></label>
+                    <label for="">{{employee.companyEmailAddress}}</label>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                    <label htmlFor="name" Style="color: #2e026d"><strong>Budget Ref: </strong></label>
+                    <label for="">{{employee.budgetRef}}</label>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                    <label htmlFor="name" Style="color: #2e026d"><strong>Date Of Birth: </strong></label>
+                    <label for="">{{employee.dateOfBirth}}</label>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                    <label htmlFor="name" Style="color: #2e026d"><strong>Location: </strong></label>
+                    <label for="">{{employee.location}}</label>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                    <label htmlFor="name" Style="color: #2e026d"><strong>Organization: </strong></label>
+                    <label for="">{{employee.organization}}</label>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                    <label htmlFor="name" Style="color: #2e026d"><strong>Division: </strong></label>
+                    <label for="">{{employee.division}}</label>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                    <label htmlFor="name" Style="color: #2e026d"><strong>Iqama No: </strong></label>
+                    <label for="">{{employee.iqamaNumber}}</label>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                    <label htmlFor="name" Style="color: #2e026d"><strong>Sv Employee Number: </strong></label>
+                    <label for="">{{employee.svEmployeeNumber}}</label>
+                </div> 
+                <div class="col-12 md:col-12 lg:col-6">
+                    <label htmlFor="name" Style="color: #2e026d"><strong>Sv Employee Name: </strong></label>
+                    <label for="">{{employee.svEmployeeName}}</label>
+                </div> 
+                <div class="col-12 md:col-12 lg:col-6">
+                    <label htmlFor="name" Style="color: #2e026d"><strong>Age: </strong></label>
+                    <label for="">{{employee.age}}</label>
+                </div> 
+                <div class="col-12 md:col-12 lg:col-6">
+                    <label htmlFor="name" Style="color: #2e026d"><strong>Port Of Destination: </strong></label>
+                    <label for="">{{employee.portOfDestination}}</label>
+                </div> 
+                <div class="col-12 md:col-12 lg:col-6">
+                    <label htmlFor="name" Style="color: #2e026d"><strong>License Number: </strong></label>
+                    <label for="">{{employee.licenseNumber}}</label>
+                </div> 
+                <div class="col-12 md:col-12 lg:col-6">
+                    <label htmlFor="name" Style="color: #2e026d"><strong>Grade: </strong></label>
+                    <label for="">{{employee.grade}}</label>
+                </div> 
+                <div class="col-12 md:col-12 lg:col-6">
+                    <label htmlFor="name" Style="color: #2e026d"><strong>Vehicle Budget: </strong></label>
+                    <label for="">{{employee.vehicleBudget}}</label>
+                </div> 
+                <div class="col-12 md:col-12 lg:col-6">
+                    <label htmlFor="name" Style="color: #2e026d"><strong>Marital Status: </strong></label>
+                    <label for="">{{employee.maritalStatus}}</label>
+                </div> 
+                <div class="col-12 md:col-12 lg:col-6">
+                    <label htmlFor="name" Style="color: #2e026d"><strong>Gender: </strong></label>
+                    <label for="">{{employee.gender}}</label>
+                </div> 
+                <div class="col-12 md:col-12 lg:col-6">
+                    <label htmlFor="name" Style="color: #2e026d"><strong>Status: </strong></label>
+                    <label for="">{{employee.status}}</label>
+                </div> 
+    </div>
+    <div class="flex align-items-center justify-content-end mt-4">
+        <p-button
+          label="Back"
+          class="bg-o-color mr"
+          routerLink="/employee"
+          styleClass="p-button-outlined"
+        >
+        </p-button>
+      </div>
+   </div>
+</div>
+</div>
+</div>

@@ -6,6 +6,7 @@ import { FileUpload } from 'primeng/fileupload';
 import { VehicleReplacement } from 'src/app/modal/vehicleReplacement';
 import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
 import { PageEvent } from 'src/app/modal/pageEvent';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-vehicle-list',
@@ -34,9 +35,12 @@ export class VehicleListComponent implements OnInit{
     vehicle: null
   }
 
+  statusVisible!: boolean;
+
   constructor(
     private vehicleService: VehicleService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router
     ) { }
 
   vehicles!: Array<Vehicle>;
@@ -190,4 +194,25 @@ export class VehicleListComponent implements OnInit{
       this.replacementVehicles=res;
     },(error)=>{})
   }
+
+  closeDialog() {
+    this.statusVisible = false;
+  }
+
+  showStatusDialog(id: number) {
+    this.vId = id;
+    this.statusVisible = true;
+    console.log(this.vId);
+    
+}
+
+ activateVehicle(){
+  this.vehicleService.activateVehicle(this.vId).subscribe((res:Vehicle)=>{
+    this.messageService.add({ severity: 'success', summary: 'Vehicle Activated'});
+    setTimeout(() => {
+      this.router.navigate(['/vehicle'])
+    },1000)
+  })
+ } 
+
 }

@@ -99,17 +99,6 @@ export class EmployeeListComponent implements OnInit{
 
   }
 
-  deleteEmployee(id: Number) {
-
-    this.employeeService.deleteEmployee(id).subscribe((res) => {
-
-      this.messageService.add({ severity: 'Delete Successfully', summary: 'Delete Successfully', detail: 'Employee has been deleted' });  
-
-      this.getAllEmployees();
-      
-    })
-  }
-
   onPageChange(event?: any) {
     this.query.page = event.page;
     this.query.size = event.rows;

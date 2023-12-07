@@ -54,10 +54,11 @@ public class EmployeeService {
     @Autowired
     StorageService storageService;
 
-    public EmployeeDto deleteEmployeeById(Long id) {
+    public EmployeeDto deleteEmployeeById(Long id , EmployeeDto employeeDto) {
         Optional<Employee> employee = employeeRepository.findById(id);
 
         if(employee.isPresent()){
+            employee.get().setStatus(employeeDto.getStatus());
             employee.get().setDeleteStatus(Boolean.FALSE);
             return toDto(employeeRepository.save(employee.get()));
         }
@@ -81,6 +82,7 @@ public class EmployeeService {
             Employee employee1 = toEntity(employeeDto);
             employee1.setCreatedBy(user);
             employee1.setCreatedAt(LocalDate.now());
+            employee1.setStatus('A');
             employee1.setDeleteStatus(Boolean.TRUE);
 
             return toDto(employeeRepository.save(employee1));

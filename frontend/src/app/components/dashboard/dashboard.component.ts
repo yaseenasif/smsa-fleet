@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
+import { DashboardService } from './service/dashboard.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,12 +10,18 @@ import { MenuItem } from 'primeng/api';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  constructor(private dashboardService: DashboardService) { }
   items: MenuItem[] | undefined;
   data: any;
   options: any;
   data1: any;
   options1: any;
+
+  dialogVisibleRegion: boolean = false;
+  dialogVisibleVendor: boolean = false;
+  dashboardcounts!: any; 
+  modelId!: any;
+  
 
   ngOnInit(): void {
     this.items = [{ label: 'Dash Board'}];
@@ -106,5 +114,29 @@ export class DashboardComponent implements OnInit {
 
         }
     };
+
+    this.getDashboardcounts();
   }
+
+  showDialouge(modelId: any) {
+      if(modelId == "region"){
+      this.dialogVisibleRegion = true;
+      }else{
+        this.dialogVisibleVendor = true;
+      }
+      this.modelId=modelId;
+  }
+
+  onDialogClosed() {
+      this.dialogVisibleRegion = false;
+      this.dialogVisibleVendor = false;
+  }
+
+  getDashboardcounts(){
+    this.dashboardService.getDashboardCounts().subscribe(
+        (res) => {
+            this.dashboardcounts = res;
+            console.log(this.dashboardcounts);            
+         });
+ }
 }

@@ -55,9 +55,9 @@ public class EmployeeController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping("/delete-employee/{id}")
-    public ResponseEntity<EmployeeDto> deleteEmployeeById(@PathVariable Long id) {
-        return ResponseEntity.ok(employeeService.deleteEmployeeById(id));
+    @PatchMapping("/delete-employee/{id}")
+    public ResponseEntity<EmployeeDto> deleteEmployeeById(@PathVariable Long id, @RequestBody EmployeeDto employeeDto) {
+        return ResponseEntity.ok(employeeService.deleteEmployeeById(id,employeeDto));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
