@@ -83,4 +83,8 @@ export class VehicleService {
       responseType: 'blob'
        });
   }
+
+  activateVehicle(id: Number):Observable<Vehicle>{
+    return this.http.patch<Vehicle>(`${this.url}/vehicle-active/${id}`,{})
+  }
 }

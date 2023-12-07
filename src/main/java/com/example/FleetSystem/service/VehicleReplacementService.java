@@ -72,7 +72,7 @@ public class VehicleReplacementService {
                     vehicleAssignment.get().setAssignToEmpId(null);
                     vehicleAssignment.get().setAssignToEmpName(null);
                     vehicleAssignmentRepository.save(vehicleAssignment.get());
-//                    vehicleAssignmentRepository.deleteById(vehicleAssignment.get().getId());
+
                 }
 
                 if (existingVehicle.get().getVehicleReplacement() == null) {

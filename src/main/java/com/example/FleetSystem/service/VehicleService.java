@@ -69,12 +69,16 @@ public class VehicleService {
 
     public VehicleDto deleteVehicleById(Long id) {
         Optional<Vehicle> vehicle = vehicleRepository.findById(id);
-
-        if(vehicle.isPresent()){
-            vehicle.get().setStatus(Boolean.FALSE);
-            return toDto(vehicleRepository.save(vehicle.get()));
+        if(vehicle.isPresent()) {
+            Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByVehicle(vehicle.get());
+            if (vehicleAssignment.isPresent()) {
+                vehicleAssignment.get().setAssignToEmpId(null);
+                vehicleAssignment.get().setAssignToEmpName(null);
+                vehicleAssignment.get().setStatus(Boolean.FALSE);
+                vehicle.get().setStatus(Boolean.FALSE);
+                return toDto(vehicleRepository.save(vehicle.get()));
+            }
         }
-
         throw new RuntimeException("Record doesn't exist");
 
     }
@@ -181,7 +185,7 @@ public class VehicleService {
             vehicle.get().setStatus(Boolean.TRUE);
             return toDto(vehicleRepository.save(vehicle.get()));
         }
-        throw new RuntimeException(String.format("Driver Not Found by this Id => %d" , id));
+        throw new RuntimeException(String.format("Vehicle Not Found by this Id => %d" , id));
     }
 
 
