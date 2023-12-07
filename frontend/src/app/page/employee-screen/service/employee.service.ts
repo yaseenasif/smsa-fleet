@@ -31,8 +31,8 @@ export class EmployeeService {
     return this.http.patch<Employee>(`${this.url}/update-employee/${id}`, updatedEmployee);
   }
 
-  deleteEmployee(id: Number) {
-    return this.http.delete<any>(`${this.url}/delete-employee/${id}`)
+  deleteEmployee(id: Number, updatedEmployee: Employee): Observable<Employee> {
+    return this.http.patch<Employee>(`${this.url}/delete-employee/${id}`,updatedEmployee)
   }
 
   saveFile(file: File): Observable<any> {

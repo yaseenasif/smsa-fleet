@@ -131,8 +131,7 @@ export class AddEmployeeComponent implements OnInit {
   getAllGrades() {
     this.gradeService.getGrades().subscribe((res: Grade[]) => {
       this.gradesData = res;
-      this.messageService.add({ severity: 'success', summary: ' Added Successfully', detail: 'vendor has been added' });  
-    })
+        })
   }
 
   onAutoFilled() {
