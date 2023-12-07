@@ -109,7 +109,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { AddCityComponent } from './page/city/add-city/add-city.component';
 import { EditCityComponent } from './page/city/edit-city/edit-city.component';
 import { CityListComponent } from './page/city/city-list/city-list.component';
-import { MessageService } from 'primeng/api';
+import { DialogBoxComponent } from './components/dialog-box/dialog-box.component';
 
 @NgModule({
   declarations: [
@@ -186,7 +186,7 @@ import { MessageService } from 'primeng/api';
     AddCityComponent,
     EditCityComponent,
     CityListComponent,
-
+    DialogBoxComponent
   ],
   imports: [
     CardModule,

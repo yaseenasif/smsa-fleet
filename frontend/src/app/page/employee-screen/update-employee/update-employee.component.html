@@ -1,38 +1,43 @@
 <div class="flex flex-row">
-    <app-sidebar></app-sidebar>
-    <div class="body-position">
-      <div class="body-holder">
-        <app-dashboard-head></app-dashboard-head>
-  
-        <div class="main">
-            <p-toast></p-toast>
-          <div class="card flex justify-content-center">
-            <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
-          </div>
-          <div class="body-card">
-            <div class="card">
-              <h1 class="mb-4 h-color">Add Employee</h1>
-              <form #employeeForm="ngForm" (ngSubmit)="onSubmit()">
+  <app-sidebar></app-sidebar>
+  <div class="body-position">
+    <div class="body-holder">
+      <app-dashboard-head></app-dashboard-head>
+
+      <div class="main">
+        <p-toast></p-toast>
+        <div class="card flex justify-content-center">
+          <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+        </div>
+        <div class="body-card">
+          <div class="card">
+            <h1 class="mb-4 h-color">Add Employee</h1>
+            <form #employeeForm="ngForm" (ngSubmit)="onSubmit()">
               <div class="grid">
                 <div class="col-12 md:col-12 lg:col-6">
-                    <div class="flex flex-column gap-2">
-                      <label htmlFor="name">Employee Number</label>
-                      <input
-                        pInputText
-                        id="name"
-                        aria-describedby="name-help"
-                        name="employeeNumber"
-                        [(ngModel)]="employee.employeeNumber"
-                        #employeeNumber="ngModel"
-                        required
-                      />
-                      <small 
-                          id="name-help" class="color-red" 
-                          *ngIf="employeeNumber.invalid && (employeeNumber.dirty || employeeNumber.touched)"
-                      > Employee Number is required
-                      </small>
-                    </div>
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Employee Number</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="employeeNumber"
+                      [(ngModel)]="employee.employeeNumber"
+                      #employeeNumber="ngModel"
+                      required
+                    />
+                    <small
+                      id="name-help"
+                      class="color-red"
+                      *ngIf="
+                        employeeNumber.invalid &&
+                        (employeeNumber.dirty || employeeNumber.touched)
+                      "
+                    >
+                      Employee Number is required
+                    </small>
                   </div>
+                </div>
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">Employee Name</label>
@@ -45,10 +50,14 @@
                       #empName="ngModel"
                       required
                     />
-                    <small 
-                        id="name-help" class="color-red" 
-                        *ngIf="empName.invalid && (empName.dirty || empName.touched)"
-                    > Employee Name is required
+                    <small
+                      id="name-help"
+                      class="color-red"
+                      *ngIf="
+                        empName.invalid && (empName.dirty || empName.touched)
+                      "
+                    >
+                      Employee Name is required
                     </small>
                   </div>
                 </div>
@@ -87,11 +96,13 @@
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2 emp-form-date">
                     <label htmlFor="name">Date Of Joining</label>
-                    <p-calendar #joinDate
-                    name="joinDate"
-                    [required]="true"
-                    [(ngModel)]="employee.joiningDate" [showIcon]="true"
-                    [style]="{'width': '100%'}"
+                    <p-calendar
+                      #joinDate
+                      name="joinDate"
+                      [required]="true"
+                      [(ngModel)]="employee.joiningDate"
+                      [showIcon]="true"
+                      [style]="{ width: '100%' }"
                     ></p-calendar>
                   </div>
                 </div>
@@ -127,133 +138,106 @@
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
-                    <div class="flex flex-column gap-2 form-hook">
-                      <label htmlFor="name">Section</label>
-                      <p-dropdown
-                        class="w-full"
-                        [(ngModel)]="employee.section"
-                        [options]="dummyData"
-                        name="section"
-                        #section="ngModel"
-                        [required]="true"
-                        optionLabel="name"
-                        optionValue="name"
-                        [filter]="true"
-                        filterBy="name"
-                        [showClear]="true"
-                      >
-                        <ng-template pTemplate="selectedItem">
-                          <div
-                            class="flex align-items-center gap-2"
-                            *ngIf="employee"
-                          >
-                            <div>{{ employee.section }}</div>
-                          </div>
-                        </ng-template>
-                        <ng-template let-dummyData pTemplate="item">
-                          <div class="flex align-items-center gap-2">
-                            <div>{{ dummyData.name }}</div>
-                          </div>
-                        </ng-template>
-                      </p-dropdown>
-                    </div>
+                  <div class="flex flex-column gap-2 form-hook">
+                    <label htmlFor="name">Section</label>
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="employee.section"
+                      [options]="dummyData"
+                      name="section"
+                      #section="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="employee"
+                        >
+                          <div>{{ employee.section }}</div>
+                        </div>
+                      </ng-template>
+                      <ng-template let-dummyData pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                          <div>{{ dummyData.name }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
                   </div>
-                  <div class="col-12 md:col-12 lg:col-6">
-                    <div class="flex flex-column gap-2 form-hook">
-                      <label htmlFor="name">Region</label>
-                      <p-dropdown
-                        class="w-full"
-                        [(ngModel)]="employee.region"
-                        [options]="dummyData"
-                        name="region"
-                        #region="ngModel"
-                        [required]="true"
-                        optionLabel="name"
-                        optionValue="name"
-                        [filter]="true"
-                        filterBy="name"
-                        [showClear]="true"
-                      >
-                        <ng-template pTemplate="selectedItem">
-                          <div
-                            class="flex align-items-center gap-2"
-                            *ngIf="employee"
-                          >
-                            <div>{{ employee.region }}</div>
-                          </div>
-                        </ng-template>
-                        <ng-template let-dummyData pTemplate="item">
-                          <div class="flex align-items-center gap-2">
-                            <div>{{ dummyData.name }}</div>
-                          </div>
-                        </ng-template>
-                      </p-dropdown>
-                    </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2 form-hook">
+                    <label htmlFor="name">Region</label>
+                    <input
+                      pInputText
+                      id="name"
+                      name="region"
+                      readonly
+                      [(ngModel)]="region"
+                      required
+                    />
+                    <small class="color-yellow" *ngIf="!selectedCity">
+                      Region Will Auto Fill When City Is Selected
+                    </small>
                   </div>
-                  <div class="col-12 md:col-12 lg:col-6">
-                    <div class="flex flex-column gap-2 form-hook">
-                      <label htmlFor="name">City</label>
-                      <p-dropdown
-                        class="w-full"
-                        [(ngModel)]="employee.city"
-                        [options]="dummyData"
-                        name="city"
-                        #city="ngModel"
-                        [required]="true"
-                        optionLabel="name"
-                        optionValue="name"
-                        [filter]="true"
-                        filterBy="name"
-                        [showClear]="true"
-                      >
-                        <ng-template pTemplate="selectedItem">
-                          <div
-                            class="flex align-items-center gap-2"
-                            *ngIf="employee"
-                          >
-                            <div>{{ employee.city }}</div>
-                          </div>
-                        </ng-template>
-                        <ng-template let-dummyData pTemplate="item">
-                          <div class="flex align-items-center gap-2">
-                            <div>{{ dummyData.name }}</div>
-                          </div>
-                        </ng-template>
-                      </p-dropdown>
-                    </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2 form-hook">
+                    <label htmlFor="name">City</label>
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="selectedCity"
+                      [options]="cityData"
+                      name="city"
+                      #city="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                      placeholder="Select City
+                      "
+                    >
+                    </p-dropdown>
                   </div>
-                  <div class="col-12 md:col-12 lg:col-6">
-                    <div class="flex flex-column gap-2 form-hook">
-                      <label htmlFor="name">Nationality</label>
-                      <p-dropdown
-                        class="w-full"
-                        [(ngModel)]="employee.nationality"
-                        [options]="dummyData"
-                        name="nationality"
-                        #nationality="ngModel"
-                        [required]="true"
-                        optionLabel="name"
-                        optionValue="name"
-                        [filter]="true"
-                        filterBy="name"
-                        [showClear]="true"
-                      >
-                        <ng-template pTemplate="selectedItem">
-                          <div
-                            class="flex align-items-center gap-2"
-                            *ngIf="employee"
-                          >
-                            <div>{{ employee.nationality }}</div>
-                          </div>
-                        </ng-template>
-                        <ng-template let-dummyData pTemplate="item">
-                          <div class="flex align-items-center gap-2">
-                            <div>{{ dummyData.name }}</div>
-                          </div>
-                        </ng-template>
-                      </p-dropdown>
-                    </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2 form-hook">
+                    <label htmlFor="name">Nationality</label>
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="employee.nationality"
+                      [options]="dummyData"
+                      name="nationality"
+                      #nationality="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="employee"
+                        >
+                          <div>{{ employee.nationality }}</div>
+                        </div>
+                      </ng-template>
+                      <ng-template let-dummyData pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                          <div>{{ dummyData.name }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
                   </div>
+                </div>
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">Contact Number</label>
@@ -266,10 +250,15 @@
                       #contactNumber="ngModel"
                       required
                     />
-                    <small 
-                        id="name-help" class="color-red" 
-                        *ngIf="contactNumber.invalid && (contactNumber.dirty || contactNumber.touched)"
-                    > Contact Number is required
+                    <small
+                      id="name-help"
+                      class="color-red"
+                      *ngIf="
+                        contactNumber.invalid &&
+                        (contactNumber.dirty || contactNumber.touched)
+                      "
+                    >
+                      Contact Number is required
                     </small>
                   </div>
                 </div>
@@ -286,247 +275,299 @@
                       #companyEmailAddress="ngModel"
                       required
                     />
-                    <small 
-                        id="name-help" class="color-red" 
-                        *ngIf="companyEmailAddress.invalid && (companyEmailAddress.dirty || companyEmailAddress.touched)"
-                    > Company Email Address is required
+                    <small
+                      id="name-help"
+                      class="color-red"
+                      *ngIf="
+                        companyEmailAddress.invalid &&
+                        (companyEmailAddress.dirty ||
+                          companyEmailAddress.touched)
+                      "
+                    >
+                      Company Email Address is required
                     </small>
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
-                    <div class="flex flex-column gap-2 form-hook">
-                      <label htmlFor="name">Grade</label>
-                      <p-dropdown
-                        class="w-full"
-                        [(ngModel)]="employee.grade"
-                        [options]="dummyData"
-                        name="grade"
-                        #grade="ngModel"
-                        [required]="true"
-                        optionLabel="name"
-                        optionValue="name"
-                        [filter]="true"
-                        filterBy="name"
-                        [showClear]="true"
-                      >
-                        <ng-template pTemplate="selectedItem">
-                          <div
-                            class="flex align-items-center gap-2"
-                            *ngIf="employee"
-                          >
-                            <div>{{ employee.grade }}</div>
-                          </div>
-                        </ng-template>
-                        <ng-template let-dummyData pTemplate="item">
-                          <div class="flex align-items-center gap-2">
-                            <div>{{ dummyData.name }}</div>
-                          </div>
-                        </ng-template>
-                      </p-dropdown>
-                    </div>
+                  <div class="flex flex-column gap-2 form-hook">
+                    <label htmlFor="name">Grade</label>
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="employee.grade"
+                      [options]="dummyData"
+                      name="grade"
+                      #grade="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="employee"
+                        >
+                          <div>{{ employee.grade }}</div>
+                        </div>
+                      </ng-template>
+                      <ng-template let-dummyData pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                          <div>{{ dummyData.name }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
                   </div>
-                  <div class="col-12 md:col-12 lg:col-6">
-                    <div class="flex flex-column gap-2">
-                      <label htmlFor="name">Budget Reference</label>
-                      <input
-                        pInputText
-                        id="name"
-                        aria-describedby="name-help"
-                        name="budgetRef"
-                        [(ngModel)]="employee.budgetRef"
-                        #budgetRef="ngModel"
-                        required
-                      />
-                      <small 
-                          id="name-help" class="color-red" 
-                          *ngIf="budgetRef.invalid && (budgetRef.dirty || budgetRef.touched)"
-                      > Budget Reference is required
-                      </small>
-                    </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Budget Reference</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="budgetRef"
+                      [(ngModel)]="employee.budgetRef"
+                      #budgetRef="ngModel"
+                      required
+                    />
+                    <small
+                      id="name-help"
+                      class="color-red"
+                      *ngIf="
+                        budgetRef.invalid &&
+                        (budgetRef.dirty || budgetRef.touched)
+                      "
+                    >
+                      Budget Reference is required
+                    </small>
                   </div>
-                  <div class="col-12 md:col-12 lg:col-6">
-                    <div class="flex flex-column gap-2 emp-form-date">
-                      <label htmlFor="name">Date Of Birth</label>
-                      <p-calendar #joinDate
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2 emp-form-date">
+                    <label htmlFor="name">Date Of Birth</label>
+                    <p-calendar
+                      #joinDate
                       name="dateOfBirth"
                       [required]="true"
-                      [(ngModel)]="employee.dateOfBirth" [showIcon]="true"
-                      [style]="{'width': '100%'}"
-                      ></p-calendar>
-                    </div>
+                      [(ngModel)]="employee.dateOfBirth"
+                      [showIcon]="true"
+                      [style]="{ width: '100%' }"
+                    ></p-calendar>
                   </div>
-                  <div class="col-12 md:col-12 lg:col-6">
-                    <div class="flex flex-column gap-2">
-                      <label htmlFor="name">Location</label>
-                      <input
-                        pInputText
-                        id="name"
-                        aria-describedby="name-help"
-                        name="location"
-                        [(ngModel)]="employee.location"
-                        #location="ngModel"
-                        required
-                      />
-                      <small 
-                          id="name-help" class="color-red" 
-                          *ngIf="location.invalid && (location.dirty || location.touched)"
-                      > Location is required
-                      </small>
-                    </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Location</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="location"
+                      [(ngModel)]="employee.location"
+                      #location="ngModel"
+                      required
+                    />
+                    <small
+                      id="name-help"
+                      class="color-red"
+                      *ngIf="
+                        location.invalid && (location.dirty || location.touched)
+                      "
+                    >
+                      Location is required
+                    </small>
                   </div>
-                  <div class="col-12 md:col-12 lg:col-6">
-                    <div class="flex flex-column gap-2">
-                      <label htmlFor="name">Organization</label>
-                      <input
-                        pInputText
-                        id="name"
-                        aria-describedby="name-help"
-                        name="organization"
-                        [(ngModel)]="employee.organization"
-                        #organization="ngModel"
-                        required
-                      />
-                      <small 
-                          id="name-help" class="color-red" 
-                          *ngIf="organization.invalid && (organization.dirty || organization.touched)"
-                      > organization is required
-                      </small>
-                    </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Organization</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="organization"
+                      [(ngModel)]="employee.organization"
+                      #organization="ngModel"
+                      required
+                    />
+                    <small
+                      id="name-help"
+                      class="color-red"
+                      *ngIf="
+                        organization.invalid &&
+                        (organization.dirty || organization.touched)
+                      "
+                    >
+                      organization is required
+                    </small>
                   </div>
-                  <div class="col-12 md:col-12 lg:col-6">
-                    <div class="flex flex-column gap-2">
-                      <label htmlFor="name">Division</label>
-                      <input
-                        pInputText
-                        id="name"
-                        aria-describedby="name-help"
-                        name="division"
-                        [(ngModel)]="employee.division"
-                        #division="ngModel"
-                        required
-                      />
-                      <small 
-                          id="name-help" class="color-red" 
-                          *ngIf="division.invalid && (division.dirty || division.touched)"
-                      > division is required
-                      </small>
-                    </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Division</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="division"
+                      [(ngModel)]="employee.division"
+                      #division="ngModel"
+                      required
+                    />
+                    <small
+                      id="name-help"
+                      class="color-red"
+                      *ngIf="
+                        division.invalid && (division.dirty || division.touched)
+                      "
+                    >
+                      division is required
+                    </small>
                   </div>
-                  <div class="col-12 md:col-12 lg:col-6">
-                    <div class="flex flex-column gap-2">
-                      <label htmlFor="name">DeptCode</label>
-                      <input
-                        pInputText
-                        id="name"
-                        aria-describedby="name-help"
-                        name="deptCode"
-                        [(ngModel)]="employee.deptCode"
-                        #deptCode="ngModel"
-                        required
-                      />
-                      <small 
-                          id="name-help" class="color-red" 
-                          *ngIf="deptCode.invalid && (deptCode.dirty || deptCode.touched)"
-                      > deptCode is required
-                      </small>
-                    </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">DeptCode</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="deptCode"
+                      [(ngModel)]="employee.deptCode"
+                      #deptCode="ngModel"
+                      required
+                    />
+                    <small
+                      id="name-help"
+                      class="color-red"
+                      *ngIf="
+                        deptCode.invalid && (deptCode.dirty || deptCode.touched)
+                      "
+                    >
+                      deptCode is required
+                    </small>
                   </div>
-                  <div class="col-12 md:col-12 lg:col-6">
-                    <div class="flex flex-column gap-2">
-                      <label htmlFor="name">Iqama Number</label>
-                      <input
-                        pInputText
-                        id="name"
-                        aria-describedby="name-help"
-                        name="iqamaNumber"
-                        [(ngModel)]="employee.iqamaNumber"
-                        #iqamaNumber="ngModel"
-                        required
-                      />
-                      <small 
-                          id="name-help" class="color-red" 
-                          *ngIf="iqamaNumber.invalid && (iqamaNumber.dirty || iqamaNumber.touched)"
-                      > iqamaNumber is required
-                      </small>
-                    </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Iqama Number</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="iqamaNumber"
+                      [(ngModel)]="employee.iqamaNumber"
+                      #iqamaNumber="ngModel"
+                      required
+                    />
+                    <small
+                      id="name-help"
+                      class="color-red"
+                      *ngIf="
+                        iqamaNumber.invalid &&
+                        (iqamaNumber.dirty || iqamaNumber.touched)
+                      "
+                    >
+                      iqamaNumber is required
+                    </small>
                   </div>
-                  <div class="col-12 md:col-12 lg:col-6">
-                    <div class="flex flex-column gap-2">
-                      <label htmlFor="name">Sv Employee Number</label>
-                      <input
-                        pInputText
-                        id="name"
-                        aria-describedby="name-help"
-                        name="svEmployeeNumber"
-                        [(ngModel)]="employee.svEmployeeNumber"
-                        #svEmployeeNumber="ngModel"
-                        required
-                      />
-                      <small 
-                          id="name-help" class="color-red" 
-                          *ngIf="svEmployeeNumber.invalid && (svEmployeeNumber.dirty || svEmployeeNumber.touched)"
-                      > svEmployeeNumber is required
-                      </small>
-                    </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Sv Employee Number</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="svEmployeeNumber"
+                      [(ngModel)]="employee.svEmployeeNumber"
+                      #svEmployeeNumber="ngModel"
+                      required
+                    />
+                    <small
+                      id="name-help"
+                      class="color-red"
+                      *ngIf="
+                        svEmployeeNumber.invalid &&
+                        (svEmployeeNumber.dirty || svEmployeeNumber.touched)
+                      "
+                    >
+                      svEmployeeNumber is required
+                    </small>
                   </div>
-                  <div class="col-12 md:col-12 lg:col-6">
-                    <div class="flex flex-column gap-2">
-                      <label htmlFor="name">Sv Employee Name</label>
-                      <input
-                        pInputText
-                        id="name"
-                        aria-describedby="name-help"
-                        name="svEmployeeName"
-                        [(ngModel)]="employee.svEmployeeName"
-                        #svEmployeeName="ngModel"
-                        required
-                      />
-                      <small 
-                          id="name-help" class="color-red" 
-                          *ngIf="svEmployeeName.invalid && (svEmployeeName.dirty || svEmployeeName.touched)"
-                      > svEmployeeName is required
-                      </small>
-                    </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Sv Employee Name</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="svEmployeeName"
+                      [(ngModel)]="employee.svEmployeeName"
+                      #svEmployeeName="ngModel"
+                      required
+                    />
+                    <small
+                      id="name-help"
+                      class="color-red"
+                      *ngIf="
+                        svEmployeeName.invalid &&
+                        (svEmployeeName.dirty || svEmployeeName.touched)
+                      "
+                    >
+                      svEmployeeName is required
+                    </small>
                   </div>
-                  
-                  <div class="col-12 md:col-12 lg:col-6">
-                    <div class="flex flex-column gap-2">
-                      <label htmlFor="name">Age</label>
-                      <input
-                        pInputText
-                        id="name"
-                        aria-describedby="name-help"
-                        name="age"
-                        [(ngModel)]="employee.age"
-                        #age="ngModel"
-                        required
-                      />
-                      <small 
-                          id="name-help" class="color-red" 
-                          *ngIf="age.invalid && (age.dirty || age.touched)"
-                      > age is required
-                      </small>
-                    </div>
+                </div>
+
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Age</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="age"
+                      [(ngModel)]="employee.age"
+                      #age="ngModel"
+                      required
+                    />
+                    <small
+                      id="name-help"
+                      class="color-red"
+                      *ngIf="age.invalid && (age.dirty || age.touched)"
+                    >
+                      age is required
+                    </small>
                   </div>
-                  <div class="col-12 md:col-12 lg:col-6">
-                    <div class="flex flex-column gap-2">
-                      <label htmlFor="name">Port Of Destination</label>
-                      <input
-                        pInputText
-                        id="name"
-                        aria-describedby="name-help"
-                        name="portOfDestination"
-                        [(ngModel)]="employee.portOfDestination"
-                        #portOfDestination="ngModel"
-                        required
-                      />
-                      <small 
-                          id="name-help" class="color-red" 
-                          *ngIf="portOfDestination.invalid && (portOfDestination.dirty || portOfDestination.touched)"
-                      > portOfDestination is required
-                      </small>
-                    </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Port Of Destination</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="portOfDestination"
+                      [(ngModel)]="employee.portOfDestination"
+                      #portOfDestination="ngModel"
+                      required
+                    />
+                    <small
+                      id="name-help"
+                      class="color-red"
+                      *ngIf="
+                        portOfDestination.invalid &&
+                        (portOfDestination.dirty || portOfDestination.touched)
+                      "
+                    >
+                      portOfDestination is required
+                    </small>
                   </div>
+                </div>
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">License Number</label>
@@ -539,74 +580,105 @@
                       #licenseNumber="ngModel"
                       required
                     />
-                    <small 
-                        id="name-help" class="color-red" 
-                        *ngIf="licenseNumber.invalid && (licenseNumber.dirty || licenseNumber.touched)"
-                    > License Number is required
+                    <small
+                      id="name-help"
+                      class="color-red"
+                      *ngIf="
+                        licenseNumber.invalid &&
+                        (licenseNumber.dirty || licenseNumber.touched)
+                      "
+                    >
+                      License Number is required
                     </small>
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
-                    <div class="flex flex-column gap-2">
-                      <label htmlFor="name">Vehicle Budget</label>
-                      <input
-                        pInputText
-                        id="name"
-                        aria-describedby="name-help"
-                        name="vehicleBudget"
-                        [(ngModel)]="employee.vehicleBudget"
-                        #vehicleBudget="ngModel"
-                        required
-                      />
-                      <small 
-                          id="name-help" class="color-red" 
-                          *ngIf="vehicleBudget.invalid && (vehicleBudget.dirty || vehicleBudget.touched)"
-                      > Vehicle Budget is required
-                      </small>
-                    </div>
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Vehicle Budget</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="vehicleBudget"
+                      [(ngModel)]="employee.vehicleBudget"
+                      #vehicleBudget="ngModel"
+                      required
+                    />
+                    <small
+                      id="name-help"
+                      class="color-red"
+                      *ngIf="
+                        vehicleBudget.invalid &&
+                        (vehicleBudget.dirty || vehicleBudget.touched)
+                      "
+                    >
+                      Vehicle Budget is required
+                    </small>
+                  </div>
                 </div>
-                
               </div>
-              <div class="grid mt-3" >
-                <div class="col-12 md:col-12 lg:col-4" >
-                    <div class="flex flex-column gap-2" >
-                      <label htmlFor="name" >Marital Status</label>
-                      <div class="flex flex-wrap gap-3">
-                        <div class="flex align-items-center">
-                            <p-radioButton name="md" value="M" #radioBtn="ngModel"
-                            [(ngModel)]="employee.maritalStatus" [required]="true" inputId="ingredient1"></p-radioButton>
-                            <label for="ingredient1" class="ml-2">Married</label>
-                        </div>
-                        
-                        <div class="flex align-items-center">
-                            <p-radioButton name="u" value="U" [required]="true" [(ngModel)]="employee.maritalStatus" inputId="ingredient2"></p-radioButton>
-                            <label for="ingredient2" class="ml-2">Unmarried</label>
-                        </div>
-                    </div>
-                    </div>
-                  </div>
-            
+              <div class="grid mt-3">
                 <div class="col-12 md:col-12 lg:col-4">
-                    <div class="flex flex-column gap-2">
-                      <label htmlFor="name">Gender</label>
-                      <div class="flex flex-wrap gap-3">
-                        <div class="flex align-items-center">
-                            <p-radioButton name="m" value="M" [required]="true" [(ngModel)]="employee.gender" inputId="ingredient3"></p-radioButton>
-                            <label for="ingredient3" class="ml-2">Male</label>
-                        </div>
-                        
-                        <div class="flex align-items-center">
-                            <p-radioButton name="f" value="F" [required]="true" [(ngModel)]="employee.gender" inputId="ingredient4"></p-radioButton>
-                            <label for="ingredient4" class="ml-2">Female</label>
-                        </div>
-                    </div>
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Marital Status</label>
+                    <div class="flex flex-wrap gap-3">
+                      <div class="flex align-items-center">
+                        <p-radioButton
+                          name="md"
+                          value="M"
+                          #radioBtn="ngModel"
+                          [(ngModel)]="employee.maritalStatus"
+                          [required]="true"
+                          inputId="ingredient1"
+                        ></p-radioButton>
+                        <label for="ingredient1" class="ml-2">Married</label>
+                      </div>
+
+                      <div class="flex align-items-center">
+                        <p-radioButton
+                          name="u"
+                          value="U"
+                          [required]="true"
+                          [(ngModel)]="employee.maritalStatus"
+                          inputId="ingredient2"
+                        ></p-radioButton>
+                        <label for="ingredient2" class="ml-2">Unmarried</label>
+                      </div>
                     </div>
                   </div>
+                </div>
+
+                <div class="col-12 md:col-12 lg:col-4">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Gender</label>
+                    <div class="flex flex-wrap gap-3">
+                      <div class="flex align-items-center">
+                        <p-radioButton
+                          name="m"
+                          value="M"
+                          [required]="true"
+                          [(ngModel)]="employee.gender"
+                          inputId="ingredient3"
+                        ></p-radioButton>
+                        <label for="ingredient3" class="ml-2">Male</label>
+                      </div>
+
+                      <div class="flex align-items-center">
+                        <p-radioButton
+                          name="f"
+                          value="F"
+                          [required]="true"
+                          [(ngModel)]="employee.gender"
+                          inputId="ingredient4"
+                        ></p-radioButton>
+                        <label for="ingredient4" class="ml-2">Female</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              
-              <div class="grid">
-               
-              </div>
+
+              <div class="grid"></div>
               <div class="flex align-items-center justify-content-end mt-4">
                 <p-button
                   label="Cancel"
@@ -615,55 +687,101 @@
                   styleClass="p-button-outlined"
                 >
                 </p-button>
-                <p-button label="Delete" class='ml' (click) ="showDialog()" styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
-                 
+                <p-button
+                  label="Delete"
+                  class="ml"
+                  (click)="showDialog()"
+                  styleClass="p-button-rounded p-button-danger p-button-text p-button-raised"
+                >
                 </p-button>
 
-                <p-button label="Update" type="submit" class="bg-b-color ml" [disabled]="employeeForm.invalid || employeeForm.invalid === null"> </p-button>
+                <p-button
+                  label="Update"
+                  type="submit"
+                  class="bg-b-color ml"
+                  [disabled]="
+                    employeeForm.invalid || employeeForm.invalid === null
+                  "
+                >
+                </p-button>
               </div>
             </form>
-
-            
-
-            </div>
           </div>
-          
         </div>
       </div>
+    </div>
 
-      <p-dialog [closable]="false" [(visible)]="visible" [breakpoints]="{ '960px': '75vw' }" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
-        <form #employeeStatusForm="ngForm" (ngSubmit)="deleteEmployee()">
-        <div class="col-12 md:col-12 lg:col-4" >
-              <div class="flex flex-column gap-2" >
-                <label htmlFor="name" ><strong> Status</strong></label>
-                <div class="flex flex-wrap gap-3">
-                  <div class="grid">
-              <div class="col-12 md:col-12 lg:col-6" >
+    <p-dialog
+      [closable]="false"
+      [(visible)]="visible"
+      [breakpoints]="{ '960px': '75vw' }"
+      [style]="{ width: '50vw' }"
+      [draggable]="false"
+      [resizable]="false"
+    >
+      <form #employeeStatusForm="ngForm" (ngSubmit)="deleteEmployee()">
+        <div class="col-12 md:col-12 lg:col-4">
+          <div class="flex flex-column gap-2">
+            <label htmlFor="name"><strong> Status</strong></label>
+            <div class="flex flex-wrap gap-3">
+              <div class="grid">
+                <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex align-items-center">
-                      <p-radioButton name="t" value="T" [required]="true" #StatusBtn="ngModel" [(ngModel)]="employee.status" inputId="ingredient6"></p-radioButton>
-                      <label for="ingredient6" class="ml-2">Terminated</label>
+                    <p-radioButton
+                      name="t"
+                      value="T"
+                      [required]="true"
+                      #StatusBtn="ngModel"
+                      [(ngModel)]="employee.status"
+                      inputId="ingredient6"
+                    ></p-radioButton>
+                    <label for="ingredient6" class="ml-2">Terminated</label>
                   </div>
-              </div>
-              <div class="col-12 md:col-12 lg:col-4 ml-4" >
+                </div>
+                <div class="col-12 md:col-12 lg:col-4 ml-4">
                   <div class="flex align-items-center">
-                      <p-radioButton name="r" value="R" [required]="true" #StatusBtn="ngModel" [(ngModel)]="employee.status" inputId="ingredient7"></p-radioButton>
-                      <label for="ingredient7" class="ml-2">Resigned</label>
+                    <p-radioButton
+                      name="r"
+                      value="R"
+                      [required]="true"
+                      #StatusBtn="ngModel"
+                      [(ngModel)]="employee.status"
+                      inputId="ingredient7"
+                    ></p-radioButton>
+                    <label for="ingredient7" class="ml-2">Resigned</label>
                   </div>
-              </div>
-              <div class="col-12 md:col-12 lg:col-6" >
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex align-items-center">
-                      <p-radioButton name="d" value="D" [required]="true" #StatusBtn="ngModel" [(ngModel)]="employee.status" inputId="ingredient8"></p-radioButton>
-                      <label for="ingredient8" class="ml-2">Deceased</label>
+                    <p-radioButton
+                      name="d"
+                      value="D"
+                      [required]="true"
+                      #StatusBtn="ngModel"
+                      [(ngModel)]="employee.status"
+                      inputId="ingredient8"
+                    ></p-radioButton>
+                    <label for="ingredient8" class="ml-2">Deceased</label>
                   </div>
-              </div>
-              </div>
-              </div>
+                </div>
               </div>
             </div>
-            <p-button icon="pi pi-check" (click)="closeDialog()" label="Close" styleClass="p-button-text"></p-button>
-            <p-button label="Delete" type="submit" class="bg-b-color ml" [disabled]="employee.status == null || employee.status === 'A'"> </p-button>
-          </form>
-          </p-dialog>
-
-    </div>
+          </div>
+        </div>
+        <p-button
+          icon="pi pi-check"
+          (click)="closeDialog()"
+          label="Close"
+          styleClass="p-button-text"
+        ></p-button>
+        <p-button
+          label="Delete"
+          type="submit"
+          class="bg-b-color ml"
+          [disabled]="employee.status == null || employee.status === 'A'"
+        >
+        </p-button>
+      </form>
+    </p-dialog>
   </div>
+</div>

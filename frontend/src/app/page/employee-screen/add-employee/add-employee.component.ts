@@ -3,7 +3,6 @@ import { MenuItem, MessageService } from 'primeng/api';
 import { Employee } from 'src/app/modal/employee';
 import { EmployeeService } from '../service/employee.service';
 import { Router } from '@angular/router';
-import { DatePipe } from '@angular/common';
 import { Grade } from 'src/app/modal/grade';
 import { GradeService } from '../../grade/grade.service';
 import { CityService } from '../../city/city.service';
@@ -143,9 +142,8 @@ export class AddEmployeeComponent implements OnInit {
   getAllGrades() {
     this.gradeService.getGrades().subscribe((res: Grade[]) => {
       this.gradesData = res;
-        })
-      this.messageService.add({ severity: 'success', summary: ' Added Successfully', detail: 'vendor has been added' });
     })
+    this.messageService.add({ severity: 'success', summary: ' Added Successfully', detail: 'vendor has been added' });
   }
 
   getAllCity() {
