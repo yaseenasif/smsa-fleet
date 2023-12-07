@@ -128,6 +128,10 @@
                     
                     <p-button [routerLink]="['/view-vehicle/', vehicles.id]" pTooltip="View" tooltipPosition="top" icon="bi bi-eye" class='ml mr' styleClass="p-button-rounded p-button-info p-button-text p-button-raised">
                     </p-button> 
+                    
+                    <p-button *ngIf="selectedStatus.name !== 'Active'" class="bg-color" (click)="showStatusDialog(vehicles.id)" pTooltip="Activate" tooltipPosition="top" icon="bi bi-check2" class='ml mr' styleClass="p-button-rounded p-button-info p-button-text p-button-raised">
+                    </p-button> 
+
                      <p-button [routerLink]="['/edit-vehicle/', vehicles.id]" pTooltip="Edit" tooltipPosition="top" icon="bi bi-pen" class='mr' styleClass="p-button-rounded p-button-success p-button-text p-button-raised">
                        
                      </p-button>
@@ -164,6 +168,17 @@
   </div>
 </div>
 
+
+<p-dialog header="Are you sure you want to activate this vehicle?" [closable]="false" [(visible)]="statusVisible" [breakpoints]="{ '960px': '75vw' }" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+  <div style="display: flex; justify-content: flex-end; align-items: flex-end; height: 100%;">
+    <div>
+      <p-button (click)="closeDialog()" label="No" styleClass="p-button-danger p-button-text p-button-raised"></p-button>
+    </div>
+    <div>
+      <p-button label="Yes" (click)="activateVehicle()" class="bg-b-color ml"></p-button>
+    </div>
+  </div>
+  </p-dialog> 
 
 
 <p-dialog class="dialog-hook" header="Header" [blockScroll]="true" [(visible)]="visible" [style]="{ width: '50vw',height: '80vh' }">

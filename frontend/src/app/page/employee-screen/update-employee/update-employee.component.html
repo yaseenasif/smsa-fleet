@@ -67,8 +67,6 @@
                       [filter]="true"
                       filterBy="name"
                       [showClear]="true"
-                      placeholder="Select Job Title 
-                    "
                     >
                       <ng-template pTemplate="selectedItem">
                         <div
@@ -111,8 +109,6 @@
                       [filter]="true"
                       filterBy="name"
                       [showClear]="true"
-                      placeholder="Select Department
-                    "
                     >
                       <ng-template pTemplate="selectedItem">
                         <div
@@ -145,8 +141,6 @@
                         [filter]="true"
                         filterBy="name"
                         [showClear]="true"
-                        placeholder="Select Section
-                      "
                       >
                         <ng-template pTemplate="selectedItem">
                           <div
@@ -179,8 +173,6 @@
                         [filter]="true"
                         filterBy="name"
                         [showClear]="true"
-                        placeholder="Select Region
-                      "
                       >
                         <ng-template pTemplate="selectedItem">
                           <div
@@ -213,8 +205,6 @@
                         [filter]="true"
                         filterBy="name"
                         [showClear]="true"
-                        placeholder="Select City
-                      "
                       >
                         <ng-template pTemplate="selectedItem">
                           <div
@@ -247,8 +237,6 @@
                         [filter]="true"
                         filterBy="name"
                         [showClear]="true"
-                        placeholder="Select Nationality
-                      "
                       >
                         <ng-template pTemplate="selectedItem">
                           <div
@@ -320,8 +308,6 @@
                         [filter]="true"
                         filterBy="name"
                         [showClear]="true"
-                        placeholder="Select Grade
-                      "
                       >
                         <ng-template pTemplate="selectedItem">
                           <div
@@ -616,96 +602,68 @@
                     </div>
                     </div>
                   </div>
-                  <div class="col-12 md:col-12 lg:col-4" >
-                    <div class="flex flex-column gap-2" >
-                      <label htmlFor="name" >Status</label>
-                      <div class="flex flex-wrap gap-3">
-                        <div class="grid">
-                            <div class="col-12 md:col-12 lg:col-4" >
-                        <div class="flex align-items-center">
-                            <p-radioButton name="a" value="A" [required]="true" [(ngModel)]="employee.status" inputId="ingredient5"></p-radioButton>
-                            <label for="ingredient5" class="ml-2">Active</label>
-                        </div>
-                    </div>
-                    <div class="col-12 md:col-12 lg:col-6" >
-                        <div class="flex align-items-center">
-                            <p-radioButton name="t" value="T" [required]="true" [(ngModel)]="employee.status" inputId="ingredient6"></p-radioButton>
-                            <label for="ingredient6" class="ml-2">Terminated</label>
-                        </div>
-                    </div>
-                    <div class="col-12 md:col-12 lg:col-4" >
-                        <div class="flex align-items-center">
-                            <p-radioButton name="r" value="R" [required]="true" [(ngModel)]="employee.status" inputId="ingredient7"></p-radioButton>
-                            <label for="ingredient7" class="ml-2">Resigned</label>
-                        </div>
-                    </div>
-                    <div class="col-12 md:col-12 lg:col-6" >
-                        <div class="flex align-items-center">
-                            <p-radioButton name="d" value="D" [required]="true" [(ngModel)]="employee.status" inputId="ingredient8"></p-radioButton>
-                            <label for="ingredient8" class="ml-2">Deceased</label>
-                        </div>
-                    </div>
-                    </div>
-                    </div>
-                    </div>
-                  </div>
               </div>
               
-              <h2 class="mb-4 mt-4">Attachments</h2>
               <div class="grid">
-                <!-- <div class="lg:col-6 md:col-12 sm:col-12">
-                  <div class="flex flex-column gap-2 form-hook">
-                    <h3 for="">ID Copy</h3>
-                    <p-fileUpload
-                      name="demo[]"
-                      (onUpload)="onUpload($event)"
-                      accept="image/*"
-                      [maxFileSize]="size"
-                    >
-                      <ng-template pTemplate="content">
-                        <ul *ngIf="uploadedFiles.length">
-                          <li *ngFor="let file of uploadedFiles">
-                            {{ file.name }} - {{ file.size }} bytes
-                          </li>
-                        </ul>
-                      </ng-template>
-                    </p-fileUpload>
-                  </div>
-                </div>
-                <div class="lg:col-6 md:col-12 sm:col-12">
-                  <div class="flex flex-column gap-2 form-hook">
-                    <h3 for="">Driving License</h3>
-                    <p-fileUpload
-                      name="demo[]"
-                      (onUpload)="onUpload($event)"
-                      accept="image/*"
-                      [maxFileSize]="size"
-                    >
-                      <ng-template pTemplate="content">
-                        <ul *ngIf="uploadedFiles.length">
-                          <li *ngFor="let file of uploadedFiles">
-                            {{ file.name }} - {{ file.size }} bytes
-                          </li>
-                        </ul>
-                      </ng-template>
-                    </p-fileUpload>
-                  </div>
-                </div> -->
+               
               </div>
               <div class="flex align-items-center justify-content-end mt-4">
                 <p-button
                   label="Cancel"
                   class="bg-o-color mr"
-                  routerLink="/vehicle"
+                  routerLink="/employee"
                   styleClass="p-button-outlined"
                 >
                 </p-button>
-                <p-button label="Save" type="submit" class="bg-b-color ml" [disabled]="employeeForm.invalid || employeeForm.invalid === null"> </p-button>
+                <p-button label="Delete" class='ml' (click) ="showDialog()" styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
+                 
+                </p-button>
+
+                <p-button label="Update" type="submit" class="bg-b-color ml" [disabled]="employeeForm.invalid || employeeForm.invalid === null"> </p-button>
               </div>
             </form>
+
+            
+
             </div>
           </div>
+          
         </div>
       </div>
+
+      <p-dialog [closable]="false" [(visible)]="visible" [breakpoints]="{ '960px': '75vw' }" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+        <form #employeeStatusForm="ngForm" (ngSubmit)="deleteEmployee()">
+        <div class="col-12 md:col-12 lg:col-4" >
+              <div class="flex flex-column gap-2" >
+                <label htmlFor="name" ><strong> Status</strong></label>
+                <div class="flex flex-wrap gap-3">
+                  <div class="grid">
+              <div class="col-12 md:col-12 lg:col-6" >
+                  <div class="flex align-items-center">
+                      <p-radioButton name="t" value="T" [required]="true" #StatusBtn="ngModel" [(ngModel)]="employee.status" inputId="ingredient6"></p-radioButton>
+                      <label for="ingredient6" class="ml-2">Terminated</label>
+                  </div>
+              </div>
+              <div class="col-12 md:col-12 lg:col-4 ml-4" >
+                  <div class="flex align-items-center">
+                      <p-radioButton name="r" value="R" [required]="true" #StatusBtn="ngModel" [(ngModel)]="employee.status" inputId="ingredient7"></p-radioButton>
+                      <label for="ingredient7" class="ml-2">Resigned</label>
+                  </div>
+              </div>
+              <div class="col-12 md:col-12 lg:col-6" >
+                  <div class="flex align-items-center">
+                      <p-radioButton name="d" value="D" [required]="true" #StatusBtn="ngModel" [(ngModel)]="employee.status" inputId="ingredient8"></p-radioButton>
+                      <label for="ingredient8" class="ml-2">Deceased</label>
+                  </div>
+              </div>
+              </div>
+              </div>
+              </div>
+            </div>
+            <p-button icon="pi pi-check" (click)="closeDialog()" label="Close" styleClass="p-button-text"></p-button>
+            <p-button label="Delete" type="submit" class="bg-b-color ml" [disabled]="employee.status == null || employee.status === 'A'"> </p-button>
+          </form>
+          </p-dialog>
+
     </div>
   </div>

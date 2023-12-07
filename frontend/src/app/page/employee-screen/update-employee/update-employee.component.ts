@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, enableProdMode } from '@angular/core';
 import { MenuItem, MessageService } from 'primeng/api';
 import { Employee } from 'src/app/modal/employee';
 import { EmployeeService } from '../service/employee.service';
@@ -48,6 +48,8 @@ export class UpdateEmployeeComponent {
   }
 
   employeeId: Number | undefined;
+  isDeleteButtonDisabled: boolean = true; // Set the initial value based on your logic
+
 
   dummyData: any = [
     // { id: 1, department: 'Software Developer' },
@@ -63,6 +65,8 @@ export class UpdateEmployeeComponent {
     // { id: 11, name: 'National Manager - Hub  Linehaul' }
     { id: '21', name: 'STN' }
   ]
+
+  visible!: boolean;
 
   constructor(private employeeService: EmployeeService,
               private router: Router,
@@ -123,5 +127,25 @@ export class UpdateEmployeeComponent {
   onSubmit() {
     this.updateEmployee(this.employee);
   }
+
+  closeDialog() {
+    this.visible = false;
+  }
+
+  showDialog() {
+    this.visible = true;
+}
+
+  deleteEmployee() {
+
+    this.employeeService.deleteEmployee(this.employeeId!,this.employee).subscribe((res) => {
+      this.employee = res;
+      this.messageService.add({ severity: 'success', summary: 'Delete Successfully', detail: 'Employee has been deleted' });  
+      setTimeout(() => {
+        this.router.navigate(['/employee'])
+      },1000)
+    })
+  }
+
 }
 

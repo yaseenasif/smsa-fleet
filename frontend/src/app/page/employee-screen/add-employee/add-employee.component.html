@@ -640,87 +640,18 @@
                     </div>
                     </div>
                   </div>
-                  <div class="col-12 md:col-12 lg:col-4" >
-                    <div class="flex flex-column gap-2" >
-                      <label htmlFor="name" >Status</label>
-                      <div class="flex flex-wrap gap-3">
-                        <div class="grid">
-                            <div class="col-12 md:col-12 lg:col-4" >
-                        <div class="flex align-items-center">
-                            <p-radioButton name="a" value="A" [required]="true" [(ngModel)]="employee.status" inputId="ingredient5"></p-radioButton>
-                            <label for="ingredient5" class="ml-2">Active</label>
-                        </div>
-                    </div>
-                    <div class="col-12 md:col-12 lg:col-6" >
-                        <div class="flex align-items-center">
-                            <p-radioButton name="t" value="T" [required]="true" [(ngModel)]="employee.status" inputId="ingredient6"></p-radioButton>
-                            <label for="ingredient6" class="ml-2">Terminated</label>
-                        </div>
-                    </div>
-                    <div class="col-12 md:col-12 lg:col-4" >
-                        <div class="flex align-items-center">
-                            <p-radioButton name="r" value="R" [required]="true" [(ngModel)]="employee.status" inputId="ingredient7"></p-radioButton>
-                            <label for="ingredient7" class="ml-2">Resigned</label>
-                        </div>
-                    </div>
-                    <div class="col-12 md:col-12 lg:col-6" >
-                        <div class="flex align-items-center">
-                            <p-radioButton name="d" value="D" [required]="true" [(ngModel)]="employee.status" inputId="ingredient8"></p-radioButton>
-                            <label for="ingredient8" class="ml-2">Deceased</label>
-                        </div>
-                    </div>
-                    </div>
-                    </div>
-                    </div>
-                  </div>
+                
               </div>
               
               <h2 class="mb-4 mt-4">Attachments</h2>
               <div class="grid">
-                <!-- <div class="lg:col-6 md:col-12 sm:col-12">
-                  <div class="flex flex-column gap-2 form-hook">
-                    <h3 for="">ID Copy</h3>
-                    <p-fileUpload
-                      name="demo[]"
-                      (onUpload)="onUpload($event)"
-                      accept="image/*"
-                      [maxFileSize]="size"
-                    >
-                      <ng-template pTemplate="content">
-                        <ul *ngIf="uploadedFiles.length">
-                          <li *ngFor="let file of uploadedFiles">
-                            {{ file.name }} - {{ file.size }} bytes
-                          </li>
-                        </ul>
-                      </ng-template>
-                    </p-fileUpload>
-                  </div>
-                </div>
-                <div class="lg:col-6 md:col-12 sm:col-12">
-                  <div class="flex flex-column gap-2 form-hook">
-                    <h3 for="">Driving License</h3>
-                    <p-fileUpload
-                      name="demo[]"
-                      (onUpload)="onUpload($event)"
-                      accept="image/*"
-                      [maxFileSize]="size"
-                    >
-                      <ng-template pTemplate="content">
-                        <ul *ngIf="uploadedFiles.length">
-                          <li *ngFor="let file of uploadedFiles">
-                            {{ file.name }} - {{ file.size }} bytes
-                          </li>
-                        </ul>
-                      </ng-template>
-                    </p-fileUpload>
-                  </div>
-                </div> -->
+                
               </div>
               <div class="flex align-items-center justify-content-end mt-4">
                 <p-button
                   label="Cancel"
                   class="bg-o-color mr"
-                  routerLink="/vehicle"
+                  routerLink="/employee"
                   styleClass="p-button-outlined"
                 >
                 </p-button>
