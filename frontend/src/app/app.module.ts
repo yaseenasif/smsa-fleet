@@ -33,8 +33,8 @@ import { CommonModule } from '@angular/common';
 import { ProductFieldListComponent } from './page/product-field/product-field-list/product-field-list.component';
 import { ProductFieldAddComponent } from './page/product-field/product-field-add/product-field-add.component';
 import { ProductFieldUpdateComponent } from './page/product-field/product-field-update/product-field-update.component';
-import {FormsModule} from'@angular/forms'
-import {DomesticShippingListComponent} from './page/shipping-order/domestic/domestic-shipping-list/domestic-shipping-list.component';
+import { FormsModule } from '@angular/forms'
+import { DomesticShippingListComponent } from './page/shipping-order/domestic/domestic-shipping-list/domestic-shipping-list.component';
 import { NgxUiLoaderModule, NgxUiLoaderHttpModule } from "ngx-ui-loader";
 import { TimelineModule } from 'primeng/timeline';
 
@@ -106,6 +106,10 @@ import { EmployeeAttachmentComponent } from './page/employee-screen/employee-att
 import { IndividualFileListComponent } from './page/individual-file-list/individual-file-list/individual-file-list.component';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { AddCityComponent } from './page/city/add-city/add-city.component';
+import { EditCityComponent } from './page/city/edit-city/edit-city.component';
+import { CityListComponent } from './page/city/city-list/city-list.component';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -179,6 +183,9 @@ import { InputNumberModule } from 'primeng/inputnumber';
     VendorAttachmentComponent,
     EmployeeAttachmentComponent,
     IndividualFileListComponent,
+    AddCityComponent,
+    EditCityComponent,
+    CityListComponent,
 
   ],
   imports: [
@@ -213,7 +220,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
     KeyFilterModule,
     InputNumberModule,
     NgxUiLoaderHttpModule.forRoot({
-      showForeground:true
+      showForeground: true
     })
   ],
 
@@ -223,7 +230,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     // { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true }, // Register the AuthInterceptor
     // provideRouter(routes, withHashLocation()),
-],
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -68,6 +68,9 @@ import { AssigmentAttachmentComponent } from './page/Assignment/assigment-attach
 import { VendorAttachmentComponent } from './page/vendor-screen/vendor-attachment/vendor-attachment.component';
 import { EmployeeAttachmentComponent } from './page/employee-screen/employee-attachment/employee-attachment.component';
 import { IndividualFileListComponent } from './page/individual-file-list/individual-file-list/individual-file-list.component';
+import { CityListComponent } from './page/city/city-list/city-list.component';
+import { AddCityComponent } from './page/city/add-city/add-city.component';
+import { EditCityComponent } from './page/city/edit-city/edit-city.component';
 
 NgModule({
   imports: [FormsModule],
@@ -407,8 +410,20 @@ const routes: Routes = [
     component:IndividualFileListComponent,
     canActivate:[AuthGuard]
   },
-
-
+  {
+    path:'city-list',
+    component:CityListComponent,
+    canActivate:[AuthGuard]
+  },  {
+    path:'add-city',
+    component:AddCityComponent,
+    canActivate:[AuthGuard]
+  },
+  {
+    path:'edit-city/:id',
+    component:EditCityComponent,
+    canActivate:[AuthGuard]
+  },
 ];
 
 @NgModule({

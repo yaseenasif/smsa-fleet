@@ -101,7 +101,7 @@
                             <i *ngIf="configTurner"style="display: inline; font-size: 15px;" class="bi bi-caret-down-fill"></i>
                             <i *ngIf="!configTurner" style="display: inline; font-size: 15px;" class="bi bi-caret-right-fill"></i>
                         </span>
-                       
+
                     </span>
                 </li>
                 <!-- <li class="child"  *ngIf="configTurner" >
@@ -165,6 +165,15 @@
                         <i class="bi bi-google"></i>
                         <span class="nav-text">
                             Grade
+                        </span>
+                    </span>
+                </li>
+
+                <li class="child"*ngIf="configTurner"  >
+                    <span class="sidebar-list-hover" routerLink="/city-list" >
+                      <i class="bi bi-r-circle"></i>
+                        <span class="nav-text">
+                            City
                         </span>
                     </span>
                 </li>

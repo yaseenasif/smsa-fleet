@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { Grade } from 'src/app/modal/grade';
 import { GradeService } from '../../grade/grade.service';
+import { CityService } from '../../city/city.service';
+import { City } from 'src/app/modal/City';
 
 @Component({
   selector: 'app-add-employee',
@@ -19,8 +21,21 @@ export class AddEmployeeComponent implements OnInit {
 
   grade !: Grade[]
 
+  city: City = {
+    id: undefined,
+    name: undefined,
+    region: undefined,
+    status: undefined
+  };
+
+  cityData: any = [];
+
+  selectedCity !: City
+
   selectedGrade !: Grade
   vehicleBudgetFromGrade !: Number | null | undefined
+
+  region: string = '';
 
 
   employee: Employee = {
@@ -67,11 +82,6 @@ export class AddEmployeeComponent implements OnInit {
     { id: 1, name: 'Station Management' }
   ]
 
-  dummyCity: any = [
-    { id: 1, name: 'Riyadh' },
-    { id: 1, name: 'Jeddah' },
-    { id: 1, name: 'Mecca' },
-  ]
 
   dummyNationality: any = [
     { id: 1, name: "Sudan-031" },
@@ -107,7 +117,8 @@ export class AddEmployeeComponent implements OnInit {
     private employeeService: EmployeeService,
     private router: Router,
     private messageService: MessageService,
-    private gradeService: GradeService
+    private gradeService: GradeService,
+    private cityService: CityService
   ) { }
 
 
@@ -126,12 +137,20 @@ export class AddEmployeeComponent implements OnInit {
     this.items = [{ label: 'Employee', routerLink: '/employee' }, { label: 'Add Employee' }];
 
     this.getAllGrades();
+    this.getAllCity();
   }
 
   getAllGrades() {
     this.gradeService.getGrades().subscribe((res: Grade[]) => {
       this.gradesData = res;
-      this.messageService.add({ severity: 'success', summary: ' Added Successfully', detail: 'vendor has been added' });  
+      this.messageService.add({ severity: 'success', summary: ' Added Successfully', detail: 'vendor has been added' });
+    })
+  }
+
+  getAllCity() {
+    this.cityService.getCity().subscribe((res: City[]) => {
+      this.cityData = res;
+      this.messageService.add({ severity: 'success', summary: ' Added Successfully', detail: 'vendor has been added' });
     })
   }
 
@@ -165,6 +184,11 @@ export class AddEmployeeComponent implements OnInit {
         this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
       })
 
+  }
+
+  getAutoFilledRegion(city: City): void {
+    const selectedCityObj = this.cityData.find((item: any) => item.name === city);
+    this.region = selectedCityObj.region;
   }
 
 }
