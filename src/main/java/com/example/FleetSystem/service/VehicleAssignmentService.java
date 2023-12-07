@@ -67,8 +67,16 @@ public class VehicleAssignmentService {
             Optional<Employee> employee = employeeRepository.findById(vehicleAssignmentDto.getAssignToEmpId().getId());
 
             if(vehicle.isPresent()) {
+                Optional<VehicleAssignment> existingVehicleAssignment = vehicleAssignmentRepository.findByVehicle(vehicle.get());
                 if(employee.isPresent()) {
-
+                    if (existingVehicleAssignment.isPresent()){
+                        existingVehicleAssignment.get().setAssignToEmpId(employee.get());
+                        existingVehicleAssignment.get().setAssignToEmpName(employee.get().getEmpName());
+                        existingVehicleAssignment.get().setStatus(Boolean.TRUE);
+                        existingVehicleAssignment.get().setUpdatedBy(user);
+                        existingVehicleAssignment.get().setUpdatedAt(LocalDate.now());
+                        return toDto(vehicleAssignmentRepository.save(existingVehicleAssignment.get()));
+                    }
                         VehicleAssignment vehicleAssignment = toEntity(vehicleAssignmentDto);
                         vehicleAssignment.setVehicle(vehicle.get());
                         vehicleAssignment.setAssignToEmpId(employee.get());
