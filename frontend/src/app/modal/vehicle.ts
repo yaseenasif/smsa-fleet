@@ -23,6 +23,7 @@ export interface Vehicle {
     }
     insuranceExpiry: String | null | undefined
     leaseCost: Number | null | undefined
+    replaceLeaseCost: Number | null | undefined
     leaseStartDate: String | null | undefined
     leaseExpiryDate: String | null | undefined
     usageType: String | null | undefined

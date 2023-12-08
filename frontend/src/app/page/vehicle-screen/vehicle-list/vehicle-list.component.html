@@ -94,6 +94,7 @@
                   <th class="text-center">Vendor</th>
                   <th class="text-center">Insurance Expiry</th>
                   <th class="text-center">Lease Cost</th>
+                  <th class="text-center">Replace Lease Cost</th>
                   <th class="text-center">Lease Start Date</th>
                   <th class="text-center">Lease Expiry Date</th>
                   <th class="text-center">Usage Type</th>
@@ -120,6 +121,7 @@
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.vendor.vendorName }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.insuranceExpiry }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.leaseCost }}</td>
+                  <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.replaceLeaseCost }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.leaseStartDate }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.leaseExpiryDate }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.usageType }}</td>

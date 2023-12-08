@@ -33,6 +33,7 @@ export class VehicleDetailComponent implements OnInit {
     fuelType: undefined,
     insuranceExpiry: undefined,
     leaseCost: undefined,
+    replaceLeaseCost: undefined,
     leaseStartDate: undefined,
     leaseExpiryDate: undefined,
     usageType: undefined,
