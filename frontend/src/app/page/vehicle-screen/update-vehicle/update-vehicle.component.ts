@@ -27,6 +27,7 @@ export class UpdateVehicleComponent implements OnInit{
     fuelType: undefined,
     insuranceExpiry: undefined,
     leaseCost: undefined,
+    replaceLeaseCost: undefined,
     leaseStartDate: undefined,
     leaseExpiryDate: undefined,
     usageType: undefined,
