@@ -18,5 +18,10 @@ export class IndividualFileListService {
     return this.http.get(`${this.baseurl}/download/${fileName}`,{
       responseType: 'blob'
     });
-  }
+    }
+    deleteAttachmentById(id:number):Observable<any>{
+      return this.http.delete(`${this.baseurl}/delete-attachment/${id}`)
+    }
+
+  
 }

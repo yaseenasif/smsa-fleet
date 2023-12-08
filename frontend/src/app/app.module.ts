@@ -37,6 +37,8 @@ import { FormsModule } from '@angular/forms'
 import { DomesticShippingListComponent } from './page/shipping-order/domestic/domestic-shipping-list/domestic-shipping-list.component';
 import { NgxUiLoaderModule, NgxUiLoaderHttpModule } from "ngx-ui-loader";
 import { TimelineModule } from 'primeng/timeline';
+import { TooltipModule } from 'primeng/tooltip';
+
 
 
 import {
@@ -110,6 +112,9 @@ import { AddCityComponent } from './page/city/add-city/add-city.component';
 import { EditCityComponent } from './page/city/edit-city/edit-city.component';
 import { CityListComponent } from './page/city/city-list/city-list.component';
 import { DialogBoxComponent } from './components/dialog-box/dialog-box.component';
+import { ViewVehicleComponent } from './page/vehicle-screen/view-vehicle/view-vehicle.component';
+import { ViewEmployeeComponent } from './page/employee-screen/view-employee/view-employee.component';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @NgModule({
   declarations: [
@@ -186,9 +191,12 @@ import { DialogBoxComponent } from './components/dialog-box/dialog-box.component
     AddCityComponent,
     EditCityComponent,
     CityListComponent,
+    ViewEmployeeComponent,
+    ViewVehicleComponent,
     DialogBoxComponent
   ],
   imports: [
+    ConfirmDialogModule,
     CardModule,
     TimelineModule,
     BrowserModule,
@@ -219,8 +227,9 @@ import { DialogBoxComponent } from './components/dialog-box/dialog-box.component
     InputTextareaModule,
     KeyFilterModule,
     InputNumberModule,
+    TooltipModule,
     NgxUiLoaderHttpModule.forRoot({
-      showForeground: true
+      showForeground:true
     })
   ],
 
@@ -230,7 +239,7 @@ import { DialogBoxComponent } from './components/dialog-box/dialog-box.component
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     // { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true }, // Register the AuthInterceptor
     // provideRouter(routes, withHashLocation()),
-  ],
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
