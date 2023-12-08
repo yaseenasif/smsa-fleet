@@ -87,7 +87,6 @@ export class UpdateEmployeeComponent {
     private messageService: MessageService,
     private route: ActivatedRoute,
     private datePipe: DatePipe,
-    private cityService: CityService
   ) { }
 
 

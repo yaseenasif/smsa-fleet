@@ -5,8 +5,8 @@ import { EmployeeService } from '../service/employee.service';
 import { Router } from '@angular/router';
 import { Grade } from 'src/app/modal/grade';
 import { GradeService } from '../../grade/grade.service';
-import { CityService } from '../../city/city.service';
 import { City } from 'src/app/modal/City';
+import { CityService } from '../../city/city.service';
 
 @Component({
   selector: 'app-add-employee',
