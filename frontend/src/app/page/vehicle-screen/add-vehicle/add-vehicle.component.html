@@ -34,37 +34,23 @@
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
-                  <div  >
+                  <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Plate Number</label>
-                    <p-dropdown
-                      class="w-full"
-                      [(ngModel)]="vehicle.plateNumber"
-                      [options]="dummyData"
-                      name="plateNumber"
-                      #plateNumber="ngModel"
-                      [required]="true"
-                      optionLabel="locationName"
-                      optionValue="locationName"
-                      [filter]="true"
-                      filterBy="locationName"
-                      [showClear]="true"
-                      placeholder="Select Plate Number
-                    "
-                    >
-                      <ng-template pTemplate="selectedItem">
-                        <div
-                          class="flex align-items-center gap-2"
-                          *ngIf="vehicle"
-                        >
-                          <div>{{ vehicle.plateNumber }}</div>
-                        </div>
-                      </ng-template>
-                      <ng-template let-dummyData pTemplate="item">
-                        <div class="flex align-items-center gap-2">
-                          <div>{{ dummyData.locationName }}</div>
-                        </div>
-                      </ng-template>
-                    </p-dropdown>
+                    <input
+                    pInputText
+                    id="name"
+                    aria-describedby="name-help"
+                    name="plateNumber"
+                    [(ngModel)]="vehicle.plateNumber"
+                    #plateNumber="ngModel"
+                    required
+                  />
+                  <small 
+                      id="name-help" class="color-red" 
+                      *ngIf="plateNumber.invalid && (plateNumber.dirty || plateNumber.touched)"
+                  > Plate Number is required
+                  </small>
+                  
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
@@ -258,7 +244,7 @@
                     <p-dropdown
                       class="w-full"
                       [(ngModel)]="vehicle.vendor"
-                      [options]="dummyData"
+                      [options]="vendors"
                       name="vendor"
                       #vendor="ngModel"
                       [required]="true"
@@ -362,92 +348,13 @@
                   </div>
                 </div>
               </div>
-              <h2 class="mb-4 mt-4">Attachments</h2>
-              <!-- <div class="grid">
-                <div class="lg:col-6 md:col-12 sm:col-12">
-                  <div class="flex flex-column gap-2 form-hook">
-                    <h3 for="">Istemara</h3>
-                    <p-fileUpload
-                      name="demo[]"
-                      (onUpload)="onUpload($event)"
-                      accept="image/*"
-                      [maxFileSize]="size"
-                    >
-                      <ng-template pTemplate="content">
-                        <ul *ngIf="uploadedFiles.length">
-                          <li *ngFor="let file of uploadedFiles">
-                            {{ file.name }} - {{ file.size }} bytes
-                          </li>
-                        </ul>
-                      </ng-template>
-                    </p-fileUpload>
-                  </div>
-                </div>
-                <div class="lg:col-6 md:col-12 sm:col-12">
-                  <div class="flex flex-column gap-2 form-hook">
-                    <h3 for="">Insurance</h3>
-                    <p-fileUpload
-                      name="demo[]"
-                      (onUpload)="onUpload($event)"
-                      accept="image/*"
-                      [maxFileSize]="size"
-                    >
-                      <ng-template pTemplate="content">
-                        <ul *ngIf="uploadedFiles.length">
-                          <li *ngFor="let file of uploadedFiles">
-                            {{ file.name }} - {{ file.size }} bytes
-                          </li>
-                        </ul>
-                      </ng-template>
-                    </p-fileUpload>
-                  </div>
-                </div>
-                <div class="lg:col-6 md:col-12 sm:col-12">
-                  <div class="flex flex-column gap-2 form-hook">
-                    <h3 for="">Approved PO</h3>
-                    <p-fileUpload
-                      name="demo[]"
-                      (onUpload)="onUpload($event)"
-                      accept="image/*"
-                      [maxFileSize]="size"
-                    >
-                      <ng-template pTemplate="content">
-                        <ul *ngIf="uploadedFiles.length">
-                          <li *ngFor="let file of uploadedFiles">
-                            {{ file.name }} - {{ file.size }} bytes
-                          </li>
-                        </ul>
-                      </ng-template>
-                    </p-fileUpload>
-                  </div>
-                </div>
-                <div class="lg:col-6 md:col-12 sm:col-12">
-                  <div class="flex flex-column gap-2 form-hook">
-                    <h3 for="">Inspection forms</h3>
-                    <p-fileUpload
-                      name="demo[]"
-                      (onUpload)="onUpload($event)"
-                      accept="image/*"
-                      [maxFileSize]="size"
-                    >
-                      <ng-template pTemplate="content">
-                        <ul *ngIf="uploadedFiles.length">
-                          <li *ngFor="let file of uploadedFiles">
-                            {{ file.name }} - {{ file.size }} bytes
-                          </li>
-                        </ul>
-                      </ng-template>
-                    </p-fileUpload>
-                  </div>
-                </div>
-              </div> -->
               <div class="flex align-items-center justify-content-end mt-4">
                 <p-button
                   label="Cancel"
                   class="bg-o-color mr"
                   routerLink="/vehicle"
-                  styleClass="p-button-outlined"
-                >
+                  styleClass="p-button-text"
+                  >
                 </p-button>
                 <p-button label="Save" type="submit" class="bg-b-color ml" [disabled]="vehicleForm.invalid || vehicleForm.invalid === null"> </p-button>
               </div>

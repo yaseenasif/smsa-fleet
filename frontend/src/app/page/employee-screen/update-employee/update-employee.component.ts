@@ -66,17 +66,6 @@ export class UpdateEmployeeComponent {
 
 
   dummyData: any = [
-    // { id: 1, department: 'Software Developer' },
-    // { id: 2, name: 'Data Analyst' },
-    // { id: 3, name: 'Project Manager' },
-    // { id: 4, name: 'Web Designer' },
-    // { id: 5, name: 'Grade A' },
-    // { id: 6, name: 'North America' },
-    // { id: 7, name: 'South Asia' },
-    // { id: 8, name: 'New York City' },
-    // { id: 9, name: 'Pakistan' },
-    // { id: 10, name: 'Quality Assurance Tester' },
-    // { id: 11, name: 'National Manager - Hub  Linehaul' }
     { id: '21', name: 'STN' }
   ]
 
@@ -134,7 +123,7 @@ export class UpdateEmployeeComponent {
 
     this.employeeService.updateEmployee(this.employeeId!, employee).subscribe((res) => {
 
-      this.messageService.add({ severity: 'Update Successfully', summary: 'Update Successfully', detail: 'Message Content' });
+      this.messageService.add({ severity: 'success', summary: 'Update Successfully', detail: 'Message Content' });
 
       setTimeout(() => {
         this.router.navigate(['/employee'])

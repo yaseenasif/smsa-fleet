@@ -119,15 +119,15 @@
   
                     <td > 
                       <div class="w-full flex">
-                        <p-button [routerLink]="['/view-employee/', employee.id]" pTooltip="View" tooltipPosition="top" icon="bi bi-eye" class='ml mr' styleClass="p-button-rounded p-button-info p-button-text p-button-raised">
+                        <p-button [routerLink]="['/view-employee/', employee.id]" pTooltip="View" tooltipPosition="top" icon="bi bi-eye" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true">
                         </p-button> 
-                         <p-button [routerLink]="['/edit-employee/', employee.id]" pTooltip="Edit" tooltipPosition="top" icon="bi bi-pen" class='mr' styleClass="p-button-rounded p-button-success p-button-text p-button-raised">
+                         <p-button [routerLink]="['/edit-employee/', employee.id]" pTooltip="Edit" tooltipPosition="top" icon="bi bi-pen" class='mr' [outlined]="true" [rounded]="true" [raised]="true" severity="success">
                            
                          </p-button>
                         
-                          <p-button [routerLink]="['/employee-attachment',employee.id]" pTooltip="Add Attachments" tooltipPosition="top" icon="bi bi-paperclip" class='ml mr' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
+                          <p-button [routerLink]="['/employee-attachment',employee.id]" pTooltip="Add Attachments" tooltipPosition="top" icon="bi bi-paperclip" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="warning">
                           </p-button>
-                          <p-button [routerLink]="['/individual-file-list-component/','employee',employee.id]" pTooltip="Download Attachments" tooltipPosition="top" icon="bi bi-download" class='ml mr' styleClass="p-button-rounded p-button-success p-button-text p-button-raised">
+                          <p-button [routerLink]="['/individual-file-list-component/','employee',employee.id]" pTooltip="Download Attachments" tooltipPosition="top" icon="bi bi-download" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="success">
                           </p-button>
                       </div>
                     </td>

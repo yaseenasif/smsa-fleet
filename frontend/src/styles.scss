@@ -15,7 +15,7 @@ body{
     background-color: $base-bg-color;
 }
 .body-position{
-padding-left:60px; 
+padding-left:60px;
 width: 100%;
 }
 
@@ -38,7 +38,7 @@ background-color: $hover-bg-color;
 .hook>.p-element>.p-toolbar{
     border-radius:0px;
     background-color:$white-color;
-} 
+}
 .table-head>.p-element>.p-toolbar{
     padding:10px;
     margin-bottom: 10px;
@@ -121,5 +121,5 @@ overflow: none;
 }
 
 .dialog-hook>.p-dialog-mask>.p-dialog>.p-dialog-content{
-    overflow: hidden!important;  
+    overflow: hidden!important;
 }

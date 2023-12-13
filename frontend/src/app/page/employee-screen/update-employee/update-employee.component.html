@@ -11,7 +11,7 @@
         </div>
         <div class="body-card">
           <div class="card">
-            <h1 class="mb-4 h-color">Add Employee</h1>
+            <h1 class="mb-4 h-color">Update Employee</h1>
             <form #employeeForm="ngForm" (ngSubmit)="onSubmit()">
               <div class="grid">
                 <div class="col-12 md:col-12 lg:col-6">
@@ -682,9 +682,8 @@
               <div class="flex align-items-center justify-content-end mt-4">
                 <p-button
                   label="Cancel"
-                  class="bg-o-color mr"
                   routerLink="/employee"
-                  styleClass="p-button-outlined"
+                  styleClass="p-button-text"
                 >
                 </p-button>
                 <p-button

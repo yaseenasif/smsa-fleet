@@ -3,6 +3,7 @@ import { MenuItem, MessageService } from 'primeng/api';
 import { Vehicle } from 'src/app/modal/vehicle';
 import { VehicleService } from '../service/vehicle.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Vendor } from 'src/app/modal/vendor';
 
 @Component({
   selector: 'app-update-vehicle',
@@ -42,11 +43,15 @@ export class UpdateVehicleComponent implements OnInit{
   };
 
   dummyData: any = [
-    { id: 1, locationName: 123 },
-    { id: 2, locationName: 123 },
-    { id: 3, locationName: 123 }
+    { id: 1, locationName: 2015},
+    { id: 1, locationName: 2016},
+    { id: 2, locationName: 2017 },
+    { id: 3, locationName: 2018 },
+    { id: 3, locationName: 2019 }
   ]
-    vehicleId: Number | undefined;
+    vehicleId!: Number;
+  vendors!: Vendor[];
+  visible!: boolean;
 
   constructor(private vehicleService: VehicleService,
               private route: ActivatedRoute,
@@ -74,6 +79,7 @@ export class UpdateVehicleComponent implements OnInit{
     this.items = [{ label: 'Vehicle',routerLink:'/vehicle'},{ label: 'Edit Vehicle'}];
     this.vehicleId = +this.route.snapshot.paramMap.get('id')!;
     this.getVehicleById(this.vehicleId)
+    this.getAllVendor();
   }
 
   getVehicleById(id: Number) {
@@ -87,12 +93,12 @@ export class UpdateVehicleComponent implements OnInit{
   updateVehicle(vehicle: Vehicle) {
 
     this.vehicleService.updateVehicle(this.vehicleId!, vehicle).subscribe((res) => {
-
-      this.messageService.add({ severity: 'Update Successfully', summary: 'Update Successfully', detail: 'Message Content' });  
+      this.vehicle=res;
+      this.messageService.add({ severity: 'success', summary: 'Update Successfully', detail: 'Message Content' });  
 
       setTimeout(() => {
         this.router.navigate(['/vehicle'])
-      },5000)
+      },2000)
       
     })
 
@@ -101,6 +107,30 @@ export class UpdateVehicleComponent implements OnInit{
 
   onSubmit() {
     this.updateVehicle(this.vehicle);
+  }
+
+  getAllVendor(){
+    this.vehicleService.getAllVendor().subscribe((res:Vendor[])=>{
+      this.vendors=res;
+    })
+  }
+
+  showDialog() {
+    this.visible = true;
+  }
+
+  closeDialog() {
+    this.visible = false;
+  }
+
+  deleteVehicle() {
+    this.vehicleService.deleteVehicle(this.vehicleId).subscribe((res) => {
+      this.vehicle=res;      
+      this.messageService.add({ severity: 'error', summary: 'Delete Successfully', detail: 'Vehicle has been deleted' });
+      setTimeout(() => {
+        this.router.navigate(['/vehicle'])
+      }, 1000)
+    })  
   }
 }
 

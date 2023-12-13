@@ -18,7 +18,7 @@ public class VehicleDto {
     private Integer processOrderNumber;
     private String plateNumber;
     private String make;
-    private String year;
+    private Integer year;
     private String design;
     private String model;
     private String type;

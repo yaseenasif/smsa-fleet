@@ -4,8 +4,7 @@ import { Vehicle } from 'src/app/modal/vehicle';
 import { VehicleService } from '../service/vehicle.service';
 import { Router } from '@angular/router';
 import { Vendor } from 'src/app/modal/vendor';
-import { GradeService } from '../../grade/grade.service';
-import { Grade } from 'src/app/modal/grade';
+
 
 @Component({
   selector: 'app-add-vehicle',
@@ -48,7 +47,11 @@ export class AddVehicleComponent implements OnInit{
 
   dummyData: any = [
     { id: 1, locationName: 123 },
-    { id: 2, years: 2022 },
+    { id: 2, years: 2015 },
+    { id: 2, years: 2016 },
+    { id: 2, years: 2017 },
+    { id: 2, years: 2018 },
+    { id: 2, years: 2019 },
     { id: 3, locationName: 124 },
     { id: 4, locationName: 125 },
     {id: 1, vendorName: 'Hanco'},
@@ -96,7 +99,7 @@ export class AddVehicleComponent implements OnInit{
   getAllVendor(){
     this.vehicleService.getAllVendor().subscribe((res:Vendor[])=>{
       this.vendors=res;
-    },error=>{})
+    })
   }
 }
 

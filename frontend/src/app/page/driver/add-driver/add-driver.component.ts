@@ -5,6 +5,8 @@ import { Driver } from 'src/app/modal/driver';
 import { EmployeeService } from '../../employee-screen/service/employee.service';
 import { Employee } from 'src/app/modal/employee';
 import { Router } from '@angular/router';
+import { GradeService } from '../../grade/grade.service';
+import { Grade } from 'src/app/modal/grade';
 
 @Component({
   selector: 'app-add-driver',
@@ -45,7 +47,8 @@ export class AddDriverComponent implements OnInit {
   constructor(private driverService: DriverService,
               private employeeService: EmployeeService,
               private messageService: MessageService,
-              private router: Router) { }
+              private router: Router,
+              ) { }
   
   name!:string;
   contactNumber!:string;
@@ -64,7 +67,6 @@ export class AddDriverComponent implements OnInit {
   }
   ngOnInit(): void {
     this.items = [{ label: 'Driver List',routerLink:'/driver'},{ label: 'Add Driver'}];
-    
     this.getAllEmployees();
   }
 
@@ -110,5 +112,6 @@ export class AddDriverComponent implements OnInit {
     })
   }
   
+ 
 
 }

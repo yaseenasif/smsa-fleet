@@ -126,6 +126,7 @@ public class VehicleAssignmentService {
                 optionalVehicleAssignment.get().setDeletedBy(user);
                 optionalVehicleAssignment.get().setAssignToEmpId(null);
                 optionalVehicleAssignment.get().setAssignToEmpName(null);
+                vehicleAssignmentRepository.save(optionalVehicleAssignment.get());
             }
         }
         else throw new RuntimeException("Record does not exist");
