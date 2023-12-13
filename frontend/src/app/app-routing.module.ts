@@ -70,6 +70,8 @@ import { EmployeeAttachmentComponent } from './page/employee-screen/employee-att
 import { IndividualFileListComponent } from './page/individual-file-list/individual-file-list/individual-file-list.component';
 import { ViewVehicleComponent } from './page/vehicle-screen/view-vehicle/view-vehicle.component';
 import { ViewEmployeeComponent } from './page/employee-screen/view-employee/view-employee.component';
+import { ViewAssignmentComponent } from './page/Assignment/view-assignment/view-assignment.component';
+import { ViewDriverComponent } from './page/driver/view-driver/view-driver.component';
 
 NgModule({
   imports: [FormsModule],
@@ -119,6 +121,11 @@ const routes: Routes = [
   {
     path:'edit-driver/:id',
     component:UpdateDriverComponent,
+    canActivate:[AuthGuard]
+  },
+  {
+    path:'view-driver/:id',
+    component:ViewDriverComponent,
     canActivate:[AuthGuard]
   },
   {
@@ -384,6 +391,11 @@ const routes: Routes = [
   {
     path:'edit-assignment',
     component:UpdateAssignmentComponent,
+    canActivate:[AuthGuard]
+  },
+  {
+    path:'view-assignment/:id',
+    component:ViewAssignmentComponent,
     canActivate:[AuthGuard]
   },
   {

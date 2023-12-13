@@ -3,6 +3,7 @@ export interface Driver {
     empId: {
         id: Number | null | undefined,
         empName: String | null | undefined
+        employeeNumber: Number | null | undefined
         jobTitle: String | null | undefined
         joiningDate: Date | null | undefined
         department: String | null | undefined

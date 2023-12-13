@@ -112,6 +112,8 @@ import { DialogBoxComponent } from './components/dialog-box/dialog-box.component
 import { ViewVehicleComponent } from './page/vehicle-screen/view-vehicle/view-vehicle.component';
 import { ViewEmployeeComponent } from './page/employee-screen/view-employee/view-employee.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ViewAssignmentComponent } from './page/Assignment/view-assignment/view-assignment.component';
+import { ViewDriverComponent } from './page/driver/view-driver/view-driver.component';
 
 @NgModule({
   declarations: [
@@ -188,6 +190,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     DialogBoxComponent,
     ViewVehicleComponent,
     ViewEmployeeComponent,
+    ViewAssignmentComponent,
+    ViewDriverComponent,
 
   ],
   imports: [

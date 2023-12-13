@@ -30,7 +30,8 @@ export class UpdateDriverComponent implements OnInit {
       companyEmailAddress: undefined,
       grade: undefined,
       licenseNumber: undefined,
-      vehicleBudget: undefined
+      vehicleBudget: undefined,
+      employeeNumber: undefined
     },
     licenseNumber: undefined,
     vehicleBudget: undefined

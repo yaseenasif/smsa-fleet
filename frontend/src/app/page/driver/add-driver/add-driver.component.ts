@@ -19,6 +19,7 @@ export class AddDriverComponent implements OnInit {
     id: undefined,
     empId: {
       id: undefined,
+      employeeNumber:undefined,
       empName: undefined,
       jobTitle: undefined,
       joiningDate: undefined,
