@@ -77,10 +77,14 @@ public class VehicleReplacementService {
 
                 if (existingVehicle.get().getVehicleReplacement() == null) {
                     vehicleReplacement.setVehicle(existingVehicle.get());
+                    replacingVehicle.get().setReplaceLeaseCost(existingVehicle.get().getLeaseCost()-replacingVehicle.get().getLeaseCost());
                 }else{
                     Optional<VehicleReplacement> vehicleReplacement1 = vehicleReplacementRepository.findById(existingVehicle.get().getVehicleReplacement().getId());
-                    vehicleReplacement1.ifPresent(replacement -> vehicleReplacement.setVehicle(replacement
-                            .getVehicle()));
+                    vehicleReplacement1.ifPresent(replacement -> {
+                        vehicleReplacement.setVehicle(replacement.getVehicle());
+                        replacingVehicle.get().setReplaceLeaseCost(vehicleReplacement1.get().getVehicle().getLeaseCost()
+                                - replacingVehicle.get().getLeaseCost());
+                    });
                 }
 
                 vehicleReplacementRepository.save(vehicleReplacement);

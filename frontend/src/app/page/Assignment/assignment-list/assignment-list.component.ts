@@ -21,6 +21,7 @@ export class AssignmentListComponent {
 
   value: string | null = null;
   totalRecords: number = 0;
+  visible!: boolean;
 
   constructor(private vehicleAssignmentService: VehicleAssignmentService,
     private messageService: MessageService) { }
@@ -58,8 +59,8 @@ export class AssignmentListComponent {
   deleteVehicleAssignment(id: Number) {
 
     this.vehicleAssignmentService.deleteVehicleAssignment(id).subscribe((res) => {
-
-      this.messageService.add({ severity: 'success', summary: 'Delete Successfully', detail: 'Employee has been deleted' });  
+      this.vehicleAssignment=res;
+      this.messageService.add({ severity: 'error', summary: 'Delete Successfully', detail: 'Assignment has been deleted' });  
 
       this.getAllVehicleAssignment();
       
@@ -71,5 +72,11 @@ export class AssignmentListComponent {
     this.query.size = event.rows;
     this.getAllVehicleAssignment()
   }
+  showDialog() {
+    this.visible = true;
+  }
 
+  closeDialog() {
+    this.visible = false;
+  }
 }

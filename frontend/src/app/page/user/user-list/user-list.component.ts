@@ -24,6 +24,10 @@ export class UserListComponent implements OnInit {
  
 
   ngOnInit() {
-      this.items = [{ label: 'User List'}];
+      this.items = [{ label: 'User'}];
   }
+
+
+
+  
 }

@@ -68,6 +68,9 @@ import { AssigmentAttachmentComponent } from './page/Assignment/assigment-attach
 import { VendorAttachmentComponent } from './page/vendor-screen/vendor-attachment/vendor-attachment.component';
 import { EmployeeAttachmentComponent } from './page/employee-screen/employee-attachment/employee-attachment.component';
 import { IndividualFileListComponent } from './page/individual-file-list/individual-file-list/individual-file-list.component';
+import { CityListComponent } from './page/city/city-list/city-list.component';
+import { AddCityComponent } from './page/city/add-city/add-city.component';
+import { EditCityComponent } from './page/city/edit-city/edit-city.component';
 import { ViewVehicleComponent } from './page/vehicle-screen/view-vehicle/view-vehicle.component';
 import { ViewEmployeeComponent } from './page/employee-screen/view-employee/view-employee.component';
 import { ViewAssignmentComponent } from './page/Assignment/view-assignment/view-assignment.component';
@@ -422,6 +425,20 @@ const routes: Routes = [
     canActivate:[AuthGuard]
   },
   {
+    path: 'city-list',
+      component: CityListComponent,
+      canActivate: [AuthGuard]
+    }, {
+      path: 'add-city',
+      component: AddCityComponent,
+      canActivate: [AuthGuard]
+    },
+    {
+      path: 'edit-city/:id',
+      component: EditCityComponent,
+      canActivate: [AuthGuard]
+    },
+  {
     path:'view-vehicle/:id',
     component:ViewVehicleComponent,
     canActivate:[AuthGuard]
@@ -430,7 +447,7 @@ const routes: Routes = [
     path:'view-employee/:id',
     component:ViewEmployeeComponent,
     canActivate:[AuthGuard]
-  },
+  }
 
 
 ];

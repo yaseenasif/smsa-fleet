@@ -75,10 +75,11 @@ public class VehicleService {
                 vehicleAssignment.get().setAssignToEmpId(null);
                 vehicleAssignment.get().setAssignToEmpName(null);
                 vehicleAssignment.get().setStatus(Boolean.FALSE);
+                vehicleAssignmentRepository.save(vehicleAssignment.get());
+                }
                 vehicle.get().setStatus(Boolean.FALSE);
                 return toDto(vehicleRepository.save(vehicle.get()));
             }
-        }
         throw new RuntimeException("Record doesn't exist");
 
     }
@@ -262,7 +263,7 @@ public class VehicleService {
                             vehicle.setDesign(getStringValue(row.getCell(4)));
                             vehicle.setModel(getStringValue(row.getCell(5)));
                             vehicle.setType(getStringValue(row.getCell(6)));
-                            vehicle.setYear(getStringValue(row.getCell(7)));
+                            vehicle.setYear(getIntegerValue(row.getCell(7)));
                             vehicle.setPower(getStringValue(row.getCell(8)));
                             vehicle.setCapacity(getStringValue(row.getCell(9)));
                             vehicle.setFuelType(getStringValue(row.getCell(10)));

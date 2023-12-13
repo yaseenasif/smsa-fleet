@@ -24,8 +24,12 @@ public class CityService {
 
     public CityDto addCity(CityDto cityDto) {
         City city = toEntity(cityDto);
-        city.setStatus(Boolean.TRUE);
-        return toDto(cityRepository.save(city));
+        Optional<City> existingCity = cityRepository.findByName(cityDto.getName());
+        if (!existingCity.isPresent()){
+            city.setStatus(Boolean.TRUE);
+            return toDto(cityRepository.save(city));
+        }
+        throw new RuntimeException("This City already exist " + cityDto.getName());
     }
 
 

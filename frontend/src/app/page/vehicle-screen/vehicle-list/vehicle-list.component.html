@@ -94,6 +94,7 @@
                   <th class="text-center">Vendor</th>
                   <th class="text-center">Insurance Expiry</th>
                   <th class="text-center">Lease Cost</th>
+                  <th class="text-center">Replace Lease Cost</th>
                   <th class="text-center">Lease Start Date</th>
                   <th class="text-center">Lease Expiry Date</th>
                   <th class="text-center">Usage Type</th>
@@ -120,35 +121,29 @@
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.vendor.vendorName }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.insuranceExpiry }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.leaseCost }}</td>
+                  <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.replaceLeaseCost }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.leaseStartDate }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.leaseExpiryDate }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.usageType }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.vehicleReplacement?vehicles.vehicleReplacement.vehicle.plateNumber:'-----'}}</td>
                   <td class="text-center flex">
                     
-                    <p-button [routerLink]="['/view-vehicle/', vehicles.id]" pTooltip="View" tooltipPosition="top" icon="bi bi-eye" class='ml mr' styleClass="p-button-rounded p-button-info p-button-text p-button-raised">
-                    </p-button> 
                     
-                    <p-button *ngIf="selectedStatus.name !== 'Active'" class="bg-color" (click)="showStatusDialog(vehicles.id)" pTooltip="Activate" tooltipPosition="top" icon="bi bi-check2" class='ml mr' styleClass="p-button-rounded p-button-info p-button-text p-button-raised">
-                    </p-button> 
+                    <p-button [routerLink]="['/view-vehicle/', vehicles.id]" pTooltip="View" tooltipPosition="top" [rounded]="true" icon="bi bi-eye" [raised]="true" class='ml mr' [outlined]="true"></p-button>
 
-                     <p-button [routerLink]="['/edit-vehicle/', vehicles.id]" pTooltip="Edit" tooltipPosition="top" icon="bi bi-pen" class='mr' styleClass="p-button-rounded p-button-success p-button-text p-button-raised">
-                       
-                     </p-button>
-                      <p-button *ngIf="selectedStatus.name === 'Active'" (click)="deleteVehicle(vehicles.id, $event)" pTooltip="Delete" tooltipPosition="top" icon="bi bi-trash" class='ml' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
-                     
-                      </p-button>
-                      <p-button [routerLink]="['/vehicle-attachment/',vehicles.id]" pTooltip="Add Attachments" tooltipPosition="top" icon="bi bi-paperclip" class='ml mr' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
+                    <p-button *ngIf="selectedStatus.name !== 'Active'" class="bg-color" (click)="showStatusDialog(vehicles.id)" [rounded]="true" pTooltip="Activate" tooltipPosition="top" icon="bi bi-check2" class='ml mr' [outlined]="true" [raised]="true" ></p-button>
+
+                    <p-button [routerLink]="['/edit-vehicle/', vehicles.id]" pTooltip="Edit" tooltipPosition="top" icon="bi bi-pen" [rounded]="true" class='ml mr' [outlined]="true" [raised]="true" severity="success"></p-button>
+ 
+                    <!-- <p-button *ngIf="selectedStatus.name === 'Active'" (click)="deleteVehicle(vehicles.id, $event)" pTooltip="Delete" tooltipPosition="top" icon="bi bi-trash" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="danger"></p-button> -->
+
+                    <p-button [routerLink]="['/vehicle-attachment/',vehicles.id]" pTooltip="Add Attachments" tooltipPosition="top" icon="bi bi-paperclip" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="warning"></p-button>
                     
-                      </p-button>
-                      <p-button [routerLink]="['/individual-file-list-component/','vehicle',vehicles.id]" pTooltip="View Attachments" tooltipPosition="top" icon="bi bi-download" class='ml mr' styleClass="p-button-rounded p-button-success p-button-text p-button-raised">
-                      </p-button>
-                      <p-button [routerLink]="['/vehicle-history/',vehicles.id]" pTooltip="View History" tooltipPosition="top" icon="bi bi-clock-history" class='ml mr' styleClass="p-button-rounded p-button-warning p-button-text p-button-raised">
+                    <p-button [routerLink]="['/individual-file-list-component/','vehicle',vehicles.id]" pTooltip="View Attachments" tooltipPosition="top" icon="bi bi-download" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true"></p-button>
                     
-                      </p-button>
-                      <p-button *ngIf="selectedStatus.name === 'Active'" (click)="showDialog(vehicles.id, $event)" pTooltip="Replace Vehicle" tooltipPosition="top" icon="bi bi-arrow-repeat" class='ml mr' styleClass="p-button-rounded p-button-info p-button-text p-button-raised">
+                    <p-button [routerLink]="['/vehicle-history/',vehicles.id]" pTooltip="View History" tooltipPosition="top" icon="bi bi-clock-history" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="success"></p-button>
                     
-                      </p-button>
+                    <p-button *ngIf="selectedStatus.name === 'Active'" (click)="showDialog(vehicles.id, $event)" pTooltip="Replace Vehicle" tooltipPosition="top" icon="bi bi-arrow-repeat" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="help"></p-button>
                   </td>
                 </tr>
               </ng-template>

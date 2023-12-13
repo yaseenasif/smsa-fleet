@@ -108,6 +108,9 @@ import { EmployeeAttachmentComponent } from './page/employee-screen/employee-att
 import { IndividualFileListComponent } from './page/individual-file-list/individual-file-list/individual-file-list.component';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { AddCityComponent } from './page/city/add-city/add-city.component';
+import { EditCityComponent } from './page/city/edit-city/edit-city.component';
+import { CityListComponent } from './page/city/city-list/city-list.component';
 import { DialogBoxComponent } from './components/dialog-box/dialog-box.component';
 import { ViewVehicleComponent } from './page/vehicle-screen/view-vehicle/view-vehicle.component';
 import { ViewEmployeeComponent } from './page/employee-screen/view-employee/view-employee.component';
@@ -192,6 +195,9 @@ import { ViewDriverComponent } from './page/driver/view-driver/view-driver.compo
     ViewEmployeeComponent,
     ViewAssignmentComponent,
     ViewDriverComponent,
+    AddCityComponent,
+    EditCityComponent,
+    CityListComponent
 
   ],
   imports: [

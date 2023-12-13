@@ -29,7 +29,7 @@ public class Vehicle {
     private Integer processOrderNumber;
     private String plateNumber;
     private String make;
-    private String year;
+    private Integer year;
     private String design;
     private String model;
     private String type;
@@ -43,6 +43,7 @@ public class Vehicle {
     private Integer leaseCost;
     private Date leaseStartDate;
     private Date leaseExpiryDate;
+    private Integer replaceLeaseCost;
     private String usageType;
     private String attachments;
     private String uuid;
