@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  baseurl:"http://localhost:8080/api",
+  baseurl:"https://localhost:8080/api",
   fileSize:1048576
 };
 
