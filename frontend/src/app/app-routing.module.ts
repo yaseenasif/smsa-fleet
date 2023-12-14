@@ -172,7 +172,7 @@ const routes: Routes = [
     canActivate:[AuthGuard]
   },
   {
-    path:'edit-user',
+    path:'edit-user/:id',
     component:UpdateUserComponent,
     canActivate:[AuthGuard]
   },

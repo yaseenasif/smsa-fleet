@@ -24,29 +24,27 @@
           
 
           <div class="card">
-            <p-table [value]="products" [tableStyle]="{ 'min-width': '50rem' }">
+            <p-table [value]="users" [tableStyle]="{ 'min-width': '50rem' }">
               <ng-template pTemplate="header">
                 <tr>
                   
                   <th class="text-center">Name</th>
                   <th class="text-center">Email</th>
-                  <th class="text-center">Location</th>
                   <th class="text-center">Role</th>
                  
                   <th class="text-center">Actions</th>
                 </tr>
               </ng-template>
-              <ng-template pTemplate="body" let-product>
+              <ng-template pTemplate="body" let-users>
                 <tr>
-                  <td class="text-center">{{ product.name }}</td>
-                  <td class="text-center">{{ product.email }}</td>
-                  <td class="text-center">{{ product.location }}</td>
-                  <td class="text-center">{{ product.role }}</td>
+                  <td class="text-center">{{ users.name }}</td>
+                  <td class="text-center">{{ users.email }}</td>
+                  <td *ngFor="let role of users.roles" class="text-center">{{ role.name }}</td>
                   <td class="text-center"> 
-                    <p-button routerLink="/edit-user" icon="bi bi-pen" class='mr' styleClass="p-button-rounded p-button-success p-button-text p-button-raised">
+                    <p-button  [routerLink]="['/edit-user/', users.id]" icon="bi bi-pen" class='mr' [outlined]="true" [rounded]="true" [raised]="true" severity="success">
                      
                     </p-button>
-                     <p-button icon="bi bi-trash" class='ml' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
+                     <p-button icon="bi bi-trash" class='ml' [outlined]="true" [rounded]="true" [raised]="true" severity="danger">
                     
                      </p-button>
                   </td>

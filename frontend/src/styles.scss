@@ -123,3 +123,7 @@ overflow: none;
 .dialog-hook>.p-dialog-mask>.p-dialog>.p-dialog-content{
     overflow: hidden!important;
 }
+
+.form-hook>.p-inputwrapper>.p-password>.p-password-panel{
+    display:none;
+}  

@@ -17,6 +17,6 @@ public class RolesDto {
 
     private Long id;
     private String name;
-    private Set<Permission> permissions = new HashSet<>();
+    private Set<Permission> permissions;
 
 }

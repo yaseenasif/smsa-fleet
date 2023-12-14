@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { Role } from 'src/app/modal/role';
+import { User } from 'src/app/modal/user';
+import { RoleService } from '../../role/role.service';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-add-user',
@@ -9,48 +13,44 @@ import { MenuItem } from 'primeng/api';
 export class AddUserComponent implements OnInit {
 
   items: MenuItem[] | undefined;
+  roles!: Role[];
+  selectedRole!: Role
+
+  user: User = {
+    id: undefined,
+    name: undefined,
+    email: undefined,
+    password: undefined,
+    roles: []
+  }
  
-  
+  // user!: User;
 
-  constructor() { }
+  constructor(private roleService: RoleService,
+              private userService: UserService) { }
 
-  name!:string;
-  email!:string;
-  password!:string;
-  role!:string;
-  location!:Location[];
-  selectedLocation!:Location;
 
   ngOnInit(): void {
-    this.items = [{ label: 'User',routerLink:'/user'},{ label: 'Add User'}];
 
-    this.location=[
-      {
-        locationName:"karachi",
-        id:1
-      },
-      {
-        locationName:"kaAAi",
-        id:2
-      },
-      {
-        locationName:"Alld",
-        id:3
-      },
-      {
-        locationName:"islamabad",
-        id:4
-      },
-      {
-        locationName:"lahore",
-        id:5
-      },
-    ]
+    this.items = [{ label: 'User',routerLink:'/user'},{ label: 'Add User'}];
+    this.getAllRoles();
+  }
+
+
+  getAllRoles(){
+    this.roleService.getAllRoles().subscribe((res: Role[])=>{
+      this.roles=res;      
+    })
+  }
+
+  onSubmit() {    
+    this.userService.addUser(this.user).subscribe((res) => {      
+    })
+  }
+
+  getRoleData() {
+
   }
 
 }
 
-interface Location{
-  locationName:string,
-  id:number
-}

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { User } from 'src/app/modal/user';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-user-list',
@@ -7,27 +9,24 @@ import { MenuItem } from 'primeng/api';
   styleUrls: ['./user-list.component.scss']
 })
 export class UserListComponent implements OnInit {
+  users!: User[];
 
-  constructor() { }
-  products:any=[{name:"Demo"},
-  {name:"Demo"},
-  {name:"Demo"},
-  {name:"Demo"},
-  {name:"Demo"},
-  {name:"Demo"},
-  {name:"Demo"},
-  {name:"Demo"},
-  {name:"Demo"},
-  {name:"Demo"},];
+  constructor(private userService: UserService) { }
+
   items: MenuItem[] | undefined;
 
  
 
   ngOnInit() {
       this.items = [{ label: 'User'}];
+      this.getActiveUsers();
   }
 
-
+  getActiveUsers(){
+    this.userService.getActiveUsers().subscribe((res: User[])=>{
+      this.users=res;      
+    })
+  }
 
   
 }

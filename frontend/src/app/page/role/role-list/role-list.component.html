@@ -24,7 +24,7 @@
             
   
             <div class="card">
-              <p-table [value]="products" [tableStyle]="{ 'min-width': '50rem' }">
+              <p-table [value]="roles" [tableStyle]="{ 'min-width': '50rem' }">
                 <ng-template pTemplate="header">
                   <tr>
                     
@@ -33,19 +33,19 @@
                     <th class="text-center">Actions</th>
                   </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-product>
+                <ng-template pTemplate="body" let-roles>
                   <tr>
-                    <td class="text-center">{{ product.name }}</td>
+                    <td class="text-center">{{ roles.name }}</td>
                     <td class="text-center">
-                        <ng-container *ngFor="let permissions of product.permission; let last = last">
+                        <ng-container *ngFor="let permissions of roles.permission; let last = last">
                             {{permissions.name}}{{ !last ? ',' : '' }}
                         </ng-container>
                     </td>
                     <td class="text-center"> 
-                      <p-button routerLink="/edit-role" icon="bi bi-pen" class='mr' styleClass="p-button-rounded p-button-success p-button-text p-button-raised">
+                      <p-button routerLink="/edit-role" icon="bi bi-pen" class='mr' [outlined]="true" [rounded]="true" [raised]="true" severity="success">
                        
                       </p-button>
-                       <p-button icon="bi bi-trash" class='ml' styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
+                       <p-button icon="bi bi-trash" class='ml' [outlined]="true" [rounded]="true" [raised]="true" severity="danger">
                       
                        </p-button>
                     </td>

@@ -1,8 +1,10 @@
 package com.example.FleetSystem.dto;
 
+import com.example.FleetSystem.model.Roles;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -21,8 +23,7 @@ public class UserDto {
     @NotBlank(message = "Email is required")
     private String email;
     @NotBlank(message = "Role is required")
-    private String role;
-    @NotBlank(message = "Location is required")
-    private String location;
+    private Set<Roles> roles;
+    private boolean status;
 
 }
