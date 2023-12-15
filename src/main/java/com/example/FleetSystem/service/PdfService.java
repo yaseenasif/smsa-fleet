@@ -51,7 +51,7 @@ public class PdfService {
                 document.add(subHeader);
                 document.add(Chunk.NEWLINE);
 
-                Class<?> clazz = historyList.get(1).getClass();
+                Class<?> clazz = historyList.get(0).getClass();
                 Field[] fields = clazz.getDeclaredFields();
 
                 PdfPTable table = new PdfPTable(fields.length+1);
