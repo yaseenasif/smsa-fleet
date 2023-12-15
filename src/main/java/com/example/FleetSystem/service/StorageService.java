@@ -19,7 +19,7 @@ import java.io.IOException;
 @Service
 @Slf4j
 public class StorageService {
-    public static final String BUCKET_NAME="cdvinv";
+    public static final String BUCKET_NAME="fms.smsaexpress.com";
     @Autowired
     private AmazonS3 s3Client;
 
@@ -36,6 +36,7 @@ public class StorageService {
             return fileUrl;
         }catch (Exception e){
             logger.error("file not uploaded to s3 bucket",fileName);
+            e.printStackTrace();
             throw new RuntimeException(e.getMessage());
         }
 
