@@ -117,6 +117,7 @@ import { ViewEmployeeComponent } from './page/employee-screen/view-employee/view
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ViewAssignmentComponent } from './page/Assignment/view-assignment/view-assignment.component';
 import { ViewDriverComponent } from './page/driver/view-driver/view-driver.component';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -244,6 +245,7 @@ import { ViewDriverComponent } from './page/driver/view-driver/view-driver.compo
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     // { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true }, // Register the AuthInterceptor
     // provideRouter(routes, withHashLocation()),
+    [{provide: LocationStrategy, useClass: HashLocationStrategy}]
 ],
   bootstrap: [AppComponent]
 })

@@ -96,7 +96,7 @@ public class UserService {
 
             user.get().setName(userDto.getName());
             user.get().setEmail(userDto.getEmail());
-            user.get().setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
+//            user.get().setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
             user.get().setRoles(rolesList);
 
             return toDto(userRepository.save(user.get()));

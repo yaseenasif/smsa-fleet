@@ -62,6 +62,10 @@ public class PdfService {
                 document.close();
 
                 return outputStream.toByteArray();
+
+            }catch (IOException | DocumentException e) {
+                e.printStackTrace();
+                throw e;
             }
         }
         private static void addTableHeader (PdfPTable table){
