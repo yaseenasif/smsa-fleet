@@ -41,7 +41,8 @@ public class PdfController {
                     .body(pdfBytes);
         } catch (IOException | DocumentException e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body(null);
+//            return ResponseEntity.status(500).body(null);
+            throw new RuntimeException("error in controller",e);
         }
     }
 }
