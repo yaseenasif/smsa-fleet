@@ -38,10 +38,14 @@ public class PdfService {
                 PdfWriter.getInstance(document, outputStream);
                 document.open();
 
+                log.info("document open");
                 Image img = Image.getInstance("src/main/resources/smsa-logo.jpeg");
+                log.info("get image");
                 img.setAbsolutePosition(10, 770); // Adjust X and Y coordinates as needed
                 img.scaleToFit(100, 100);
+                log.info("before image added");
                 document.add(img);
+                log.info("image added");
                 document.add(Chunk.NEWLINE);
 
                 Font headerFont = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
@@ -49,6 +53,7 @@ public class PdfService {
                 header.setAlignment(Element.ALIGN_CENTER);
                 document.add(header);
                 document.add(Chunk.NEWLINE);
+                log.info("header added");
 
                 Font subheaderFont = new Font(Font.FontFamily.TIMES_ROMAN, 14, Font.BOLD);
                 Paragraph subHeader = new Paragraph("Plate Number: "+vehicle.get().getPlateNumber()+
@@ -71,6 +76,7 @@ public class PdfService {
                 return outputStream.toByteArray();
 
             }catch (IOException | DocumentException e) {
+                log.info("Exception => "+e.getMessage());
                 e.printStackTrace();
                 throw new RuntimeException("error downloading pdf",e);
             }
