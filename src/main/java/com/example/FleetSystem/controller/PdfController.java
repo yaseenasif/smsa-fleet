@@ -3,6 +3,7 @@ import com.example.FleetSystem.payload.VehicleHistoryResponse;
 import com.example.FleetSystem.service.PdfService;
 import com.example.FleetSystem.service.VehicleService;
 import com.itextpdf.text.DocumentException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@Slf4j
 public class PdfController {
 
     @Autowired
@@ -26,16 +28,20 @@ public class PdfController {
 
     @GetMapping("/vehicle-history-download/{id}")
     public ResponseEntity<byte[]> downloadPdf(@PathVariable Long id){
+      log.info("In Controller");
         try {
             List<VehicleHistoryResponse> historyList = vehicleService.getVehicleHistoryById(id);
             byte[] pdfBytes = pdfService.generateVehicleHistoryPdf(historyList,id);
 
+            log.info("After service call");
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_PDF);
 
+            log.info("Headers =>"+headers.toString());
             String filename = "vehicle_history_" + id + ".pdf";
             headers.setContentDispositionFormData("attachment", filename);
 
+            log.info("header =>"+headers.toString());
             return ResponseEntity.ok()
                     .headers(headers)
                     .body(pdfBytes);

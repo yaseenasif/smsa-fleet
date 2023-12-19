@@ -6,6 +6,8 @@ import com.example.FleetSystem.repository.VehicleRepository;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,7 @@ import java.util.Optional;
 
 
 @Service
+@Slf4j
 public class PdfService {
 
     @Autowired
@@ -24,11 +27,14 @@ public class PdfService {
 
         public byte[] generateVehicleHistoryPdf (List <VehicleHistoryResponse> historyList,Long vehicleId) throws
         IOException, DocumentException {
+            log.info("In service");
             try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
                 Document document = new Document(PageSize.A4);
 
                 Optional<Vehicle> vehicle = vehicleRepository.findById(vehicleId);
 
+                log.info("history list =>"+historyList.toString());
+                log.info("vehicle =>"+vehicle.toString());
                 PdfWriter.getInstance(document, outputStream);
                 document.open();
 
@@ -51,6 +57,7 @@ public class PdfService {
                 document.add(subHeader);
                 document.add(Chunk.NEWLINE);
 
+                log.info(historyList.get(0).toString());
                 Class<?> clazz = historyList.get(0).getClass();
                 Field[] fields = clazz.getDeclaredFields();
 
@@ -65,7 +72,7 @@ public class PdfService {
 
             }catch (IOException | DocumentException e) {
                 e.printStackTrace();
-                throw e;
+                throw new RuntimeException("error downloading pdf",e);
             }
         }
         private static void addTableHeader (PdfPTable table){
