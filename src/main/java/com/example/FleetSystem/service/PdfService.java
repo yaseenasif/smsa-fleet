@@ -1,4 +1,8 @@
 package com.example.FleetSystem.service;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import com.amazonaws.util.IOUtils;
 import com.example.FleetSystem.model.Vehicle;
 import com.example.FleetSystem.payload.VehicleHistoryResponse;
 
@@ -6,6 +10,7 @@ import com.example.FleetSystem.repository.VehicleRepository;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +22,18 @@ import java.util.Optional;
 
 
 @Service
+@Slf4j
 public class PdfService {
 
     @Autowired
     VehicleRepository vehicleRepository;
+    @Autowired
+    private AmazonS3 s3Client;
 
-        public byte[] generateVehicleHistoryPdf (List <VehicleHistoryResponse> historyList,Long vehicleId) throws
+    public static final String BUCKET_NAME="fms.smsaexpress.com";
+
+
+    public byte[] generateVehicleHistoryPdf (List <VehicleHistoryResponse> historyList,Long vehicleId) throws
         IOException, DocumentException {
             try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
                 Document document = new Document(PageSize.A4);
@@ -32,7 +43,7 @@ public class PdfService {
                 PdfWriter.getInstance(document, outputStream);
                 document.open();
 
-                Image img = Image.getInstance("src/main/resources/smsa-logo.jpeg");
+                Image img = downloadImage("smsa-logo.jpeg");
                 img.setAbsolutePosition(10, 770); // Adjust X and Y coordinates as needed
                 img.scaleToFit(100, 100);
                 document.add(img);
@@ -95,4 +106,21 @@ public class PdfService {
                 }else table.addCell("");
             }
         }
+
+    public Image downloadImage(String fileName) {
+        try {
+            S3Object s3Object = s3Client.getObject(BUCKET_NAME, fileName);
+            S3ObjectInputStream inputStream = s3Object.getObjectContent();
+            try {
+                byte[] imageData = IOUtils.toByteArray(inputStream);
+                return Image.getInstance(imageData);
+            } finally {
+                inputStream.close();
+            }
+        } catch (IOException | BadElementException e) {
+            log.error("cannot download file from s3 bucket");
+            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 }
