@@ -75,6 +75,7 @@ import { ViewVehicleComponent } from './page/vehicle-screen/view-vehicle/view-ve
 import { ViewEmployeeComponent } from './page/employee-screen/view-employee/view-employee.component';
 import { ViewAssignmentComponent } from './page/Assignment/view-assignment/view-assignment.component';
 import { ViewDriverComponent } from './page/driver/view-driver/view-driver.component';
+import { AssignmentHistoryComponent } from './page/Assignment/assignment-history/assignment-history.component';
 
 NgModule({
   imports: [FormsModule],
@@ -399,6 +400,11 @@ const routes: Routes = [
   {
     path:'view-assignment/:id',
     component:ViewAssignmentComponent,
+    canActivate:[AuthGuard]
+  },
+  {
+    path:'assignment-history/:id',
+    component:AssignmentHistoryComponent,
     canActivate:[AuthGuard]
   },
   {

@@ -34,7 +34,7 @@ export class VehicleHistoryComponent {
   vehicle!: Vehicle;
 
   constructor(private vehicleService: VehicleService,              
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute) {  
       this.events = [
           { event: 'Replace',plateNumber:10234, date: '15/10/2020 10:30', icon: 'bi bi-arrow-repeat', color: '#3B82F6'},
           { event: 'Assignment',employ: {name:'Ali Azlan',employNumber:12342}, date: '15/10/2020 14:00', icon: 'bi bi-clipboard2-check', color: '#F59E0B' },
