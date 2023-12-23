@@ -47,12 +47,12 @@ export class UpdateEmployeeComponent {
     deptCode: undefined,
     department: undefined,
     section: undefined,
-    iqamaNumber: undefined,
+    nationalIdNumber: undefined,
     svEmployeeNumber: undefined,
     svEmployeeName: undefined,
     city: undefined,
     age: undefined,
-    portOfDestination: undefined,
+    costCenter: undefined,
     nationality: undefined,
     companyEmailAddress: undefined,
     grade: undefined,
@@ -120,22 +120,18 @@ export class UpdateEmployeeComponent {
 
 
   updateEmployee(employee: Employee) {
-
-    this.employeeService.updateEmployee(this.employeeId!, employee).subscribe((res) => {
-
-      this.messageService.add({ severity: 'success', summary: 'Update Successfully', detail: 'Message Content' });
-
-      setTimeout(() => {
-        this.router.navigate(['/employee'])
-      }, 5000)
-
-    },
+    this.employeeService.updateEmployee(this.employeeId!, employee).subscribe(
+      (res) => {
+        this.messageService.add({ severity: 'success', summary: 'Update Successfully', detail: 'Message Content' });
+        setTimeout(() => {
+          this.router.navigate(['/employee']);
+        }, 5000);
+      },
       (error) => {
         this.messageService.add({ severity: 'error', summary: 'Edit Error', detail: error.error });
-      })
-
+      }
+    );
   }
-
   onSubmit() {
     this.updateEmployee(this.employee);
   }

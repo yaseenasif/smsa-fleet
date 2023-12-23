@@ -19,7 +19,6 @@ import { StatusListComponent } from './page/status/status-list/status-list.compo
 import { UpdateStatusComponent } from './page/status/update-status/update-status.component';
 import { ProductFieldListComponent } from './page/product-field/product-field-list/product-field-list.component';
 import { ProductFieldAddComponent } from './page/product-field/product-field-add/product-field-add.component';
-import { ProductFieldUpdateComponent } from './page/product-field/product-field-update/product-field-update.component';
 import { AuthGuard } from './auth-service/authguard/authguard';
 import { PermissionListComponent } from './page/permission/permission-list/permission-list.component';
 import { AddPermissionComponent } from './page/permission/add-permission/add-permission.component';
@@ -92,18 +91,18 @@ const routes: Routes = [
     canActivate:[AuthGuard]
   },
   {
-    path:'product-field',
+    path:'productFields',
     component:ProductFieldListComponent,
     canActivate:[AuthGuard]
   },
   {
-    path:'add-product-field',
+    path:'add-ProductField',
     component:ProductFieldAddComponent,
     canActivate:[AuthGuard]
   },
   {
-    path:'edit-product-field',
-    component:ProductFieldUpdateComponent,
+    path:'add-ProductField/:id',
+    component:ProductFieldAddComponent,
     canActivate:[AuthGuard]
   },
   {

@@ -16,7 +16,7 @@ import { Grade } from 'src/app/modal/grade';
 })
 export class AddDriverComponent implements OnInit {
   items: MenuItem[] | undefined;
-
+  existingDrivers: Driver[] = [];
   driver: Driver = {
     id: undefined,
     empId: {
@@ -34,10 +34,13 @@ export class AddDriverComponent implements OnInit {
       companyEmailAddress: undefined,
       grade: undefined,
       licenseNumber: undefined,
-      vehicleBudget: undefined
+      vehicleBudget: undefined,
+      costCenter : undefined
     },
     licenseNumber: undefined,
-    vehicleBudget: undefined
+    vehicleBudget: undefined,
+    costCentre : undefined
+
     
   }
 
@@ -95,8 +98,9 @@ export class AddDriverComponent implements OnInit {
     this.driver.empId.contactNumber = this.selectedEmployee.contactNumber
     this.driver.empId.companyEmailAddress = this.selectedEmployee.companyEmailAddress
     this.driver.empId.grade = this.selectedEmployee.grade
-    // this.driver.licenseNumber = this.selectedEmployee.licenseNumber
-    // this.driver.vehicleBudget
+    this.driver.empId.licenseNumber = this.selectedEmployee.licenseNumber
+    this.driver.empId.vehicleBudget = this.selectedEmployee.vehicleBudget
+    this.driver.empId.costCenter = this.selectedEmployee.costCenter
     
   }
     

@@ -67,14 +67,11 @@
                      </ng-container>
 
                     <td class="text-center flex">
-                      <p-button [routerLink]="['/edit-vendor/', vendor.id]" icon="bi bi-pen" class="mr"
-                        styleClass="p-button-rounded p-button-success p-button-text p-button-raised">
+                      <p-button [routerLink]="['/edit-vendor/', vendor.id]" icon="bi bi-pen"  pTooltip="Edit"  class='ml mr' [outlined]="true" [rounded]="true" tooltipPosition="top" [raised]="true" severity="success">
                       </p-button>
-                      <p-button (click)="deleteVendorById(vendor.id)" icon="bi bi-trash" class="ml"
-                        styleClass="p-button-rounded p-button-danger p-button-text p-button-raised">
+                      <p-button (click)="deleteVendorById(vendor.id)" icon="bi bi-trash" pTooltip="Trash"  class='ml mr' [outlined]="true" [rounded]="true" tooltipPosition="top" [raised]="true" severity="danger">
                       </p-button>
-                      <p-button routerLink="/vendor-attachment" icon="bi bi-paperclip" class='ml mr'
-                        styleClass="p-button-rounded p-button-danger p-button-text p-button-raised"></p-button>
+                      <p-button routerLink="/vendor-attachment" icon="bi bi-paperclip"  pTooltip="Add Attachments"  class='ml mr' [outlined]="true" [rounded]="true" tooltipPosition="top" [raised]="true" severity="warning"></p-button>
                     
                     </td>
                   </tr>

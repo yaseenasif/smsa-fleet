@@ -3,6 +3,7 @@ import { MenuItem, MessageService } from 'primeng/api';
 import { Driver } from 'src/app/modal/driver';
 import { DriverService } from '../driver.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Form } from '@angular/forms';
 
 @Component({
   selector: 'app-update-driver',
@@ -31,10 +32,12 @@ export class UpdateDriverComponent implements OnInit {
       grade: undefined,
       licenseNumber: undefined,
       vehicleBudget: undefined,
-      employeeNumber: undefined
+      employeeNumber: undefined,
+      costCenter: undefined
     },
+    vehicleBudget: undefined,
     licenseNumber: undefined,
-    vehicleBudget: undefined
+    costCentre: undefined
   }
 
   driverId: Number | undefined;
@@ -83,11 +86,12 @@ export class UpdateDriverComponent implements OnInit {
   }
 
   updateDriver(driver: Driver) {
-
     this.driverService.updateDriver(this.driverId!, driver).subscribe((res) => {
-
+      console.log(driver);
+      console.log(res);
       this.messageService.add({ severity: 'Update Successfully', summary: 'Update Successfully', detail: 'Message Content' });  
-
+      console.log(driver);
+      
       setTimeout(() => {
         this.router.navigate(['/driver'])
       },5000)
@@ -96,9 +100,7 @@ export class UpdateDriverComponent implements OnInit {
 
   }
   
-  onSubmit() {
-
+  onSubmit() {    
     this.updateDriver(this.driver)
-
   }
 }

@@ -18,7 +18,7 @@
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Driver Name</label>
                   <input
-                    pInputText
+                    pInputText [disabled]="true"
                     id="name"
                     aria-describedby="name-help"
                     name="empName"
@@ -37,7 +37,7 @@
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Job Title</label>
                   <input
-                    pInputText
+                    pInputText [disabled]="true"
                     id="name"
                     aria-describedby="name-help"
                     name="title"
@@ -55,7 +55,7 @@
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2 emp-form-date">
                   <label htmlFor="name">Date Of Joining</label>
-                  <p-calendar #joinDate
+                  <p-calendar #joinDate [disabled]="true"
                   name="joinDate"
                   [required]="true"
                   [(ngModel)]="driver.empId.joiningDate" [showIcon]="true"
@@ -70,7 +70,7 @@
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Department</label>
                   <input
-                    pInputText
+                    pInputText [disabled]="true"
                     id="name"
                     aria-describedby="name-help"
                     name="department"
@@ -89,7 +89,7 @@
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Section</label>
                   <input
-                    pInputText
+                    pInputText [disabled]="true"
                     id="name"
                     aria-describedby="name-help"
                     name="section"
@@ -108,7 +108,7 @@
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Region</label>
                   <input
-                    pInputText
+                    pInputText [disabled]="true"
                     id="name"
                     aria-describedby="name-help"
                     name="region"
@@ -127,7 +127,7 @@
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">City</label>
                   <input
-                    pInputText
+                    pInputText [disabled]="true"
                     id="name"
                     aria-describedby="name-help"
                     name="city"
@@ -146,7 +146,7 @@
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Nationality</label>
                   <input
-                    pInputText
+                    pInputText [disabled]="true"
                     id="name"
                     aria-describedby="name-help"
                     name="nationality"
@@ -165,7 +165,7 @@
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Contact Number</label>
                   <input
-                    pInputText
+                    pInputText [disabled]="true"
                     id="name"
                     aria-describedby="name-help"
                     name="contactNumber"
@@ -184,7 +184,7 @@
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Email Address</label>
                   <input
-                    pInputText
+                    pInputText [disabled]="true"
                     id="name"
                     aria-describedby="name-help"
                     name="emailAddress"
@@ -203,7 +203,7 @@
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Grade</label>
                   <input
-                    pInputText
+                    pInputText [disabled]="true"
                     id="name"
                     aria-describedby="name-help"
                     name="grade"
@@ -226,7 +226,7 @@
                     id="name"
                     aria-describedby="name-help"
                     name="licenseNumber"
-                    [(ngModel)]="driver.licenseNumber"
+                    [(ngModel)]="driver.empId.licenseNumber"
                     #licenseNumber="ngModel"
                     required
                   />
@@ -245,7 +245,7 @@
                     id="name"
                     aria-describedby="name-help"
                     name="vehicleBudget"
-                    [(ngModel)]="driver.vehicleBudget"
+                    [(ngModel)]="driver.empId.vehicleBudget"
                     #vehicleBudget="ngModel"
                     required
                   />
@@ -253,6 +253,25 @@
                       id="name-help" class="color-red" 
                       *ngIf="vehicleBudget.invalid && (vehicleBudget.dirty || vehicleBudget.touched)"
                   > Vehicle Budget is required
+                  </small>
+                </div>
+              </div>
+              <div class="col-12 md:col-12 lg:col-12">
+                <div class="flex flex-column gap-2">
+                  <label htmlFor="name">Cost Center</label>
+                  <input
+                    pInputText [disabled]="true"
+                    id="name"
+                    aria-describedby="name-help"
+                    name="costCenter"
+                    [(ngModel)]="driver.costCentre"
+                    #costCenter="ngModel"
+                    required
+                  />
+                  <small 
+                      id="name-help" class="color-red" 
+                      *ngIf="costCenter.invalid && (costCenter.dirty || costCenter.touched)"
+                  > Cost Center is required
                   </small>
                 </div>
               </div>

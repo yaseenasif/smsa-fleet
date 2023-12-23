@@ -260,13 +260,12 @@
                     id="name"
                     aria-describedby="name-help"
                     name="licenseNumber"
-                    [(ngModel)]="driver.licenseNumber"
+                    [(ngModel)]="driver.empId.licenseNumber"
                     #licenseNumber="ngModel"
                     required
-                    [ngClass]="{'error': licenseNumber.invalid && (licenseNumber.dirty || licenseNumber.touched)}"
                   />
                   <small 
-                      id="name-help" class="color-red error" 
+                      id="name-help" class="color-red" 
                       *ngIf="licenseNumber.invalid && (licenseNumber.dirty || licenseNumber.touched)"
                   > License Number is required
                   </small>
@@ -280,15 +279,33 @@
                     id="name"
                     aria-describedby="name-help"
                     name="vehicleBudget"
-                    [(ngModel)]="driver.vehicleBudget"
+                    [(ngModel)]="driver.empId.vehicleBudget"
                     #vehicleBudget="ngModel"
                     required
-                    [ngClass]="{'error': vehicleBudget.invalid && (vehicleBudget.dirty || vehicleBudget.touched)}"
                   />
                   <small 
-                      id="name-help" class="color-red error" 
+                      id="name-help" class="color-red" 
                       *ngIf="vehicleBudget.invalid && (vehicleBudget.dirty || vehicleBudget.touched)"
                   > Vehicle Budget is required
+                  </small>
+                </div>
+              </div>
+              <div class="col-12 md:col-12 lg:col-12">
+                <div class="flex flex-column gap-2">
+                  <label htmlFor="name">Cost Center</label>
+                  <input
+                    pInputText
+                    id="name"
+                    aria-describedby="name-help"
+                    name="costCenter"
+                    [(ngModel)]="driver.empId.costCenter"
+                    #costCenter="ngModel"
+                    required
+                  />
+                  <small 
+                      id="name-help" class="color-red" 
+                      *ngIf="costCenter.invalid && (costCenter.dirty || costCenter.touched)"
+                  > Cost Center is required
                   </small>
                 </div>
               </div>

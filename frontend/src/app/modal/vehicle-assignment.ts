@@ -28,12 +28,12 @@ export interface VehicleAssignment {
         department: string | null | undefined;
         contactNumber: string | null | undefined;
         section: string | null | undefined;
-        iqamaNumber: string | null | undefined;
+        nationalIdNumber: number | null | undefined;
         svEmployeeNumber: string | null | undefined;
         svEmployeeName: string | null | undefined;
         city: string | null | undefined;
         age: number | null | undefined;
-        portOfDestination: string | null | undefined;
+        costCenter: string | null | undefined;
         nationality: string | null | undefined;
         companyEmailAddress: string | null | undefined;
         grade: string | null | undefined;

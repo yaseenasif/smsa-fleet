@@ -38,8 +38,8 @@
                         <td class="text-center">{{ grade.name }}</td>
                         <td class="text-center">{{ grade.vehicleBudget }}</td>
                         <td class="text-center"> 
-                          <p-button [routerLink]="['/edit-grade/', grade.id]" icon="bi bi-pen" class='mr' styleClass="p-button-rounded p-button-success p-button-text p-button-raised"></p-button>
-                          <p-button icon="bi bi-trash" class='ml' (click)="deleteGradeById(grade.id)" styleClass="p-button-rounded p-button-danger p-button-text p-button-raised"></p-button>
+                          <p-button [routerLink]="['/edit-grade/', grade.id]" icon="bi bi-pen" pTooltip="Edit" tooltipPosition="top" class=' mr' [outlined]="true" [rounded]="true"  [raised]="true" severity="success"></p-button>
+                          <p-button icon="bi bi-trash"  (click)="deleteGradeById(grade.id)" pTooltip="Trash" tooltipPosition="top" class=' mr' [outlined]="true" [rounded]="true"  [raised]="true" severity="danger"></p-button>
                         </td>
                     </tr>
                 </ng-template>

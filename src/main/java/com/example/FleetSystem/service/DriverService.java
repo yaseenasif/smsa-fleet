@@ -9,7 +9,6 @@ import com.example.FleetSystem.repository.EmployeeRepository;
 import com.example.FleetSystem.repository.FileMetaDataRepository;
 import com.example.FleetSystem.repository.UserRepository;
 import com.example.FleetSystem.specification.DriverSpecification;
-import com.example.FleetSystem.specification.EmployeeSpecification;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -72,6 +71,9 @@ public class DriverService {
             driver.setNationality(driverDto.getEmpId().getNationality());
             driver.setSection(driverDto.getEmpId().getSection());
             driver.setJoiningDate(driverDto.getEmpId().getJoiningDate());
+            driver.setLicenseNumber(driverDto.getEmpId().getLicenseNumber());
+            driver.setVehicleBudget(driverDto.getEmpId().getVehicleBudget());
+            driver.setCostCentre(driverDto.getEmpId().getCostCenter());
             driver.setCreatedAt(LocalDate.now());
             driver.setCreatedBy(user);
             driver.setStatus(Boolean.TRUE);
@@ -116,9 +118,9 @@ public class DriverService {
 
                 driver.get().setEmpName(driverDto.getEmpId().getEmpName());
                 driver.get().setTitle(driverDto.getEmpId().getJobTitle());
-                driver.get().setSection(driverDto.getEmpId().getSection());
                 driver.get().setJoiningDate(driverDto.getEmpId().getJoiningDate());
                 driver.get().setDepartment(driverDto.getEmpId().getDepartment());
+                driver.get().setSection(driverDto.getEmpId().getSection());
                 driver.get().setRegion(driverDto.getEmpId().getRegion());
                 driver.get().setCity(driverDto.getEmpId().getCity());
                 driver.get().setNationality(driverDto.getEmpId().getNationality());
@@ -127,6 +129,7 @@ public class DriverService {
                 driver.get().setGrade(driverDto.getEmpId().getGrade());
                 driver.get().setLicenseNumber(driverDto.getEmpId().getLicenseNumber());
                 driver.get().setVehicleBudget(driverDto.getEmpId().getVehicleBudget());
+                driver.get().setCostCentre(driverDto.getEmpId().getCostCenter());
                 driver.get().setAttachments(driverDto.getAttachments());
                 driver.get().setUpdatedAt(LocalDate.now());
                 driver.get().setUpdatedBy(user);
