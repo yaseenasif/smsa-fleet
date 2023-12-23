@@ -9,6 +9,6 @@ export interface    VehicleHistory {
     empName: String,
     plateNumber: String,
     icon: String,
-    color: String 
+    color: String
 
 }

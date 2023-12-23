@@ -19,7 +19,8 @@ export class AssignmentListComponent {
     size: number
   };
 
-  value: string | null = null;
+  plateNumber: string | null = null;
+  employeeNumber: string | null = null;
   totalRecords: number = 0;
   visible!: boolean;
 
@@ -47,12 +48,16 @@ export class AssignmentListComponent {
       this.getAllVehicleAssignment();
     }
 
+    turner=true;
   getAllVehicleAssignment() {
-    this.vehicleAssignmentService.searchAssignmentByPlateNumber(this.value, this.query).subscribe((res: PaginatedResponse<VehicleAssignment>) => {
+    
+    
+    this.vehicleAssignmentService.searchAssignmentByPlateNumber(this.plateNumber, this.query).subscribe((res: PaginatedResponse<VehicleAssignment>) => {
       this.vehicleAssignment = res.content;
       this.query = { page: res.pageable.pageNumber, size: res.size }
       this.totalRecords = res.totalElements;
     })
+     
 
   }
 
@@ -79,4 +84,27 @@ export class AssignmentListComponent {
   closeDialog() {
     this.visible = false;
   }
+
+  booleanTurner(){
+ this.turner=!(this.turner)
+ this.plateNumber = "";
+ this.employeeNumber = "";
+ this.getAllVehicleAssignment();
+  }
+
+  getAllVehicleAssignmentByEmployeeNum(){
+    this.vehicleAssignmentService.searchAssignmentByEmployeeNumber(this.employeeNumber, this.query).subscribe((res: PaginatedResponse<VehicleAssignment>) => {
+      this.vehicleAssignment = res.content;
+      this.query = { page: res.pageable.pageNumber, size: res.size }
+      this.totalRecords = res.totalElements;
+    })
+  }
+  getAllVehicleAssignmentByPlateNum(){
+    this.vehicleAssignmentService.searchAssignmentByPlateNumber(this.plateNumber, this.query).subscribe((res: PaginatedResponse<VehicleAssignment>) => {
+      this.vehicleAssignment = res.content;
+      this.query = { page: res.pageable.pageNumber, size: res.size }
+      this.totalRecords = res.totalElements;
+  })
+}
+ 
 }
