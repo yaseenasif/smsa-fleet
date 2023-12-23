@@ -1,8 +1,8 @@
 export interface Employee {
     id: number | null | undefined;
+    empName: string | null | undefined;
     employeeNumber: number | null | undefined;
     budgetRef: string | null | undefined;
-    empName: string | null | undefined;
     gender: string | null | undefined;
     maritalStatus: string | null | undefined;
     dateOfBirth: Date | null | undefined;
@@ -17,16 +17,16 @@ export interface Employee {
     department: string | null | undefined;
     contactNumber: string | null | undefined;
     section: string | null | undefined;
-    iqamaNumber: string | null | undefined;
+    nationalIdNumber: number | null | undefined;
     svEmployeeNumber: string | null | undefined;
     svEmployeeName: string | null | undefined;
     city: string | null | undefined;
     age: number | null | undefined;
-    portOfDestination: string | null | undefined;
     nationality: string | null | undefined;
     companyEmailAddress: string | null | undefined;
     grade: string | null | undefined;
     licenseNumber: String | null | undefined
     vehicleBudget: Number | null | undefined
+    costCenter: string | null | undefined;
 
 }

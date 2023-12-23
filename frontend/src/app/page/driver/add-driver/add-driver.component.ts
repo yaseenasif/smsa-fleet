@@ -16,43 +16,46 @@ import { Grade } from 'src/app/modal/grade';
 })
 export class AddDriverComponent implements OnInit {
   items: MenuItem[] | undefined;
-
+  existingDrivers: Driver[] = [];
   driver: Driver = {
     id: undefined,
     empId: {
       id: undefined,
-      employeeNumber:  undefined,
-      budgetRef: undefined,
-      empName: undefined,
-      gender: undefined,
-      maritalStatus: undefined,
-      dateOfBirth: undefined,
-      joiningDate: undefined,
-      jobTitle: undefined,
-      status: undefined,
-      region: undefined,
-      location: undefined,
-      organization: undefined,
-      division: undefined,
-      deptCode: undefined,
-      department: undefined,
-      contactNumber: undefined,
-      section: undefined,
-      iqamaNumber: undefined,
-      svEmployeeNumber: undefined,
-      svEmployeeName: undefined,
-      city: undefined,
-      age:  undefined,
-      portOfDestination: undefined,
-      nationality: undefined,
-      companyEmailAddress: undefined,
-      grade: undefined,
-      licenseNumber: undefined,  
-      vehicleBudget: undefined
+            employeeNumber:  undefined,
+            budgetRef: undefined,
+            empName: undefined,
+            gender: undefined,
+            maritalStatus: undefined,
+            dateOfBirth: undefined,
+            joiningDate: undefined,
+            jobTitle: undefined,
+            status: undefined,
+            region: undefined,
+            location: undefined,
+            organization: undefined,
+            division: undefined,
+            deptCode: undefined,
+            department: undefined,
+            contactNumber: undefined,
+            section: undefined,
+            iqamaNumber: undefined,
+            svEmployeeNumber: undefined,
+            svEmployeeName: undefined,
+            city: undefined,
+            age:  undefined,
+            portOfDestination: undefined,
+            nationality: undefined,
+            companyEmailAddress: undefined,
+            grade: undefined,
+            licenseNumber: undefined,
+            vehicleBudget: undefined,
+      costCenter : undefined
     },
     licenseNumber: undefined,
-    vehicleBudget: undefined
-    
+    vehicleBudget: undefined,
+    costCentre : undefined
+
+
   }
 
   employee!: Employee[];
@@ -64,7 +67,7 @@ export class AddDriverComponent implements OnInit {
               private messageService: MessageService,
               private router: Router,
               ) { }
-  
+
   name!:string;
   contactNumber!:string;
   referenceNumber!:string;
@@ -72,7 +75,7 @@ export class AddDriverComponent implements OnInit {
   uploadedFiles: any[] = [];
 
    onUpload(event: any) {
-    
+
   }
 
    onUpload1(event:any) {
@@ -92,7 +95,7 @@ export class AddDriverComponent implements OnInit {
 
       })
       this.employee = res;
-      
+
     })
   }
 
@@ -109,14 +112,15 @@ export class AddDriverComponent implements OnInit {
     this.driver.empId.contactNumber = this.selectedEmployee.contactNumber
     this.driver.empId.companyEmailAddress = this.selectedEmployee.companyEmailAddress
     this.driver.empId.grade = this.selectedEmployee.grade
-    // this.driver.licenseNumber = this.selectedEmployee.licenseNumber
-    // this.driver.vehicleBudget
-    
+    this.driver.empId.licenseNumber = this.selectedEmployee.licenseNumber
+    this.driver.empId.vehicleBudget = this.selectedEmployee.vehicleBudget
+    this.driver.empId.costCenter = this.selectedEmployee.costCenter
+
   }
-    
+
   onSubmit() {
     this.driverService.addDriver(this.driver).subscribe((res) => {
-      this.messageService.add({ severity: 'success', summary: 'Add Successfully', detail: 'Message Content' });  
+      this.messageService.add({ severity: 'success', summary: 'Add Successfully', detail: 'Message Content' });
 
       setTimeout(() => {
         this.router.navigate(['/driver'])
@@ -126,7 +130,7 @@ export class AddDriverComponent implements OnInit {
       this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
     })
   }
-  
- 
+
+
 
 }

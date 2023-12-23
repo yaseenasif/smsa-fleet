@@ -28,6 +28,7 @@ public class DriverDto {
     private Integer grade;
     private String licenseNumber;
     private Integer vehicleBudget ;
+    private String costCentre;
     private String attachments;
     private boolean status;
 

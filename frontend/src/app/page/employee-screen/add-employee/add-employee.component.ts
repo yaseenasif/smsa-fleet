@@ -7,6 +7,7 @@ import { Grade } from 'src/app/modal/grade';
 import { GradeService } from '../../grade/grade.service';
 import { City } from 'src/app/modal/City';
 import { CityService } from '../../city/city.service';
+import { ProductFieldServiceService } from '../../product-field/service/product-field-service.service';
 
 @Component({
   selector: 'app-add-employee',
@@ -55,12 +56,12 @@ export class AddEmployeeComponent implements OnInit {
     deptCode: undefined,
     department: undefined,
     section: undefined,
-    iqamaNumber: undefined,
+    nationalIdNumber: undefined,
     svEmployeeNumber: undefined,
     svEmployeeName: undefined,
     city: undefined,
     age: undefined,
-    portOfDestination: undefined,
+    costCenter: undefined,
     nationality: undefined,
     companyEmailAddress: undefined,
     grade: undefined,
@@ -69,26 +70,19 @@ export class AddEmployeeComponent implements OnInit {
     contactNumber: undefined
   };
 
-  dummyData: any = [
-    { id: 1, name: 'National Manager - Hub  Linehaul' }
-  ]
+
 
   dummyDepartment: any = [
     { id: 1, name: 'STN' },
   ]
 
-  dummySection: any = [
-    { id: 1, name: 'Station Management' }
-  ]
+  
 
+  nationalities: any = []
+  sections: any = []
+  jobTitles: any = []
+  departments: any = []
 
-  dummyNationality: any = [
-    { id: 1, name: "Sudan-031" },
-    { id: 2, name: "Sudan-032" },
-    { id: 3, name: "Sudan-033" },
-    { id: 4, name: "Sudan-034" },
-    { id: 5, name: "Sudan-035" }
-  ]
 
   dummyRegion: any = [
     { id: 1, name: "Head Quarter" }
@@ -117,7 +111,8 @@ export class AddEmployeeComponent implements OnInit {
     private router: Router,
     private messageService: MessageService,
     private gradeService: GradeService,
-    private cityService: CityService
+    private cityService: CityService,
+    private productService: ProductFieldServiceService,
   ) { }
 
 
@@ -133,6 +128,10 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getNationality();
+    this.getJobTitle();
+    this.getDepartment() ;
+    this.getSections();
     this.items = [{ label: 'Employee', routerLink: '/employee' }, { label: 'Add Employee' }];
 
     this.getAllGrades();
@@ -187,5 +186,32 @@ export class AddEmployeeComponent implements OnInit {
     const selectedCityObj = this.cityData.find((item: any) => item.name === city);
     this.region = selectedCityObj.region;
   }
+  getNationality() {
+    this.productService.getProductFieldByName('Nationality').subscribe(res => {
+      this.nationalities = res.productFieldValuesList;
+    }, error => {
 
+    })
+  }
+  getJobTitle() {
+    this.productService.getProductFieldByName('Job Title').subscribe(res => {
+      this.jobTitles = res.productFieldValuesList;
+    }, error => {
+
+    })
+  }
+  getDepartment() {
+    this.productService.getProductFieldByName('Department').subscribe(res => {
+      this.departments = res.productFieldValuesList;
+    }, error => {
+
+    })
+  }
+  getSections() {
+    this.productService.getProductFieldByName('Section').subscribe(res => {
+      this.sections = res.productFieldValuesList;
+    }, error => {
+
+    })
+  }
 }

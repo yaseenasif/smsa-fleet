@@ -30,7 +30,9 @@ export interface Driver {
         grade: String | null | undefined;
         licenseNumber: String | null | undefined
         vehicleBudget: Number | null | undefined
+        costCentre: String | null | undefined
     }
-    licenseNumber: String | null | undefined 
+    licenseNumber: String | null | undefined
     vehicleBudget: String | null | undefined
+    costCentre: String | null | undefined
 }

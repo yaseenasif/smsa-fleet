@@ -38,8 +38,8 @@
                         <td class="text-center">{{ city.name }}</td>
                         <td class="text-center">{{ city.region }}</td>
                         <td class="text-center">
-                          <p-button [routerLink]="['/edit-city/', city.id]" icon="bi bi-pen" class='mr' styleClass="p-button-rounded p-button-success p-button-text p-button-raised"></p-button>
-                          <p-button icon="bi bi-trash" class='ml' (click)="deleteCityById(city.id)" styleClass="p-button-rounded p-button-danger p-button-text p-button-raised"></p-button>
+                          <p-button [routerLink]="['/edit-city/', city.id]" icon="bi bi-pen" pTooltip="Edit" tooltipPosition="top" class=' mr' [outlined]="true" [rounded]="true"  [raised]="true" severity="success"></p-button>
+                          <p-button icon="bi bi-trash" (click)="deleteCityById(city.id)" pTooltip="Trash" tooltipPosition="top" class=' mr' [outlined]="true" [rounded]="true"  [raised]="true" severity="danger"></p-button>
                         </td>
                     </tr>
                 </ng-template>

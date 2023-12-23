@@ -3,6 +3,7 @@ import { MenuItem, MessageService } from 'primeng/api';
 import { Driver } from 'src/app/modal/driver';
 import { DriverService } from '../driver.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Form } from '@angular/forms';
 
 @Component({
   selector: 'app-update-driver',
@@ -44,11 +45,14 @@ export class UpdateDriverComponent implements OnInit {
         nationality: undefined,
         companyEmailAddress: undefined,
         grade: undefined,
-        licenseNumber: undefined,  
+        licenseNumber: undefined,
         vehicleBudget: undefined
+        costCenter: undefined
+
     },
+    vehicleBudget: undefined,
     licenseNumber: undefined,
-    vehicleBudget: undefined
+    costCentre: undefined
   }
 
   driverId: Number | undefined;
@@ -69,7 +73,7 @@ export class UpdateDriverComponent implements OnInit {
   uploadedFiles: any[] = [];
 
    onUpload(event: any) {
-    
+
   }
 
    onUpload1(event:any) {
@@ -83,7 +87,7 @@ export class UpdateDriverComponent implements OnInit {
     this.driverId = +this.route.snapshot.paramMap.get('id')!;
 
     this.getDriverById(this.driverId)
-    
+
   }
 
   getDriverById(id: Number) {
@@ -92,27 +96,24 @@ export class UpdateDriverComponent implements OnInit {
       this.driver = res;
 
       console.log(this.driver);
-      
+
     })
   }
 
   updateDriver(driver: Driver) {
-
     this.driverService.updateDriver(this.driverId!, driver).subscribe((res) => {
 
-      this.messageService.add({ severity: 'Update Successfully', summary: 'Update Successfully', detail: 'Message Content' });  
+      this.messageService.add({ severity: 'Update Successfully', summary: 'Update Successfully', detail: 'Message Content' });
 
       setTimeout(() => {
         this.router.navigate(['/driver'])
       },5000)
-      
+
     })
 
   }
-  
+
   onSubmit() {
-
     this.updateDriver(this.driver)
-
   }
 }

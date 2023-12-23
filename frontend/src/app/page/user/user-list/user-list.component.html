@@ -41,10 +41,10 @@
                   <td class="text-center">{{ users.email }}</td>
                   <td *ngFor="let role of users.roles" class="text-center">{{ role.name }}</td>
                   <td class="text-center"> 
-                    <p-button  [routerLink]="['/edit-user/', users.id]" icon="bi bi-pen" class='mr' [outlined]="true" [rounded]="true" [raised]="true" severity="success">
+                    <p-button  [routerLink]="['/edit-user/', users.id]" icon="bi bi-pen"  pTooltip="View"  class='ml mr' [outlined]="true" [rounded]="true" tooltipPosition="top" [raised]="true" severity="success">
                      
                     </p-button>
-                     <p-button icon="bi bi-trash" class='ml' [outlined]="true" [rounded]="true" [raised]="true" severity="danger">
+                     <p-button icon="bi bi-trash" class='ml'  pTooltip="Trash" tooltipPosition="top" [outlined]="true" [rounded]="true" [raised]="true" severity="danger">
                     
                      </p-button>
                   </td>

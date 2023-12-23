@@ -18,7 +18,7 @@
               </div>
                   <p-toolbar>
                       <div>
-                        <h3 class="p-toolbar-group-start h-color "><strong> Search By: </strong>  
+                        <h3 class="p-toolbar-group-start h-color "><strong> Search By: </strong>
                          <p-toggleButton class="ml-3" (click)="booleanTurner()" onLabel="Employee Number" offLabel="Plate Number"></p-toggleButton>
                         </h3>
                       </div>
@@ -28,7 +28,7 @@
                           <input *ngIf="!turner" type="text" pInputText [(ngModel)]="employeeNumber" (input)="getAllVehicleAssignmentByEmployeeNum()"
                             placeholder="Search Employee Number" />
                             <input *ngIf="turner" type="text" pInputText [(ngModel)]="plateNumber" (input)="getAllVehicleAssignmentByPlateNum()"
-                            placeholder="Search Plate Number" />  
+                            placeholder="Search Plate Number" />
                         </span>
                       </div>
                       <!-- <div class="card flex flex-wrap justify-content-center">
@@ -38,7 +38,7 @@
                             placeholder="Search Employee Number" />
                         </span>
                       </div> -->
-                      
+
                   </p-toolbar>
                   <p-toolbar>
                       <div class="p-toolbar-group-start">
@@ -83,16 +83,18 @@
                       <p-button [routerLink]="['/view-assignment/', vehicleAssignment.id]" pTooltip="View" tooltipPosition="top" icon="bi bi-eye" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true">
                       </p-button>
 
-                      <p-button (click)="showDialog()" icon="bi bi-trash" class='ml' [outlined]="true" [rounded]="true" [raised]="true" severity="danger">
+                      <p-button (click)="showDialog()" icon="bi bi-trash" class='ml'  pTooltip="Trash" tooltipPosition="top" [outlined]="true" [rounded]="true" [raised]="true" severity="danger">
 
                       </p-button>
 
                        <p-button [routerLink]="['/assignment-attachment',vehicleAssignment.id]" icon="bi bi-paperclip" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="warning">
-                        
                        </p-button>
-                       
+                       <p-button [routerLink]="['/assignment-attachment',vehicleAssignment.id]"  pTooltip="Add Attachments" tooltipPosition="top" icon="bi bi-paperclip" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="warning">
+
+                       </p-button>
+
                        <p-button [routerLink]="['/assignment-history/',vehicleAssignment.vehicle.id]" pTooltip="View History" tooltipPosition="top" icon="bi bi-clock-history" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="success"></p-button>
-                    
+
                        <p-button [routerLink]="['/individual-file-list-component/','vehicle-assignment',vehicleAssignment.id]" icon="bi bi-download" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="success">
                       </p-button>
                     </td>

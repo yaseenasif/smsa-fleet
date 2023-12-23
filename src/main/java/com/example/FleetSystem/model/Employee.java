@@ -27,7 +27,7 @@ public class Employee {
     private String empName;
     private Long svEmployeeNumber;
     private  String svEmployeeName;
-    private Long iqamaNumber;
+    private Long nationalIdNumber;
     private String jobTitle;
     private Date joiningDate;
     private Date dateOfBirth;
@@ -41,7 +41,6 @@ public class Employee {
     private String region;
     private String city;
     private String location;
-    private String portOfDestination;
     private String nationality;
     private String contactNumber;
     private String companyEmailAddress;
@@ -49,6 +48,7 @@ public class Employee {
     private Integer grade;
     private String licenseNumber;
     private Integer vehicleBudget;
+    private String costCenter;
     private String budgetRef;
     private String attachments;
     private String uuid;
