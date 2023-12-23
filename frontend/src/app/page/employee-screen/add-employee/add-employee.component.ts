@@ -61,7 +61,7 @@ export class AddEmployeeComponent implements OnInit {
     svEmployeeName: undefined,
     city: undefined,
     age: undefined,
-    costCenter: undefined,
+    costCentre: undefined,
     nationality: undefined,
     companyEmailAddress: undefined,
     grade: undefined,

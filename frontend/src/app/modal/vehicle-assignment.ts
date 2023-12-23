@@ -10,35 +10,36 @@ export interface VehicleAssignment {
     plateNumber: String | null | undefined
     attachments: String | null | undefined
     assignToEmpId: {
-         id: Number | null | undefined;
-              employeeNumber: Number | null | undefined;
-              budgetRef: String | null | undefined;
-              empName: String | null | undefined;
-              gender: String | null | undefined;
-              maritalStatus: String | null | undefined;
-              dateOfBirth: Date | null | undefined;
-              joiningDate: Date | null | undefined;
-              jobTitle: String | null | undefined;
-              status: String | null | undefined;
-              region: String | null | undefined;
-              location: String | null | undefined;
-              organization: String | null | undefined;
-              division: String | null | undefined;
-              deptCode: String | null | undefined;
-              department: String | null | undefined;
-              contactNumber: String | null | undefined;
-              section: String | null | undefined;
-              iqamaNumber: String | null | undefined;
-              svEmployeeNumber: String | null | undefined;
-              svEmployeeName: String | null | undefined;
-              city: String | null | undefined;
-              age: number | null | undefined;
-              portOfDestination: String | null | undefined;
-              nationality: String | null | undefined;
-              companyEmailAddress: String | null | undefined;
-              grade: String | null | undefined;
-              licenseNumber: String | null | undefined
-              vehicleBudget: Number | null | undefined
+        id: number | null | undefined;
+    empName: string | null | undefined;
+    employeeNumber: number | null | undefined;
+    budgetRef: string | null | undefined;
+    gender: string | null | undefined;
+    maritalStatus: string | null | undefined;
+    dateOfBirth: Date | null | undefined;
+    joiningDate: Date | null | undefined;
+    jobTitle: string | null | undefined;
+    status: string | null | undefined;
+    region: string | null | undefined;
+    location: string | null | undefined;
+    organization: string | null | undefined;
+    division: string | null | undefined;
+    deptCode: string | null | undefined;
+    department: string | null | undefined;
+    contactNumber: string | null | undefined;
+    section: string | null | undefined;
+    nationalIdNumber: number | null | undefined;
+    svEmployeeNumber: string | null | undefined;
+    svEmployeeName: string | null | undefined;
+    city: string | null | undefined;
+    age: number | null | undefined;
+    nationality: string | null | undefined;
+    companyEmailAddress: string | null | undefined;
+    grade: string | null | undefined;
+    licenseNumber: String | null | undefined
+    vehicleBudget: Number | null | undefined
+    costCentre: String | null | undefined;
+
                 }
     vehicle: {
         id: Number | null | undefined,

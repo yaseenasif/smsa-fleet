@@ -21,41 +21,38 @@ export class AddDriverComponent implements OnInit {
     id: undefined,
     empId: {
       id: undefined,
-            employeeNumber:  undefined,
-            budgetRef: undefined,
-            empName: undefined,
-            gender: undefined,
-            maritalStatus: undefined,
-            dateOfBirth: undefined,
-            joiningDate: undefined,
-            jobTitle: undefined,
-            status: undefined,
-            region: undefined,
-            location: undefined,
-            organization: undefined,
-            division: undefined,
-            deptCode: undefined,
-            department: undefined,
-            contactNumber: undefined,
-            section: undefined,
-            iqamaNumber: undefined,
-            svEmployeeNumber: undefined,
-            svEmployeeName: undefined,
-            city: undefined,
-            age:  undefined,
-            portOfDestination: undefined,
-            nationality: undefined,
-            companyEmailAddress: undefined,
-            grade: undefined,
-            licenseNumber: undefined,
-            vehicleBudget: undefined,
-      costCenter : undefined
-    },
+      empName: undefined,
+      employeeNumber: undefined,
+      budgetRef: undefined,
+      gender: undefined,
+      maritalStatus: undefined,
+      dateOfBirth: undefined,
+      joiningDate: undefined,
+      jobTitle: undefined,
+      status: undefined,
+      region: undefined,
+      location: undefined,
+      organization: undefined,
+      division: undefined,
+      deptCode: undefined,
+      department: undefined,
+      contactNumber: undefined,
+      section: undefined,
+      nationalIdNumber: undefined,
+      svEmployeeNumber: undefined,
+      svEmployeeName: undefined,
+      city: undefined,
+      age: undefined,
+      nationality: undefined,
+      companyEmailAddress: undefined,
+      grade: undefined,
+      licenseNumber: undefined,    
+      vehicleBudget: undefined,
+      costCentre: undefined
+  },
     licenseNumber: undefined,
     vehicleBudget: undefined,
     costCentre : undefined
-
-
   }
 
   employee!: Employee[];
@@ -114,7 +111,7 @@ export class AddDriverComponent implements OnInit {
     this.driver.empId.grade = this.selectedEmployee.grade
     this.driver.empId.licenseNumber = this.selectedEmployee.licenseNumber
     this.driver.empId.vehicleBudget = this.selectedEmployee.vehicleBudget
-    this.driver.empId.costCenter = this.selectedEmployee.costCenter
+    this.driver.empId.costCentre = this.selectedEmployee.costCentre
 
   }
 
