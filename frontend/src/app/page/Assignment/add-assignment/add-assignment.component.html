@@ -115,8 +115,8 @@
                   >
                   <p-dropdown
                   class="w-full"
-                  [(ngModel)]="unAssignedEmployeeId"
-                  [options]="unAssignedEmployee"
+                  [(ngModel)]="unassignedDriverId"
+                  [options]="unAssignedDriver"
                   name="employeeNumber"
                   #employeeNumber="ngModel"
                   [required]="true"
@@ -125,21 +125,21 @@
                   [filter]="true"
                   filterBy="id"
                   [showClear]="true"
-                  (onChange)="getUnAssignedEmployeeData()"
+                  (onChange)="getUnAssignedDriverData()"
                   placeholder="Select Employee Number
                 "
                 >
                   <ng-template pTemplate="selectedItem">
                     <div
                       class="flex align-items-center gap-2"
-                      *ngIf="selecteUnAssigneddEmployee"
+                      *ngIf="selectedUnassignedDriver"
                     >
-                      <div>{{ selecteUnAssigneddEmployee.employeeNumber }}</div>
+                      <div>{{ selectedUnassignedDriver.empId.employeeNumber }}</div>
                     </div>
                   </ng-template>
-                  <ng-template let-unAssignedEmployee pTemplate="item">
+                  <ng-template let-unAssignedDriver pTemplate="item">
                     <div class="flex align-items-center gap-2">
-                      <div>{{ unAssignedEmployee.employeeNumber }}</div>
+                      <div>{{ unAssignedDriver.empId.employeeNumber }}</div>
                     </div>
                   </ng-template>
                 </p-dropdown>

@@ -3,6 +3,7 @@ package com.example.FleetSystem.controller;
 import com.example.FleetSystem.criteria.EmployeeSearchCriteria;
 import com.example.FleetSystem.dto.DriverDto;
 import com.example.FleetSystem.dto.EmployeeDto;
+import com.example.FleetSystem.model.Driver;
 import com.example.FleetSystem.payload.ResponseMessage;
 import com.example.FleetSystem.service.DriverService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -89,5 +90,11 @@ public class DriverController {
         EmployeeSearchCriteria employeeSearchCriteria = new EmployeeSearchCriteria();
         employeeSearchCriteria.setValue(value);
         return ResponseEntity.ok(driverService.searchDriver(employeeSearchCriteria,page, size));
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/unassigned-drivers")
+    public ResponseEntity<List<DriverDto>> getUnassignedDrivers(){
+        return ResponseEntity.ok(driverService.getUnassignedDrivers());
     }
 }

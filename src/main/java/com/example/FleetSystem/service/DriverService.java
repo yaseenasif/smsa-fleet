@@ -191,4 +191,8 @@ public class DriverService {
             throw new RuntimeException(String.format("File already exists on the bucket with the same name"));
         }
     }
+
+    public List<DriverDto> getUnassignedDrivers(){
+        return toDtoList(driverRepository.getUnAssignedDriver());
+    }
 }

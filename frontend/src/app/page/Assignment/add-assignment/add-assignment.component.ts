@@ -7,6 +7,8 @@ import { Employee } from 'src/app/modal/employee';
 import { EmployeeService } from '../../employee-screen/service/employee.service';
 import { VehicleAssignmentService } from '../vehicle-assignment.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DriverService } from '../../driver/driver.service';
+import { Driver } from 'src/app/modal/driver';
 
 @Component({
   selector: 'app-add-assignment',
@@ -26,10 +28,12 @@ export class AddAssignmentComponent {
   employeeId !: Number
 
   unAssignedEmployeeId !: Number
+  unassignedDriverId!: Number
 
   vehicleId !: number
 
   selecteUnAssigneddEmployee !: Employee
+  selectedUnassignedDriver!: Driver
 
   vehicle !: Vehicle[]
 
@@ -38,7 +42,8 @@ export class AddAssignmentComponent {
   employee !: Employee[]
 
   unAssignedEmployee !: Employee[]
-
+  unAssignedDriver !: Driver[]
+  
   vehicleAssignmentId: Number | undefined | null
   
   vehicleAssignment: VehicleAssignment = {
@@ -127,7 +132,7 @@ export class AddAssignmentComponent {
   }
 
   constructor( private vehicleService: VehicleService, private employeeService: EmployeeService,
-     private vehicleAssignmentService: VehicleAssignmentService,
+     private vehicleAssignmentService: VehicleAssignmentService, private driverService: DriverService,
      private route: ActivatedRoute,
      private router: Router,
      private messageService: MessageService) { }
@@ -141,9 +146,11 @@ export class AddAssignmentComponent {
     
     this.getAllVehicles();
 
-    this.getAllEmployee();
+    // this.getAllEmployee();
 
-    this.getAllUnAssignedEmployees();
+    // this.getAllUnAssignedEmployees();
+
+    this.getAllUnAssignedDrivers();
 
   }
 
@@ -238,5 +245,16 @@ export class AddAssignmentComponent {
     this.vehicleAssignment.assignToEmpId = this.selecteUnAssigneddEmployee
   }
 
+  getAllUnAssignedDrivers() {
+    this.driverService.getUnasignedDrivers().subscribe((res: Driver[]) => {
+      this.unAssignedDriver = res;
+    })
+  }
+
+  getUnAssignedDriverData() {
+    this.selectedUnassignedDriver = (this.unAssignedDriver.find((el) => {return el.id == this.unassignedDriverId}))!
+    this.vehicleAssignment.assignToEmpName = this.selectedUnassignedDriver.empId.empName
+    this.vehicleAssignment.assignToEmpId = this.selectedUnassignedDriver.empId
+  }
 }
 
