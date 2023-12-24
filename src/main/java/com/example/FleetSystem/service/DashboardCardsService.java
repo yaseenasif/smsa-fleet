@@ -2,6 +2,7 @@ package com.example.FleetSystem.service;
 
 import com.example.FleetSystem.dto.VehicleCountPerVendorDto;
 import com.example.FleetSystem.dto.VehiclePerRegionCountDto;
+import com.example.FleetSystem.model.Vehicle;
 import com.example.FleetSystem.repository.DriverRepository;
 import com.example.FleetSystem.repository.VehicleAssignmentRepository;
 import com.example.FleetSystem.repository.VehicleReplacementRepository;
@@ -53,6 +54,9 @@ public class DashboardCardsService {
                 .map(objects -> new VehiclePerRegionCountDto((String) objects[0], (Long) objects[1]))
                 .collect(Collectors.toList());
         counts.put("totalVehiclesPerRegion", vehiclePerRegionCountDtoList);
+
+        List<Vehicle> unassignedVehicles = vehicleRepository.getNotAssignedVehicle();
+        counts.put("unassignedVehicles", unassignedVehicles.size());
 
         return counts;
     }

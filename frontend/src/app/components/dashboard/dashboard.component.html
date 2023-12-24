@@ -43,13 +43,14 @@
                         </div>
                      </div>
                 </div>
-                <div (click)="showDialouge('vendor')" class="box">
-                    <div class="w-full h-10rem border-round-2xl  flex align-items-center justify-content-around  bg-c-pink">
+                <div class="box">
+                    <div class="w-full h-10rem border-round-2xl  flex align-items-center justify-content-around bg-c-pink">
                         <div class="card-section-i flex align-items-center justify-content-around ">
-                            <i class="bi bi-person-fill-add"></i>
+                            <i class="bi bi-arrow-counterclockwise"></i>
                         </div >
                         <div  class="card-section-c flex align-items-center justify-content-around flex-column">
-                            <h3 class="bg-w">Vehicles per Vendor</h3>
+                            <h3 class="bg-w">Unassigned Vehicles</h3>
+                            <p><b class="bg-w" style="font-size: 24px;"><strong>{{ dashboardcounts.unassignedVehicles }}</strong></b></p>
                         </div>
                      </div>
                 </div>
@@ -64,6 +65,7 @@
                         </div>
                      </div>
                 </div>
+                
             </div>
          </div>    
          <div class="body-card mt-6">

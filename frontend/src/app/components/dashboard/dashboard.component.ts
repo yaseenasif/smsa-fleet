@@ -20,10 +20,11 @@ export class DashboardComponent implements OnInit {
   dialogVisibleRegion: boolean = false;
   dialogVisibleVendor: boolean = false;
   dashboardcounts!: any; 
-  modelId!: any;
-  
+  vendorData!: any[];
+  modelId!: any;  
 
   ngOnInit(): void {
+
     this.items = [{ label: 'Dash Board'}];
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
@@ -58,25 +59,9 @@ export class DashboardComponent implements OnInit {
     const textColor1 = documentStyle.getPropertyValue('--text-color');
     const textColorSecondary1= documentStyle.getPropertyValue('--text-color-secondary');
     const surfaceBorder1= documentStyle.getPropertyValue('--surface-border');
-    
-    this.data1= {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-        datasets: [
-            {
-                label: 'My First dataset',
-                backgroundColor:'#4099ff',
-                borderColor:'#4099ff',
-                data: [65, 59, 80, 81, 56, 55, 40]
-            },
-            {
-                label: 'My Second dataset',
-                backgroundColor:'#FF5370',
-                borderColor:'#FF5370',
-                data: [28, 48, 40, 19, 86, 27, 90]
-            }
-        ]
-    };
+        
 
+    
     this.options1= {
         maintainAspectRatio: false,
         aspectRatio: 0.8,
@@ -94,7 +79,7 @@ export class DashboardComponent implements OnInit {
                 ticks: {
                     color: textColorSecondary1,
                     font: {
-                        weight: 500
+                        weight: 'bold'
                     }
                 },
                 grid: {
@@ -112,10 +97,12 @@ export class DashboardComponent implements OnInit {
                 }
             }
 
-        }
+        },
+        // min: 0, // Set the minimum value on the y-axis
+        //     max: 10,
     };
-
     this.getDashboardcounts();
+
   }
 
   showDialouge(modelId: any) {
@@ -136,7 +123,23 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.getDashboardCounts().subscribe(
         (res) => {
             this.dashboardcounts = res;
-            console.log(this.dashboardcounts);            
+            this.vendorData = res.activeVehiclesPerVendor;
+            
+            this.data1= {
+                labels: this.vendorData.map((vendor) => vendor.name),
+                datasets: [
+                    {
+                        label: 'Vendors',
+                        backgroundColor:'#4099ff',
+                        borderColor:'#4099ff',
+                        data: this.vendorData.map((vendor)=> vendor.totalVehicles)
+                    }
+                  
+                ]
+            };
+                    
          });
  }
+
+
 }
