@@ -19,13 +19,13 @@
                             <select (ngModelChange)="type()" name="dropdownType" [(ngModel)]="selectedDropdownType" class="order-search form-control" >
                                 <option value="" disabled selected>Select Dropdown Type</option>
                                 <option value="DROPDOWN"  selected>DROPDOWN</option>
-                                <option value="MULTISELECT"  selected>MULTISELECT</option>                                
+                                <option value="MULTISELECT"  selected>MULTISELECT</option>
                                 <!-- <option *ngFor="let origin of originCountry" value="origin">{{origin}}</option> -->
                             </select>
                         </div>
                     </div>
                 </div>
-                
+
                 <div *ngIf="makeProductField"  class="row text-right mt-4 mb-3">
                     <div>
                         <button type="button" class="btn btn-sty" (click)="addProductFieldValues()">Add</button>
@@ -37,8 +37,8 @@
                         <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 marg-ss ">
                                 <label class="add-order-label">Name</label>
                                 <input type="text" class="form-control order-search" [(ngModel)]="pfVal.name" [name]="'pfValuesName'+i">
-                        </div> 
-                        
+                        </div>
+
                         <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 marg-ss ">
                             <div class="mt-5">
                                 <button type="button" (click)="removeProductFieldValues(i)" class="btn btn-sty">Delete</button>
@@ -46,16 +46,16 @@
                         </div>
                     </div>
                 </div>
-                
-                
+
+
                 <div class="row text-right mt-4 mb-3">
                     <div>
                         <button class="btn btn-sty" (click)="addFormProducts()">{{buttonText}}</button>
                     </div>
                 </div>
-                
+
             </form>
 
     </div>
-    
-</div>  
+
+</div>

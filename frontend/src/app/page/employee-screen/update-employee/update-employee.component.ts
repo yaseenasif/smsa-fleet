@@ -6,6 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { City } from 'src/app/modal/City';
 import { CityService } from '../../city/city.service';
+import { RegionService } from '../../region/service/region.service';
+import { Region } from 'src/app/modal/Region';
 
 @Component({
   selector: 'app-update-employee',
@@ -27,7 +29,7 @@ export class UpdateEmployeeComponent {
   cityData: any = [];
 
   selectedCity !: City
-  region: string | undefined | null;
+  // region: string | undefined | null;
 
   employee: Employee = {
     id: undefined,
@@ -58,8 +60,12 @@ export class UpdateEmployeeComponent {
     grade: undefined,
     licenseNumber: undefined,
     vehicleBudget: undefined,
-    contactNumber: undefined
+    contactNumber: undefined,
+    country: undefined,
   }
+
+  country!: Region[];
+  region!: Region[];
 
   employeeId: Number | undefined;
   isDeleteButtonDisabled: boolean = true; // Set the initial value based on your logic
@@ -76,6 +82,7 @@ export class UpdateEmployeeComponent {
     private messageService: MessageService,
     private route: ActivatedRoute,
     private datePipe: DatePipe,
+    private regionService: RegionService
   ) { }
 
 
@@ -104,24 +111,79 @@ export class UpdateEmployeeComponent {
     this.employeeService.getEmployeeById(id).subscribe((res: Employee) => {
       res.joiningDate = res.joiningDate ? new Date(res.joiningDate) : new Date();
       res.dateOfBirth = res.dateOfBirth ? new Date(res.dateOfBirth) : new Date();
+
       this.employee = res;
-      this.getCityFromEmployeeData();
+      this.getCountry();
       console.log(this.employee);
 
     })
   }
 
-  getCityFromEmployeeData() {
-    this.cityData = [{ name: this.employee.city }];
-    this.selectedCity = this.cityData[0].name;
-    this.getAutoFilledRegion(this.selectedCity);
+  getCountry(): void {
+    this.regionService.getRegion().subscribe(
+      (res: Region[]) => {
+        const uniqueCountries = this.getUniqueCountries(res, 'country');
+        this.country = uniqueCountries;
+        this.getRegions(this.employee.country);
+      },
+      (err) => {
+      }
+    );
+  }
+
+  getUniqueCountries(regions: Region[], propertyName: string): Region[] {
+    const uniqueCountries: Region[] = [];
+    const uniqueCountryNames: Set<string> = new Set();
+
+    for (const region of regions) {
+      const countryName = region[propertyName];
+
+      if (!uniqueCountryNames.has(countryName)) {
+        uniqueCountryNames.add(countryName);
+        uniqueCountries.push(region);
+      }
+    }
+
+    return uniqueCountries;
+  }
+
+  getRegions(country: any): void {
+    this.regionService.getRegionByCountry(country).subscribe((res: Region[]) => {
+      this.region = [];
+      res.forEach((r: any) => {
+        const parsedCities = JSON.parse(r.cities);
+        this.region.push({ ...r, cities: parsedCities });
+      });
+      this.getAllCity(this.employee.region);
+    }, err => {
+    });
+  }
+
+  getAllCity(region: any): void {
+    this.regionService.getCitiesByRegion(region).subscribe(
+      (res: Region) => {
+        this.cityData = [];
+        let getCities = [];
+        getCities.push(res);
+        getCities.forEach((element: any) => {
+          const parsedCities = JSON.parse(element.cities)
+          this.cityData.push(...parsedCities);
+        });
+        this.cityData = this.cityData.map((city: Region, index: number) => ({
+          cities: city,
+          id: index + 1,
+        }));
+        debugger
+      }, err => {
+      });
   }
 
 
 
   updateEmployee(employee: Employee) {
-
+    debugger
     this.employeeService.updateEmployee(this.employeeId!, employee).subscribe((res) => {
+
 
       this.messageService.add({ severity: 'success', summary: 'Update Successfully', detail: 'Message Content' });
 
@@ -159,8 +221,8 @@ export class UpdateEmployeeComponent {
     })
   }
 
-  getAutoFilledRegion(city: City): void {
-    this.region = this.employee.region;
-  }
+  // getAutoFilledRegion(city: City): void {
+  //   this.region = this.employee.region;
+  // }
 }
 

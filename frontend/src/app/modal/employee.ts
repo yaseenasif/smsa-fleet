@@ -10,6 +10,7 @@ export interface Employee {
     jobTitle: string | null | undefined;
     status: string | null | undefined;
     region: string | null | undefined;
+    country: string | null | undefined;
     location: string | null | undefined;
     organization: string | null | undefined;
     division: string | null | undefined;

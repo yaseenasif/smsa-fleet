@@ -56,7 +56,7 @@ export class AssigmentAttachmentComponent {
   }
 
   deleteAttachmentById(id:number){
-    debugger
+    
     this.individualFileListService.deleteAttachmentById(id).subscribe(res=>{
       this.messageService.add({ severity: 'success', summary: 'success', detail: 'file is deleted' });
      this.getFileMetaData();  

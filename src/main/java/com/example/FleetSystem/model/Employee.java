@@ -40,6 +40,7 @@ public class Employee {
     private Character maritalStatus;
     private String region;
     private String city;
+    private String country;
     private String location;
     private String portOfDestination;
     private String nationality;

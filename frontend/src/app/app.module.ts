@@ -118,6 +118,9 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ViewAssignmentComponent } from './page/Assignment/view-assignment/view-assignment.component';
 import { ViewDriverComponent } from './page/driver/view-driver/view-driver.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { ChipsModule } from 'primeng/chips';
+import { RegionComponent } from './page/region/region.component';
+import { AddRegionComponent } from './page/region/add-region/add-region.component';
 
 @NgModule({
   declarations: [
@@ -198,8 +201,9 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
     ViewDriverComponent,
     AddCityComponent,
     EditCityComponent,
-    CityListComponent
-
+    CityListComponent,
+    RegionComponent,
+    AddRegionComponent
   ],
   imports: [
     ConfirmDialogModule,
@@ -234,6 +238,7 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
     KeyFilterModule,
     InputNumberModule,
     TooltipModule,
+    ChipsModule,
     NgxUiLoaderHttpModule.forRoot({
       showForeground:true
     })

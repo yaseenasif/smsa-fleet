@@ -75,6 +75,8 @@ import { ViewVehicleComponent } from './page/vehicle-screen/view-vehicle/view-ve
 import { ViewEmployeeComponent } from './page/employee-screen/view-employee/view-employee.component';
 import { ViewAssignmentComponent } from './page/Assignment/view-assignment/view-assignment.component';
 import { ViewDriverComponent } from './page/driver/view-driver/view-driver.component';
+import { RegionComponent } from './page/region/region.component';
+import { AddRegionComponent } from './page/region/add-region/add-region.component';
 
 NgModule({
   imports: [FormsModule],
@@ -447,8 +449,17 @@ const routes: Routes = [
     path:'view-employee/:id',
     component:ViewEmployeeComponent,
     canActivate:[AuthGuard]
-  }
-
+  },
+  {
+    path:'get-all-regions',
+    component:RegionComponent,
+    canActivate:[AuthGuard]
+  },
+  {
+    path:'add-region',
+    component:AddRegionComponent,
+    canActivate:[AuthGuard]
+  },
 
 ];
 

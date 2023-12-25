@@ -7,6 +7,8 @@ import { Grade } from 'src/app/modal/grade';
 import { GradeService } from '../../grade/grade.service';
 import { City } from 'src/app/modal/City';
 import { CityService } from '../../city/city.service';
+import { RegionService } from '../../region/service/region.service';
+import { Region } from 'src/app/modal/Region';
 
 @Component({
   selector: 'app-add-employee',
@@ -20,22 +22,23 @@ export class AddEmployeeComponent implements OnInit {
 
   grade !: Grade[]
 
-  city: City = {
-    id: undefined,
-    name: undefined,
-    region: undefined,
-    status: undefined
-  };
+  // city: City = {
+  //   id: undefined,
+  //   name: undefined,
+  //   region: undefined,
+  //   status: undefined
+  // };
 
-  cityData: any = [];
+  cityData: any[] = [];
 
   selectedCity !: City
 
   selectedGrade !: Grade
   vehicleBudgetFromGrade !: Number | null | undefined
 
-  region: string = '';
-
+  country!: Region[];
+  region!: Region[];
+  city: any;
 
   employee: Employee = {
     id: undefined,
@@ -49,6 +52,7 @@ export class AddEmployeeComponent implements OnInit {
     jobTitle: undefined,
     status: undefined,
     region: undefined,
+    country: undefined,
     location: undefined,
     organization: undefined,
     division: undefined,
@@ -117,7 +121,8 @@ export class AddEmployeeComponent implements OnInit {
     private router: Router,
     private messageService: MessageService,
     private gradeService: GradeService,
-    private cityService: CityService
+    private cityService: CityService,
+    private regionService: RegionService
   ) { }
 
 
@@ -136,18 +141,69 @@ export class AddEmployeeComponent implements OnInit {
     this.items = [{ label: 'Employee', routerLink: '/employee' }, { label: 'Add Employee' }];
 
     this.getAllGrades();
-    this.getAllCity();
+    this.getCountry();
+  }
+
+  getCountry(): void {
+    this.regionService.getRegion().subscribe(
+      (res: Region[]) => {
+        const uniqueCountries = this.getUniqueCountries(res, 'country');
+        this.country = uniqueCountries;
+      },
+      (err) => {
+      }
+    );
+  }
+
+  getUniqueCountries(regions: Region[], propertyName: string): Region[] {
+    const uniqueCountries: Region[] = [];
+    const uniqueCountryNames: Set<string> = new Set();
+
+    for (const region of regions) {
+      const countryName = region[propertyName];
+
+      if (!uniqueCountryNames.has(countryName)) {
+        uniqueCountryNames.add(countryName);
+        uniqueCountries.push(region);
+      }
+    }
+
+    return uniqueCountries;
+  }
+
+  getRegions(country: string): void {
+    this.regionService.getRegionByCountry(country).subscribe((res: Region[]) => {
+      this.region = [];
+      this.employee.region = null;
+      res.forEach((r: any) => {
+        const parsedCities = JSON.parse(r.cities);
+        this.region.push({ ...r, cities: parsedCities });
+      });
+    }, err => {
+    });
+  }
+
+  getAllCity(region: string): void {
+    this.regionService.getCitiesByRegion(region).subscribe(
+      (res: Region) => {
+        this.cityData = [];
+        let getCities = [];
+        getCities.push(res);
+        getCities.forEach((element: any) => {
+          const parsedCities = JSON.parse(element.cities)
+          this.cityData.push(...parsedCities);
+        });
+        this.cityData = this.cityData.map((city, index) => ({
+          cities: city,
+          id: index + 1,
+        }));
+      }, err => {
+      });
   }
 
   getAllGrades() {
     this.gradeService.getGrades().subscribe((res: Grade[]) => {
       this.gradesData = res;
-    })
-  }
-
-  getAllCity() {
-    this.cityService.getCity().subscribe((res: City[]) => {
-      this.cityData = res;
     })
   }
 
@@ -162,10 +218,7 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   onSubmit() {
-
-    console.log('Form submitted:', this.employee);
-
-
+    debugger
     this.employeeService.addEmployee(this.employee).subscribe((res) => {
       this.messageService.add({ severity: 'success', summary: 'Employee Added Successfully' });
 

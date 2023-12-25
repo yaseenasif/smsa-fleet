@@ -209,9 +209,9 @@ export class VehicleListComponent implements OnInit{
  activateVehicle(){
   this.vehicleService.activateVehicle(this.vId).subscribe((res:Vehicle)=>{
     this.messageService.add({ severity: 'success', summary: 'Vehicle Activated'});
-//     debugger
+//     
 //     setTimeout(() => {
-// debugger
+// 
 //       this.router.navigate(['/vehicle'])
 //     },1000)
     this.closeDialog()

@@ -3,6 +3,7 @@ package com.example.FleetSystem.service;
 import com.example.FleetSystem.criteria.EmployeeSearchCriteria;
 import com.example.FleetSystem.criteria.VehicleSearchCriteria;
 import com.example.FleetSystem.dto.EmployeeDto;
+import com.example.FleetSystem.dto.ProductFieldDto;
 import com.example.FleetSystem.exception.ExcelException;
 import com.example.FleetSystem.model.*;
 import com.example.FleetSystem.payload.ExcelErrorResponse;
@@ -122,6 +123,7 @@ public class EmployeeService {
                 employee.get().setSection(employeeDto.getSection());
                 employee.get().setCity(employeeDto.getCity());
                 employee.get().setRegion(employeeDto.getRegion());
+                employee.get().setCountry(employeeDto.getCountry());
                 employee.get().setNationality(employeeDto.getNationality());
                 employee.get().setContactNumber(employeeDto.getContactNumber());
                 employee.get().setCompanyEmailAddress(employeeDto.getCompanyEmailAddress());

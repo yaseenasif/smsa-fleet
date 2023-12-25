@@ -24,7 +24,7 @@ export class IndividualFileListComponent implements OnInit{
 
 
   ngOnInit(){
-    debugger
+    
    if(this.callType==='employee'){
     this.items = [{ label: 'Employee', routerLink: '/employee' }, { label: 'View Attachment' }];
     this.individualFileListService.getIndividualFileList('/file-meta-data-by-employee/'.concat(this.id)).subscribe((res:FileMetaData[])=>{
