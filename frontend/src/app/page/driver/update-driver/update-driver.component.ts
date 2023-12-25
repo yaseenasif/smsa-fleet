@@ -4,6 +4,8 @@ import { Driver } from 'src/app/modal/driver';
 import { DriverService } from '../driver.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Form } from '@angular/forms';
+import { VehicleService } from '../../vehicle-screen/service/vehicle.service';
+import { Vehicle } from 'src/app/modal/vehicle';
 
 @Component({
   selector: 'app-update-driver',
@@ -52,15 +54,18 @@ export class UpdateDriverComponent implements OnInit {
     },
     vehicleBudget: undefined,
     licenseNumber: undefined,
-    costCentre: undefined
+    costCentre: undefined,
+    assignedVehicle: undefined
   }
 
   driverId: Number | undefined;
+  unassignedVehicles!: Vehicle[];
 
 
   constructor( private driverService: DriverService,
                 private router: Router,
               private route: ActivatedRoute,
+              private vehicleService: VehicleService,
               private messageService: MessageService
 
     ) { }
@@ -87,7 +92,7 @@ export class UpdateDriverComponent implements OnInit {
     this.driverId = +this.route.snapshot.paramMap.get('id')!;
 
     this.getDriverById(this.driverId)
-
+    this.getUnassignedvehicles();
   }
 
   getDriverById(id: Number) {
@@ -116,4 +121,11 @@ export class UpdateDriverComponent implements OnInit {
   onSubmit() {
     this.updateDriver(this.driver)
   }
+
+  getUnassignedvehicles(){
+    this.vehicleService.getAllNotAssignedVehicles().subscribe((res)=>{
+      this.unassignedVehicles = res;
+    })
+  }
+
 }

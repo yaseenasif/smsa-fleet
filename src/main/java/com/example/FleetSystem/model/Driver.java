@@ -33,6 +33,7 @@ public class Driver {
     private String licenseNumber;
     private Integer vehicleBudget ;
     private String costCentre;
+    private String assignedVehicle;
     private String attachments;
     private boolean status;
     private LocalDate createdAt;

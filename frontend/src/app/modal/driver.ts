@@ -35,4 +35,5 @@ export interface Driver {
     licenseNumber: String | null | undefined
     vehicleBudget: String | null | undefined
     costCentre: String | null | undefined
+    assignedVehicle: String | null | undefined
 }

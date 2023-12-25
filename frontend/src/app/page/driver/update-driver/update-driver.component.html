@@ -214,10 +214,30 @@
                   <small 
                       id="name-help" class="color-red" 
                       *ngIf="grade.invalid && (grade.dirty || grade.touched)"
-                  > Employee Name is required
+                  > Grade is required
                   </small>
                 </div>
               </div>
+              <div class="col-12 md:col-12 lg:col-6">
+                <div class="flex flex-column gap-2">
+                  <label htmlFor="name">Cost Center</label>
+                  <input
+                    pInputText [disabled]="true"
+                    id="name"
+                    aria-describedby="name-help"
+                    name="costCenter"
+                    [(ngModel)]="driver.costCentre"
+                    #costCenter="ngModel"
+                    required
+                  />
+                  <small 
+                      id="name-help" class="color-red" 
+                      *ngIf="costCenter.invalid && (costCenter.dirty || costCenter.touched)"
+                  > Cost Center is required
+                  </small>
+                </div>
+              </div>
+              
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">License Number</label>
@@ -237,6 +257,7 @@
                   </small>
                 </div>
               </div>
+
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Vehicle Budget</label>
@@ -256,27 +277,39 @@
                   </small>
                 </div>
               </div>
-              <div class="col-12 md:col-12 lg:col-12">
-                <div class="flex flex-column gap-2">
-                  <label htmlFor="name">Cost Center</label>
-                  <input
-                    pInputText [disabled]="true"
-                    id="name"
-                    aria-describedby="name-help"
-                    name="costCenter"
-                    [(ngModel)]="driver.costCentre"
-                    #costCenter="ngModel"
-                    required
-                  />
-                  <small 
-                      id="name-help" class="color-red" 
-                      *ngIf="costCenter.invalid && (costCenter.dirty || costCenter.touched)"
-                  > Cost Center is required
-                  </small>
-                </div>
-              </div>
+              
             </div>
-          
+            <div class="flex flex-column gap-2 form-hook">
+              <label htmlFor="name">Assign Vehicle</label>
+              <p-dropdown
+                class="w-full"
+                [(ngModel)]="driver.assignedVehicle"
+                [options]="unassignedVehicles"
+                name="assignedVehicle"
+                #assignedVehicle="ngModel"
+                [required]="true"
+                optionLabel="plateNumber"
+                optionValue="plateNumber"
+                [filter]="true"
+                filterBy="plateNumber"
+                [showClear]="true"  
+              >
+                <ng-template pTemplate="selectedItem">
+                  <div
+                    class="flex align-items-center gap-2"
+                    *ngIf="driver"
+                  >
+                    <div>{{ driver.assignedVehicle }}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-unassignedVehicles pTemplate="item">
+                  <div class="flex align-items-center gap-2">
+                    <div>{{ unassignedVehicles.plateNumber }}</div>
+                  </div>
+                </ng-template>
+              </p-dropdown>
+            </div>
+            
             <div class="flex align-items-center justify-content-end mt-4">
               <p-button
                 label="Cancel"

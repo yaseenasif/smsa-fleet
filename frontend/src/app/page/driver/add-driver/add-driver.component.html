@@ -310,6 +310,39 @@
                 </div>
               </div>
             </div>
+
+            <div class="flex flex-column gap-2 form-hook">
+              <label htmlFor="name">Assign Vehicle</label>
+              <p-dropdown
+                class="w-full"
+                [(ngModel)]="driver.assignedVehicle"
+                [options]="unassignedVehicles"
+                name="assignedVehicle"
+                #assignedVehicle="ngModel"
+                [required]="true"
+                optionLabel="plateNumber"
+                optionValue="plateNumber"
+                [filter]="true"
+                filterBy="plateNumber"
+                [showClear]="true"
+                placeholder="Select Plate Number"
+              >
+                <ng-template pTemplate="selectedItem">
+                  <div
+                    class="flex align-items-center gap-2"
+                    *ngIf="driver"
+                  >
+                    <div>{{ driver.assignedVehicle }}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-unassignedVehicles pTemplate="item">
+                  <div class="flex align-items-center gap-2">
+                    <div>{{ unassignedVehicles.plateNumber }}</div>
+                  </div>
+                </ng-template>
+              </p-dropdown>
+            </div>
+            
             
             <div class="flex align-items-center justify-content-end mt-4">
               <p-button

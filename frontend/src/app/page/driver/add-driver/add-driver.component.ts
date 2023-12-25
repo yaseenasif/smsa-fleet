@@ -7,6 +7,8 @@ import { Employee } from 'src/app/modal/employee';
 import { Router } from '@angular/router';
 import { GradeService } from '../../grade/grade.service';
 import { Grade } from 'src/app/modal/grade';
+import { VehicleService } from '../../vehicle-screen/service/vehicle.service';
+import { Vehicle } from 'src/app/modal/vehicle';
 
 @Component({
   selector: 'app-add-driver',
@@ -52,16 +54,19 @@ export class AddDriverComponent implements OnInit {
   },
     licenseNumber: undefined,
     vehicleBudget: undefined,
-    costCentre : undefined
+    costCentre : undefined,
+    assignedVehicle: undefined
   }
 
   employee!: Employee[];
 
   selectedEmployee!: Employee
-
+  unassignedVehicles!: Vehicle[];
+  
   constructor(private driverService: DriverService,
               private employeeService: EmployeeService,
               private messageService: MessageService,
+              private vehicleService: VehicleService,
               private router: Router,
               ) { }
 
@@ -83,6 +88,7 @@ export class AddDriverComponent implements OnInit {
   ngOnInit(): void {
     this.items = [{ label: 'Driver List',routerLink:'/driver'},{ label: 'Add Driver'}];
     this.getAllEmployees();
+    this.getUnassignedvehicles();
   }
 
   getAllEmployees() {
@@ -129,5 +135,10 @@ export class AddDriverComponent implements OnInit {
   }
 
 
+  getUnassignedvehicles(){
+    this.vehicleService.getAllNotAssignedVehicles().subscribe((res)=>{
+      this.unassignedVehicles = res;
+    })
+  }
 
 }

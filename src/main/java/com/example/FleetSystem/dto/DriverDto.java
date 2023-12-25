@@ -29,6 +29,7 @@ public class DriverDto {
     private String licenseNumber;
     private Integer vehicleBudget ;
     private String costCentre;
+    private String assignedVehicle;
     private String attachments;
     private boolean status;
 

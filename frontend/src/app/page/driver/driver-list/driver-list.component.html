@@ -50,6 +50,7 @@
                   <th class="text-center">License Number</th>
                   <th class="text-center">Vehicle Budget</th>
                   <th class="text-center">Cost Center</th>
+                  <th class="text-center">Assigned Vehicle</th>
                   <th class="text-center"> Actions</th>
                 </tr>
               </ng-template>
@@ -70,6 +71,7 @@
                   <td class="text-center">{{ driver.licenseNumber }}</td>
                   <td class="text-center">{{ driver.vehicleBudget }}</td>
                   <td class="text-center">{{ driver.empId.costCenter }}</td>
+                  <td class="text-center">{{ driver.assignedVehicle }}</td>
                   <td class="text-center "> 
                     <div class="w-full flex">
                       <p-button [routerLink]="['/view-driver/', driver.id]" pTooltip="View" tooltipPosition="top" icon="bi bi-eye"class='ml mr' [outlined]="true" [rounded]="true" [raised]="true">
