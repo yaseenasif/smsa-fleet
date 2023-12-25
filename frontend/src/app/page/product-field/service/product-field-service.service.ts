@@ -7,6 +7,9 @@ import {environment} from '../../../../environments/environment'
   providedIn: 'root'
 })
 export class ProductFieldServiceService {
+  deleteFieldByID(arg0: string) {
+    throw new Error('Method not implemented.');
+  }
 
   url:string=environment.baseurl;
   constructor(private httpClient: HttpClient) { }
@@ -21,6 +24,9 @@ export class ProductFieldServiceService {
 
   getProductFieldById(id:any){
     return this.httpClient.get<any>(`${this.url}/product-field/${id}`);
+  }
+  getProductFieldByName(name:string){
+    return this.httpClient.get<any>(`${this.url}/name/${name}`);
   }
 
   updateProductField(id:any,productField:any){

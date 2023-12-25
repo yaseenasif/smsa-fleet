@@ -41,4 +41,7 @@ searchDriver(value?: number | null, query?: { page: number, size: number }): Obs
   return this.http.get<PaginatedResponse<Driver>>(`${this.url}/search-driver?value=${value ? value : ''}&page=${query?.page ? query.page : ''}&size=${query?.size ? query.size : ''}`);
 }
 
+getUnasignedDrivers(): Observable<Driver[]> {
+  return this.http.get<Driver[]>(this.url.concat('/unassigned-drivers'));
+  }
 }

@@ -130,6 +130,8 @@ public class EmployeeService {
                 employee.get().setGrade(employeeDto.getGrade());
                 employee.get().setLicenseNumber(employeeDto.getLicenseNumber());
                 employee.get().setVehicleBudget(employeeDto.getVehicleBudget());
+                employee.get().setCostCenter(employeeDto.getCostCenter());
+                employee.get().setNationalIdNumber(employeeDto.getNationalIdNumber());
                 employee.get().setAttachments(employeeDto.getAttachments());
                 employee.get().setUpdatedAt(LocalDate.now());
                 employee.get().setUpdatedBy(user);
@@ -217,12 +219,12 @@ public class EmployeeService {
                             employee.setDeptCode(getLongValue(row.getCell(14)));
                             employee.setDepartment(getStringValue(row.getCell(15)));
                             employee.setSection(getStringValue(row.getCell(16)));
-                            employee.setIqamaNumber(getLongValue(row.getCell(17)));
+                            employee.setNationalIdNumber(getLongValue(row.getCell(17)));
                             employee.setSvEmployeeNumber(getLongValue(row.getCell(18)));
                             employee.setSvEmployeeName(getStringValue(row.getCell(19)));
                             employee.setCity(getStringValue(row.getCell(20)));
                             employee.setAge((int) row.getCell(21).getNumericCellValue());
-                            employee.setPortOfDestination(getStringValue(row.getCell(22)));
+                            employee.setCostCenter(getStringValue(row.getCell(22)));
                             employee.setNationality(getStringValue(row.getCell(23)));
                             employee.setCompanyEmailAddress(getStringValue(row.getCell(24)));
                             employee.setContactNumber(dataFormatter.formatCellValue(row.getCell(25)));

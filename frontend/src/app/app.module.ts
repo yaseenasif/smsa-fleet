@@ -32,7 +32,6 @@ import { EditRoleComponent } from './page/role/edit-role/edit-role.component';
 import { CommonModule } from '@angular/common';
 import { ProductFieldListComponent } from './page/product-field/product-field-list/product-field-list.component';
 import { ProductFieldAddComponent } from './page/product-field/product-field-add/product-field-add.component';
-import { ProductFieldUpdateComponent } from './page/product-field/product-field-update/product-field-update.component';
 import {FormsModule} from'@angular/forms'
 import {DomesticShippingListComponent} from './page/shipping-order/domestic/domestic-shipping-list/domestic-shipping-list.component';
 import { NgxUiLoaderModule, NgxUiLoaderHttpModule } from "ngx-ui-loader";
@@ -121,6 +120,8 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { ChipsModule } from 'primeng/chips';
 import { RegionComponent } from './page/region/region.component';
 import { AddRegionComponent } from './page/region/add-region/add-region.component';
+import { AssignmentHistoryComponent } from './page/Assignment/assignment-history/assignment-history.component';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 
 @NgModule({
   declarations: [
@@ -146,7 +147,6 @@ import { AddRegionComponent } from './page/region/add-region/add-region.componen
     UpdateStatusComponent,
     ProductFieldListComponent,
     ProductFieldAddComponent,
-    ProductFieldUpdateComponent,
     PermissionListComponent,
     AddPermissionComponent,
     EditPermissionComponent,
@@ -204,6 +204,8 @@ import { AddRegionComponent } from './page/region/add-region/add-region.componen
     CityListComponent,
     RegionComponent,
     AddRegionComponent
+    AssignmentHistoryComponent
+
   ],
   imports: [
     ConfirmDialogModule,
@@ -238,6 +240,7 @@ import { AddRegionComponent } from './page/region/add-region/add-region.componen
     KeyFilterModule,
     InputNumberModule,
     TooltipModule,
+    ToggleButtonModule,
     ChipsModule,
     NgxUiLoaderHttpModule.forRoot({
       showForeground:true

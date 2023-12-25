@@ -45,4 +45,11 @@ searchAssignmentByPlateNumber(value?: string | null, query?: { page: number, siz
   }
   return this.http.get<PaginatedResponse<VehicleAssignment>>(`${this.url}/search-assignment?value=${JSON.stringify(value ? value : '')}&page=${query?.page ? query.page : ''}&size=${query?.size ? query.size : ''}`);
 }
+
+searchAssignmentByEmployeeNumber(value?: string | null, query?: { page: number, size: number }): Observable<PaginatedResponse<VehicleAssignment>> {
+  if(value){
+    query = {page: 0 , size:10};
+  }
+  return this.http.get<PaginatedResponse<VehicleAssignment>>(`${this.url}/search-assignment-empno?value=${JSON.stringify(value ? value : '')}&page=${query?.page ? query.page : ''}&size=${query?.size ? query.size : ''}`);
+}
 }

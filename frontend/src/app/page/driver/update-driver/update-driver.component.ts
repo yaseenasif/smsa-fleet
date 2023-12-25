@@ -3,6 +3,9 @@ import { MenuItem, MessageService } from 'primeng/api';
 import { Driver } from 'src/app/modal/driver';
 import { DriverService } from '../driver.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Form } from '@angular/forms';
+import { VehicleService } from '../../vehicle-screen/service/vehicle.service';
+import { Vehicle } from 'src/app/modal/vehicle';
 
 @Component({
   selector: 'app-update-driver',
@@ -17,32 +20,52 @@ export class UpdateDriverComponent implements OnInit {
   driver: Driver = {
     id: undefined,
     empId: {
-      id: undefined,
+      id:  undefined,
       empName: undefined,
+      employeeNumber:  undefined,
+      budgetRef: undefined,
+      gender: undefined,
+      maritalStatus: undefined,
+      dateOfBirth: undefined,
+      joiningDate:undefined,
       jobTitle: undefined,
-      joiningDate: undefined,
-      department: undefined,
-      section: undefined,
+      status: undefined,
       region: undefined,
-      city: undefined,
-      nationality: undefined,
+      location: undefined,
+      organization: undefined,
+      division: undefined,
+      deptCode: undefined,
+      department: undefined,
       contactNumber: undefined,
+      section: undefined,
+      nationalIdNumber:  undefined,
+      svEmployeeNumber: undefined,
+      svEmployeeName: undefined,
+      city: undefined,
+      age:  undefined,
+      nationality: undefined,
       companyEmailAddress: undefined,
       grade: undefined,
-      licenseNumber: undefined,
-      vehicleBudget: undefined,
-      employeeNumber: undefined
+      licenseNumber: undefined,  
+      vehicleBudget:  undefined,
+      costCentre: undefined,
+
+
     },
+    vehicleBudget: undefined,
     licenseNumber: undefined,
-    vehicleBudget: undefined
+    costCentre: undefined,
+    assignedVehicle: undefined
   }
 
   driverId: Number | undefined;
+  unassignedVehicles!: Vehicle[];
 
 
   constructor( private driverService: DriverService,
                 private router: Router,
               private route: ActivatedRoute,
+              private vehicleService: VehicleService,
               private messageService: MessageService
 
     ) { }
@@ -55,7 +78,7 @@ export class UpdateDriverComponent implements OnInit {
   uploadedFiles: any[] = [];
 
    onUpload(event: any) {
-    
+
   }
 
    onUpload1(event:any) {
@@ -69,7 +92,7 @@ export class UpdateDriverComponent implements OnInit {
     this.driverId = +this.route.snapshot.paramMap.get('id')!;
 
     this.getDriverById(this.driverId)
-    
+    this.getUnassignedvehicles();
   }
 
   getDriverById(id: Number) {
@@ -78,27 +101,31 @@ export class UpdateDriverComponent implements OnInit {
       this.driver = res;
 
       console.log(this.driver);
-      
+
     })
   }
 
   updateDriver(driver: Driver) {
-
     this.driverService.updateDriver(this.driverId!, driver).subscribe((res) => {
 
-      this.messageService.add({ severity: 'Update Successfully', summary: 'Update Successfully', detail: 'Message Content' });  
+      this.messageService.add({ severity: 'Update Successfully', summary: 'Update Successfully', detail: 'Message Content' });
 
       setTimeout(() => {
         this.router.navigate(['/driver'])
       },5000)
-      
+
     })
 
   }
-  
+
   onSubmit() {
-
     this.updateDriver(this.driver)
-
   }
+
+  getUnassignedvehicles(){
+    this.vehicleService.getAllNotAssignedVehicles().subscribe((res)=>{
+      this.unassignedVehicles = res;
+    })
+  }
+
 }

@@ -7,6 +7,8 @@ import { Employee } from 'src/app/modal/employee';
 import { EmployeeService } from '../../employee-screen/service/employee.service';
 import { VehicleAssignmentService } from '../vehicle-assignment.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DriverService } from '../../driver/driver.service';
+import { Driver } from 'src/app/modal/driver';
 
 @Component({
   selector: 'app-add-assignment',
@@ -26,10 +28,12 @@ export class AddAssignmentComponent {
   employeeId !: Number
 
   unAssignedEmployeeId !: Number
+  unassignedDriverId!: Number
 
   vehicleId !: number
 
   selecteUnAssigneddEmployee !: Employee
+  selectedUnassignedDriver!: Driver
 
   vehicle !: Vehicle[]
 
@@ -38,7 +42,8 @@ export class AddAssignmentComponent {
   employee !: Employee[]
 
   unAssignedEmployee !: Employee[]
-
+  unAssignedDriver !: Driver[]
+  
   vehicleAssignmentId: Number | undefined | null
   
   vehicleAssignment: VehicleAssignment = {
@@ -53,35 +58,36 @@ export class AddAssignmentComponent {
     plateNumber: undefined,
     attachments: undefined,
     assignToEmpId: {
-      id: undefined,
-      employeeNumber: undefined,
-      budgetRef: undefined,
-      empName: undefined,
-      gender: undefined,
-      maritalStatus: undefined,
-      dateOfBirth: undefined,
-      joiningDate: undefined,
-      jobTitle: undefined,
-      status: undefined,
-      region: undefined,
-      location: undefined,
-      organization: undefined,
-      division: undefined,
-      deptCode: undefined,
-      department: undefined,
-      contactNumber: undefined,
-      section: undefined,
-      iqamaNumber: undefined,
-      svEmployeeNumber: undefined,
-      svEmployeeName: undefined,
-      city: undefined,
-      age: undefined,
-      portOfDestination: undefined,
-      nationality: undefined,
-      companyEmailAddress: undefined,
-      grade: undefined,
-      licenseNumber: undefined,
-      vehicleBudget: undefined
+      id:  undefined,
+      empName:  undefined,
+      employeeNumber:  undefined,
+      budgetRef:  undefined,
+      gender:  undefined,
+      maritalStatus:  undefined,
+      dateOfBirth:  undefined,
+      joiningDate:  undefined,
+      jobTitle:  undefined,
+      status:  undefined,
+      region:  undefined,
+      location:  undefined,
+      organization:  undefined,
+      division:  undefined,
+      deptCode:  undefined,
+      department:  undefined,
+      contactNumber:  undefined,
+      section:  undefined,
+      nationalIdNumber:  undefined,
+      svEmployeeNumber:  undefined,
+      svEmployeeName:  undefined,
+      city:  undefined,
+      age:  undefined,
+      nationality:  undefined,
+      companyEmailAddress:  undefined,
+      grade:  undefined,
+      licenseNumber:  undefined,      
+      vehicleBudget:  undefined,
+      costCentre:  undefined,
+  
     },
     vehicle: {
       id: undefined,
@@ -127,7 +133,7 @@ export class AddAssignmentComponent {
   }
 
   constructor( private vehicleService: VehicleService, private employeeService: EmployeeService,
-     private vehicleAssignmentService: VehicleAssignmentService,
+     private vehicleAssignmentService: VehicleAssignmentService, private driverService: DriverService,
      private route: ActivatedRoute,
      private router: Router,
      private messageService: MessageService) { }
@@ -141,9 +147,11 @@ export class AddAssignmentComponent {
     
     this.getAllVehicles();
 
-    this.getAllEmployee();
+    // this.getAllEmployee();
 
-    this.getAllUnAssignedEmployees();
+    // this.getAllUnAssignedEmployees();
+
+    this.getAllUnAssignedDrivers();
 
   }
 
@@ -238,5 +246,16 @@ export class AddAssignmentComponent {
     this.vehicleAssignment.assignToEmpId = this.selecteUnAssigneddEmployee
   }
 
+  getAllUnAssignedDrivers() {
+    this.driverService.getUnasignedDrivers().subscribe((res: Driver[]) => {
+      this.unAssignedDriver = res;
+    })
+  }
+
+  getUnAssignedDriverData() {
+    this.selectedUnassignedDriver = (this.unAssignedDriver.find((el) => {return el.id == this.unassignedDriverId}))!
+    this.vehicleAssignment.assignToEmpName = this.selectedUnassignedDriver.empId.empName
+    this.vehicleAssignment.assignToEmpId = this.selectedUnassignedDriver.empId
+  }
 }
 

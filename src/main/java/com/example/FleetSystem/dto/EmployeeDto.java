@@ -17,7 +17,7 @@ public class EmployeeDto {
     private String empName;
     private Long svEmployeeNumber;
     private  String svEmployeeName;
-    private Long iqamaNumber;
+    private Long nationalIdNumber;
     private String jobTitle;
     private Date joiningDate;
     private Date dateOfBirth;
@@ -32,7 +32,7 @@ public class EmployeeDto {
     private String city;
     private String country;
     private String location;
-    private String portOfDestination;
+    private String costCenter;
     private String nationality;
     private String contactNumber;
     private String companyEmailAddress;

@@ -49,12 +49,12 @@ export class UpdateEmployeeComponent {
     deptCode: undefined,
     department: undefined,
     section: undefined,
-    iqamaNumber: undefined,
+    nationalIdNumber: undefined,
     svEmployeeNumber: undefined,
     svEmployeeName: undefined,
     city: undefined,
     age: undefined,
-    portOfDestination: undefined,
+    costCentre: undefined,
     nationality: undefined,
     companyEmailAddress: undefined,
     grade: undefined,
@@ -111,7 +111,6 @@ export class UpdateEmployeeComponent {
     this.employeeService.getEmployeeById(id).subscribe((res: Employee) => {
       res.joiningDate = res.joiningDate ? new Date(res.joiningDate) : new Date();
       res.dateOfBirth = res.dateOfBirth ? new Date(res.dateOfBirth) : new Date();
-
       this.employee = res;
       this.getCountry();
       console.log(this.employee);
@@ -181,23 +180,18 @@ export class UpdateEmployeeComponent {
 
 
   updateEmployee(employee: Employee) {
-    debugger
-    this.employeeService.updateEmployee(this.employeeId!, employee).subscribe((res) => {
-
-
-      this.messageService.add({ severity: 'success', summary: 'Update Successfully', detail: 'Message Content' });
-
-      setTimeout(() => {
-        this.router.navigate(['/employee'])
-      }, 5000)
-
-    },
+    this.employeeService.updateEmployee(this.employeeId!, employee).subscribe(
+      (res) => {
+        this.messageService.add({ severity: 'success', summary: 'Update Successfully', detail: 'Message Content' });
+        setTimeout(() => {
+          this.router.navigate(['/employee']);
+        }, 5000);
+      },
       (error) => {
         this.messageService.add({ severity: 'error', summary: 'Edit Error', detail: error.error });
-      })
-
+      }
+    );
   }
-
   onSubmit() {
     this.updateEmployee(this.employee);
   }

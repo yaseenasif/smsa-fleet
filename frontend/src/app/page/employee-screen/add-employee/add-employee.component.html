@@ -76,7 +76,7 @@
                     <p-dropdown
                       class="w-full"
                       [(ngModel)]="employee.jobTitle"
-                      [options]="dummyData"
+                      [options]="jobTitles"
                       name="jobTitle"
                       #jobTitle="ngModel"
                       [required]="true"
@@ -96,9 +96,9 @@
                           <div>{{ employee.jobTitle }}</div>
                         </div>
                       </ng-template>
-                      <ng-template let-dummyData pTemplate="item">
+                      <ng-template let-jobTitles pTemplate="item">
                         <div class="flex align-items-center gap-2">
-                          <div>{{ dummyData.name }}</div>
+                          <div>{{ jobTitles.name }}</div>
                         </div>
                       </ng-template>
                     </p-dropdown>
@@ -123,7 +123,7 @@
                     <p-dropdown
                       class="w-full"
                       [(ngModel)]="employee.department"
-                      [options]="dummyDepartment"
+                      [options]="departments"
                       name="department"
                       #department="ngModel"
                       [required]="true"
@@ -143,9 +143,9 @@
                           <div>{{ employee.department }}</div>
                         </div>
                       </ng-template>
-                      <ng-template let-dummyDepartment pTemplate="item">
+                      <ng-template let-departments pTemplate="item">
                         <div class="flex align-items-center gap-2">
-                          <div>{{ dummyDepartment.name }}</div>
+                          <div>{{ departments.name }}</div>
                         </div>
                       </ng-template>
                     </p-dropdown>
@@ -157,7 +157,7 @@
                     <p-dropdown
                       class="w-full"
                       [(ngModel)]="employee.section"
-                      [options]="dummySection"
+                      [options]="sections"
                       name="section"
                       #section="ngModel"
                       [required]="true"
@@ -177,9 +177,9 @@
                           <div>{{ employee.section }}</div>
                         </div>
                       </ng-template>
-                      <ng-template let-dummySection pTemplate="item">
+                      <ng-template let-sections pTemplate="item">
                         <div class="flex align-items-center gap-2">
-                          <div>{{ dummySection.name }}</div>
+                          <div>{{ sections.name }}</div>
                         </div>
                       </ng-template>
                     </p-dropdown>
@@ -245,6 +245,19 @@
                       placeholder="Select City
                     "
                     >
+                    <ng-template pTemplate="selectedItem">
+                      <div
+                        class="flex align-items-center gap-2"
+                        *ngIf="employee"
+                      >
+                        <div>{{ employee.city }}</div>
+                      </div>
+                    </ng-template>
+                    <ng-template let-sections pTemplate="item">
+                      <div class="flex align-items-center gap-2">
+                        <div>{{ sections.name }}</div>
+                      </div>
+                    </ng-template>
                     </p-dropdown>
                   </div>
                 </div>
@@ -254,7 +267,7 @@
                     <p-dropdown
                       class="w-full"
                       [(ngModel)]="employee.nationality"
-                      [options]="dummyNationality"
+                      [options]="nationalities"
                       name="nationality"
                       #nationality="ngModel"
                       [required]="true"
@@ -274,9 +287,9 @@
                           <div>{{ employee.nationality }}</div>
                         </div>
                       </ng-template>
-                      <ng-template let-dummyNationality pTemplate="item">
+                      <ng-template let-nationalities pTemplate="item">
                         <div class="flex align-items-center gap-2">
-                          <div>{{ dummyNationality.name }}</div>
+                          <div>{{ nationalities.name }}</div>
                         </div>
                       </ng-template>
                     </p-dropdown>
@@ -496,30 +509,30 @@
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2">
-                    <label htmlFor="name">Iqama Number</label>
+                    <label htmlFor="name">National Id Number</label>
                     <input
                       pInputText
                       id="name"
                       aria-describedby="name-help"
-                      name="iqamaNumber"
-                      [(ngModel)]="employee.iqamaNumber"
-                      #iqamaNumber="ngModel"
+                      name="nationalIdNumber"
+                      [(ngModel)]="employee.nationalIdNumber"
+                      #nationalIdNumber="ngModel"
                       required
                       [ngClass]="{
                         error:
-                          iqamaNumber.invalid &&
-                          (iqamaNumber.dirty || iqamaNumber.touched)
+                          nationalIdNumber.invalid &&
+                          (nationalIdNumber.dirty || nationalIdNumber.touched)
                       }"
                     />
                     <small
                       id="name-help"
                       class="color-red error"
                       *ngIf="
-                        iqamaNumber.invalid &&
-                        (iqamaNumber.dirty || iqamaNumber.touched)
+                        nationalIdNumber.invalid &&
+                        (nationalIdNumber.dirty || nationalIdNumber.touched)
                       "
                     >
-                      iqamaNumber is required
+                      National Id Number is required
                     </small>
                   </div>
                 </div>
@@ -608,30 +621,30 @@
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2">
-                    <label htmlFor="name">Port Of Destination</label>
+                    <label htmlFor="name">Cost Center</label>
                     <input
                       pInputText
                       id="name"
                       aria-describedby="name-help"
-                      name="portOfDestination"
-                      [(ngModel)]="employee.portOfDestination"
-                      #portOfDestination="ngModel"
+                      name="costCenter"
+                      [(ngModel)]="employee.costCentre"
+                      #costCenter="ngModel"
                       required
                       [ngClass]="{
                         error:
-                          portOfDestination.invalid &&
-                          (portOfDestination.dirty || portOfDestination.touched)
+                          costCenter.invalid &&
+                          (costCenter.dirty || costCenter.touched)
                       }"
                     />
                     <small
                       id="name-help"
                       class="color-red error"
                       *ngIf="
-                        portOfDestination.invalid &&
-                        (portOfDestination.dirty || portOfDestination.touched)
+                        costCenter.invalid &&
+                        (costCenter.dirty || costCenter.touched)
                       "
                     >
-                      Port Of Destination is required
+                      Cost Center is required
                     </small>
                   </div>
                 </div>

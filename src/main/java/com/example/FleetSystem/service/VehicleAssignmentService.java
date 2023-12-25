@@ -1,4 +1,5 @@
 package com.example.FleetSystem.service;
+import com.example.FleetSystem.criteria.EmployeeSearchCriteria;
 import com.example.FleetSystem.criteria.VehicleSearchCriteria;
 import com.example.FleetSystem.dto.VehicleAssignmentDto;
 import com.example.FleetSystem.dto.VehicleDto;
@@ -231,14 +232,28 @@ public class VehicleAssignmentService {
     }
     public Page<VehicleAssignmentDto> searchAssignmentByPlateNumber(VehicleSearchCriteria vehicleSearchCriteria, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Specification<VehicleAssignment> vehicleAssignmentSpecification = VehicleAssignmentSpecification.getSearchSpecification(vehicleSearchCriteria);
+        Specification<VehicleAssignment> vehicleAssignmentSpecification = VehicleAssignmentSpecification.getSearchSpecificationByPlateNumber(vehicleSearchCriteria);
         Page<VehicleAssignment> vehicleAssignmentPage = vehicleAssignmentRepository.findAll(vehicleAssignmentSpecification,pageable);
         return vehicleAssignmentPage.map(this::toDto);
     }
 
     public Page<VehicleAssignmentDto> searchInactiveAssignmentByPlateNumber(VehicleSearchCriteria vehicleSearchCriteria, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Specification<VehicleAssignment> vehicleAssignmentSpecification = VehicleAssignmentSpecification.getInactiveSearchSpecification(vehicleSearchCriteria);
+        Specification<VehicleAssignment> vehicleAssignmentSpecification = VehicleAssignmentSpecification.getInactiveSearchSpecificationByPlateNumber(vehicleSearchCriteria);
+        Page<VehicleAssignment> vehicleAssignmentPage = vehicleAssignmentRepository.findAll(vehicleAssignmentSpecification,pageable);
+        return vehicleAssignmentPage.map(this::toDto);
+    }
+
+    public Page<VehicleAssignmentDto> searchAssignmentByEmployeeNumber(EmployeeSearchCriteria employeeSearchCriteria, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<VehicleAssignment> vehicleAssignmentSpecification = VehicleAssignmentSpecification.getSearchSpecificationByEmployeeNumber(employeeSearchCriteria);
+        Page<VehicleAssignment> vehicleAssignmentPage = vehicleAssignmentRepository.findAll(vehicleAssignmentSpecification,pageable);
+        return vehicleAssignmentPage.map(this::toDto);
+    }
+
+    public Page<VehicleAssignmentDto> searchInactiveAssignmentByEmployeeNumber(EmployeeSearchCriteria employeeSearchCriteria, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<VehicleAssignment> vehicleAssignmentSpecification = VehicleAssignmentSpecification.getInactiveSearchSpecificationByEmployeeNumber(employeeSearchCriteria);
         Page<VehicleAssignment> vehicleAssignmentPage = vehicleAssignmentRepository.findAll(vehicleAssignmentSpecification,pageable);
         return vehicleAssignmentPage.map(this::toDto);
     }
