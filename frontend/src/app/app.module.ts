@@ -120,8 +120,8 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { ChipsModule } from 'primeng/chips';
 import { RegionComponent } from './page/region/region.component';
 import { AddRegionComponent } from './page/region/add-region/add-region.component';
-import { AssignmentHistoryComponent } from './page/Assignment/assignment-history/assignment-history.component';
 import { ToggleButtonModule } from 'primeng/togglebutton';
+import { AssignmentHistoryComponent } from './page/Assignment/assignment-history/assignment-history.component';
 
 @NgModule({
   declarations: [
@@ -203,9 +203,8 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
     EditCityComponent,
     CityListComponent,
     RegionComponent,
-    AddRegionComponent
-    AssignmentHistoryComponent
-
+    AddRegionComponent,
+    AssignmentHistoryComponent,
   ],
   imports: [
     ConfirmDialogModule,

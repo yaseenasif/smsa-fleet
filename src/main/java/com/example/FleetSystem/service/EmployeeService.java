@@ -1,9 +1,7 @@
 package com.example.FleetSystem.service;
 
 import com.example.FleetSystem.criteria.EmployeeSearchCriteria;
-import com.example.FleetSystem.criteria.VehicleSearchCriteria;
 import com.example.FleetSystem.dto.EmployeeDto;
-import com.example.FleetSystem.dto.ProductFieldDto;
 import com.example.FleetSystem.exception.ExcelException;
 import com.example.FleetSystem.model.*;
 import com.example.FleetSystem.payload.ExcelErrorResponse;
@@ -130,7 +128,7 @@ public class EmployeeService {
                 employee.get().setGrade(employeeDto.getGrade());
                 employee.get().setLicenseNumber(employeeDto.getLicenseNumber());
                 employee.get().setVehicleBudget(employeeDto.getVehicleBudget());
-                employee.get().setCostCenter(employeeDto.getCostCenter());
+                employee.get().setCostCentre(employeeDto.getCostCentre());
                 employee.get().setNationalIdNumber(employeeDto.getNationalIdNumber());
                 employee.get().setAttachments(employeeDto.getAttachments());
                 employee.get().setUpdatedAt(LocalDate.now());
@@ -224,7 +222,7 @@ public class EmployeeService {
                             employee.setSvEmployeeName(getStringValue(row.getCell(19)));
                             employee.setCity(getStringValue(row.getCell(20)));
                             employee.setAge((int) row.getCell(21).getNumericCellValue());
-                            employee.setCostCenter(getStringValue(row.getCell(22)));
+                            employee.setCostCentre(getStringValue(row.getCell(22)));
                             employee.setNationality(getStringValue(row.getCell(23)));
                             employee.setCompanyEmailAddress(getStringValue(row.getCell(24)));
                             employee.setContactNumber(dataFormatter.formatCellValue(row.getCell(25)));

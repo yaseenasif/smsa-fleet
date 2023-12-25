@@ -71,7 +71,7 @@ public class DriverService {
                 driver.setJoiningDate(driverDto.getEmpId().getJoiningDate());
                 driver.setLicenseNumber(driverDto.getEmpId().getLicenseNumber());
                 driver.setVehicleBudget(driverDto.getEmpId().getVehicleBudget());
-                driver.setCostCentre(driverDto.getEmpId().getCostCenter());
+                driver.setCostCentre(driverDto.getEmpId().getCostCentre());
                 driver.setCreatedAt(LocalDate.now());
                 driver.setCreatedBy(user);
                 driver.setStatus(Boolean.TRUE);
@@ -144,7 +144,7 @@ public class DriverService {
                     driver.get().setGrade(driverDto.getEmpId().getGrade());
                     driver.get().setLicenseNumber(driverDto.getEmpId().getLicenseNumber());
                     driver.get().setVehicleBudget(driverDto.getEmpId().getVehicleBudget());
-                    driver.get().setCostCentre(driverDto.getEmpId().getCostCenter());
+                    driver.get().setCostCentre(driverDto.getEmpId().getCostCentre());
                     driver.get().setAttachments(driverDto.getAttachments());
                     driver.get().setUpdatedAt(LocalDate.now());
                     driver.get().setUpdatedBy(user);

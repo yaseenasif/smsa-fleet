@@ -32,7 +32,7 @@ public class EmployeeDto {
     private String city;
     private String country;
     private String location;
-    private String costCenter;
+    private String costCentre;
     private String nationality;
     private String contactNumber;
     private String companyEmailAddress;

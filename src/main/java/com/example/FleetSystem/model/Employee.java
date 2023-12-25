@@ -1,14 +1,10 @@
 package com.example.FleetSystem.model;
 
 import lombok.*;
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.RelationTargetAuditMode;
 
 import javax.persistence.*;
 import java.sql.Date;
 import java.time.LocalDate;
-
-import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 
 @Getter
 @Setter
@@ -49,7 +45,7 @@ public class Employee {
     private Integer grade;
     private String licenseNumber;
     private Integer vehicleBudget;
-    private String costCenter;
+    private String costCentre;
     private String budgetRef;
     private String attachments;
     private String uuid;
