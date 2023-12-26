@@ -320,7 +320,7 @@
                     <p-dropdown
                       class="w-full"
                       [(ngModel)]="employee.grade"
-                      [options]="dummyData"
+                      [options]="gradesData"
                       name="grade"
                       #grade="ngModel"
                       [required]="true"
@@ -329,6 +329,9 @@
                       [filter]="true"
                       filterBy="name"
                       [showClear]="true"
+                      (onChange)="onAutoFilled()"
+                      placeholder="Select Grade
+                    "
                     >
                       <ng-template pTemplate="selectedItem">
                         <div
@@ -338,9 +341,9 @@
                           <div>{{ employee.grade }}</div>
                         </div>
                       </ng-template>
-                      <ng-template let-dummyData pTemplate="item">
+                      <ng-template let-grade pTemplate="item">
                         <div class="flex align-items-center gap-2">
-                          <div>{{ dummyData.name }}</div>
+                          <div>{{ grade.name }}</div>
                         </div>
                       </ng-template>
                     </p-dropdown>

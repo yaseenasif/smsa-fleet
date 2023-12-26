@@ -8,6 +8,8 @@ import { City } from 'src/app/modal/City';
 import { CityService } from '../../city/city.service';
 import { RegionService } from '../../region/service/region.service';
 import { Region } from 'src/app/modal/Region';
+import { GradeService } from '../../grade/grade.service';
+import { Grade } from 'src/app/modal/grade';
 
 @Component({
   selector: 'app-update-employee',
@@ -26,6 +28,7 @@ export class UpdateEmployeeComponent {
     status: undefined
   };
 
+  gradesData: any = []
   cityData: any = [];
 
   selectedCity !: City
@@ -82,7 +85,8 @@ export class UpdateEmployeeComponent {
     private messageService: MessageService,
     private route: ActivatedRoute,
     private datePipe: DatePipe,
-    private regionService: RegionService
+    private regionService: RegionService,
+    private gradeService: GradeService
   ) { }
 
 
@@ -215,8 +219,20 @@ export class UpdateEmployeeComponent {
     })
   }
 
-  // getAutoFilledRegion(city: City): void {
-  //   this.region = this.employee.region;
-  // }
+  getAllGrades() {
+    this.gradeService.getGrades().subscribe((res: Grade[]) => {
+      this.gradesData = res;
+    })
+  }
+
+  onAutoFilled() {
+    this.gradeService.getGrades().subscribe((res: Grade[]) => {
+      const selectedGrade = res.find((grade) => grade.name === this.employee.grade);
+
+      if (selectedGrade) {
+        this.employee.vehicleBudget = selectedGrade.vehicleBudget
+      }
+    })
+  }
 }
 

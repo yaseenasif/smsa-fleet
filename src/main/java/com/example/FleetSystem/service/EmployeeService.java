@@ -113,10 +113,18 @@ public class EmployeeService {
             if(principal instanceof UserDetails) {
                 String username = ((UserDetails) principal).getUsername();
                 User user = userRepository.findByEmail(username);
-
+//                Optional<Driver> driver = findByEmployeeNumber
+                employee.get().setEmployeeNumber(employeeDto.getEmployeeNumber());
                 employee.get().setEmpName(employeeDto.getEmpName());
+                employee.get().setSvEmployeeName(employeeDto.getSvEmployeeName());
+                employee.get().setSvEmployeeNumber(employeeDto.getSvEmployeeNumber());
                 employee.get().setJobTitle(employeeDto.getJobTitle());
                 employee.get().setJoiningDate(employeeDto.getJoiningDate());
+                employee.get().setDateOfBirth(employeeDto.getDateOfBirth());
+                employee.get().setAge(employeeDto.getAge());
+                employee.get().setBudgetRef(employeeDto.getBudgetRef());
+                employee.get().setGender(employeeDto.getGender());
+                employee.get().setMaritalStatus(employeeDto.getMaritalStatus());
                 employee.get().setDepartment(employeeDto.getDepartment());
                 employee.get().setSection(employeeDto.getSection());
                 employee.get().setCity(employeeDto.getCity());
@@ -130,7 +138,10 @@ public class EmployeeService {
                 employee.get().setVehicleBudget(employeeDto.getVehicleBudget());
                 employee.get().setCostCentre(employeeDto.getCostCentre());
                 employee.get().setNationalIdNumber(employeeDto.getNationalIdNumber());
-                employee.get().setAttachments(employeeDto.getAttachments());
+                employee.get().setLocation(employeeDto.getLocation());
+                employee.get().setOrganization(employeeDto.getOrganization());
+                employee.get().setDivision(employeeDto.getDivision());
+                employee.get().setDeptCode(employeeDto.getDeptCode());
                 employee.get().setUpdatedAt(LocalDate.now());
                 employee.get().setUpdatedBy(user);
 
