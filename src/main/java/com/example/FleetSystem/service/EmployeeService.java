@@ -4,12 +4,10 @@ import com.example.FleetSystem.criteria.EmployeeSearchCriteria;
 import com.example.FleetSystem.dto.EmployeeDto;
 import com.example.FleetSystem.exception.ExcelException;
 import com.example.FleetSystem.model.*;
+import com.example.FleetSystem.payload.CheckAssignEmployee;
 import com.example.FleetSystem.payload.ExcelErrorResponse;
 import com.example.FleetSystem.payload.ResponseMessage;
-import com.example.FleetSystem.repository.EmployeeRepository;
-import com.example.FleetSystem.repository.FileHistoryRepository;
-import com.example.FleetSystem.repository.FileMetaDataRepository;
-import com.example.FleetSystem.repository.UserRepository;
+import com.example.FleetSystem.repository.*;
 import com.example.FleetSystem.specification.EmployeeSpecification;
 import org.apache.poi.ss.usermodel.*;
 import org.modelmapper.ModelMapper;
@@ -52,6 +50,10 @@ public class EmployeeService {
 
     @Autowired
     StorageService storageService;
+    @Autowired
+    VehicleAssignmentRepository vehicleAssignmentRepository;
+    @Autowired
+    DriverRepository driverRepository;
 
     public EmployeeDto deleteEmployeeById(Long id , EmployeeDto employeeDto) {
         Optional<Employee> employee = employeeRepository.findById(id);
@@ -113,7 +115,8 @@ public class EmployeeService {
             if(principal instanceof UserDetails) {
                 String username = ((UserDetails) principal).getUsername();
                 User user = userRepository.findByEmail(username);
-//                Optional<Driver> driver = findByEmployeeNumber
+                Optional<Driver> driver = driverRepository.findByEmpId(employee.get());
+
                 employee.get().setEmployeeNumber(employeeDto.getEmployeeNumber());
                 employee.get().setEmpName(employeeDto.getEmpName());
                 employee.get().setSvEmployeeName(employeeDto.getSvEmployeeName());
@@ -144,6 +147,10 @@ public class EmployeeService {
                 employee.get().setDeptCode(employeeDto.getDeptCode());
                 employee.get().setUpdatedAt(LocalDate.now());
                 employee.get().setUpdatedBy(user);
+
+                if (driver.isPresent()){
+                    driver.get().setEmpId(employee.get());
+                }
 
                 return toDto(employeeRepository.save(employee.get()));
             }
@@ -480,4 +487,17 @@ public class EmployeeService {
         return employeePage.map(this::toDto);
     }
 
+    public CheckAssignEmployee checkAssignedEmployee(Long empId){
+        Optional<Employee> employee = employeeRepository.findById(empId);
+        if (employee.isPresent()) {
+            Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByAssignToEmpId(employee.get());
+            CheckAssignEmployee check = new CheckAssignEmployee();
+            if (vehicleAssignment.isPresent()) {
+                check.setCheck(Boolean.TRUE);
+            } else check.setCheck(Boolean.FALSE);
+
+            return check;
+        }
+        throw new RuntimeException(String.format("employee not found by id =>%d",empId));
+    }
 }

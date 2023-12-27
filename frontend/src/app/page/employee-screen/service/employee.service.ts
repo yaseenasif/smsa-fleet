@@ -53,4 +53,8 @@ export class EmployeeService {
     return this.http.get<PaginatedResponse<Employee>>(`${this.url}/search-employee?value=${value ? value : ''}&page=${query?.page ? query.page : ''}&size=${query?.size ? query.size : ''}`);
 }
 
+checkAssignedEmployee(empId: Number): Observable<any> {
+  return this.http.get<any>(`${this.url}/check-assigned-employee/${empId}`);
+}
+
 }

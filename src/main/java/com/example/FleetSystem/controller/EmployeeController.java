@@ -4,6 +4,8 @@ import com.example.FleetSystem.criteria.EmployeeSearchCriteria;
 import com.example.FleetSystem.criteria.VehicleSearchCriteria;
 import com.example.FleetSystem.dto.EmployeeDto;
 import com.example.FleetSystem.dto.ProductFieldDto;
+import com.example.FleetSystem.model.Employee;
+import com.example.FleetSystem.payload.CheckAssignEmployee;
 import com.example.FleetSystem.payload.ResponseMessage;
 import com.example.FleetSystem.service.EmployeeService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -109,5 +111,11 @@ public class EmployeeController {
         EmployeeSearchCriteria employeeSearchCriteria = new EmployeeSearchCriteria();
         employeeSearchCriteria.setValue(value);
         return ResponseEntity.ok(employeeService.   searchEmployee(employeeSearchCriteria,page, size));
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/check-assigned-employee/{empId}")
+    public ResponseEntity<CheckAssignEmployee> checkAssignedEmployee(@PathVariable Long empId){
+        return ResponseEntity.ok(employeeService.checkAssignedEmployee(empId));
     }
 }

@@ -72,7 +72,7 @@ export class UpdateEmployeeComponent {
 
   employeeId: Number | undefined;
   isDeleteButtonDisabled: boolean = true; // Set the initial value based on your logic
-
+  assignedEmployeeCheck!: boolean;
 
   dummyData: any = [
     { id: '21', name: 'STN' }
@@ -109,6 +109,7 @@ export class UpdateEmployeeComponent {
     this.items = [{ label: 'Employee', routerLink: '/employee' }, { label: 'Edit Employee' }];
     this.employeeId = +this.route.snapshot.paramMap.get('id')!;
     this.getEmployeeById(this.employeeId)
+    this.checkAssignedEmployee(this.employeeId);
   }
 
   getEmployeeById(id: Number) {
@@ -176,7 +177,6 @@ export class UpdateEmployeeComponent {
           cities: city,
           id: index + 1,
         }));
-        debugger
       }, err => {
       });
   }
@@ -232,6 +232,12 @@ export class UpdateEmployeeComponent {
       if (selectedGrade) {
         this.employee.vehicleBudget = selectedGrade.vehicleBudget
       }
+    })
+  }
+
+  checkAssignedEmployee(id: Number){
+    this.employeeService.checkAssignedEmployee(id).subscribe((res: any) => {
+      this.assignedEmployeeCheck = res.check;      
     })
   }
 }
