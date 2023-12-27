@@ -25,6 +25,7 @@
                       [(ngModel)]="employee.employeeNumber"
                       #employeeNumber="ngModel"
                       required
+                      [disabled]="assignedEmployeeCheck"
                     />
                     <small
                       id="name-help"
@@ -35,6 +36,13 @@
                       "
                     >
                       Employee Number is required
+                    </small>
+                    <small
+                      id="name-help"
+                      class="color-purple"
+                      *ngIf=" assignedEmployeeCheck"
+                    >
+                      This Employee Number is assigned to a vehicle
                     </small>
                   </div>
                 </div>

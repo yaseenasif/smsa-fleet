@@ -76,7 +76,7 @@
                     <p-dropdown
                       class="w-full"
                       [(ngModel)]="employee.jobTitle"
-                      [options]="jobTitles"
+                      [options]="jobTitles?.productFieldValuesList"
                       name="jobTitle"
                       #jobTitle="ngModel"
                       [required]="true"
@@ -123,7 +123,7 @@
                     <p-dropdown
                       class="w-full"
                       [(ngModel)]="employee.department"
-                      [options]="departments"
+                      [options]="departments?.productFieldValuesList"
                       name="department"
                       #department="ngModel"
                       [required]="true"
@@ -157,7 +157,7 @@
                     <p-dropdown
                       class="w-full"
                       [(ngModel)]="employee.section"
-                      [options]="sections"
+                      [options]="sections?.productFieldValuesList"
                       name="section"
                       #section="ngModel"
                       [required]="true"
@@ -220,7 +220,7 @@
                       optionValue="name"
                       (onChange)="getAllCity($event.value)"
                       [filter]="true"
-                      filterBy="name"
+                      filterBy="region"
                       [showClear]="true"
                       placeholder="Select Region
                   "
@@ -234,30 +234,16 @@
                       class="w-full"
                       [(ngModel)]="employee.city"
                       [options]="cityData"
-                      name="cities"
-                      #city="ngModel"
+                      name="addCities"
+                      #addCity="ngModel"
                       [required]="true"
                       optionLabel="cities"
                       optionValue="cities"
                       [filter]="true"
-                      filterBy="cities"
+                      filterBy="cityData"
                       [showClear]="true"
-                      placeholder="Select City
-                    "
+                      placeholder="Select City"
                     >
-                    <ng-template pTemplate="selectedItem">
-                      <div
-                        class="flex align-items-center gap-2"
-                        *ngIf="employee"
-                      >
-                        <div>{{ employee.city }}</div>
-                      </div>
-                    </ng-template>
-                    <ng-template let-sections pTemplate="item">
-                      <div class="flex align-items-center gap-2">
-                        <div>{{ sections.name }}</div>
-                      </div>
-                    </ng-template>
                     </p-dropdown>
                   </div>
                 </div>
@@ -267,7 +253,7 @@
                     <p-dropdown
                       class="w-full"
                       [(ngModel)]="employee.nationality"
-                      [options]="nationalities"
+                      [options]="nationalities?.productFieldValuesList"
                       name="nationality"
                       #nationality="ngModel"
                       [required]="true"

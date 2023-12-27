@@ -1,5 +1,6 @@
 package com.example.FleetSystem.repository;
 
+import com.example.FleetSystem.model.Employee;
 import com.example.FleetSystem.model.Vehicle;
 import com.example.FleetSystem.model.VehicleAssignment;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,4 +23,6 @@ public interface VehicleAssignmentRepository extends JpaRepository<VehicleAssign
 
     @Query("SELECT e.region, COUNT(va) AS totalVehicles FROM Employee e INNER JOIN VehicleAssignment va ON e.id = va.assignToEmpId GROUP BY e.region")
     List<Object[]> getActiveVehiclePerRegionCount();
+
+    Optional<VehicleAssignment> findByAssignToEmpId(Employee employee);
 }
