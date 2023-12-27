@@ -128,4 +128,9 @@ public class VehicleController {
         VehicleSearchCriteria vehicleSearchCriteria = new ObjectMapper().readValue(value, VehicleSearchCriteria.class);
         return ResponseEntity.ok(vehicleService.searchInactiveVehicles(vehicleSearchCriteria,page, size));
     }
+
+    @GetMapping("/vehicles-under-driver-budget/{value}")
+    public ResponseEntity<List<VehicleDto>> getAllVehiclesUnderDriverVehicleBudget(@PathVariable("value") Integer value) {
+        return ResponseEntity.ok(vehicleService.getAllVehiclesUnderDriverVehicleBudget(value));
+    }
 }
