@@ -580,20 +580,20 @@
                       pInputText
                       id="name"
                       aria-describedby="name-help"
-                      name="costCenter"
+                      name="costCentre"
                       [(ngModel)]="employee.costCentre"
-                      #costCenter="ngModel"
+                      #costCentre="ngModel"
                       required
                     />
                     <small
                       id="name-help"
                       class="color-red"
                       *ngIf="
-                        costCenter.invalid &&
-                        (costCenter.dirty || costCenter.touched)
+                        costCentre.invalid &&
+                        (costCentre.dirty || costCentre.touched)
                       "
                     >
-                      costCenter is required
+                      Cost Centre is required
                     </small>
                   </div>
                 </div>

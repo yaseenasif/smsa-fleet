@@ -40,7 +40,7 @@ export class EmployeeListComponent implements OnInit{
     }]
 
     this.getAllEmployees();
-
+    
   }
 
   onCancel() {
@@ -95,6 +95,8 @@ export class EmployeeListComponent implements OnInit{
       this.employee = res.content;
       this.query = { page: res.pageable.pageNumber, size: res.size }
       this.totalRecords = res.totalElements;
+    console.log(res);
+    
     })
 
   }
