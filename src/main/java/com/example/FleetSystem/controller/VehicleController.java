@@ -133,4 +133,5 @@ public class VehicleController {
     public ResponseEntity<List<VehicleDto>> getAllVehiclesUnderDriverVehicleBudget(@PathVariable("value") Integer value) {
         return ResponseEntity.ok(vehicleService.getAllVehiclesUnderDriverVehicleBudget(value));
     }
+
 }

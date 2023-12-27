@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {environment} from '../../../../environments/environment'
+import { ProductField } from 'src/app/modal/ProductField';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,7 @@ export class ProductFieldServiceService {
     return this.httpClient.get<any>(`${this.url}/product-field/${id}`);
   }
   getProductFieldByName(name:string){
-    return this.httpClient.get<any>(`${this.url}/name/${name}`);
+    return this.httpClient.get<ProductField>(`${this.url}/name/${name}`);
   }
 
   updateProductField(id:any,productField:any){

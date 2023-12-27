@@ -10,6 +10,7 @@ import { CityService } from '../../city/city.service';
 import { RegionService } from '../../region/service/region.service';
 import { Region } from 'src/app/modal/Region';
 import { ProductFieldServiceService } from '../../product-field/service/product-field-service.service';
+import { ProductField } from 'src/app/modal/ProductField';
 
 @Component({
   selector: 'app-add-employee',
@@ -19,9 +20,7 @@ import { ProductFieldServiceService } from '../../product-field/service/product-
 })
 export class AddEmployeeComponent implements OnInit {
 
-  items: MenuItem[] | undefined;
-
-  grade !: Grade[]
+  // grade !: Grade[]
 
   // city: City = {
   //   id: undefined,
@@ -30,16 +29,127 @@ export class AddEmployeeComponent implements OnInit {
   //   status: undefined
   // };
 
-  cityData: any[] = [];
+  // selectedCity !: City
 
-  selectedCity !: City
+  // selectedGrade !: Grade
+  // vehicleBudgetFromGrade !: Number | null | undefined
 
-  selectedGrade !: Grade
-  vehicleBudgetFromGrade !: Number | null | undefined
+  // dummyData: any = [
+  //   { id: 1, name: 'National Manager - Hub  Linehaul' }
+  // ]
 
+  // dummyDepartment: any = [
+  //   { id: 1, name: 'STN' },
+  // ]
+
+  // dummySection: any = [
+  //   { id: 1, name: 'Station Management' }
+  // ]
+
+  //   dummyNationality: any = [
+  //     { id: 1, name: "Sudan-031" },
+  //     { id: 2, name: "Sudan-032" },
+  //     { id: 3, name: "Sudan-033" },
+  //     { id: 4, name: "Sudan-034" },
+  //     { id: 5, name: "Sudan-035" }
+  //   ]
+
+  // dummyRegion: any = [
+  //   { id: 1, name: "Head Quarter" }
+  // ]
+  // employeeStatus: any = [
+  //   { id: 1, statusName: 'Active' },
+  //   { id: 2, statusName: 'Resigned' },
+  //   { id: 3, statusName: 'Terminated' },
+  //   { id: 4, statusName: 'Deceased' }
+  // ]
+
+  // name!: string;
+
+  // size = 100000
+
+  // onUpload(event: any) {
+
+  // }
+
+  // onUpload1(event: any) {
+  //   for (let file of event.files) {
+  //     this.uploadedFiles.push(file);
+  //   }
+  // }
+
+  // getCountry(): void {
+  //   this.regionService.getRegion().subscribe(
+  //     (res: Region[]) => {
+  //       const uniqueCountries = this.getUniqueCountries(res, 'country');
+  //       this.country = uniqueCountries;
+  //     },
+  //     (err) => {
+  //     }
+  //   );
+  // }
+
+  // getUniqueCountries(regions: Region[], propertyName: string): Region[] {
+  //   const uniqueCountries: Region[] = [];
+  //   const uniqueCountryNames: Set<string> = new Set();
+
+  //   for (const region of regions) {
+  //     const countryName = region[propertyName];
+
+  //     if (!uniqueCountryNames.has(countryName)) {
+  //       uniqueCountryNames.add(countryName);
+  //       uniqueCountries.push(region);
+  //     }
+  //   }
+
+  //   return uniqueCountries;
+  // }
+
+  // getRegions(country: string): void {
+  //   this.regionService.getRegionByCountry(country).subscribe((res: Region[]) => {
+  //     this.region = [];
+  //     this.employee.region = null;
+  //     res.forEach((r: any) => {
+  //       const parsedCities = JSON.parse(r.cities);
+  //       this.region.push({ ...r, cities: parsedCities });
+  //     });
+  //   }, err => {
+  //   });
+  // }
+
+  // getAllCity(region: string): void {
+  //   this.regionService.getCitiesByRegion(region).subscribe(
+  //     (res: Region) => {
+  //       this.cityData = [];
+  //       let getCities = [];
+  //       getCities.push(res);
+  //       getCities.forEach((element: any) => {
+  //         const parsedCities = JSON.parse(element.cities)
+  //         this.cityData.push(...parsedCities);
+  //       });
+  //       this.cityData = this.cityData.map((city, index) => ({
+  //         cities: city,
+  //         id: index + 1,
+  //       }));
+  //     }, err => {
+  //     });
+  // }
+
+  //   getAllCity() {
+  //     this.cityService.getCity().subscribe((res: City[]) => {
+  //       this.cityData = res;
+  //     })
+  //   }
+
+  // getAutoFilledRegion(city: City): void {
+  //   const selectedCityObj = this.cityData.find((item: any) => item.name === city);
+  //   this.region = selectedCityObj.region;
+  // }
+
+  items: MenuItem[] | undefined;
   country!: Region[];
   region!: Region[];
-  city: any;
+  cityData!: Region[];
 
   employee: Employee = {
     id: undefined,
@@ -74,95 +184,49 @@ export class AddEmployeeComponent implements OnInit {
     contactNumber: undefined
   };
 
-  dummyData: any = [
-    { id: 1, name: 'National Manager - Hub  Linehaul' }
-  ]
+  nationalities: ProductField | null | undefined;
+  sections: ProductField | null | undefined;
+  jobTitles: ProductField | null | undefined;
+  departments: ProductField | null | undefined;
 
-  dummyDepartment: any = [
-    { id: 1, name: 'STN' },
-  ]
+  gradesData!: Grade[];
 
-  dummySection: any = [
-    { id: 1, name: 'Station Management' }
-  ]
-
-  nationalities: any = []
-  sections: any = []
-  jobTitles: any = []
-  departments: any = []
-
-//   dummyNationality: any = [
-//     { id: 1, name: "Sudan-031" },
-//     { id: 2, name: "Sudan-032" },
-//     { id: 3, name: "Sudan-033" },
-//     { id: 4, name: "Sudan-034" },
-//     { id: 5, name: "Sudan-035" }
-//   ]
-
-  dummyRegion: any = [
-    { id: 1, name: "Head Quarter" }
-  ]
-  employeeStatus: any = [
-    { id: 1, statusName: 'Active' },
-    { id: 2, statusName: 'Resigned' },
-    { id: 3, statusName: 'Terminated' },
-    { id: 4, statusName: 'Deceased' }
-  ]
-
-  gradesData: any = [
-
-  ]
-
-
-  name!: string;
-
-  size = 100000
-  uploadedFiles: any[] = [];
+  uploadedFiles!: Employee[];
 
 
 
   constructor(
+    // private cityService: CityService,
     private employeeService: EmployeeService,
     private router: Router,
     private messageService: MessageService,
     private gradeService: GradeService,
-    private cityService: CityService,
     private regionService: RegionService,
     private productService: ProductFieldServiceService
   ) { }
 
 
-
-  onUpload(event: any) {
-
-  }
-
-  onUpload1(event: any) {
-    for (let file of event.files) {
-      this.uploadedFiles.push(file);
-    }
-  }
-
   ngOnInit(): void {
+    this.items = [{ label: 'Employee', routerLink: '/employee' }, { label: 'Add Employee' }];
     this.getNationality();
     this.getJobTitle();
-    this.getDepartment() ;
+    this.getDepartment();
     this.getSections();
-    this.items = [{ label: 'Employee', routerLink: '/employee' }, { label: 'Add Employee' }];
-
     this.getAllGrades();
     this.getCountry();
   }
 
-  getCountry(): void {
+  getCountry(): Region[] {
     this.regionService.getRegion().subscribe(
       (res: Region[]) => {
         const uniqueCountries = this.getUniqueCountries(res, 'country');
         this.country = uniqueCountries;
       },
       (err) => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: err.error });
       }
     );
+    return this.country;
   }
 
   getUniqueCountries(regions: Region[], propertyName: string): Region[] {
@@ -177,38 +241,33 @@ export class AddEmployeeComponent implements OnInit {
         uniqueCountries.push(region);
       }
     }
-
     return uniqueCountries;
   }
 
-  getRegions(country: string): void {
+  getRegions(country: string): Region[] {
     this.regionService.getRegionByCountry(country).subscribe((res: Region[]) => {
       this.region = [];
       this.employee.region = null;
-      res.forEach((r: any) => {
-        const parsedCities = JSON.parse(r.cities);
-        this.region.push({ ...r, cities: parsedCities });
-      });
+      this.region = res;
     }, err => {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: err.error });
     });
+    return this.region;
   }
 
-  getAllCity(region: string): void {
+  getAllCity(region: string): Region[] {
     this.regionService.getCitiesByRegion(region).subscribe(
       (res: Region) => {
-        this.cityData = [];
-        let getCities = [];
-        getCities.push(res);
-        getCities.forEach((element: any) => {
-          const parsedCities = JSON.parse(element.cities)
-          this.cityData.push(...parsedCities);
-        });
-        this.cityData = this.cityData.map((city, index) => ({
+        this.employee.city = null;
+        const getCities = typeof res.cities === 'string' ? JSON.parse(res.cities) : res.cities;
+        this.cityData = getCities.map((city: Region, index: number) => ({
           cities: city,
           id: index + 1,
         }));
       }, err => {
+        this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: err.error });
       });
+    return this.cityData;
   }
 
   getAllGrades() {
@@ -217,16 +276,9 @@ export class AddEmployeeComponent implements OnInit {
     })
   }
 
-//   getAllCity() {
-//     this.cityService.getCity().subscribe((res: City[]) => {
-//       this.cityData = res;
-//     })
-//   }
-
   onAutoFilled() {
     this.gradeService.getGrades().subscribe((res: Grade[]) => {
       const selectedGrade = res.find((grade) => grade.name === this.employee.grade);
-
       if (selectedGrade) {
         this.employee.vehicleBudget = selectedGrade.vehicleBudget
       }
@@ -234,53 +286,44 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   onSubmit() {
-    this.employeeService.addEmployee(this.employee).subscribe((res) => {
+    this.employeeService.addEmployee(this.employee).subscribe((res: Employee) => {
       this.messageService.add({ severity: 'success', summary: 'Employee Added Successfully' });
-
-
       setTimeout(() => {
         this.router.navigate(['/employee'])
       }, 5000)
-
     },
       (error) => {
-        console.error('Error while saving the file:', error);
-
         this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
       })
 
   }
 
-  getAutoFilledRegion(city: City): void {
-    const selectedCityObj = this.cityData.find((item: any) => item.name === city);
-    this.region = selectedCityObj.region;
-  }
   getNationality() {
-    this.productService.getProductFieldByName('Nationality').subscribe(res => {
-      this.nationalities = res.productFieldValuesList;
+    this.productService.getProductFieldByName('Nationality').subscribe((res: ProductField) => {
+      this.nationalities = res;
     }, error => {
-
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
     })
   }
   getJobTitle() {
-    this.productService.getProductFieldByName('Job Title').subscribe(res => {
-      this.jobTitles = res.productFieldValuesList;
+    this.productService.getProductFieldByName('Job Title').subscribe((res: ProductField) => {
+      this.jobTitles = res;
     }, error => {
-
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
     })
   }
   getDepartment() {
-    this.productService.getProductFieldByName('Department').subscribe(res => {
-      this.departments = res.productFieldValuesList;
+    this.productService.getProductFieldByName('Department').subscribe((res: ProductField) => {
+      this.departments = res;
     }, error => {
-
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
     })
   }
   getSections() {
-    this.productService.getProductFieldByName('Section').subscribe(res => {
-      this.sections = res.productFieldValuesList;
+    this.productService.getProductFieldByName('Section').subscribe((res: ProductField) => {
+      this.sections = res;
     }, error => {
-
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
     })
   }
 }
