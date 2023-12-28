@@ -83,19 +83,18 @@
                       <p-button [routerLink]="['/view-assignment/', vehicleAssignment.id]" pTooltip="View" tooltipPosition="top" icon="bi bi-eye" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true">
                       </p-button>
 
-                      <p-button (click)="showDialog()" icon="bi bi-trash" class='ml'  pTooltip="Trash" tooltipPosition="top" [outlined]="true" [rounded]="true" [raised]="true" severity="danger">
+                      <p-button (click)="showDialog(vehicleAssignment.id)" icon="bi bi-trash" class='ml'  pTooltip="Delete Assignment" tooltipPosition="top" [outlined]="true" [rounded]="true" [raised]="true" severity="danger">
 
                       </p-button>
 
-                       <p-button [routerLink]="['/assignment-attachment',vehicleAssignment.id]" icon="bi bi-paperclip" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="warning">
-                       </p-button>
+                
                        <p-button [routerLink]="['/assignment-attachment',vehicleAssignment.id]"  pTooltip="Add Attachments" tooltipPosition="top" icon="bi bi-paperclip" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="warning">
 
                        </p-button>
 
                        <p-button [routerLink]="['/assignment-history/',vehicleAssignment.vehicle.id]" pTooltip="View History" tooltipPosition="top" icon="bi bi-clock-history" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="success"></p-button>
 
-                       <p-button [routerLink]="['/individual-file-list-component/','vehicle-assignment',vehicleAssignment.id]" icon="bi bi-download" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="success">
+                       <p-button [routerLink]="['/individual-file-list-component/','vehicle-assignment',vehicleAssignment.id]" pTooltip="Download Attachments" tooltipPosition="top" icon="bi bi-download" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="success">
                       </p-button>
                     </td>
                   </tr>
@@ -118,7 +117,7 @@
           label="Delete"
           type="submit"
           class="bg-b-color ml"
-          (click)="deleteVehicleAssignment(vehicleAssignment.id)">
+          (click)="deleteVehicleAssignment(vehicleAssignmentId)">
         </p-button>
     </p-dialog>
                 </ng-template>
