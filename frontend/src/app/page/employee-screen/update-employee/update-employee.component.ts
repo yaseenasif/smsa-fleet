@@ -123,16 +123,18 @@ export class UpdateEmployeeComponent {
     })
   }
 
-  getCountry(): void {
+  getCountry(): Region[] {
     this.regionService.getRegion().subscribe(
       (res: Region[]) => {
         const uniqueCountries = this.getUniqueCountries(res, 'country');
         this.country = uniqueCountries;
-        this.getRegions(this.employee.country);
+        const country = typeof this.employee?.country === 'string' ? this.employee.country : "";
+        this.getRegions(country);
       },
       (err) => {
       }
     );
+    return this.country;
   }
 
   getUniqueCountries(regions: Region[], propertyName: string): Region[] {
@@ -147,38 +149,38 @@ export class UpdateEmployeeComponent {
         uniqueCountries.push(region);
       }
     }
-
     return uniqueCountries;
   }
 
-  getRegions(country: any): void {
+  getRegions(country: string): Region[] {
     this.regionService.getRegionByCountry(country).subscribe((res: Region[]) => {
       this.region = [];
-      res.forEach((r: any) => {
-        const parsedCities = JSON.parse(r.cities);
-        this.region.push({ ...r, cities: parsedCities });
-      });
-      this.getAllCity(this.employee.region);
+      this.region = res;
+      const regionInEmployee = typeof this.employee?.region === 'string' ? this.employee.region : "";
+      this.getAllCity(regionInEmployee);
     }, err => {
     });
+    return this.region;
   }
 
-  getAllCity(region: any): void {
+  getAllCity(region: string): Region[] {
     this.regionService.getCitiesByRegion(region).subscribe(
       (res: Region) => {
-        this.cityData = [];
-        let getCities = [];
-        getCities.push(res);
-        getCities.forEach((element: any) => {
-          const parsedCities = JSON.parse(element.cities)
-          this.cityData.push(...parsedCities);
-        });
-        this.cityData = this.cityData.map((city: Region, index: number) => ({
+        // let getCities = [];
+        // this.cityData = [];
+        // getCities.push(res);
+        // getCities.forEach((element: any) => {
+        //   const parsedCities = JSON.parse(element.cities)
+        //   this.cityData.push(...parsedCities);
+        // });
+        const getCities = typeof res.cities === 'string' ? JSON.parse(res.cities) : res.cities;
+        this.cityData = getCities.map((city: Region, index: number) => ({
           cities: city,
           id: index + 1,
         }));
       }, err => {
       });
+    return this.cityData;
   }
 
 

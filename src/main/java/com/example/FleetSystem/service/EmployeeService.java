@@ -328,7 +328,7 @@ public class EmployeeService {
                 String[] expectedHeaders = {
                         "S.No", "EmployeeNumber", "BudgetRef", "EmployeeName", "Gender", "MaritalStatus", "DOB", "DOJ",
                         "JobTitle", "Status", "Region", "Location", "Organization", "Division", "DeptCode",
-                        "Department", "Section", "IQAMANO", "SVEmpNo.", "SVEmpName", "City", "Age", "PortOfDestination",
+                        "Department", "Section", "NationalIdNumber", "SVEmpNo.", "SVEmpName", "City", "Age", "CostCentre",
                         "Nationality", "Email", "MobileNo", "Grade"
                 };
 

@@ -117,7 +117,7 @@ export class AddDriverComponent implements OnInit {
     this.driver.empId.grade = this.selectedEmployee.grade
     this.driver.empId.licenseNumber = this.selectedEmployee.licenseNumber
     this.driver.empId.vehicleBudget = this.selectedEmployee.vehicleBudget
-    this.driver.empId.costCentre = this.selectedEmployee.costCentre
+    this.driver.costCentre = this.selectedEmployee.costCentre
 
   }
 

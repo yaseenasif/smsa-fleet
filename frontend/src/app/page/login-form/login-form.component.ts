@@ -25,6 +25,8 @@ export class LoginFormComponent implements OnInit {
   constructor(private formBuilder:FormBuilder,private authService:AuthService,private router: Router) { }
 
   ngOnInit(): void {
+
+    localStorage.removeItem("accessToken");
     // this.loginForm = this.formBuilder.group({
     //   name:['',[Validators.required,Validators.min(7)]],
     //   password:['',[Validators.required,Validators.min(7)]]
