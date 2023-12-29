@@ -18,7 +18,6 @@ import { Vehicle } from 'src/app/modal/vehicle';
 })
 export class AddDriverComponent implements OnInit {
   items: MenuItem[] | undefined;
-  
   existingDrivers: Driver[] = [];
   driver: Driver = {
     id: undefined,
@@ -52,10 +51,10 @@ export class AddDriverComponent implements OnInit {
       licenseNumber: undefined,
       vehicleBudget: undefined,
       costCentre: undefined
-    },
+  },
     licenseNumber: undefined,
     vehicleBudget: undefined,
-    costCentre: undefined,
+    costCentre : undefined,
     assignedVehicle: undefined
   }
 
@@ -71,23 +70,23 @@ export class AddDriverComponent implements OnInit {
     private router: Router,
   ) { }
 
-  name!: string;
-  contactNumber!: string;
-  referenceNumber!: string;
-  size = 100000
+  name!:string;
+  contactNumber!:string;
+  referenceNumber!:string;
+  size=100000
   uploadedFiles: any[] = [];
 
-  onUpload(event: any) {
+   onUpload(event: any) {
 
   }
 
-  onUpload1(event: any) {
-    for (let file of event.files) {
-      this.uploadedFiles.push(file);
+   onUpload1(event:any) {
+    for(let file of event.files) {
+        this.uploadedFiles.push(file);
     }
   }
   ngOnInit(): void {
-    this.items = [{ label: 'Driver List', routerLink: '/driver' }, { label: 'Add Driver' }];
+    this.items = [{ label: 'Driver List',routerLink:'/driver'},{ label: 'Add Driver'}];
     this.getAllEmployees();
     // this.getUnassignedvehicles();
 
@@ -119,7 +118,7 @@ export class AddDriverComponent implements OnInit {
     this.driver.empId.grade = this.selectedEmployee.grade
     this.driver.empId.licenseNumber = this.selectedEmployee.licenseNumber
     this.driver.empId.vehicleBudget = this.selectedEmployee.vehicleBudget
-    this.driver.empId.costCentre = this.selectedEmployee.costCentre
+    this.driver.costCentre = this.selectedEmployee.costCentre
 
   }
 
@@ -129,7 +128,7 @@ export class AddDriverComponent implements OnInit {
 
       setTimeout(() => {
         this.router.navigate(['/driver'])
-      }, 5000)
+      },5000)
     },
       (error) => {
         this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });

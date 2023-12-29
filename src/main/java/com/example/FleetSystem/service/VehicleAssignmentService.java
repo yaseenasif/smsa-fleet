@@ -57,6 +57,8 @@ public class VehicleAssignmentService {
 
     @Autowired
     StorageService storageService;
+    @Autowired
+    DriverRepository driverRepository;
 
     public VehicleAssignmentDto save(VehicleAssignmentDto vehicleAssignmentDto) {
         Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -66,10 +68,12 @@ public class VehicleAssignmentService {
 
             Optional<Vehicle> vehicle = vehicleRepository.findByPlateNumber(vehicleAssignmentDto.getVehicle().getPlateNumber());
             Optional<Employee> employee = employeeRepository.findById(vehicleAssignmentDto.getAssignToEmpId().getId());
-
             if(vehicle.isPresent()) {
                 Optional<VehicleAssignment> existingVehicleAssignment = vehicleAssignmentRepository.findByVehicle(vehicle.get());
                 if(employee.isPresent()) {
+                    Optional<Driver> driver = driverRepository.findByEmpId(employee.get());
+                    driver.ifPresent(value -> value.setAssignedVehicle(vehicle.get().getPlateNumber()));
+
                     if (existingVehicleAssignment.isPresent()){
                         existingVehicleAssignment.get().setAssignToEmpId(employee.get());
                         existingVehicleAssignment.get().setAssignToEmpName(employee.get().getEmpName());
@@ -121,6 +125,9 @@ public class VehicleAssignmentService {
             if (principal instanceof UserDetails) {
                 String username = ((UserDetails) principal).getUsername();
                 User user = userRepository.findByEmail(username);
+
+                Optional<Driver> driver = driverRepository.findByEmpId(optionalVehicleAssignment.get().getAssignToEmpId());
+                driver.ifPresent(value -> value.setAssignedVehicle(null));
 
                 optionalVehicleAssignment.get().setStatus(Boolean.FALSE);
                 optionalVehicleAssignment.get().setDeletedAt(LocalDate.now());

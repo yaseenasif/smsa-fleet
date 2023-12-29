@@ -58,20 +58,8 @@ public class DriverService {
 
             if(employee.isPresent()) {
                 driver.setEmpId(employee.get());
-//                driver.setEmpName(driverDto.getEmpId().getEmpName());
-//                driver.setGrade(driverDto.getEmpId().getGrade());
-//                driver.setCity(driverDto.getEmpId().getCity());
-//                driver.setTitle(driverDto.getEmpId().getJobTitle());
-//                driver.setDepartment(driverDto.getEmpId().getDepartment());
-//                driver.setContactNumber(driverDto.getEmpId().getContactNumber());
-//                driver.setEmailAddress(driverDto.getEmpId().getCompanyEmailAddress());
-//                driver.setRegion(driverDto.getEmpId().getRegion());
-//                driver.setNationality(driverDto.getEmpId().getNationality());
-//                driver.setSection(driverDto.getEmpId().getSection());
-//                driver.setJoiningDate(driverDto.getEmpId().getJoiningDate());
                 driver.setLicenseNumber(driverDto.getEmpId().getLicenseNumber());
                 driver.setVehicleBudget(driverDto.getEmpId().getVehicleBudget());
-//                driver.setCostCentre(driverDto.getEmpId().getCostCentre());
                 driver.setCreatedAt(LocalDate.now());
                 driver.setCreatedBy(user);
                 driver.setStatus(Boolean.TRUE);
@@ -122,7 +110,7 @@ public class DriverService {
         throw new RuntimeException("Record doesn't exist");
     }
 
-    public DriverDto updateById(Long id, DriverDto driverDto) {
+    public DriverDto updateById(Long id, String plateNumber, DriverDto driverDto) {
         Optional<Driver> driver = driverRepository.findById(id);
 
         if(driver.isPresent()){
@@ -131,26 +119,15 @@ public class DriverService {
                 String username = ((UserDetails) principal).getUsername();
                 User user = userRepository.findByEmail(username);
 
-//                    driver.get().setEmpName(driverDto.getEmpId().getEmpName());
-//                    driver.get().setTitle(driverDto.getEmpId().getJobTitle());
-//                    driver.get().setJoiningDate(driverDto.getEmpId().getJoiningDate());
-//                    driver.get().setDepartment(driverDto.getEmpId().getDepartment());
-//                    driver.get().setSection(driverDto.getEmpId().getSection());
-//                    driver.get().setRegion(driverDto.getEmpId().getRegion());
-//                    driver.get().setCity(driverDto.getEmpId().getCity());
-//                    driver.get().setNationality(driverDto.getEmpId().getNationality());
-//                    driver.get().setContactNumber(driverDto.getEmpId().getContactNumber());
-//                    driver.get().setEmailAddress(driverDto.getEmpId().getCompanyEmailAddress());
-//                    driver.get().setGrade(driverDto.getEmpId().getGrade());
                     driver.get().setLicenseNumber(driverDto.getLicenseNumber());
                     driver.get().setVehicleBudget(driverDto.getVehicleBudget());
-//                    driver.get().setCostCentre(driverDto.getEmpId().getCostCentre());
-//                    driver.get().setAttachments(driverDto.getAttachments());
                     driver.get().setUpdatedAt(LocalDate.now());
                     driver.get().setUpdatedBy(user);
-                    if (driverDto.getAssignedVehicle() != null) {
-                        driver.get().setAssignedVehicle(driverDto.getAssignedVehicle());
-                        Optional<Vehicle> vehicle = vehicleRepository.findByPlateNumber(driverDto.getAssignedVehicle());
+
+                    if (!plateNumber.isEmpty()) {
+//                        Assign vehicle
+                        Optional<Vehicle> vehicle = vehicleRepository.findByPlateNumber(plateNumber);
+                        driver.get().setAssignedVehicle(plateNumber);
                         VehicleAssignment vehicleAssignment = VehicleAssignment.builder()
                                 .assignToEmpId(driver.get().getEmpId())
                                 .assignToEmpName(driver.get().getEmpId().getEmpName())
@@ -159,6 +136,20 @@ public class DriverService {
                                 .createdBy(user)
                                 .status(Boolean.TRUE)
                                 .build();
+
+//                        Release assignment
+                        Optional<Vehicle> existingVehicle = vehicleRepository.findByPlateNumber(driverDto.getAssignedVehicle());
+                        if (existingVehicle.isPresent()) {
+                            Optional<VehicleAssignment> existingAssignment = vehicleAssignmentRepository.findByVehicle(existingVehicle.get());
+                            if (existingAssignment.isPresent()){
+                            existingAssignment.get().setAssignToEmpId(null);
+                            existingAssignment.get().setAssignToEmpName(null);
+                            existingAssignment.get().setDeletedAt(LocalDate.now());
+                            existingAssignment.get().setDeletedBy(user);
+                            existingAssignment.get().setStatus(Boolean.FALSE);
+                            vehicleAssignmentRepository.save(existingAssignment.get());
+                          }
+                        }
                         vehicleAssignmentRepository.save(vehicleAssignment);
                     }
 
