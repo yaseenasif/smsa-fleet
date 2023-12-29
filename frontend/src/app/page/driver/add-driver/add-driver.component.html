@@ -201,6 +201,8 @@
                   <input
                     pInputText
                     id="name"
+                    (keypress)="onKeyPress($event)" 
+                    pattern="[0-9]*"
                     aria-describedby="name-help"
                     name="contactNumber"
                     [(ngModel)]="driver.empId.contactNumber"
@@ -257,6 +259,8 @@
                   <label htmlFor="name">License Number</label>
                   <input
                     pInputText
+                    (keypress)="onKeyPress($event)" 
+                    pattern="[0-9]*"
                     id="name"
                     aria-describedby="name-help"
                     name="licenseNumber"
@@ -276,13 +280,15 @@
                   <label htmlFor="name">Vehicle Budget</label>
                   <input
                     pInputText
-                    id="name"
+                      id="name"
                     aria-describedby="name-help"
                     name="vehicleBudget"
                     [(ngModel)]="driver.empId.vehicleBudget"
                     #vehicleBudget="ngModel"
                     required
-                  />
+                    (keypress)="onKeyPress($event)" 
+                    pattern="[0-9]*"
+                    (focusout)="onFocusOutEvent($event.target)"/>
                   <small 
                       id="name-help" class="color-red" 
                       *ngIf="vehicleBudget.invalid && (vehicleBudget.dirty || vehicleBudget.touched)"
@@ -298,7 +304,7 @@
                     id="name"
                     aria-describedby="name-help"
                     name="costCenter"
-                    [(ngModel)]="driver.costCentre"
+                    [(ngModel)]="driver.empId.costCentre"
                     #costCenter="ngModel"
                     required
                   />
@@ -314,7 +320,7 @@
             <div class="flex flex-column gap-2 form-hook">
               <label htmlFor="name">Assign Vehicle</label>
               <p-dropdown
-                class="w-full"
+                class="w-full .p-dropdown-panel .p-dropdown-items .p-dropdown-empty-message"
                 [(ngModel)]="driver.assignedVehicle"
                 [options]="unassignedVehicles"
                 name="assignedVehicle"
@@ -325,8 +331,10 @@
                 filterBy="plateNumber"
                 [showClear]="true"
                 placeholder="Select Plate Number"
+                emptyMessage="Please select a vehicle budget"
+               
               >
-                <ng-template pTemplate="selectedItem">
+                <!-- <ng-template pTemplate="selectedItem">
                   <div
                     class="flex align-items-center gap-2"
                     *ngIf="driver"
@@ -338,10 +346,9 @@
                   <div class="flex align-items-center gap-2">
                     <div>{{ unassignedVehicles.plateNumber }}</div>
                   </div>
-                </ng-template>
+                </ng-template> -->
               </p-dropdown>
             </div>
-            
             
             <div class="flex align-items-center justify-content-end mt-4">
               <p-button

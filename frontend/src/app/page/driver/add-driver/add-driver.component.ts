@@ -18,6 +18,7 @@ import { Vehicle } from 'src/app/modal/vehicle';
 })
 export class AddDriverComponent implements OnInit {
   items: MenuItem[] | undefined;
+  
   existingDrivers: Driver[] = [];
   driver: Driver = {
     id: undefined,
@@ -48,13 +49,13 @@ export class AddDriverComponent implements OnInit {
       nationality: undefined,
       companyEmailAddress: undefined,
       grade: undefined,
-      licenseNumber: undefined,    
+      licenseNumber: undefined,
       vehicleBudget: undefined,
       costCentre: undefined
-  },
+    },
     licenseNumber: undefined,
     vehicleBudget: undefined,
-    costCentre : undefined,
+    costCentre: undefined,
     assignedVehicle: undefined
   }
 
@@ -62,39 +63,40 @@ export class AddDriverComponent implements OnInit {
 
   selectedEmployee!: Employee
   unassignedVehicles!: Vehicle[];
-  
-  constructor(private driverService: DriverService,
-              private employeeService: EmployeeService,
-              private messageService: MessageService,
-              private vehicleService: VehicleService,
-              private router: Router,
-              ) { }
 
-  name!:string;
-  contactNumber!:string;
-  referenceNumber!:string;
-  size=100000
+  constructor(private driverService: DriverService,
+    private employeeService: EmployeeService,
+    private messageService: MessageService,
+    private vehicleService: VehicleService,
+    private router: Router,
+  ) { }
+
+  name!: string;
+  contactNumber!: string;
+  referenceNumber!: string;
+  size = 100000
   uploadedFiles: any[] = [];
 
-   onUpload(event: any) {
+  onUpload(event: any) {
 
   }
 
-   onUpload1(event:any) {
-    for(let file of event.files) {
-        this.uploadedFiles.push(file);
+  onUpload1(event: any) {
+    for (let file of event.files) {
+      this.uploadedFiles.push(file);
     }
   }
   ngOnInit(): void {
-    this.items = [{ label: 'Driver List',routerLink:'/driver'},{ label: 'Add Driver'}];
+    this.items = [{ label: 'Driver List', routerLink: '/driver' }, { label: 'Add Driver' }];
     this.getAllEmployees();
-    this.getUnassignedvehicles();
+    // this.getUnassignedvehicles();
+
   }
 
   getAllEmployees() {
     this.employeeService.getAllEmployees().subscribe((res) => {
       res.map((el) => {
-      el.joiningDate = el.joiningDate ? new Date(el.joiningDate) : null
+        el.joiningDate = el.joiningDate ? new Date(el.joiningDate) : null
 
       })
       this.employee = res;
@@ -117,7 +119,7 @@ export class AddDriverComponent implements OnInit {
     this.driver.empId.grade = this.selectedEmployee.grade
     this.driver.empId.licenseNumber = this.selectedEmployee.licenseNumber
     this.driver.empId.vehicleBudget = this.selectedEmployee.vehicleBudget
-    this.driver.costCentre = this.selectedEmployee.costCentre
+    this.driver.empId.costCentre = this.selectedEmployee.costCentre
 
   }
 
@@ -127,18 +129,37 @@ export class AddDriverComponent implements OnInit {
 
       setTimeout(() => {
         this.router.navigate(['/driver'])
-      },5000)
+      }, 5000)
     },
-    (error) => {
-      this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
-    })
+      (error) => {
+        this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
+      })
   }
 
 
-  getUnassignedvehicles(){
-    this.vehicleService.getAllNotAssignedVehicles().subscribe((res)=>{
+  // getUnassignedvehicles(){
+  //   this.vehicleService.getAllNotAssignedVehicles().subscribe((res)=>{
+  //     this.unassignedVehicles = res;
+  //   })
+  // }
+  getAssignVehicle(vehicleBudget: number) {
+    this.vehicleService.getVehicleBudget(vehicleBudget).subscribe((res: Vehicle[]) => {
       this.unassignedVehicles = res;
+
     })
   }
-
+  onFocusOutEvent(value: any) {
+    if(value.value != ""){
+      this.getAssignVehicle(value.value)
+    }
+    else if(value.value === ""){
+      this.unassignedVehicles = [];
+    }
+  }
+  onKeyPress(event: any) {
+    const isNumber = /[0-9]/.test(event.key);
+    if (!isNumber) {
+      event.preventDefault();
+    }
+  }
 }
