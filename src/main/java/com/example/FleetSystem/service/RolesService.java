@@ -1,7 +1,9 @@
 package com.example.FleetSystem.service;
 
+import com.example.FleetSystem.dto.RegionDto;
 import com.example.FleetSystem.dto.RolesDto;
 import com.example.FleetSystem.model.Permission;
+import com.example.FleetSystem.model.Region;
 import com.example.FleetSystem.model.Roles;
 import com.example.FleetSystem.repository.RoleRepository;
 import org.modelmapper.ModelMapper;
@@ -23,20 +25,25 @@ public class RolesService {
     ModelMapper modelMapper;
 
     public RolesDto addRoles(RolesDto rolesDto) {
+        Roles roles = toEntity(rolesDto);
+        Optional<Roles> existingRole = roleRepository.findByName(rolesDto.getName());
 
-        Optional<Roles> existingRole = roleRepository.findById(rolesDto.getId());
-        Set<Permission> truePermissions = new HashSet<>();
-        if (existingRole.isPresent() && rolesDto!= null) {
-            for(Permission permission: rolesDto.getPermissions()){
-                if(permission.isStatus()){
-                    truePermissions.add(permission);
-                }
-            }
-            existingRole.get().setPermissions(truePermissions);
+        if (existingRole.isPresent()) {
+
+////            Set<Permission> truePermissions = rolesDto.getPermissions()
+////                    .stream()
+////                    .filter(Permission::isStatus)
+////                    .collect(Collectors.toSet());
+////
+////            existingRole.get().setPermissions(truePermissions);
+//            existingRole = Optional.of(roleRepository.save(existingRole.get()));
+            throw new RuntimeException("This role " + rolesDto.getName() + " already exist ");
+        } else {
+            existingRole = Optional.of(roleRepository.save(roles));
         }
-
-        return toDto(roleRepository.save(existingRole.get()));
+        return toDto(existingRole.get());
     }
+
 
     public List<RolesDto> getAll() {
         return toDtoList(roleRepository.findAll());
@@ -44,25 +51,40 @@ public class RolesService {
 
     public RolesDto getById(Long id) {
         Optional<Roles> roles = roleRepository.findById(id);
-        if (roles.isPresent()){
+        if (roles.isPresent()) {
             return toDto(roles.get());
         }
-        throw new RuntimeException(String.format("Role Not Found On this Id => %d",id));
+        throw new RuntimeException(String.format("Role Not Found On this Id => %d", id));
     }
 
-    public void deleteRoleById(Long id){
+    public void deleteRoleById(Long id) {
         Optional<Roles> roles = roleRepository.findById(id);
-        if(roles.isPresent()){
+        if (roles.isPresent()) {
             roleRepository.deleteById(id);
         }
         throw new RuntimeException("Record doesn't exist");
     }
 
-    public List<RolesDto> toDtoList(List<Roles> roles){
+    public List<RolesDto> toDtoList(List<Roles> roles) {
         return roles.stream().map(this::toDto).collect(Collectors.toList());
     }
 
-    public RolesDto toDto(Roles roles){
+    private Roles toEntity(RolesDto rolesDto) {
+        return modelMapper.map(rolesDto, Roles.class);
+    }
+
+    public RolesDto toDto(Roles roles) {
         return modelMapper.map(roles, RolesDto.class);
     }
+
+    public Roles updateRole(Long id, Roles role) {
+        return roleRepository.findById(id)
+                .map(existingRole -> {
+                    existingRole.setName(role.getName());
+                    existingRole.setPermissions(role.getPermissions());
+                    return roleRepository.save(existingRole);
+                })
+                .orElseThrow(() -> new RuntimeException(String.format("Role Not Found by this Id => %d", id)));
+    }
+
 }

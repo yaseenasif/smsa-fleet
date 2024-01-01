@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import {MenuItem} from 'primeng/api'
+import { ActivatedRoute, Router } from '@angular/router';
+import { MenuItem, MessageService } from 'primeng/api'
 import { Role } from 'src/app/modal/role';
 import { User } from 'src/app/modal/user';
 import { RoleService } from '../../role/role.service';
@@ -14,7 +14,7 @@ import { UserService } from '../user.service';
 export class UpdateUserComponent implements OnInit {
   items: MenuItem[] | undefined;
 
-  selectedRole!: Role
+  selectedRole: string | undefined | null;
   roles!: Role[];
 
   user: User = {
@@ -22,52 +22,70 @@ export class UpdateUserComponent implements OnInit {
     name: undefined,
     email: undefined,
     password: undefined,
-    roles: []
+    roles: [],
   }
 
   constructor(
     private route: ActivatedRoute,
     private userService: UserService,
-    private roleService: RoleService
+    private roleService: RoleService,
+    private messageService: MessageService,
+    private router: Router
   ) { }
 
-  userId: Number | undefined;
+  userId: number | undefined;
 
 
   ngOnInit(): void {
-    this.items = [{ label: 'User',routerLink:'/user'},{ label: 'Edit User'}];
+    this.items = [{ label: 'User', routerLink: '/user' }, { label: 'Edit User' }];
     this.userId = +this.route.snapshot.paramMap.get('id')!;
-
     this.getAllRoles()
     this.getUserById(this.userId)
-   
+
   }
 
-  getAllRoles(){
-    this.roleService.getAllRoles().subscribe((res: Role[])=>{
-      this.roles=res;      
-    })
+  getAllRoles() {
+    this.roleService.getAllRoles().subscribe(
+      (res: Role[]) => {
+        this.roles = res;
+      }, error => {
+        this.showError(error.error);
+      });
   }
 
-  getUserById(id: Number) {
+  getUserById(id: number) {
     this.userService.getUserById(id).subscribe((res: User) => {
       this.user = res;
-      console.log(this.user);
-      
-
-  })
+      this.selectedRole = res?.roles[0]?.name;
+    }, error => {
+      this.showError(error.error);
+    });
   }
 
   updateUser(user: User) {
-
-    this.userService.updateUser(this.userId!, user).subscribe((res) => {
-
-    })
-
+    
+    user.roles[0].name = this.selectedRole;
+    this.userService.updateUser(this.userId!, user).subscribe(
+      (res: User) => {
+        this.showSuccess(res);
+        setTimeout(() => {
+          this.router.navigate(['/user']);
+        }, 1500);
+      }, error => {
+        this.showError(error.error);
+      });
   }
 
   onSubmit() {
     this.updateUser(this.user)
   }
-  
+
+  showError(error: string): void {
+    this.messageService.add({ severity: 'error', summary: 'Update Error', detail: error });
+  }
+
+  showSuccess(user: User): void {
+    this.messageService.add({ severity: 'success', summary: ' Update Successfully', detail: `User ${user.name} has been updated` });
+  }
+
 }

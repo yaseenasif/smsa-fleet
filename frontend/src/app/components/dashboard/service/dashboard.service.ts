@@ -9,10 +9,11 @@ import { environment } from 'src/environments/environment';
 export class DashboardService {
 
   url = environment.baseurl;
-  
+
   constructor(private http: HttpClient) { }
 
   getDashboardCounts(): Observable<any> {
+    
     return this.http.get(`${this.url}/counts`);
   }
 

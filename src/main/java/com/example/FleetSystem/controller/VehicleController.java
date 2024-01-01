@@ -41,11 +41,20 @@ public class VehicleController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/search-vehicle")
-    public ResponseEntity<Page<VehicleDto>> searchVehicles(@RequestParam(value = "value",required = false) String value,
+    public ResponseEntity<Page<VehicleDto>> searchVehicles(@RequestParam(value = "value", required = false) String value,
                                                            @RequestParam(defaultValue = "0") int page,
                                                            @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
         VehicleSearchCriteria vehicleSearchCriteria = new ObjectMapper().readValue(value, VehicleSearchCriteria.class);
-        return ResponseEntity.ok(vehicleService.searchVehicles(vehicleSearchCriteria,page, size));
+        return ResponseEntity.ok(vehicleService.searchVehicles(vehicleSearchCriteria, page, size));
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/search-unassigned-vehicle")
+    public ResponseEntity<Page<VehicleDto>> searchUnassignedVehicles(@RequestParam(value = "value", required = false) String value,
+                                                                     @RequestParam(defaultValue = "0") int page,
+                                                                     @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
+        VehicleSearchCriteria vehicleSearchCriteria = new ObjectMapper().readValue(value, VehicleSearchCriteria.class);
+        return ResponseEntity.ok(vehicleService.searchUnAssignedVehicles(vehicleSearchCriteria, page, size));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -77,19 +86,19 @@ public class VehicleController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PatchMapping("/vehicle-active/{id}")
-    public ResponseEntity<VehicleDto> makeVehicleActive(@PathVariable Long id){
+    public ResponseEntity<VehicleDto> makeVehicleActive(@PathVariable Long id) {
         return ResponseEntity.ok(vehicleService.makeVehicleActive(id));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/add-bulk-vehicle")
-    public ResponseEntity<ResponseMessage> addBulkVehicle(@RequestParam("file") MultipartFile file){
+    public ResponseEntity<ResponseMessage> addBulkVehicle(@RequestParam("file") MultipartFile file) {
         return ResponseEntity.ok(new ResponseMessage(vehicleService.addBulkVehicle(file)));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/not-assigned-vehicle")
-    public ResponseEntity<List<VehicleDto>> getAllNotAssignedVehicle(){
+    public ResponseEntity<List<VehicleDto>> getAllNotAssignedVehicle() {
         return ResponseEntity.ok(vehicleService.getAllNotAssignedVehicle());
     }
 
@@ -111,22 +120,22 @@ public class VehicleController {
     }
 
     @GetMapping("/vehicle-available-for-replacement")
-    public ResponseEntity<List<VehicleDto>> availableForReplacement(){
+    public ResponseEntity<List<VehicleDto>> availableForReplacement() {
         return ResponseEntity.ok(vehicleService.availableForReplacement());
     }
 
     @GetMapping("/vehicle-history/{id}")
-    public ResponseEntity<List<VehicleHistoryResponse>> getVehicleHistoryById(@PathVariable Long id){
+    public ResponseEntity<List<VehicleHistoryResponse>> getVehicleHistoryById(@PathVariable Long id) {
         return ResponseEntity.ok(vehicleService.getVehicleHistoryById(id));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/search-vehicle-inactive")
-    public ResponseEntity<Page<VehicleDto>> searchInactiveVehicles(@RequestParam(value = "value",required = false) String value,
-                                                           @RequestParam(defaultValue = "0") int page,
-                                                           @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
+    public ResponseEntity<Page<VehicleDto>> searchInactiveVehicles(@RequestParam(value = "value", required = false) String value,
+                                                                   @RequestParam(defaultValue = "0") int page,
+                                                                   @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
         VehicleSearchCriteria vehicleSearchCriteria = new ObjectMapper().readValue(value, VehicleSearchCriteria.class);
-        return ResponseEntity.ok(vehicleService.searchInactiveVehicles(vehicleSearchCriteria,page, size));
+        return ResponseEntity.ok(vehicleService.searchInactiveVehicles(vehicleSearchCriteria, page, size));
     }
 
 }

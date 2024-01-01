@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import {MenuItem} from 'primeng/api'
+import { MenuItem, MessageService } from 'primeng/api'
+import { Role } from 'src/app/modal/role';
+import { RoleService } from '../role.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Permission } from 'src/app/modal/Permission';
+import { PermissionService } from '../../permission/service/permission.service';
 
 @Component({
   selector: 'app-edit-role',
@@ -8,27 +13,70 @@ import {MenuItem} from 'primeng/api'
 })
 export class EditRoleComponent {
   items: MenuItem[] | undefined;
+  role: Role = {
+    id: null,
+    name: null,
+    permissions: [],
+  };
+  permissions!: Permission[];
+  roleId: number = 0;
 
-  permission!: Permission[];
-  selectedPermission!: Permission[];
+  constructor(
+    private roleService: RoleService,
+    private messageService: MessageService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private permissionService: PermissionService
+  ) { }
 
-  constructor() { }
-  name!:string;
-  
+
   ngOnInit(): void {
-    this.items = [{ label: 'Role list',routerLink:'/role'},{ label: 'Edit Role'}];
+    this.items = [{ label: 'Role list', routerLink: '/role' }, { label: 'Edit Role' }];
+    this.roleId = +this.route.snapshot.paramMap.get('id')!;
+    this.getPermissions();
+    this.getRoleById(this.roleId);
+  }
 
-    this.permission = [
-      {name: 'All', id:1},
-      {name: 'Head', id:2},
-      {name: 'Admin', id:3},
-      {name: 'Admin', id:4},
-      {name: 'Admin', id:5}
-  ];
+  getPermissions(): Permission[] {
+    this.permissionService.getPermissions().subscribe(
+      (res: Permission[]) => {
+        this.permissions = res;
+      }, error => {
+        this.showError(error.error);
+      }
+    )
+    return this.permissions;
+  }
+
+  getRoleById(id: number): void {
+    this.roleService.getRolebyId(id).subscribe(
+      (res: Role) => {
+        this.role = res;
+      }, error => {
+        this.showError(error.error);
+      }
+    )
+  }
+
+  updateRole(): void {
+    
+    this.roleService.updateRole(this.roleId, this.role).subscribe(
+      (res: Role) => {
+        this.showSuccess(res);
+        setTimeout(() => {
+          this.router.navigate(['/role']);
+        }, 1500);
+      },
+      (error) => {
+        this.showError(error.error)
+      }
+    );
+  }
+  showError(error: string): void {
+    this.messageService.add({ severity: 'error', summary: 'Add Error', detail: error });
+  }
+  showSuccess(value: Role): void {
+    this.messageService.add({ severity: 'success', summary: ' Updated Successfully', detail: `Role ${value.name} has been updated` });
   }
 }
 
-interface Permission {
-  name: string,
-  id: number
-}

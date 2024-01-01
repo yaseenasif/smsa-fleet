@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { Role } from 'src/app/modal/role';
 import { User } from 'src/app/modal/user';
 import { RoleService } from '../../role/role.service';
 import { UserService } from '../user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-user',
@@ -23,33 +24,52 @@ export class AddUserComponent implements OnInit {
     password: undefined,
     roles: []
   }
- 
+
   // user!: User;
 
-  constructor(private roleService: RoleService,
-              private userService: UserService) { }
+  constructor(
+    private roleService: RoleService,
+    private userService: UserService,
+    private router: Router,
+    private messageService: MessageService
+  ) { }
 
 
   ngOnInit(): void {
 
-    this.items = [{ label: 'User',routerLink:'/user'},{ label: 'Add User'}];
+    this.items = [{ label: 'User', routerLink: '/user' }, { label: 'Add User' }];
     this.getAllRoles();
   }
 
 
-  getAllRoles(){
-    this.roleService.getAllRoles().subscribe((res: Role[])=>{
-      this.roles=res;      
+  getAllRoles() {
+    this.roleService.getAllRoles().subscribe((res: Role[]) => {
+      this.roles = res;
     })
   }
 
-  onSubmit() {    
-    this.userService.addUser(this.user).subscribe((res) => {      
-    })
+  onSubmit() {
+    
+    this.userService.addUser(this.user).subscribe(
+      (res: User) => {
+        this.showSuccess(res);
+        setTimeout(() => {
+          this.router.navigate(['/user']);
+        }, 1500);
+      }, error => {
+        this.showError(error.error);
+      });
   }
 
-  getRoleData() {
+  // getRoleData() {
 
+  // }
+
+  showError(error: string): void {
+    this.messageService.add({ severity: 'error', summary: 'Add Error', detail: error });
+  }
+  showSuccess(value: User): void {
+    this.messageService.add({ severity: 'success', summary: ' Added Successfully', detail: `User ${value.name} has been added` });
   }
 
 }

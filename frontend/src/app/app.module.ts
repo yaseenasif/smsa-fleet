@@ -32,8 +32,8 @@ import { EditRoleComponent } from './page/role/edit-role/edit-role.component';
 import { CommonModule } from '@angular/common';
 import { ProductFieldListComponent } from './page/product-field/product-field-list/product-field-list.component';
 import { ProductFieldAddComponent } from './page/product-field/product-field-add/product-field-add.component';
-import {FormsModule} from'@angular/forms'
-import {DomesticShippingListComponent} from './page/shipping-order/domestic/domestic-shipping-list/domestic-shipping-list.component';
+import { FormsModule } from '@angular/forms'
+import { DomesticShippingListComponent } from './page/shipping-order/domestic/domestic-shipping-list/domestic-shipping-list.component';
 import { NgxUiLoaderModule, NgxUiLoaderHttpModule } from "ngx-ui-loader";
 import { TimelineModule } from 'primeng/timeline';
 import { TooltipModule } from 'primeng/tooltip';
@@ -122,6 +122,9 @@ import { RegionComponent } from './page/region/region.component';
 import { AddRegionComponent } from './page/region/add-region/add-region.component';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { AssignmentHistoryComponent } from './page/Assignment/assignment-history/assignment-history.component';
+import { CountUpModule } from 'ngx-countup';
+import { MessageService } from 'primeng/api';
+import { UnAssignedVehiclesComponent } from './page/vehicle-screen/un-assigned-vehicles/un-assigned-vehicles.component';
 
 @NgModule({
   declarations: [
@@ -205,6 +208,7 @@ import { AssignmentHistoryComponent } from './page/Assignment/assignment-history
     RegionComponent,
     AddRegionComponent,
     AssignmentHistoryComponent,
+    UnAssignedVehiclesComponent,
   ],
   imports: [
     ConfirmDialogModule,
@@ -241,19 +245,21 @@ import { AssignmentHistoryComponent } from './page/Assignment/assignment-history
     TooltipModule,
     ToggleButtonModule,
     ChipsModule,
+    CountUpModule,
     NgxUiLoaderHttpModule.forRoot({
-      showForeground:true
+      showForeground: true
     })
   ],
 
   providers: [
+    MessageService,
     // AuthGuard,
     // DatePipe,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     // { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true }, // Register the AuthInterceptor
     // provideRouter(routes, withHashLocation()),
-    [{provide: LocationStrategy, useClass: HashLocationStrategy}]
-],
+    [{ provide: LocationStrategy, useClass: HashLocationStrategy }]
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

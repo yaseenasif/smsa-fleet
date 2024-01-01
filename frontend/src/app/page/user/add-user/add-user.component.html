@@ -5,6 +5,7 @@
       <app-dashboard-head></app-dashboard-head>
 
       <div class="main">
+        <p-toast></p-toast>
         <div class="card flex justify-content-center">
           <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
         </div>
@@ -12,94 +13,93 @@
           <div class="card">
             <h1 class="mb-4 h-color">Add User</h1>
             <form #userForm="ngForm" (ngSubmit)="onSubmit()">
-            <div class="grid">
+              <div class="grid">
+                <div class="col-12 md:col-12 lg:col-12">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Name</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      [(ngModel)]="user.name"
+                      #name="ngModel"
+                      name="name"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="email">Email</label>
+                    <input
+                      pInputText
+                      id="email"
+                      aria-describedby="email-help"
+                      [(ngModel)]="user.email"
+                      #email="ngModel"
+                      name="email"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="password">Password</label>
+                    <input
+                      pInputText
+                      id="password"
+                      aria-describedby="password-help"
+                      [(ngModel)]="user.password"
+                      #password="ngModel"
+                      name="password"
+                      required
+                    />
+                  </div>
+                </div>
 
-             
-              <div class="col-12 md:col-12 lg:col-12">
-                <div class="flex flex-column gap-2">
-                  <label htmlFor="name">Name</label>
-                  <input
-                    pInputText
-                    id="name"
-                    aria-describedby="name-help"
-                    [(ngModel)]="user.name"
-                    #name = "ngModel"
-                    name = "name"
-                    required
-                  />
-                 
-                </div>
-              </div>
-              <div class="col-12 md:col-12 lg:col-6">
-                <div class="flex flex-column gap-2">
-                  <label htmlFor="email">Email</label>
-                  <input
-                    pInputText
-                    id="email"
-                    aria-describedby="email-help"
-                    [(ngModel)]="user.email"
-                    #email = "ngModel"
-                    name = "email"
-                    required
-                  />
-                
-                </div>
-              </div>
-              <div class="col-12 md:col-12 lg:col-6">
-                <div class="flex flex-column gap-2">
-                  <label htmlFor="password">Password</label>
-                  <input
-                    pInputText
-                    id="password"
-                    aria-describedby="password-help"
-                    [(ngModel)]="user.password"
-                    #password = "ngModel"
-                    name = "password"
-                    required
-                  />
-               
-                </div>
-              </div>
-             
-              <div class="col-12 md:col-12 lg:col-6">
-                <div class="flex flex-column gap-2 form-hook">
-                  <label htmlFor="name">Role
-
-                  </label>
-                  <p-dropdown class="w-full" [options]="roles"  
-                  [(ngModel)]="user.roles[0]"
-                  #role = "ngModel"
-                  name = "role"
-                  optionLabel="name"
-                  [filter]="true" filterBy="name" 
-                  [showClear]="true" 
-                  placeholder="Select a Role"
-                  (onChange)="getRoleData()"
-                  >
-                      <ng-template pTemplate="selecteRole">
-                          <div class="flex align-items-center gap-2" *ngIf="selectedRole">
-                              <div>{{ selectedRole.name}}</div>
-                          </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2 form-hook">
+                    <label htmlFor="name">Role </label>
+                    <p-dropdown
+                      class="w-full"
+                      [options]="roles"
+                      [(ngModel)]="user.roles[0]"
+                      #role="ngModel"
+                      name="role"
+                      optionLabel="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                      placeholder="Select a Role"
+                    >
+                      <!-- <ng-template pTemplate="selecteRole">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="selectedRole"
+                        >
+                          <div>{{ selectedRole.name }}</div>
+                        </div>
                       </ng-template>
                       <ng-template let-roles pTemplate="item">
-                          <div class="flex align-items-center gap-2">
-                              <div>{{ roles.name }}</div>
-                          </div>
-                      </ng-template>
-                  </p-dropdown>
+                        <div class="flex align-items-center gap-2">
+                          <div>{{ roles.name }}</div>
+                        </div>
+                      </ng-template> -->
+                    </p-dropdown>
+                  </div>
+                </div>
               </div>
+              <div class="flex align-items-center justify-content-end mt-4">
+                <p-button
+                  label="Cancel"
+                  class="bg-o-color mr"
+                  routerLink="/user"
+                  styleClass="p-button-outlined"
+                >
+                </p-button>
+                <p-button label="Save" type="submit" class="bg-b-color ml">
+                </p-button>
               </div>
-            </div>
-            <div class="flex align-items-center justify-content-end mt-4">
-              <p-button
-                label="Cancel"
-                class="bg-o-color mr"
-                routerLink="/user"
-                styleClass="p-button-outlined"
-              >
-              </p-button>
-              <p-button label="Save" type="submit" class="bg-b-color ml"> </p-button>
-            </div>
             </form>
           </div>
         </div>

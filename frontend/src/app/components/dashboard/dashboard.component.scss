@@ -1,38 +1,39 @@
-
-.card-section-i{
-    width:40%;
-}
-.card-section-c{
-    width:60%;
+.card-section-i {
+  width: 40%;
 }
 
-.card-section-i>.bi{
-   font-size:40px;
-   color:#ffffff;
+.card-section-c {
+  width: 60%;
 }
-  
+
+.card-section-i>.bi {
+  font-size: 40px;
+  color: #ffffff;
+}
+
 
 .bg-c-blue {
-    background: linear-gradient(45deg,#4099ff,#73b4ff);
+  background: linear-gradient(45deg, #001d3d, #004080);
 }
 
 .bg-c-green {
-    background: linear-gradient(45deg,#2ed8b6,#59e0c5);
+  background: linear-gradient(45deg, #2ed8b6, #59e0c5);
 }
 
 .bg-c-yellow {
-    background: linear-gradient(45deg,#ffdb4d,#ffee80);
+  background: linear-gradient(45deg, #ffdb4d, #ffee80);
 }
 
 .bg-c-orange {
-    background: linear-gradient(45deg,#FAA43A,#ffc57e);
+  background: linear-gradient(45deg, #FAA43A, #ffc57e);
 }
 
 .bg-c-pink {
-    background: linear-gradient(45deg,#FF5370,#ff869a);
+  background: linear-gradient(45deg, #FF5370, #ff869a);
 }
-.bg-w{
-   color: #ffffff;
+
+.bg-w {
+  color: #ffffff;
 }
 
 .box {
@@ -42,54 +43,134 @@
 
 /* Large devices (lg) */
 @media (min-width: 1200px) {
-    .container {
-      display: flex;
-      justify-content: center;
-    }
-  
-    .box {
-      width: 20%; /* 5 divs in 1st row */
-      padding:5px 5px;
-    }
+  .container {
+    display: flex;
+    justify-content: space-between;
   }
-  
-  /* Medium devices (md) */
-  @media (min-width: 992px) and (max-width: 1199px) {
-    .container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-  
-    .box {
-      width: 30%; /* 3 divs in 1st row, 2 divs in 2nd row */
-      padding:5px 5px;
-    }
+
+  .box {
+    width: 25%;
+    /* 5 divs in 1st row */
+    padding: 5px 5px;
   }
-  
-  @media (min-width: 768px) and (max-width: 991px) {
-    .container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-  
-    .box {
-      width: 50%; /* 1 div in 1st row */
-      padding:5px 5px;
-    }
+}
+
+/* Medium devices (md) */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
   }
-  
-  /* Extra small devices (xs) */
-  @media (max-width: 767px) {
-    .container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-  
-    .box {
-      width: 100%; /* 1 div in 1st row */
-      padding:5px 5px;
-    }
+
+  .box {
+    width: 30%;
+    /* 3 divs in 1st row, 2 divs in 2nd row */
+    padding: 5px 5px;
   }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .box {
+    width: 50%;
+    /* 1 div in 1st row */
+    padding: 5px 5px;
+  }
+}
+
+/* Extra small devices (xs) */
+@media (max-width: 767px) {
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .box {
+    width: 100%;
+    /* 1 div in 1st row */
+    padding: 5px 5px;
+  }
+}
+
+/* Add your custom styles here */
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.card {
+  flex: 1 1 calc(33.3333% - 20px);
+  padding: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  /* Add border-color transition */
+  border: 2px solid #333;
+  /* Initial border color */
+}
+
+.card:hover {
+  background-color: #400099;
+  /* Change the hover background color to a darker shade */
+  border-color: #fff;
+  /* Change the border color on hover */
+}
+
+.card i {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.card-section-i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-section-c {
+  text-align: center;
+}
+
+.card h3 {
+  margin-bottom: 10px;
+}
+
+.card p.count {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
+/* Custom color for the blue background */
+.bg-c-blue {
+  background: linear-gradient(45deg, #001d3d, #004080);
+}
+
+/* Custom color for the green background */
+.bg-c-green {
+  background: linear-gradient(45deg, #00371f, #007e4e);
+}
+
+/* Custom color for the yellow background */
+.bg-c-yellow {
+  background: linear-gradient(45deg, #714c00, #bf9100);
+}
+
+/* Custom color for the pink background */
+.bg-c-pink {
+  background: linear-gradient(45deg, #600033, #99004d);
+}
+
+/* Custom color for the orange background */
+.bg-c-orange {
+  background: linear-gradient(45deg, #662600, #b35900);
+}

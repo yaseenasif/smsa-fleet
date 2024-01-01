@@ -5,6 +5,7 @@
       <app-dashboard-head></app-dashboard-head>
 
       <div class="main">
+        <p-toast></p-toast>
         <div class="card flex justify-content-center">
           <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
         </div>
@@ -20,11 +21,8 @@
                     id="name"
                     aria-describedby="name-help"
                     [ngModelOptions]="{ standalone: true }"
-                    [(ngModel)]="name"
+                    [(ngModel)]="role.name"
                   />
-                  <!-- <small id="name-help"
-                      >{{name}}</small
-                    > -->
                 </div>
               </div>
               <div class="col-12 md:col-12 lg:col-6">
@@ -33,13 +31,10 @@
                   <p-multiSelect
                     [ngModelOptions]="{ standalone: true }"
                     [options]="permission"
-                    [(ngModel)]="selectedPermission"
+                    [(ngModel)]="role.permissions"
                     optionLabel="name"
                   ></p-multiSelect>
                 </div>
-                <!-- <small id="name-help"
-                    >{{selectedPermission|json}}</small
-                  > -->
               </div>
             </div>
             <div class="flex align-items-center justify-content-end mt-4">
@@ -50,7 +45,12 @@
                 styleClass="p-button-outlined"
               >
               </p-button>
-              <p-button label="Save" class="bg-b-color ml"> </p-button>
+              <p-button
+                label="Save"
+                class="bg-b-color ml"
+                (onClick)="addRole()"
+              >
+              </p-button>
             </div>
           </div>
         </div>

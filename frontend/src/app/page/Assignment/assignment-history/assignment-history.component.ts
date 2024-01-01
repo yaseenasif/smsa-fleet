@@ -54,7 +54,7 @@ export class AssignmentHistoryComponent {
   } 
 
   getVehicleById(id: Number){
-    debugger
+    
     this.vehicleService.getVehicleById(id).subscribe((res)=>{
     this.vehicle = res;
     

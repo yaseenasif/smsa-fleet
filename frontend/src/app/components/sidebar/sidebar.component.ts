@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthguardService } from 'src/app/auth-service/authguard/authguard.service';
 
 
 @Component({
@@ -8,14 +9,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SidebarComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private authguardService: AuthguardService
+  ) { }
 
-  configTurner:boolean=false;
+  configTurner: boolean = false;
 
   ngOnInit(): void {
   }
 
-  turner(){
-    this.configTurner=!this.configTurner;
+  turner() {
+    this.configTurner = !this.configTurner;
+  }
+  hasPermission(permission: string): boolean {
+    return this.authguardService.hasPermission(permission)
   }
 }

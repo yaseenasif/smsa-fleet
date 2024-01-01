@@ -1,21 +1,33 @@
 @import '../../../styles.scss';
 
-.bg-p-color{
-background-color:$primary-color;
+.bg-p-color {
+  background-color: $primary-color;
 }
-.bg-w-color{
-    background-color:$white-color;
+
+.bg-w-color {
+  background-color: $white-color;
 }
-.login-form{
-    width: 80%;
-    background-color:$white-color;
-    border-radius: 10px;
-    padding:20px;
+
+.login-form {
+  width: 80%;
+  background-color: $white-color;
+  border-radius: 10px;
+  padding: 20px;
 }
-.r-color{
-color:$error-color;
+
+.r-color {
+  color: $error-color;
 }
-.sidebar-img {
-    max-width: 100%;
-    height: auto;
-  }
+
+// .sidebar-img {
+//     max-width: 100%;
+//     height: 99.5vh;
+//     background-attachment: fixed;
+//     background-size: contain;
+//   }
+
+.bg-img {
+  background-image: url('../../../assets/samsabg.png');
+  background-position: bottom;
+  background-size: cover;
+}

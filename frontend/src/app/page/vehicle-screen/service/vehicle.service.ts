@@ -30,11 +30,18 @@ export class VehicleService {
   }
 
   searchVehicle(value?: string | null, query?: { page: number, size: number }): Observable<PaginatedResponse<Vehicle>> {
-    if(value){
-      query = {page: 0 , size:10};
+    if (value) {
+      query = { page: 0, size: 10 };
     }
     return this.http.get<PaginatedResponse<Vehicle>>(`${this.url}/search-vehicle?value=${JSON.stringify(value ? value : '')}&page=${query?.page ? query.page : ''}&size=${query?.size ? query.size : ''}`);
-}
+  }
+
+  searchUnAssignedVehicles(value?: string | null, query?: { page: number, size: number }): Observable<PaginatedResponse<Vehicle>> {
+    if (value) {
+      query = { page: 0, size: 10 };
+    }
+    return this.http.get<PaginatedResponse<Vehicle>>(`${this.url}/search-unassigned-vehicle?value=${JSON.stringify(value ? value : '')}&page=${query?.page ? query.page : ''}&size=${query?.size ? query.size : ''}`);
+  }
 
   getAllNotAssignedVehicles(): Observable<Vehicle[]> {
     return this.http.get<Vehicle[]>(this.url.concat('/not-assigned-vehicle'));
@@ -67,24 +74,24 @@ export class VehicleService {
     return this.http.patch<VehicleReplacement>(`${this.url}/replace-vehicle/${vehicleId}`, replaceWith);
   }
 
-  getVehicleHistoryById(id: Number): Observable<VehicleHistory[]>{
+  getVehicleHistoryById(id: Number): Observable<VehicleHistory[]> {
     return this.http.get<VehicleHistory[]>(`${this.url}/vehicle-history/${id}`)
   }
 
   searchInactiveVehicle(value?: string | null, query?: { page: number, size: number }): Observable<PaginatedResponse<Vehicle>> {
-    if(value){
-      query = {page: 0 , size:10};
+    if (value) {
+      query = { page: 0, size: 10 };
     }
     return this.http.get<PaginatedResponse<Vehicle>>(`${this.url}/search-vehicle-inactive?value=${JSON.stringify(value ? value : '')}&page=${query?.page ? query.page : ''}&size=${query?.size ? query.size : ''}`);
-}
-
-   generateVehicleHistoryPdf(id: Number): Observable<Blob>{
-    return this.http.get(`${this.url}/vehicle-history-download/${id}`,{
-      responseType: 'blob'
-       });
   }
 
-  activateVehicle(id: Number):Observable<Vehicle>{
-    return this.http.patch<Vehicle>(`${this.url}/vehicle-active/${id}`,{})
+  generateVehicleHistoryPdf(id: Number): Observable<Blob> {
+    return this.http.get(`${this.url}/vehicle-history-download/${id}`, {
+      responseType: 'blob'
+    });
+  }
+
+  activateVehicle(id: Number): Observable<Vehicle> {
+    return this.http.patch<Vehicle>(`${this.url}/vehicle-active/${id}`, {})
   }
 }

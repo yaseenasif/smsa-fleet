@@ -1,6 +1,8 @@
 package com.example.FleetSystem.controller;
 
 import com.example.FleetSystem.dto.RolesDto;
+import com.example.FleetSystem.model.Permission;
+import com.example.FleetSystem.model.Roles;
 import com.example.FleetSystem.service.RolesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +41,12 @@ public class RolesController {
     public ResponseEntity<String> deleteRoleById(@PathVariable Long id){
         rolesService.deleteRoleById(id);
         return ResponseEntity.ok("Role deleted successfully");
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PatchMapping("/role/{id}")
+    public ResponseEntity<Roles> updateRole(@PathVariable Long id, @RequestBody Roles role){
+        return ResponseEntity.ok(rolesService.updateRole(id,role));
     }
 
 }

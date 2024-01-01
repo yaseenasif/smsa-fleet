@@ -110,7 +110,7 @@ public class EmployeeController {
                                                            @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
         EmployeeSearchCriteria employeeSearchCriteria = new EmployeeSearchCriteria();
         employeeSearchCriteria.setValue(value);
-        return ResponseEntity.ok(employeeService.   searchEmployee(employeeSearchCriteria,page, size));
+        return ResponseEntity.ok(employeeService.searchEmployee(employeeSearchCriteria,page, size));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

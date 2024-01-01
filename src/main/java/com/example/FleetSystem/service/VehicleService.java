@@ -45,6 +45,8 @@ public class VehicleService {
     @Autowired
     VehicleRepository vehicleRepository;
     @Autowired
+    VehicleAssignmentRepository vehicleAssignmentRepository;
+    @Autowired
     UserRepository userRepository;
     @Autowired
     ModelMapper modelMapper;
@@ -59,8 +61,6 @@ public class VehicleService {
     @Autowired
     StorageService storageService;
     @Autowired
-    VehicleAssignmentRepository vehicleAssignmentRepository;
-    @Autowired
     VehicleAssignmentAuditService vehicleAssignmentAuditService;
     @Autowired
     VehicleReplacementRepository vehicleReplacementRepository;
@@ -69,31 +69,31 @@ public class VehicleService {
 
     public VehicleDto deleteVehicleById(Long id) {
         Optional<Vehicle> vehicle = vehicleRepository.findById(id);
-        if(vehicle.isPresent()) {
+        if (vehicle.isPresent()) {
             Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByVehicle(vehicle.get());
             if (vehicleAssignment.isPresent()) {
                 vehicleAssignment.get().setAssignToEmpId(null);
                 vehicleAssignment.get().setAssignToEmpName(null);
                 vehicleAssignment.get().setStatus(Boolean.FALSE);
                 vehicleAssignmentRepository.save(vehicleAssignment.get());
-                }
-                vehicle.get().setStatus(Boolean.FALSE);
-                return toDto(vehicleRepository.save(vehicle.get()));
             }
+            vehicle.get().setStatus(Boolean.FALSE);
+            return toDto(vehicleRepository.save(vehicle.get()));
+        }
         throw new RuntimeException("Record doesn't exist");
 
     }
 
     public VehicleDto save(VehicleDto vehicleDto) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(principal instanceof UserDetails) {
+        if (principal instanceof UserDetails) {
             String username = ((UserDetails) principal).getUsername();
             User user = userRepository.findByEmail(username);
 
             Optional<Vehicle> vehicle = vehicleRepository.findByPlateNumber(vehicleDto.getPlateNumber());
 
-            if (vehicle.isPresent()){
-                throw new RuntimeException("Plate number Already exist : "+vehicleDto.getPlateNumber());
+            if (vehicle.isPresent()) {
+                throw new RuntimeException("Plate number Already exist : " + vehicleDto.getPlateNumber());
             }
 
             Vehicle vehicle1 = toEntity(vehicleDto);
@@ -103,13 +103,13 @@ public class VehicleService {
 
             Date currentDate = Date.valueOf(LocalDate.now());
 
-            if(currentDate.before(vehicleDto.getRegistrationExpiry()) || currentDate.equals(vehicleDto.getRegistrationExpiry())){
+            if (currentDate.before(vehicleDto.getRegistrationExpiry()) || currentDate.equals(vehicleDto.getRegistrationExpiry())) {
                 vehicle1.setRegistrationStatus(Boolean.TRUE);
-            }else if(currentDate.after(vehicleDto.getRegistrationExpiry())){
+            } else if (currentDate.after(vehicleDto.getRegistrationExpiry())) {
                 vehicle1.setRegistrationStatus(Boolean.FALSE);
             }
 
-            if(currentDate.before(vehicleDto.getInsuranceExpiry()) || currentDate.equals(vehicleDto.getInsuranceExpiry())){
+            if (currentDate.before(vehicleDto.getInsuranceExpiry()) || currentDate.equals(vehicleDto.getInsuranceExpiry())) {
                 vehicle1.setInsuranceStatus(Boolean.TRUE);
             } else if (currentDate.after(vehicleDto.getInsuranceExpiry())) {
                 vehicle1.setInsuranceStatus(Boolean.FALSE);
@@ -126,17 +126,23 @@ public class VehicleService {
     public Page<VehicleDto> searchVehicles(VehicleSearchCriteria vehicleSearchCriteria, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Specification<Vehicle> vehicleSpecification = VehicleSpecification.getSearchSpecification(vehicleSearchCriteria);
-        Page<Vehicle> vehiclePage = vehicleRepository.findAll(vehicleSpecification,pageable);
+        Page<Vehicle> vehiclePage = vehicleRepository.findAll(vehicleSpecification, pageable);
+        return vehiclePage.map(this::toDto);
+    }
+
+    public Page<VehicleDto> searchUnAssignedVehicles(VehicleSearchCriteria vehicleSearchCriteria, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<Vehicle> vehicleAssignmentSpecification = VehicleSpecification.getUnassignedVehiclesSpecification(vehicleSearchCriteria);
+        Page<Vehicle> vehiclePage = vehicleRepository.findAll(vehicleAssignmentSpecification, pageable);
         return vehiclePage.map(this::toDto);
     }
 
     public VehicleDto findById(Long id) {
         Optional<Vehicle> optionalVehicle = vehicleRepository.findById(id);
-        if(optionalVehicle.isPresent()) {
+        if (optionalVehicle.isPresent()) {
             Vehicle vehicle = optionalVehicle.get();
             return toDto(vehicle);
-        }
-        else {
+        } else {
             throw new RuntimeException(String.format("Vehicle not found with id => %d", id));
         }
     }
@@ -145,7 +151,7 @@ public class VehicleService {
         Optional<Vehicle> optionalVehicle = vehicleRepository.findById(id);
         if (optionalVehicle.isPresent()) {
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            if(principal instanceof UserDetails) {
+            if (principal instanceof UserDetails) {
                 String username = ((UserDetails) principal).getUsername();
                 User user = userRepository.findByEmail(username);
 
@@ -174,24 +180,24 @@ public class VehicleService {
                 return toDto(updatedVehicle);
             }
         }
-        throw new RuntimeException(String.format("Vehicle Not Found by this Id => %d" , id));
+        throw new RuntimeException(String.format("Vehicle Not Found by this Id => %d", id));
     }
 
     public VehicleDto makeVehicleActive(Long id) {
         Optional<Vehicle> vehicle = vehicleRepository.findById(id);
-        if(vehicle.isPresent()){
-            if(vehicle.get().isStatus()){
+        if (vehicle.isPresent()) {
+            if (vehicle.get().isStatus()) {
                 throw new RuntimeException("Record is already Active");
             }
             vehicle.get().setStatus(Boolean.TRUE);
             return toDto(vehicleRepository.save(vehicle.get()));
         }
-        throw new RuntimeException(String.format("Vehicle Not Found by this Id => %d" , id));
+        throw new RuntimeException(String.format("Vehicle Not Found by this Id => %d", id));
     }
 
 
     @Transactional
-    public List<String> addBulkVehicle(MultipartFile file){
+    public List<String> addBulkVehicle(MultipartFile file) {
         List<String> messages = new ArrayList<>();
 
         try (InputStream inputStream = file.getInputStream()) {
@@ -201,7 +207,7 @@ public class VehicleService {
             String uuid = UUID.randomUUID().toString();
             ExcelErrorResponse checkFile = validateExcelFile(file);
 
-            if(checkFile.isStatus()) {
+            if (checkFile.isStatus()) {
                 for (int rowNum = 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
                     Row row = sheet.getRow(rowNum);
                     Vehicle vehicle = new Vehicle();
@@ -251,7 +257,7 @@ public class VehicleService {
 
                     try {
                         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-                        if(principal instanceof UserDetails) {
+                        if (principal instanceof UserDetails) {
                             String username = ((UserDetails) principal).getUsername();
                             User user = userRepository.findByEmail(username);
 
@@ -274,21 +280,21 @@ public class VehicleService {
                             vehicle.setStatus(Boolean.TRUE);
                             vehicle.setUuid(uuid);
 
-                            if(String.valueOf(row.getCell(12)).replaceAll("\\s", "").equalsIgnoreCase("valid")){
+                            if (String.valueOf(row.getCell(12)).replaceAll("\\s", "").equalsIgnoreCase("valid")) {
                                 vehicle.setRegistrationStatus(Boolean.TRUE);
-                            }else {
+                            } else {
                                 vehicle.setRegistrationStatus(Boolean.FALSE);
                             }
 
-                            if(String.valueOf(row.getCell(14)).replaceAll("\\s", "").equalsIgnoreCase("valid")){
+                            if (String.valueOf(row.getCell(14)).replaceAll("\\s", "").equalsIgnoreCase("valid")) {
                                 vehicle.setInsuranceStatus(Boolean.TRUE);
-                            }else {
+                            } else {
                                 vehicle.setInsuranceStatus(Boolean.FALSE);
                             }
 
                             vehicleRepository.save(vehicle);
 
-                        }else {
+                        } else {
                             messages.add("UserName not Found");
                             return messages;
                         }
@@ -305,9 +311,9 @@ public class VehicleService {
 
                 messages.add("File uploaded and data saved successfully.");
                 return messages;
-            }else {
-                    messages.addAll(checkFile.getMessage());
-                    throw new ExcelException(messages);
+            } else {
+                messages.addAll(checkFile.getMessage());
+                throw new ExcelException(messages);
             }
 
         } catch (IOException e) {
@@ -331,22 +337,22 @@ public class VehicleService {
         }
     }
 
-    private Integer getIntegerValue(Cell cell){
+    private Integer getIntegerValue(Cell cell) {
         if (cell != null) {
             if (cell.getCellType() == CellType.NUMERIC) {
                 return (int) cell.getNumericCellValue();
-            } 
+            }
         }
         return null;
     }
 
-    private ExcelErrorResponse validateExcelFile(MultipartFile file){
+    private ExcelErrorResponse validateExcelFile(MultipartFile file) {
 
         String fileName = file.getOriginalFilename();
         Optional<FileHistory> fileHistory = Optional.ofNullable(fileHistoryRepository.findByFileName(fileName));
-        if (fileHistory.isPresent()){
-            return new ExcelErrorResponse(Boolean.FALSE,Arrays.asList(fileName+" is already uploaded. Please upload a different File."));
-        }else {
+        if (fileHistory.isPresent()) {
+            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList(fileName + " is already uploaded. Please upload a different File."));
+        } else {
 
             try (InputStream inputStream = file.getInputStream()) {
                 Workbook workbook = WorkbookFactory.create(inputStream);
@@ -367,7 +373,7 @@ public class VehicleService {
 
                     if (!actualHeader.replaceAll("\\s", "").equalsIgnoreCase(expectedHeader)) {
                         return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Error in column : " + actualHeader,
-                                "Row : " + (headerRow.getRowNum() + 1)+" and Cell : " + (i + 1)
+                                "Row : " + (headerRow.getRowNum() + 1) + " and Cell : " + (i + 1)
                                 , "Please check the Sample Format of Excel File"));
                     }
                 }
@@ -388,13 +394,13 @@ public class VehicleService {
                     }
 
                     Optional<Vehicle> vehicle = vehicleRepository.findByPlateNumber(getStringValue(row.getCell(1)));
-                    if (vehicle.isPresent()){
-                        return new ExcelErrorResponse(Boolean.FALSE,Arrays.asList("Plate Number : "+getStringValue(row.getCell(1))+
-                                " is already Present in the record","Row : "+ (rowNum+1)));
+                    if (vehicle.isPresent()) {
+                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Plate Number : " + getStringValue(row.getCell(1)) +
+                                " is already Present in the record", "Row : " + (rowNum + 1)));
                     }
 
-                    ExcelErrorResponse checkDuplicate = checkDuplicateRecord(plateNumberList,row);
-                    if(!checkDuplicate.isStatus()){
+                    ExcelErrorResponse checkDuplicate = checkDuplicateRecord(plateNumberList, row);
+                    if (!checkDuplicate.isStatus()) {
                         return checkDuplicate;
                     }
 
@@ -408,32 +414,32 @@ public class VehicleService {
 
 
                     if (!registrationMatcher.matches()) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(11) ,"Row " + (rowNum + 1) + " and Cell 12"));
+                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(11), "Row " + (rowNum + 1) + " and Cell 12"));
                     } else if (!String.valueOf(row.getCell(12)).replaceAll("\\s", "").equalsIgnoreCase("valid")
                             && !String.valueOf(row.getCell(12)).replaceAll("\\s", "").equalsIgnoreCase("invalid")) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList( "Incorrect Value : " + row.getCell(12) ,"Row " + (rowNum + 1) + " and Cell 13","Value should be Valid or Invalid"));
+                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Value : " + row.getCell(12), "Row " + (rowNum + 1) + " and Cell 13", "Value should be Valid or Invalid"));
                     } else if (!String.valueOf(row.getCell(14)).replaceAll("\\s", "").equalsIgnoreCase("valid")
                             && !String.valueOf(row.getCell(14)).replaceAll("\\s", "").equalsIgnoreCase("invalid")) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList( "Incorrect Value : " + row.getCell(14)  ,"Row " + (rowNum + 1) + " and Cell 15","Value should be Valid or Invalid"));
+                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Value : " + row.getCell(14), "Row " + (rowNum + 1) + " and Cell 15", "Value should be Valid or Invalid"));
                     } else if (!insuranceMatcher.matches()) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList( "Incorrect Date Format : " + row.getCell(13)
-                                ,"Row " + (rowNum + 1) + " and Cell 14"));
+                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(13)
+                                , "Row " + (rowNum + 1) + " and Cell 14"));
                     } else if (!leaseStartMatcher.matches()) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList( "Incorrect Date Format : " + row.getCell(17),
+                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(17),
                                 "Row " + (rowNum + 1) + " and Cell 18"));
                     } else if (!leaseExpiryMatcher.matches()) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList( "Incorrect Date Format : " + row.getCell(18) ,
+                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(18),
                                 "Row " + (rowNum + 1) + " and Cell 19"));
                     } else if (getIntegerValue(row.getCell(2)) == null) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: "+row.getCell(2),"Row "+(rowNum+1)+" and cell 3"));
+                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: " + row.getCell(2), "Row " + (rowNum + 1) + " and cell 3"));
                     } else if (getIntegerValue(row.getCell(16)) == null) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: "+row.getCell(16),"Row"+(rowNum+1)+" and cell 17"));
+                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: " + row.getCell(16), "Row" + (rowNum + 1) + " and cell 17"));
                     }
 
                     Optional<Vendor> vendor = Optional.ofNullable(vendorRepository.findByVendorNameIgnoreCase(getStringValue(row.getCell(15))));
 
                     if (!vendor.isPresent()) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList( getStringValue(row.getCell(15)) + " vendor does not exist in the record", "Row " + (rowNum + 1) + " and Cell 16"));
+                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList(getStringValue(row.getCell(15)) + " vendor does not exist in the record", "Row " + (rowNum + 1) + " and Cell 16"));
                     }
 
                 }
@@ -450,27 +456,30 @@ public class VehicleService {
         String plateNumber = getStringValue(row.getCell(1));
 
         for (Map.Entry<Integer, String> entry : plateNumberList.entrySet()) {
-            if(plateNumber.equals(entry.getValue())){
-                return new ExcelErrorResponse(Boolean.FALSE,Arrays.asList("Duplicate Record in the Row : "+entry.getKey()+" and "+(row.getRowNum()+1),
-                        "Duplicate Plate Number : "+plateNumber));
+            if (plateNumber.equals(entry.getValue())) {
+                return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Duplicate Record in the Row : " + entry.getKey() + " and " + (row.getRowNum() + 1),
+                        "Duplicate Plate Number : " + plateNumber));
             }
         }
-        plateNumberList.put(row.getRowNum()+1,plateNumber);
-        return new ExcelErrorResponse(Boolean.TRUE,Arrays.asList("No Duplicate Record"));
+        plateNumberList.put(row.getRowNum() + 1, plateNumber);
+        return new ExcelErrorResponse(Boolean.TRUE, Arrays.asList("No Duplicate Record"));
     }
 
 
-    public List<VehicleDto> toDtoList(List<Vehicle> vehicleList){
+    public List<VehicleDto> toDtoList(List<Vehicle> vehicleList) {
         return vehicleList.stream().map(this::toDto).collect(Collectors.toList());
     }
 
     private VehicleDto toDto(Vehicle vehicle) {
-        return modelMapper.map(vehicle , VehicleDto.class);
+        return modelMapper.map(vehicle, VehicleDto.class);
     }
 
+    private VehicleDto toDtoForAssignment(VehicleAssignment vehicleAssignment) {
+        return modelMapper.map(vehicleAssignment, VehicleDto.class);
+    }
 
-    private Vehicle toEntity(VehicleDto vehicleDto){
-        return modelMapper.map(vehicleDto , Vehicle.class);
+    private Vehicle toEntity(VehicleDto vehicleDto) {
+        return modelMapper.map(vehicleDto, Vehicle.class);
     }
 
     public List<VehicleDto> getAllNotAssignedVehicle() {
@@ -485,7 +494,7 @@ public class VehicleService {
         Optional<Vehicle> vehicle = vehicleRepository.findById(id);
         FileMetaData byFileName = fileMetaDataRepository.findByFileName(multipartFile.getOriginalFilename());
 
-        if(byFileName == null) {
+        if (byFileName == null) {
             String fileUrl = storageService.uploadFile(multipartFile.getBytes(), multipartFile.getOriginalFilename());
             String originalFileName = multipartFile.getOriginalFilename();
             String fileExtension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
@@ -500,14 +509,13 @@ public class VehicleService {
             return ResponseMessage.builder()
                     .message(Collections.singletonList("File uploaded to the server successfully"))
                     .build();
-        }
-        else {
+        } else {
             throw new RuntimeException(String.format("File already exists on the bucket with the same name"));
         }
     }
 
-    public List<VehicleDto> availableForReplacement (){
-       return toDtoList(vehicleRepository.availableForReplacement());
+    public List<VehicleDto> availableForReplacement() {
+        return toDtoList(vehicleRepository.availableForReplacement());
     }
 
     public List<VehicleHistoryResponse> getVehicleHistoryById(Long id) {
@@ -519,9 +527,9 @@ public class VehicleService {
 
         List<Vehicle> vehicleReplacementList = vehicleReplacementRepository.findReplacementByVehicle(vehicle.get());
 
-       List<VehicleHistoryResponse> vehicleHistoryList = new ArrayList<>();
+        List<VehicleHistoryResponse> vehicleHistoryList = new ArrayList<>();
 
-        for (AuditDataWrapper assignment: assignmentList) {
+        for (AuditDataWrapper assignment : assignmentList) {
             VehicleHistoryResponse vehicleHistoryResponse = new VehicleHistoryResponse();
 
             if (assignment.getEntity().isStatus()) {
@@ -532,18 +540,18 @@ public class VehicleService {
                     vehicleHistoryResponse.setCreatedBy(assignment.getEntity().getCreatedBy().getName());
                 } else
                     vehicleHistoryResponse.setCreatedBy(assignment.getEntity().getUpdatedBy().getName());
-            }else {
+            } else {
                 vehicleHistoryResponse.setType("Released");
                 vehicleHistoryResponse.setCreatedBy(assignment.getEntity().getDeletedBy().getName());
             }
 
-                vehicleHistoryResponse.setCreatedAt(assignment.getRevisionTimeStamp());
+            vehicleHistoryResponse.setCreatedAt(assignment.getRevisionTimeStamp());
 
-                vehicleHistoryList.add(vehicleHistoryResponse);
+            vehicleHistoryList.add(vehicleHistoryResponse);
 
         }
 
-        for (Vehicle replacement: vehicleReplacementList) {
+        for (Vehicle replacement : vehicleReplacementList) {
             VehicleHistoryResponse vehicleHistoryResponse = new VehicleHistoryResponse();
             vehicleHistoryResponse.setType("Replacement");
             vehicleHistoryResponse.setPlateNumber(replacement.getPlateNumber());
@@ -559,7 +567,7 @@ public class VehicleService {
     public Page<VehicleDto> searchInactiveVehicles(VehicleSearchCriteria vehicleSearchCriteria, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Specification<Vehicle> vehicleSpecification = VehicleSpecification.getInactiveSearchSpecification(vehicleSearchCriteria);
-        Page<Vehicle> vehiclePage = vehicleRepository.findAll(vehicleSpecification,pageable);
+        Page<Vehicle> vehiclePage = vehicleRepository.findAll(vehicleSpecification, pageable);
         return vehiclePage.map(this::toDto);
     }
 }

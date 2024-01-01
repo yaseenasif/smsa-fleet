@@ -1,16 +1,16 @@
 export interface User {
 
-    id: Number | null | undefined,
-    name: String | null | undefined,
-    email: String | null | undefined,
-    password: String | null | undefined,
-    roles: Array< {
-        id: Number | null | undefined
-        name: String | null | undefined
-        permissions: Array< {
-            id: Number | null | undefined
-            name: String | null | undefined              
-        }>
+  id: number | null | undefined,
+  name: string | null | undefined,
+  email: string | null | undefined,
+  password: string | null | undefined,
+  roles: Array<{
+    id: number | null | undefined
+    name: string | null | undefined
+    permissions: Array<{
+      id: number | null | undefined
+      name: string | null | undefined
     }>
+  }>
 
 }

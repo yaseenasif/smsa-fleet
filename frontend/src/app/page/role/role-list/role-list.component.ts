@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { Role } from 'src/app/modal/role';
 import { RoleService } from '../role.service';
 
@@ -9,32 +9,51 @@ import { RoleService } from '../role.service';
   styleUrls: ['./role-list.component.scss']
 })
 export class RoleListComponent {
-  roles!: Role[];
-  
-  constructor(private roleService: RoleService) { }
 
-  products:any=[{name:"Demo",permission:[{id:1,name:"Demo"}]},
-  {name:"Demo",permission:[{id:1,name:"Demo"},{id:1,name:"Demo"}]},
-  {name:"Demo",permission:[{id:1,name:"Demo"}]},
-  {name:"Demo",permission:[{id:1,name:"Demo"}]},
-  {name:"Demo",permission:[{id:1,name:"Demo"},{id:1,name:"Demo"}]},
-  {name:"Demo",permission:[{id:1,name:"Demo"}]},
-  {name:"Demo",permission:[{id:1,name:"Demo"},{id:1,name:"Demo"},{id:1,name:"Demo"},{id:1,name:"Demo"}]},
-  {name:"Demo",permission:[{id:1,name:"Demo"}]},
-  {name:"Demo",permission:[{id:1,name:"Demo"},{id:1,name:"Demo"},{id:1,name:"Demo"}]},
-  {name:"Demo",permission:[{id:1,name:"Demo"}]},];
   items: MenuItem[] | undefined;
+  roles!: Role[];
+  roleRow: Role | undefined | null;
+  areYouSure: boolean = false;
 
- 
+  constructor(
+    private roleService: RoleService,
+    private messageService: MessageService
+  ) { }
 
   ngOnInit() {
-      this.items = [{ label: 'Role'}];
-      this.getAllRoles();
+    this.items = [{ label: 'RoleList' }];
+    this.getAllRoles();
   }
 
-  getAllRoles(){
-    this.roleService.getAllRoles().subscribe((res: Role[])=>{
-      this.roles=res;      
+  getAllRoles() {
+    this.roleService.getAllRoles().subscribe((res: Role[]) => {
+      this.roles = res;
+    }, err => {
+      this.showError(err.error);
+    });
+  }
+
+  showDialog(roleRow: Role) {
+    this.roleRow = roleRow;
+    this.areYouSure = true;
+  }
+
+  deleteRole(obj: Role | undefined | null) {
+    this.roleService.deleteRoleById(obj!.id!).subscribe((res: Role) => {
+    }, error => {
     })
+    this.showSuccess(`Role ${obj?.name} on id ${obj?.id} has been deleted`)
+    setTimeout(() => {
+      this.areYouSure = false;
+      this.getAllRoles();
+    }, 1000);
+  }
+
+  showSuccess(message: string) {
+    this.messageService.add({ severity: 'success', summary: ' Deleted Successfully', detail: `${message}` });
+  }
+
+  showError(error: string): void {
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: error });
   }
 }
