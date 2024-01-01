@@ -24,7 +24,7 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long>, JpaSpec
     @Query("select v from VehicleAssignment va\n" +
             "right outer join Vehicle v\n" +
             "on va.vehicle = v.id\n" +
-            "WHERE va.vehicle IS NULL AND v.status = true")
+            "WHERE va.vehicle IS NULL OR va.status = false AND v.status = true")
     List<Vehicle> getNotAssignedVehicle();
 
     @Query("select v from Vehicle v\n" +

@@ -20,12 +20,12 @@ import { trigger, state, style, transition, animate, keyframes } from '@angular/
         boxShadow: '0 0px 3px rgba(0, 0, 0, 0.5)',
         borderRadius: '20px',
       })),
-      // transition('inactive => active', animate('700ms', keyframes([
-      //   style({ transform: 'scale(1) rotate(0deg)', offset: 0 }),
-      //   style({ transform: 'scale(1.1) rotate(180deg)', offset: 0.5 }),
-      //   style({ transform: 'scale(1.1) rotate(360deg)', offset: 1.0 }),
-      // ]))),
-      // transition('active => inactive', animate('200ms ease-out')),
+    //   transition('inactive => active', animate('700ms', keyframes([
+    //     style({ transform: 'scale(1) rotate(0deg)', offset: 0 }),
+    //     style({ transform: 'scale(1.1) rotate(180deg)', offset: 0.5 }),
+    //     style({ transform: 'scale(1.1) rotate(360deg)', offset: 1.0 }),
+    //   ]))),
+    //   transition('active => inactive', animate('200ms ease-out')),
     ]),
   ],
 })
