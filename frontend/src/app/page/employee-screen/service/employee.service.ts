@@ -57,4 +57,7 @@ checkAssignedEmployee(empId: Number): Observable<any> {
   return this.http.get<any>(`${this.url}/check-assigned-employee/${empId}`);
 }
 
+ getEmployeesNotDriver(): Observable<Employee[]>{
+   return this.http.get<Employee[]>(`${this.url}/get-employee-not-driver`)
+ }
 }

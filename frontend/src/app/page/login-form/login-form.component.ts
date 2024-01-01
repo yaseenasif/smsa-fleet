@@ -50,6 +50,8 @@ export class LoginFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    localStorage.removeItem("accessToken");
     // this.loginForm = this.formBuilder.group({
     //   name:['',[Validators.required,Validators.min(7)]],
     //   password:['',[Validators.required,Validators.min(7)]]

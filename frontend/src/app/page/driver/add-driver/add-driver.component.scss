@@ -59,3 +59,11 @@ margin:0px;
     color: red; 
     // border: 1px solid red;
 }
+.color-red{
+    color: red;
+    margin-top: 2px;
+    border-color: red;
+}
+:host ::ng-deep .ui-dropdown-empty-message.red {
+    color: red;
+  }

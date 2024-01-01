@@ -34,28 +34,10 @@ export class DriverListComponent implements OnInit {
   }
 
   getAllDrivers() {
-    this.driverService.searchDriver(this.value, this.query).subscribe((res: PaginatedResponse<Driver>) => {
-      // Create a Set to keep track of unique employee numbers
-      const uniqueEmployeeNumbers = new Set<number>();
-      
-      // Filter drivers based on unique employee numbers
-      const uniqueDrivers = res.content.filter(driver => {
-        const employeeNumber: Number | null | undefined = driver.empId.employeeNumber;
-        if (employeeNumber !== null && employeeNumber !== undefined) {
-          // Use valueOf() to obtain the primitive number value
-          const employeeNumberPrimitive: number = employeeNumber.valueOf();
-          
-          if (!uniqueEmployeeNumbers.has(employeeNumberPrimitive)) {
-            uniqueEmployeeNumbers.add(employeeNumberPrimitive);
-            return true;
-          }
-        }
-        return false;
-      });
-      
-      this.driver = uniqueDrivers;
+      this.driverService.searchDriver(this.value, this.query).subscribe((res: PaginatedResponse<Driver>) => {
+      this.driver = res.content;
       this.query = { page: res.pageable.pageNumber, size: res.size }
-      this.totalRecords = uniqueDrivers.length;
+      this.totalRecords = res.totalElements;
     })  
   }
 

@@ -39,7 +39,6 @@ export interface VehicleAssignment {
     licenseNumber: String | null | undefined
     vehicleBudget: Number | null | undefined
     costCentre: String | null | undefined;
-
                 }
     vehicle: {
         id: Number | null | undefined,

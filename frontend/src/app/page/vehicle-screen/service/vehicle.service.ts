@@ -43,9 +43,7 @@ export class VehicleService {
     return this.http.get<PaginatedResponse<Vehicle>>(`${this.url}/search-unassigned-vehicle?value=${JSON.stringify(value ? value : '')}&page=${query?.page ? query.page : ''}&size=${query?.size ? query.size : ''}`);
   }
 
-  getAllNotAssignedVehicles(): Observable<Vehicle[]> {
-    return this.http.get<Vehicle[]>(this.url.concat('/not-assigned-vehicle'));
-  }
+ 
 
   getVehicleById(id: Number) {
     return this.http.get<Vehicle>(`${this.url}/vehicle/${id}`);
@@ -94,4 +92,10 @@ export class VehicleService {
   activateVehicle(id: Number): Observable<Vehicle> {
     return this.http.patch<Vehicle>(`${this.url}/vehicle-active/${id}`, {})
   }
+    getAllNotAssignedVehicles(): Observable<Vehicle[]> {
+      return this.http.get<Vehicle[]>(this.url.concat('/not-assigned-vehicle'));
+    }
+      getVehicleBudget(vehicleBudget : Number):Observable<Vehicle[]>{
+        return this.http.get<Vehicle[]>(`${this.url}/vehicles-under-driver-budget/${vehicleBudget}`);
+      }
 }

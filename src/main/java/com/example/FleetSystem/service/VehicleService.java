@@ -486,6 +486,11 @@ public class VehicleService {
         return toDtoList(vehicleRepository.getNotAssignedVehicle());
     }
 
+    public List<VehicleDto> getAllVehiclesUnderDriverVehicleBudget(Integer value) {
+        List<Vehicle> vehicles = vehicleRepository.getAllVehiclesUnderDriverVehicleBudget(value);
+        return toDtoList(vehicles);
+    }
+
     public List<VehicleDto> getActiveVehicles() {
         return toDtoList(vehicleRepository.getActiveVehicles());
     }
@@ -570,4 +575,5 @@ public class VehicleService {
         Page<Vehicle> vehiclePage = vehicleRepository.findAll(vehicleSpecification, pageable);
         return vehiclePage.map(this::toDto);
     }
+
 }

@@ -54,9 +54,10 @@ public class DriverController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PatchMapping("/driver/{id}")
-    public ResponseEntity<DriverDto> updateDriverById(@PathVariable Long id, @RequestBody DriverDto driverDto){
-        return  ResponseEntity.ok(driverService.updateById(id, driverDto));
+    @PatchMapping("/driver/{id}/{plateNumber}")
+    public ResponseEntity<DriverDto> updateDriverById(@PathVariable Long id,@PathVariable String plateNumber,
+                                                      @RequestBody DriverDto driverDto){
+        return  ResponseEntity.ok(driverService.updateById(id,plateNumber, driverDto));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

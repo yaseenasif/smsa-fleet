@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Form } from '@angular/forms';
 import { VehicleService } from '../../vehicle-screen/service/vehicle.service';
 import { Vehicle } from 'src/app/modal/vehicle';
+import { EmployeeService } from '../../employee-screen/service/employee.service';
 
 @Component({
   selector: 'app-update-driver',
@@ -49,8 +50,6 @@ export class UpdateDriverComponent implements OnInit {
       licenseNumber: undefined,  
       vehicleBudget:  undefined,
       costCentre: undefined,
-
-
     },
     vehicleBudget: undefined,
     licenseNumber: undefined,
@@ -60,39 +59,42 @@ export class UpdateDriverComponent implements OnInit {
 
   driverId: Number | undefined;
   unassignedVehicles!: Vehicle[];
-
+  assignEmployeeCheck!: boolean;
+  plateNumber!: String;
 
   constructor( private driverService: DriverService,
                 private router: Router,
               private route: ActivatedRoute,
               private vehicleService: VehicleService,
-              private messageService: MessageService
+              private messageService: MessageService,
+              private employeeService: EmployeeService
 
     ) { }
 
 
-  name!:string;
-  contactNumber!:string;
-  referenceNumber!:string;
-  size=100000
-  uploadedFiles: any[] = [];
+  // name!:string;
+  // contactNumber!:string;
+  // referenceNumber!:string;
+  // size=100000
+  // uploadedFiles: any[] = [];
 
-   onUpload(event: any) {
+  //  onUpload(event: any) {
 
-  }
+  // }
 
-   onUpload1(event:any) {
-    for(let file of event.files) {
-        this.uploadedFiles.push(file);
-    }
-  }
+  //  onUpload1(event:any) {
+  //   for(let file of event.files) {
+  //       this.uploadedFiles.push(file);
+  //   }
+  // }
+
   ngOnInit(): void {
     this.items = [{ label: 'Driver List',routerLink:'/driver'},{ label: 'Edit Driver'}];
 
     this.driverId = +this.route.snapshot.paramMap.get('id')!;
 
     this.getDriverById(this.driverId)
-    this.getUnassignedvehicles();
+    // this.getUnassignedvehicles(this.driver.empId.vehicleBudget!);
   }
 
   getDriverById(id: Number) {
@@ -106,7 +108,7 @@ export class UpdateDriverComponent implements OnInit {
   }
 
   updateDriver(driver: Driver) {
-    this.driverService.updateDriver(this.driverId!, driver).subscribe((res) => {
+    this.driverService.updateDriver(this.driverId!,this.plateNumber, driver).subscribe((res) => {
 
       this.messageService.add({ severity: 'Update Successfully', summary: 'Update Successfully', detail: 'Message Content' });
 
@@ -122,10 +124,30 @@ export class UpdateDriverComponent implements OnInit {
     this.updateDriver(this.driver)
   }
 
-  getUnassignedvehicles(){
-    this.vehicleService.getAllNotAssignedVehicles().subscribe((res)=>{
+  getUnassignedvehicles(vehicleBudget: Number){
+    this.vehicleService.getVehicleBudget(vehicleBudget).subscribe((res)=>{
       this.unassignedVehicles = res;
     })
   }
 
+  checkAssignedEmployee(id: Number){
+    this.employeeService.checkAssignedEmployee(id).subscribe((res)=>{
+      this.assignEmployeeCheck = res.check
+    })
+  }
+
+  onFocusOutEvent(value: any) {
+    if(value.value != ""){
+      this.getUnassignedvehicles(value.value)
+    }
+    else if(value.value === ""){
+      this.unassignedVehicles = [];
+    }
+  }
+  onKeyPress(event: any) {
+    const isNumber = /[0-9]/.test(event.key);
+    if (!isNumber) {
+      event.preventDefault();
+    }
+  }
 }
