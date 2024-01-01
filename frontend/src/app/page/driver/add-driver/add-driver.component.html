@@ -96,7 +96,7 @@
                   [style]="{'width': '100%'}"
                   ></p-calendar> 
                   <!-- <small id="name-help"
-                    >{{name}}</small
+                    >{{driver.empId.joiningDate}}</small
                   > -->
                 </div>
               </div>
@@ -283,7 +283,7 @@
                       id="name"
                     aria-describedby="name-help"
                     name="vehicleBudget"
-                    [(ngModel)]="driver.empId.vehicleBudget"
+                    [(ngModel)]="driver.vehicleBudget"
                     #vehicleBudget="ngModel"
                     required
                     (keypress)="onKeyPress($event)" 

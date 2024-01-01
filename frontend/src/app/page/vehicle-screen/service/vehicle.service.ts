@@ -88,7 +88,7 @@ export class VehicleService {
     getAllNotAssignedVehicles(): Observable<Vehicle[]> {
       return this.http.get<Vehicle[]>(this.url.concat('/not-assigned-vehicle'));
     }
-      getVehicleBudget(vehicleBudget : number):Observable<Vehicle[]>{
+      getVehicleBudget(vehicleBudget : Number):Observable<Vehicle[]>{
         return this.http.get<Vehicle[]>(`${this.url}/vehicles-under-driver-budget/${vehicleBudget}`);
       }
 }

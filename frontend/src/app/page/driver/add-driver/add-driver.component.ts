@@ -14,7 +14,7 @@ import { Vehicle } from 'src/app/modal/vehicle';
   selector: 'app-add-driver',
   templateUrl: './add-driver.component.html',
   styleUrls: ['./add-driver.component.scss'],
-  providers: [MessageService]
+  providers: [MessageService],
 })
 export class AddDriverComponent implements OnInit {
   items: MenuItem[] | undefined;
@@ -50,91 +50,103 @@ export class AddDriverComponent implements OnInit {
       grade: undefined,
       licenseNumber: undefined,
       vehicleBudget: undefined,
-      costCentre: undefined
-  },
+      costCentre: undefined,
+    },
     licenseNumber: undefined,
     vehicleBudget: undefined,
-    costCentre : undefined,
-    assignedVehicle: undefined
-  }
+    costCentre: undefined,
+    assignedVehicle: undefined,
+  };
 
   employee!: Employee[];
 
-  selectedEmployee!: Employee
+  selectedEmployee!: Employee;
   unassignedVehicles!: Vehicle[];
 
-  constructor(private driverService: DriverService,
+  constructor(
+    private driverService: DriverService,
     private employeeService: EmployeeService,
     private messageService: MessageService,
     private vehicleService: VehicleService,
-    private router: Router,
-  ) { }
+    private router: Router
+  ) {}
 
-  name!:string;
-  contactNumber!:string;
-  referenceNumber!:string;
-  size=100000
+  name!: string;
+  contactNumber!: string;
+  referenceNumber!: string;
+  size = 100000;
   uploadedFiles: any[] = [];
 
-   onUpload(event: any) {
+  onUpload(event: any) {}
 
-  }
-
-   onUpload1(event:any) {
-    for(let file of event.files) {
-        this.uploadedFiles.push(file);
+  onUpload1(event: any) {
+    for (let file of event.files) {
+      this.uploadedFiles.push(file);
     }
   }
   ngOnInit(): void {
-    this.items = [{ label: 'Driver List',routerLink:'/driver'},{ label: 'Add Driver'}];
-    this.getAllEmployees();
+    this.items = [
+      { label: 'Driver List', routerLink: '/driver' },
+      { label: 'Add Driver' },
+    ];
+    // this.getAllEmployees();
     // this.getUnassignedvehicles();
-
+    this.getEmployeesNotDriver();
   }
 
-  getAllEmployees() {
-    this.employeeService.getAllEmployees().subscribe((res) => {
-      res.map((el) => {
-        el.joiningDate = el.joiningDate ? new Date(el.joiningDate) : null
+  // getAllEmployees() {
+  //   this.employeeService.getAllEmployees().subscribe((res) => {
+  //     res.map((el) => {
+  //       el.joiningDate = el.joiningDate ? new Date(el.joiningDate) : null
 
-      })
-      this.employee = res;
+  //     })
+  //     this.employee = res;
 
-    })
-  }
+  //   })
+  // }
 
   getEmployeeData() {
-    this.driver.empId.id = this.selectedEmployee.id
-    this.driver.empId.empName = this.selectedEmployee.empName
-    this.driver.empId.jobTitle = this.selectedEmployee.jobTitle
-    this.driver.empId.joiningDate = this.selectedEmployee.joiningDate
-    this.driver.empId.department = this.selectedEmployee.department
-    this.driver.empId.section = this.selectedEmployee.section
-    this.driver.empId.region = this.selectedEmployee.region
-    this.driver.empId.city = this.selectedEmployee.city
-    this.driver.empId.nationality = this.selectedEmployee.nationality
-    this.driver.empId.contactNumber = this.selectedEmployee.contactNumber
-    this.driver.empId.companyEmailAddress = this.selectedEmployee.companyEmailAddress
-    this.driver.empId.grade = this.selectedEmployee.grade
-    this.driver.empId.licenseNumber = this.selectedEmployee.licenseNumber
-    this.driver.empId.vehicleBudget = this.selectedEmployee.vehicleBudget
-    this.driver.costCentre = this.selectedEmployee.costCentre
-
+    debugger;
+    this.driver.empId.id = this.selectedEmployee.id;
+    this.driver.empId.empName = this.selectedEmployee.empName;
+    this.driver.empId.jobTitle = this.selectedEmployee.jobTitle;
+    this.driver.empId.joiningDate = new Date(this.selectedEmployee.joiningDate!);
+    this.driver.empId.department = this.selectedEmployee.department;
+    this.driver.empId.section = this.selectedEmployee.section;
+    this.driver.empId.region = this.selectedEmployee.region;
+    this.driver.empId.city = this.selectedEmployee.city;
+    this.driver.empId.nationality = this.selectedEmployee.nationality;
+    this.driver.empId.contactNumber = this.selectedEmployee.contactNumber;
+    this.driver.empId.companyEmailAddress =
+      this.selectedEmployee.companyEmailAddress;
+    this.driver.empId.grade = this.selectedEmployee.grade;
+    this.driver.empId.licenseNumber = this.selectedEmployee.licenseNumber;
+    this.driver.empId.vehicleBudget = this.selectedEmployee.vehicleBudget;
+    this.driver.costCentre = this.selectedEmployee.costCentre;
   }
 
   onSubmit() {
-    this.driverService.addDriver(this.driver).subscribe((res) => {
-      this.messageService.add({ severity: 'success', summary: 'Add Successfully', detail: 'Message Content' });
+    this.driverService.addDriver(this.driver).subscribe(
+      (res) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Add Successfully',
+          detail: 'Message Content',
+        });
 
-      setTimeout(() => {
-        this.router.navigate(['/driver'])
-      },5000)
-    },
+        setTimeout(() => {
+          this.router.navigate(['/driver']);
+        }, 5000);
+      },
       (error) => {
-        this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
-      })
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Upload Error',
+          detail: error.error,
+        });
+      }
+    );
   }
-
 
   // getUnassignedvehicles(){
   //   this.vehicleService.getAllNotAssignedVehicles().subscribe((res)=>{
@@ -142,16 +154,16 @@ export class AddDriverComponent implements OnInit {
   //   })
   // }
   getAssignVehicle(vehicleBudget: number) {
-    this.vehicleService.getVehicleBudget(vehicleBudget).subscribe((res: Vehicle[]) => {
-      this.unassignedVehicles = res;
-
-    })
+    this.vehicleService
+      .getVehicleBudget(vehicleBudget)
+      .subscribe((res: Vehicle[]) => {
+        this.unassignedVehicles = res;
+      });
   }
   onFocusOutEvent(value: any) {
-    if(value.value != ""){
-      this.getAssignVehicle(value.value)
-    }
-    else if(value.value === ""){
+    if (value.value != '') {
+      this.getAssignVehicle(value.value);
+    } else if (value.value === '') {
       this.unassignedVehicles = [];
     }
   }
@@ -160,5 +172,11 @@ export class AddDriverComponent implements OnInit {
     if (!isNumber) {
       event.preventDefault();
     }
+  }
+
+  getEmployeesNotDriver() {
+    this.employeeService.getEmployeesNotDriver().subscribe((res) => {
+      this.employee = res;
+    });
   }
 }

@@ -94,7 +94,7 @@ export class UpdateDriverComponent implements OnInit {
     this.driverId = +this.route.snapshot.paramMap.get('id')!;
 
     this.getDriverById(this.driverId)
-    this.getUnassignedvehicles();
+    // this.getUnassignedvehicles(this.driver.empId.vehicleBudget!);
   }
 
   getDriverById(id: Number) {
@@ -124,8 +124,8 @@ export class UpdateDriverComponent implements OnInit {
     this.updateDriver(this.driver)
   }
 
-  getUnassignedvehicles(){
-    this.vehicleService.getAllNotAssignedVehicles().subscribe((res)=>{
+  getUnassignedvehicles(vehicleBudget: Number){
+    this.vehicleService.getVehicleBudget(vehicleBudget).subscribe((res)=>{
       this.unassignedVehicles = res;
     })
   }
@@ -134,5 +134,20 @@ export class UpdateDriverComponent implements OnInit {
     this.employeeService.checkAssignedEmployee(id).subscribe((res)=>{
       this.assignEmployeeCheck = res.check
     })
+  }
+
+  onFocusOutEvent(value: any) {
+    if(value.value != ""){
+      this.getUnassignedvehicles(value.value)
+    }
+    else if(value.value === ""){
+      this.unassignedVehicles = [];
+    }
+  }
+  onKeyPress(event: any) {
+    const isNumber = /[0-9]/.test(event.key);
+    if (!isNumber) {
+      event.preventDefault();
+    }
   }
 }

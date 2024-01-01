@@ -118,4 +118,10 @@ public class EmployeeController {
     public ResponseEntity<CheckAssignEmployee> checkAssignedEmployee(@PathVariable Long empId){
         return ResponseEntity.ok(employeeService.checkAssignedEmployee(empId));
     }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/get-employee-not-driver")
+    public ResponseEntity<List<EmployeeDto>> getEmployeesNotDriver(){
+        return ResponseEntity.ok(employeeService.getEmployeesNotDriver());
+    }
 }

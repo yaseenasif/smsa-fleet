@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -499,5 +500,9 @@ public class EmployeeService {
             return check;
         }
         throw new RuntimeException(String.format("employee not found by id =>%d",empId));
+    }
+
+    public List<EmployeeDto> getEmployeesNotDriver() {
+        return toDtoList(employeeRepository.getEmployeesNotDriver());
     }
 }

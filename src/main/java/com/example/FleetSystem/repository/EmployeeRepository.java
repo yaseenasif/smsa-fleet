@@ -25,4 +25,11 @@ public interface EmployeeRepository extends JpaRepository<Employee,Long>, JpaSpe
             "WHERE va.assignToEmpId IS NULL AND e.deleteStatus = true")
     List<Employee> getUnAssignedEmployee();
 
+    @Query("\n" +
+            "Select e from Employee e\n" +
+            "left join Driver d\n" +
+            "on e.id = d.empId\n" +
+            "where d.empId is null and e.deleteStatus = true")
+    List<Employee> getEmployeesNotDriver();
+
 }

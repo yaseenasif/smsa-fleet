@@ -64,17 +64,27 @@ public class DriverService {
                 driver.setCreatedBy(user);
                 driver.setStatus(Boolean.TRUE);
 
-                if(driverDto.getAssignedVehicle() != null){
+                if(driverDto.getAssignedVehicle() != null) {
                     Optional<Vehicle> vehicle = vehicleRepository.findByPlateNumber(driverDto.getAssignedVehicle());
-                    VehicleAssignment vehicleAssignment= VehicleAssignment.builder()
-                            .assignToEmpId(employee.get())
-                            .assignToEmpName(employee.get().getEmpName())
-                            .vehicle(vehicle.get())
-                            .createdAt(LocalDate.now())
-                            .createdBy(user)
-                            .status(Boolean.TRUE)
-                            .build();
-                    vehicleAssignmentRepository.save(vehicleAssignment);
+                    Optional<VehicleAssignment> assignment = vehicleAssignmentRepository.findByVehicle(vehicle.get());
+                    if (assignment.isPresent()) {
+                        assignment.get().setAssignToEmpId(employee.get());
+                        assignment.get().setAssignToEmpName(employee.get().getEmpName());
+                        assignment.get().setStatus(Boolean.TRUE);
+                        assignment.get().setUpdatedAt(LocalDate.now());
+                        assignment.get().setUpdatedBy(user);
+                        vehicleAssignmentRepository.save(assignment.get());
+                    } else {
+                        VehicleAssignment vehicleAssignment = VehicleAssignment.builder()
+                                .assignToEmpId(employee.get())
+                                .assignToEmpName(employee.get().getEmpName())
+                                .vehicle(vehicle.get())
+                                .createdAt(LocalDate.now())
+                                .createdBy(user)
+                                .status(Boolean.TRUE)
+                                .build();
+                        vehicleAssignmentRepository.save(vehicleAssignment);
+                    }
                 }
 
                 Driver save = driverRepository.save(driver);

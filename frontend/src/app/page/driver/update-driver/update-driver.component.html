@@ -222,7 +222,7 @@
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Cost Center</label>
                   <input
-                    pInputText 
+                    pInputText [disabled]="true"
                     id="name"
                     aria-describedby="name-help"
                     name="costCenter"
@@ -269,6 +269,9 @@
                     [(ngModel)]="driver.vehicleBudget"
                     #vehicleBudget="ngModel"
                     required
+                    (keypress)="onKeyPress($event)" 
+                    pattern="[0-9]*"
+                    (focusout)="onFocusOutEvent($event.target)"
                   />
                   <small 
                       id="name-help" class="color-red" 
@@ -305,6 +308,8 @@
                     [filter]="true"
                     filterBy="plateNumber"
                     [showClear]="true"  
+                    (click)="getUnassignedvehicles(driver.vehicleBudget!)"
+                    emptyMessage="Please select a vehicle budget"
                   >
                     <ng-template pTemplate="selectedItem">
                       <div
