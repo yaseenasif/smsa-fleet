@@ -16,7 +16,7 @@ export class AddUserComponent implements OnInit {
   items: MenuItem[] | undefined;
   roles!: Role[];
   selectedRole!: Role
-
+  error: boolean = false;
   user: User = {
     id: undefined,
     name: undefined,
@@ -24,7 +24,6 @@ export class AddUserComponent implements OnInit {
     password: undefined,
     roles: []
   }
-
   // user!: User;
 
   constructor(
@@ -60,6 +59,7 @@ export class AddUserComponent implements OnInit {
         this.showError(error.error);
       });
   }
+
 
   // getRoleData() {
 

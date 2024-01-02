@@ -1,7 +1,6 @@
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css");
-
 $primary-color: #400099;
 $base-bg-color: #ebf1f4;
 $hover-bg-color:#4d0fa3;
@@ -130,3 +129,11 @@ overflow: none;
 .p-dropdown-empty-message{
     color: red!important;
 }
+.bi-download{
+padding-right: 10px !important;
+}
+// .p-input-icon-left > i, .p-input-icon-left > .p-icon-wrapper, .p-input-icon-right > i, .p-input-icon-right > .p-icon-wrapper {
+//     position: absolute;
+//     top: 49%;
+//     margin-top: -0.5rem;
+// }
