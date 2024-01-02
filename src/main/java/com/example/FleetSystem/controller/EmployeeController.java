@@ -124,4 +124,13 @@ public class EmployeeController {
     public ResponseEntity<List<EmployeeDto>> getEmployeesNotDriver(){
         return ResponseEntity.ok(employeeService.getEmployeesNotDriver());
     }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/search-employee-inactive")
+    public ResponseEntity<Page<EmployeeDto>> searchInactiveEmployee(@RequestParam(value = "value",required = false) Long value,
+                                                            @RequestParam(defaultValue = "0") int page,
+                                                            @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
+        EmployeeSearchCriteria employeeSearchCriteria = new EmployeeSearchCriteria();
+        employeeSearchCriteria.setValue(value);
+        return ResponseEntity.ok(employeeService.searchInactiveEmployee(employeeSearchCriteria,page, size));
+    }
 }
