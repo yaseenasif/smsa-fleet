@@ -51,16 +51,13 @@ export class UpdateDriverComponent implements OnInit {
       vehicleBudget:  undefined,
       costCentre: undefined,
     },
-    vehicleBudget: undefined,
-    licenseNumber: undefined,
-    costCentre: undefined,
     assignedVehicle: undefined
   }
 
   driverId: Number | undefined;
   unassignedVehicles!: Vehicle[];
   assignEmployeeCheck!: boolean;
-  plateNumber!: String;
+  plateNumber: String | null = null;
 
   constructor( private driverService: DriverService,
                 private router: Router,
@@ -71,22 +68,6 @@ export class UpdateDriverComponent implements OnInit {
 
     ) { }
 
-
-  // name!:string;
-  // contactNumber!:string;
-  // referenceNumber!:string;
-  // size=100000
-  // uploadedFiles: any[] = [];
-
-  //  onUpload(event: any) {
-
-  // }
-
-  //  onUpload1(event:any) {
-  //   for(let file of event.files) {
-  //       this.uploadedFiles.push(file);
-  //   }
-  // }
 
   ngOnInit(): void {
     this.items = [{ label: 'Driver List',routerLink:'/driver'},{ label: 'Edit Driver'}];
@@ -101,8 +82,6 @@ export class UpdateDriverComponent implements OnInit {
     this.driverService.getDriverById(id).subscribe((res: Driver) => {
       res.empId.joiningDate = res.empId.joiningDate ? new Date(res.empId.joiningDate) : new Date();
       this.driver = res;
-
-      console.log(this.driver);
 
     })
   }

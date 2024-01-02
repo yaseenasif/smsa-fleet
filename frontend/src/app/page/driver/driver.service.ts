@@ -26,8 +26,8 @@ export class DriverService {
   return this.http.get<Driver>(`${this.url}/driver/${id}`);
   }
 
-updateDriver(id: Number,plateNumber: String, updatedDriver: Driver): Observable<Driver> {
-  return this.http.patch<Driver>(`${this.url}/driver/${id}/${plateNumber}`, updatedDriver);
+updateDriver(id: Number,plateNumber: String | null, updatedDriver: Driver): Observable<Driver> {
+  return this.http.patch<Driver>(`${this.url}/driver/${id}?plateNumber=${plateNumber ? plateNumber : ''}`, updatedDriver);
 }
 
 deleteDriver(id: Number) {

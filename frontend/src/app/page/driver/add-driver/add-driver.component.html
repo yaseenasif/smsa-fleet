@@ -53,6 +53,7 @@
                   <label htmlFor="name">Employee Name</label>
                   <input
                     pInputText
+                    [disabled] ="true"
                     id="name"
                     aria-describedby="name-help"
                     name="empName"
@@ -72,6 +73,7 @@
                   <label htmlFor="name">Job Title</label>
                   <input
                     pInputText
+                    [disabled] ="true"
                     id="name"
                     aria-describedby="name-help"
                     name="title"
@@ -91,6 +93,7 @@
                   <label htmlFor="name">Date Of Joining</label>
                   <p-calendar #joinDate
                   name="joinDate"
+                  [disabled] ="true"
                   [required]="true"
                   [(ngModel)]="driver.empId.joiningDate" [showIcon]="true"
                   [style]="{'width': '100%'}"
@@ -105,6 +108,7 @@
                   <label htmlFor="name">Department</label>
                   <input
                     pInputText
+                    [disabled] ="true"
                     id="name"
                     aria-describedby="name-help"
                     name="department"
@@ -124,6 +128,7 @@
                   <label htmlFor="name">Section</label>
                   <input
                     pInputText
+                    [disabled] ="true"
                     id="name"
                     aria-describedby="name-help"
                     name="section"
@@ -143,6 +148,7 @@
                   <label htmlFor="name">Region</label>
                   <input
                     pInputText
+                    [disabled] ="true"
                     id="name"
                     aria-describedby="name-help"
                     name="region"
@@ -162,6 +168,7 @@
                   <label htmlFor="name">City</label>
                   <input
                     pInputText
+                    [disabled] ="true"
                     id="name"
                     aria-describedby="name-help"
                     name="city"
@@ -181,6 +188,7 @@
                   <label htmlFor="name">Nationality</label>
                   <input
                     pInputText
+                    [disabled] ="true"
                     id="name"
                     aria-describedby="name-help"
                     name="nationality"
@@ -200,6 +208,7 @@
                   <label htmlFor="name">Contact Number</label>
                   <input
                     pInputText
+                    [disabled] ="true"
                     id="name"
                     (keypress)="onKeyPress($event)" 
                     pattern="[0-9]*"
@@ -221,6 +230,7 @@
                   <label htmlFor="name">Email Address</label>
                   <input
                     pInputText
+                    [disabled] ="true"
                     id="name"
                     aria-describedby="name-help"
                     name="emailAddress"
@@ -240,6 +250,7 @@
                   <label htmlFor="name">Grade</label>
                   <input
                     pInputText
+                    [disabled] ="true"
                     id="name"
                     aria-describedby="name-help"
                     name="grade"
@@ -259,6 +270,7 @@
                   <label htmlFor="name">License Number</label>
                   <input
                     pInputText
+                    
                     (keypress)="onKeyPress($event)" 
                     pattern="[0-9]*"
                     id="name"
@@ -277,30 +289,10 @@
               </div>
               <div class="col-12 md:col-12 lg:col-6">
                 <div class="flex flex-column gap-2">
-                  <label htmlFor="name">Vehicle Budget</label>
-                  <input
-                    pInputText
-                      id="name"
-                    aria-describedby="name-help"
-                    name="vehicleBudget"
-                    [(ngModel)]="driver.vehicleBudget"
-                    #vehicleBudget="ngModel"
-                    required
-                    (keypress)="onKeyPress($event)" 
-                    pattern="[0-9]*"
-                    (focusout)="onFocusOutEvent($event.target)"/>
-                  <small 
-                      id="name-help" class="color-red" 
-                      *ngIf="vehicleBudget.invalid && (vehicleBudget.dirty || vehicleBudget.touched)"
-                  > Vehicle Budget is required
-                  </small>
-                </div>
-              </div>
-              <div class="col-12 md:col-12 lg:col-12">
-                <div class="flex flex-column gap-2">
                   <label htmlFor="name">Cost Center</label>
                   <input
                     pInputText
+                    [disabled] ="true"
                     id="name"
                     aria-describedby="name-help"
                     name="costCenter"
@@ -315,41 +307,51 @@
                   </small>
                 </div>
               </div>
-            </div>
-
-            <div class="flex flex-column gap-2 form-hook">
-              <label htmlFor="name">Assign Vehicle</label>
-              <p-dropdown
-                class="w-full .p-dropdown-panel .p-dropdown-items .p-dropdown-empty-message"
-                [(ngModel)]="driver.assignedVehicle"
-                [options]="unassignedVehicles"
-                name="assignedVehicle"
-                #assignedVehicle="ngModel"
-                optionLabel="plateNumber"
-                optionValue="plateNumber"
-                [filter]="true"
-                filterBy="plateNumber"
-                [showClear]="true"
-                placeholder="Select Plate Number"
-                emptyMessage="Please select a vehicle budget"
-               
-              >
-                <!-- <ng-template pTemplate="selectedItem">
-                  <div
-                    class="flex align-items-center gap-2"
-                    *ngIf="driver"
+              <div class="col-12 md:col-12 lg:col-6">
+                <div class="flex flex-column gap-2">
+                  <label htmlFor="name">Vehicle Budget</label>
+                  <input
+                    pInputText
+                      id="name"
+                    aria-describedby="name-help"
+                    name="vehicleBudget"
+                    [(ngModel)]="driver.empId.vehicleBudget"
+                    #vehicleBudget="ngModel"
+                    required
+                    (keypress)="onKeyPress($event)" 
+                    pattern="[0-9]*"
+                    (focusout)="onFocusOutEvent($event.target)"/>
+                  <small 
+                      id="name-help" class="color-red" 
+                      *ngIf="vehicleBudget.invalid && (vehicleBudget.dirty || vehicleBudget.touched)"
+                  > Vehicle Budget is required
+                  </small>
+                </div>
+              </div>
+          
+              <div class="col-12 md:col-12 lg:col-6">
+                <div class="flex flex-column gap-2 form-hook">
+                  <label htmlFor="name">Assign Vehicle</label>
+                  <p-dropdown
+                    class="w-full .p-dropdown-panel .p-dropdown-items .p-dropdown-empty-message"
+                    [(ngModel)]="driver.assignedVehicle"
+                    [options]="unassignedVehicles"
+                    name="assignedVehicle"
+                    #assignedVehicle="ngModel"
+                    optionLabel="plateNumber"
+                    optionValue="plateNumber"
+                    [filter]="true"
+                    filterBy="plateNumber"
+                    [showClear]="true"
+                    placeholder="Select Plate Number"
+                    (click)="getUnassignedvehicles(driver.empId.vehicleBudget!)"
+                    emptyMessage="Please select a vehicle budget"
+                   
                   >
-                    <div>{{ driver.assignedVehicle }}</div>
-                  </div>
-                </ng-template>
-                <ng-template let-unassignedVehicles pTemplate="item">
-                  <div class="flex align-items-center gap-2">
-                    <div>{{ unassignedVehicles.plateNumber }}</div>
-                  </div>
-                </ng-template> -->
-              </p-dropdown>
+                  </p-dropdown>
+                </div>
+                </div>
             </div>
-            
             <div class="flex align-items-center justify-content-end mt-4">
               <p-button
                 label="Cancel"

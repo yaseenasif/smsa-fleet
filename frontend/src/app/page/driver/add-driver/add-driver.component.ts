@@ -52,9 +52,6 @@ export class AddDriverComponent implements OnInit {
       vehicleBudget: undefined,
       costCentre: undefined,
     },
-    licenseNumber: undefined,
-    vehicleBudget: undefined,
-    costCentre: undefined,
     assignedVehicle: undefined,
   };
 
@@ -89,24 +86,11 @@ export class AddDriverComponent implements OnInit {
       { label: 'Driver List', routerLink: '/driver' },
       { label: 'Add Driver' },
     ];
-    // this.getAllEmployees();
-    // this.getUnassignedvehicles();
+ 
     this.getEmployeesNotDriver();
   }
 
-  // getAllEmployees() {
-  //   this.employeeService.getAllEmployees().subscribe((res) => {
-  //     res.map((el) => {
-  //       el.joiningDate = el.joiningDate ? new Date(el.joiningDate) : null
-
-  //     })
-  //     this.employee = res;
-
-  //   })
-  // }
-
   getEmployeeData() {
-    debugger;
     this.driver.empId.id = this.selectedEmployee.id;
     this.driver.empId.empName = this.selectedEmployee.empName;
     this.driver.empId.jobTitle = this.selectedEmployee.jobTitle;
@@ -122,7 +106,7 @@ export class AddDriverComponent implements OnInit {
     this.driver.empId.grade = this.selectedEmployee.grade;
     this.driver.empId.licenseNumber = this.selectedEmployee.licenseNumber;
     this.driver.empId.vehicleBudget = this.selectedEmployee.vehicleBudget;
-    this.driver.costCentre = this.selectedEmployee.costCentre;
+    this.driver.empId.costCentre = this.selectedEmployee.costCentre;
   }
 
   onSubmit() {
@@ -148,21 +132,17 @@ export class AddDriverComponent implements OnInit {
     );
   }
 
-  // getUnassignedvehicles(){
-  //   this.vehicleService.getAllNotAssignedVehicles().subscribe((res)=>{
-  //     this.unassignedVehicles = res;
-  //   })
-  // }
-  getAssignVehicle(vehicleBudget: number) {
+  getUnassignedvehicles(vehicleBudget: Number){
     this.vehicleService
       .getVehicleBudget(vehicleBudget)
       .subscribe((res: Vehicle[]) => {
         this.unassignedVehicles = res;
       });
   }
+
   onFocusOutEvent(value: any) {
     if (value.value != '') {
-      this.getAssignVehicle(value.value);
+      this.getUnassignedvehicles(value.value);
     } else if (value.value === '') {
       this.unassignedVehicles = [];
     }

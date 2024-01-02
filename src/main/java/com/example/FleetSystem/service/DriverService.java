@@ -54,15 +54,19 @@ public class DriverService {
             User user = userRepository.findByEmail(username);
 
             Optional<Employee> employee = employeeRepository.findById(driverDto.getEmpId().getId());
-            Driver driver = toEntity(driverDto);
 
             if(employee.isPresent()) {
-                driver.setEmpId(employee.get());
-                driver.setLicenseNumber(driverDto.getEmpId().getLicenseNumber());
-                driver.setVehicleBudget(driverDto.getEmpId().getVehicleBudget());
-                driver.setCreatedAt(LocalDate.now());
-                driver.setCreatedBy(user);
-                driver.setStatus(Boolean.TRUE);
+                employee.get().setVehicleBudget(driverDto.getEmpId().getVehicleBudget());
+                employee.get().setLicenseNumber(driverDto.getEmpId().getLicenseNumber());
+
+                Employee savedEmployee = employeeRepository.save(employee.get());
+
+                Driver driver = Driver.builder()
+                        .empId(savedEmployee)
+                        .createdAt(LocalDate.now())
+                        .createdBy(user)
+                        .status(Boolean.TRUE)
+                        .build();
 
                 if(driverDto.getAssignedVehicle() != null) {
                     Optional<Vehicle> vehicle = vehicleRepository.findByPlateNumber(driverDto.getAssignedVehicle());
@@ -122,18 +126,23 @@ public class DriverService {
 
     public DriverDto updateById(Long id, String plateNumber, DriverDto driverDto) {
         Optional<Driver> driver = driverRepository.findById(id);
+        Optional<Employee> employee = employeeRepository.findById(driverDto.getEmpId().getId());
 
         if(driver.isPresent()){
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if(principal instanceof UserDetails) {
                 String username = ((UserDetails) principal).getUsername();
                 User user = userRepository.findByEmail(username);
+               if (employee.isPresent()) {
+                   employee.get().setVehicleBudget(driverDto.getEmpId().getVehicleBudget());
+                   employee.get().setLicenseNumber(driverDto.getEmpId().getLicenseNumber());
 
-                    driver.get().setLicenseNumber(driverDto.getLicenseNumber());
-                    driver.get().setVehicleBudget(driverDto.getVehicleBudget());
-                    driver.get().setUpdatedAt(LocalDate.now());
-                    driver.get().setUpdatedBy(user);
+                   Employee savedEmployee = employeeRepository.save(employee.get());
 
+                   driver.get().setEmpId(savedEmployee);
+                   driver.get().setUpdatedAt(LocalDate.now());
+                   driver.get().setUpdatedBy(user);
+               }
                     if (!plateNumber.isEmpty()) {
 //                        Assign vehicle
                         Optional<Vehicle> vehicle = vehicleRepository.findByPlateNumber(plateNumber);

@@ -19,22 +19,7 @@ public class Driver {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-//    private String empName;
-//    private String title;
-//    private Date joiningDate;
-//    private String department;
-//    private String section ;
-//    private String region;
-//    private String city;
-//    private String nationality;
-//    private String contactNumber;
-//    private String emailAddress;
-//    private Integer grade;
-    private String licenseNumber;
-    private Integer vehicleBudget ;
-//    private String costCentre;
     private String assignedVehicle;
-//    private String attachments;
     private boolean status;
     private LocalDate createdAt;
     private LocalDate updatedAt;
@@ -42,7 +27,6 @@ public class Driver {
     @OneToOne
     @JoinColumn(name = "emp_id")
     private Employee empId;
-
 
     @ManyToOne
     @JoinColumn(name = "created_by")

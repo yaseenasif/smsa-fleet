@@ -132,9 +132,8 @@ public class VehicleService {
 
     public Page<VehicleDto> searchUnAssignedVehicles(VehicleSearchCriteria vehicleSearchCriteria, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Specification<Vehicle> vehicleAssignmentSpecification = VehicleSpecification.getUnassignedVehiclesSpecification(vehicleSearchCriteria);
-        Page<Vehicle> vehiclePage = vehicleRepository.findAll(vehicleAssignmentSpecification, pageable);
-        return vehiclePage.map(this::toDto);
+        Specification<Vehicle> spec = VehicleSpecification.getUnassignedVehicles(vehicleSearchCriteria);
+        return vehicleRepository.findAll(spec,pageable).map(this::toDto);
     }
 
     public VehicleDto findById(Long id) {

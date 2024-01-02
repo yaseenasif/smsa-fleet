@@ -70,7 +70,7 @@
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Department</label>
                   <input
-                    pInputText [disabled]="true"
+                    pInputText 
                     id="name"
                     aria-describedby="name-help"
                     name="department"
@@ -246,7 +246,7 @@
                     id="name"
                     aria-describedby="name-help"
                     name="licenseNumber"
-                    [(ngModel)]="driver.licenseNumber"
+                    [(ngModel)]="driver.empId.licenseNumber"
                     #licenseNumber="ngModel"
                     required
                   />
@@ -266,7 +266,7 @@
                     id="name"
                     aria-describedby="name-help"
                     name="vehicleBudget"
-                    [(ngModel)]="driver.vehicleBudget"
+                    [(ngModel)]="driver.empId.vehicleBudget"
                     #vehicleBudget="ngModel"
                     required
                     (keypress)="onKeyPress($event)" 
@@ -308,7 +308,7 @@
                     [filter]="true"
                     filterBy="plateNumber"
                     [showClear]="true"  
-                    (click)="getUnassignedvehicles(driver.vehicleBudget!)"
+                    (click)="getUnassignedvehicles(driver.empId.vehicleBudget!)"
                     emptyMessage="Please select a vehicle budget"
                   >
                     <ng-template pTemplate="selectedItem">

@@ -32,8 +32,5 @@ export interface Driver {
         costCentre: String | null | undefined;
 
     }
-    licenseNumber: String | null | undefined
-    vehicleBudget: Number | null | undefined
-    costCentre: String | null | undefined
     assignedVehicle: String | null | undefined
 }
