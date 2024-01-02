@@ -98,4 +98,14 @@ public class DriverController {
     public ResponseEntity<List<DriverDto>> getUnassignedDrivers(){
         return ResponseEntity.ok(driverService.getUnassignedDrivers());
     }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/search-driver-inactive")
+    public ResponseEntity<Page<DriverDto>> searchInactiveDriver(@RequestParam(value = "value",required = false) Long value,
+                                                        @RequestParam(defaultValue = "0") int page,
+                                                        @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
+        EmployeeSearchCriteria employeeSearchCriteria = new EmployeeSearchCriteria();
+        employeeSearchCriteria.setValue(value);
+        return ResponseEntity.ok(driverService.searchInactiveDriver(employeeSearchCriteria,page, size));
+    }
 }

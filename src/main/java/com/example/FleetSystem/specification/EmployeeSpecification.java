@@ -20,4 +20,18 @@ public class EmployeeSpecification {
                                 "%" + employeeSearchCriteria.getValue() + "%"),criteriaBuilder.isTrue(root.get("deleteStatus")));
             };
         }
+
+    public static Specification<Employee> getInactiveSearchSpecification(EmployeeSearchCriteria employeeSearchCriteria) {
+        return (root, query, criteriaBuilder) -> {
+            if (employeeSearchCriteria == null || employeeSearchCriteria.getValue() == null) {
+                query.orderBy(criteriaBuilder.desc(root.get("id")));
+                return criteriaBuilder.and(criteriaBuilder.isFalse(root.get("deleteStatus")));
+            }
+
+
+            return criteriaBuilder.and
+                    (criteriaBuilder.like(criteriaBuilder.lower(root.get("employeeNumber").as(String.class)),
+                            "%" + employeeSearchCriteria.getValue() + "%"),criteriaBuilder.isFalse(root.get("deleteStatus")));
+        };
+        }
 }

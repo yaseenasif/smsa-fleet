@@ -14,7 +14,7 @@ export class AuthguardService {
   private permissionRoutes: PermissionRoute[] = [
     { permission: 'Dashboard', route: ['/home',"/"] },
     { permission: 'Employee', route: ['/employee', '/add-employee', '/edit-employee/:id', '/employee-attachment/:id'] },
-    { permission: 'Driver', route: ['/driver', '/add-driver', '/edit-driver/:id', '/driver-attachment/:id', 'view-driver/:id'] },
+    { permission: 'Driver', route: ['/driver', '/add-driver', '/edit-driver/:id', '/driver-attachment/:id', '/view-driver/:id'] },
     { permission: 'Vehicle', route: ['/vehicle', '/add-vehicle', '/edit-vehicle/:id', '/vehicle-history/:id', '/vehicle-attachment/:id', '/vehicle-detail/:id','view-vehicle/:id','/unassigned-vehicle'] },
     { permission: 'Assignment', route: ['/assignment', '/add-assignment', '/edit-assignment/:id', 'assignment-attachment/:id', 'view-assignment/:id', 'assignment-history/:id',] },
     { permission: 'User', route: ['/user', '/add-user', '/edit-user/:id'] },

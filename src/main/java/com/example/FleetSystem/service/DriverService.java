@@ -237,4 +237,11 @@ public class DriverService {
     public List<DriverDto> getUnassignedDrivers(){
         return toDtoList(driverRepository.getUnAssignedDriver());
     }
+
+    public Page<DriverDto> searchInactiveDriver(EmployeeSearchCriteria employeeSearchCriteria, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<Driver> driverSpecification = DriverSpecification.getInactiveSearchSpecification(employeeSearchCriteria);
+        Page<Driver> driverPage = driverRepository.findAll(driverSpecification,pageable);
+        return driverPage.map(this::toDto);
+    }
 }

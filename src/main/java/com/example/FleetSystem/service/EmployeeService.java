@@ -505,4 +505,11 @@ public class EmployeeService {
     public List<EmployeeDto> getEmployeesNotDriver() {
         return toDtoList(employeeRepository.getEmployeesNotDriver());
     }
+
+    public Page<EmployeeDto> searchInactiveEmployee(EmployeeSearchCriteria employeeSearchCriteria, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<Employee> employeeSpecification = EmployeeSpecification.getInactiveSearchSpecification(employeeSearchCriteria);
+        Page<Employee> employeePage = employeeRepository.findAll(employeeSpecification, pageable);
+        return employeePage.map(this::toDto);
+    }
 }

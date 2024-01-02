@@ -7,6 +7,7 @@ import { VehicleReplacement } from 'src/app/modal/vehicleReplacement';
 import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
 import { PageEvent } from 'src/app/modal/pageEvent';
 import { Router } from '@angular/router';
+import * as saveAs from 'file-saver';
 
 @Component({
   selector: 'app-vehicle-list',
@@ -53,13 +54,17 @@ export class VehicleListComponent implements OnInit{
   size: number = 10240000; // Maximum file size (e.g., 10MB)
 
   uploadedFiles: any[] = [];
+  fileName : string = 'vehicleSample.xlsx'
 
 
 
 
   items: MenuItem[] | undefined;
 
-
+  data = [
+    { name: 'John Doe', age: 30, city: 'New York' },
+    { name: 'Jane Doe', age: 25, city: 'Los Angeles' },
+  ];
 
   ngOnInit() {
       this.items = [{ label: 'Vehicle'}];
@@ -219,4 +224,10 @@ export class VehicleListComponent implements OnInit{
   })
  } 
 
+// downloadExcel(): void {
+//   this.vehicleService.exportToExcel(this.data, 'user_data', 'Sheet1');
+// }
+downloadAttachment(fileName:string){
+  this.vehicleService.downloadAttachments(fileName).subscribe(blob => saveAs(blob,fileName));
+}
 }

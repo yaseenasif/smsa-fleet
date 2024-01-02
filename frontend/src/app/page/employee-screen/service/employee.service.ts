@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Employee } from 'src/app/modal/employee';
 import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
 import { environment } from 'src/environments/environment';
+import * as XLSX from 'xlsx';
 
 @Injectable({
   providedIn: 'root'
@@ -59,5 +60,17 @@ checkAssignedEmployee(empId: Number): Observable<any> {
 
  getEmployeesNotDriver(): Observable<Employee[]>{
    return this.http.get<Employee[]>(`${this.url}/get-employee-not-driver`)
+ }
+   downloadAttachments(empSample:string):Observable<Blob>{
+    return this.http.get(`${this.url}/download/${empSample}`,{
+      responseType: 'blob'
+    });
+    }
+ exportToExcel(data: any[], filename: string, sheetName: string): void {
+  const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+  const wb: XLSX.WorkBook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, sheetName);
+
+  XLSX.writeFile(wb, `${filename}.xlsx`);
  }
 }

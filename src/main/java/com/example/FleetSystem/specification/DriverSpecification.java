@@ -31,4 +31,25 @@ public class DriverSpecification {
             );
         };
     }
+
+    public static Specification<Driver> getInactiveSearchSpecification(EmployeeSearchCriteria employeeSearchCriteria) {
+        return (root, query, criteriaBuilder) -> {
+            if (employeeSearchCriteria == null || employeeSearchCriteria.getValue() == null) {
+                query.orderBy(criteriaBuilder.desc(root.get("id")));
+                return criteriaBuilder.and(criteriaBuilder.isFalse(root.get("status")));
+            }
+
+            // Join the Driver entity with the Employee entity
+            Join<Driver, Employee> employeeJoin = root.join("empId");
+
+            // Use criteriaBuilder.like for partial matching
+            return criteriaBuilder.and(
+                    criteriaBuilder.like(
+                            criteriaBuilder.lower(employeeJoin.get("employeeNumber").as(String.class)),
+                            "%" + employeeSearchCriteria.getValue() + "%"
+                    ),
+                    criteriaBuilder.isFalse(root.get("status"))
+            );
+        };
+    }
 }

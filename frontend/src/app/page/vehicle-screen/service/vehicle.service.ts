@@ -7,6 +7,7 @@ import { VehicleHistory } from 'src/app/modal/vehicle-history';
 import { VehicleReplacement } from 'src/app/modal/vehicleReplacement';
 import { Vendor } from 'src/app/modal/vendor';
 import { environment } from 'src/environments/environment';
+import * as XLSX from 'xlsx';
 
 @Injectable({
   providedIn: 'root'
@@ -98,4 +99,10 @@ export class VehicleService {
       getVehicleBudget(vehicleBudget : Number):Observable<Vehicle[]>{
         return this.http.get<Vehicle[]>(`${this.url}/vehicles-under-driver-budget/${vehicleBudget}`);
       }
+
+       downloadAttachments(fileName:string):Observable<Blob>{
+        return this.http.get(`${this.url}/download/${fileName}`,{
+          responseType: 'blob'
+        });
+        }
 }

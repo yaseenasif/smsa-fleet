@@ -4,6 +4,7 @@ import { Employee } from 'src/app/modal/employee';
 import { EmployeeService } from '../service/employee.service';
 import { FileUpload } from 'primeng/fileupload';
 import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-employee-list',
@@ -27,10 +28,9 @@ export class EmployeeListComponent implements OnInit{
     page: number,
     size: number
   };
-
   value: number | null = null;
   totalRecords: number = 0;
-
+  fileName : string = 'empSample.xlsx'
   items: MenuItem[] | undefined;
 
   ngOnInit(): void {
@@ -106,5 +106,11 @@ export class EmployeeListComponent implements OnInit{
     this.query.size = event.rows;
     this.getAllEmployees()
   }
-
-}
+  // data = [
+  //   { name: 'John Doe', age: 30, city: 'New York' },
+  //   { name: 'Jane Doe', age: 25, city: 'Los Angeles' },
+  // ];
+  downloadAttachment(fileName:string){
+    this.employeeService.downloadAttachments(fileName).subscribe(blob => saveAs(blob,fileName));
+  }
+} 
