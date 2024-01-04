@@ -23,24 +23,35 @@ export class EmployeeListComponent implements OnInit{
               private messageService: MessageService) { }
 
   employee!: Employee[];
-
+  statusVisible!: boolean;
+  vId!: number
   query !: {
     page: number,
     size: number
   };
   value: number | null = null;
-  totalRecords: number = 0;
+    totalRecords: number = 0;
   fileName : string = 'empSample.xlsx'
   items: MenuItem[] | undefined;
+  selectedStatus = {name:'Active'};
+  employeeStatus : any;
 
   ngOnInit(): void {
 
     this.items = [{
       label: 'Employee'
     }]
+    this.employeeStatus = [
+      {
+        name: 'Active'
+      },
+      {
+        name: 'Inactive'
+      }
+    ]
 
     this.getAllEmployees();
-    
+
   }
 
   onCancel() {
@@ -60,19 +71,17 @@ export class EmployeeListComponent implements OnInit{
 
     if (uploadedFile) {
       this.employeeService.saveFile(uploadedFile).subscribe(
-        (response) => {          
-   
+        (response) => {
+
           if (Array.isArray(response.message)) {
-            
+
             response.message.forEach((message: any) => {
               this.messageService.add({ severity: 'success', summary: 'Upload Successful', detail: message });
             });
 
           } else if (response.message) {
-            // If response.message is a single message, display it
             this.messageService.add({ severity: 'success', summary: 'Upload Successful', detail: response.message });
           } else {
-            // Display a generic success message if no message is provided
             this.messageService.add({ severity: 'success', summary: 'Upload Successful', detail: 'File uploaded successfully.' });
           }
 
@@ -82,7 +91,6 @@ export class EmployeeListComponent implements OnInit{
           console.error('Error while saving the file:', error);
 
           this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
-          // Handle error
         }
       );
     }
@@ -96,21 +104,55 @@ export class EmployeeListComponent implements OnInit{
       this.query = { page: res.pageable.pageNumber, size: res.size }
       this.totalRecords = res.totalElements;
     console.log(res);
-    
+
     })
 
   }
-
+  getAllInactiveEmployee() {
+    const stringValue = this.value !== null ? String(this.value) : null;
+    this.employeeService.searchInactiveEmployee(stringValue, this.query).subscribe((res:PaginatedResponse<Employee>) => {
+        this.employee = res.content;
+        debugger
+        this.query = { page: typeof res.pageable.pageNumber === 'number' ? res.pageable.pageNumber : 0, size: typeof res.size === 'number' ? res.size : 10 };
+        this.totalRecords = res.totalElements;
+    });
+}
   onPageChange(event?: any) {
     this.query.page = event.page;
     this.query.size = event.rows;
     this.getAllEmployees()
   }
-  // data = [
-  //   { name: 'John Doe', age: 30, city: 'New York' },
-  //   { name: 'Jane Doe', age: 25, city: 'Los Angeles' },
-  // ];
-  downloadAttachment(fileName:string){
-    this.employeeService.downloadAttachments(fileName).subscribe(blob => saveAs(blob,fileName));
+
+  flag='Active'
+  OnSelectChange(){
+    if(this.selectedStatus.name!=this.flag){
+     this.query.page=0
+     this.flag=this.selectedStatus.name
+    }
+
+    if(this.selectedStatus.name == 'Active'){
+      this.getAllEmployees()
+      }else{
+        this.getAllInactiveEmployee()
+      }
   }
-} 
+
+
+  closeDialog() {
+    this.statusVisible = false;
+  }
+
+
+downloadAttachment(fileName:string){
+  this.employeeService.downloadAttachments(fileName).subscribe(blob => saveAs(blob,fileName));
+}
+activateEmployee(id:number){
+  this.employeeService.activateEmployee(id).subscribe((res:Employee)=>{
+    this.messageService.add({ severity: 'success', summary: 'Employee Activated'});
+    this.closeDialog()
+    this.getAllInactiveEmployee()
+  })
+ }
+
+
+}

@@ -4,20 +4,19 @@ import { Observable } from 'rxjs';
 import { Employee } from 'src/app/modal/employee';
 import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
 import { environment } from 'src/environments/environment';
-import * as XLSX from 'xlsx';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeeService {
-  
+
   url = environment.baseurl;
 
-  constructor(private http: HttpClient) {   }
+  constructor(private http: HttpClient) { }
 
 
   addEmployee(employee: Employee): Observable<Employee> {
-      return this.http.post<Employee>(this.url.concat('/add-employee'), employee);
+    return this.http.post<Employee>(this.url.concat('/add-employee'), employee);
   }
 
   getAllEmployees(): Observable<Employee[]> {
@@ -33,7 +32,7 @@ export class EmployeeService {
   }
 
   deleteEmployee(id: Number, updatedEmployee: Employee): Observable<Employee> {
-    return this.http.patch<Employee>(`${this.url}/delete-employee/${id}`,updatedEmployee)
+    return this.http.patch<Employee>(`${this.url}/delete-employee/${id}`, updatedEmployee)
   }
 
   saveFile(file: File): Observable<any> {
@@ -48,29 +47,32 @@ export class EmployeeService {
   }
 
   searchEmployee(value?: number | null, query?: { page: number, size: number }): Observable<PaginatedResponse<Employee>> {
-    if(value){
-      query = {page: 0 , size:10};
+    if (value) {
+      query = { page: 0, size: 10 };
     }
     return this.http.get<PaginatedResponse<Employee>>(`${this.url}/search-employee?value=${value ? value : ''}&page=${query?.page ? query.page : ''}&size=${query?.size ? query.size : ''}`);
-}
+  }
 
-checkAssignedEmployee(empId: Number): Observable<any> {
-  return this.http.get<any>(`${this.url}/check-assigned-employee/${empId}`);
-}
+  checkAssignedEmployee(empId: Number): Observable<any> {
+    return this.http.get<any>(`${this.url}/check-assigned-employee/${empId}`);
+  }
 
- getEmployeesNotDriver(): Observable<Employee[]>{
-   return this.http.get<Employee[]>(`${this.url}/get-employee-not-driver`)
- }
-   downloadAttachments(empSample:string):Observable<Blob>{
-    return this.http.get(`${this.url}/download/${empSample}`,{
+  getEmployeesNotDriver(): Observable<Employee[]> {
+    return this.http.get<Employee[]>(`${this.url}/get-employee-not-driver`)
+  }
+  downloadAttachments(empSample: string): Observable<Blob> {
+    return this.http.get(`${this.url}/download/${empSample}`, {
       responseType: 'blob'
     });
+  }
+  searchInactiveEmployee(value?: string | null, query?: { page: number, size: number }): Observable<PaginatedResponse<Employee>> {
+    debugger
+    if (value) {
+      query = { page: 0, size: 10 };
     }
- exportToExcel(data: any[], filename: string, sheetName: string): void {
-  const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
-  const wb: XLSX.WorkBook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, sheetName);
-
-  XLSX.writeFile(wb, `${filename}.xlsx`);
- }
+    return this.http.get<PaginatedResponse<Employee>>(`${this.url}/search-employee-inactive?value=${(value ? value : '')}&page=${query?.page ? query.page : ''}&size=${query?.size ? query.size : ''}`);
+  }
+  activateEmployee(id: Number): Observable<Employee> {
+    return this.http.patch<Employee>(`${this.url}/employee-active/${id}`, {})
+  }
 }

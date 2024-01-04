@@ -11,30 +11,59 @@
         </div>
         <div class="body-card">
             <div class="table-head">
-              <div class="flex mb-2 align-items-center gap-1" style="justify-content: flex-end; align-items: flex-end;">            
+              <div class="flex mb-2 align-items-center gap-1" style="justify-content: flex-end; align-items: flex-end;">
                 <p-button class="bg-b-color" routerLink="/add-driver">
                     <i class="bi bi-plus-lg" style="font-size: 20px;font-weight: bold;"></i>&nbsp;Add Driver
                   </p-button>
               </div>
-                <p-toolbar>
-                    <div class="p-toolbar-group-start">
-                      <h2 class="h-color">Driver List</h2>
+              <p-toolbar>
+                <div class="p-toolbar-group-start">
+                  <h2 class="h-color">Driver</h2>
+                </div>
+                <div class="form-hook">
+                  <p-dropdown
+                          class="w-full"
+                          [(ngModel)]="selectedStatus"
+                          [options]="driverStatus"
+                          name="selectedStatus1"
+                          #selectedStatus1="ngModel"
+                          [required]="true"
+                          optionLabel="name"
+                          [filter]="true"
+                          filterBy="name"
+                          [showClear]="true"
+                          (onChange) = "OnSelectChange()"
+                        >
+                        <ng-template pTemplate="selectedItem">
+                          <div
+                            class="flex align-items-center gap-2"
+                            *ngIf="selectedStatus"
+                          >
+                            <div>{{ selectedStatus.name }}</div>
+                          </div>
+                        </ng-template>
+                        <ng-template let-driverStatus pTemplate="item">
+                          <div class="flex align-items-center gap-2">
+                            <div>{{ driverStatus.name }}</div>
+                          </div>
+                        </ng-template>
+                      </p-dropdown>
                     </div>
-                    <div class="card flex flex-wrap justify-content-center gap-3">
-                      <span class="p-input-icon-left">
-                        <i class="my-relative bi bi-search"></i>
-                        <input type="text" pInputText [(ngModel)]="value" (input)="getAllDrivers()"
-                          placeholder="Search Employee Number" />
-                      </span>
-                    </div>
-                    
-                </p-toolbar>
+                <div class="card flex flex-wrap justify-content-center gap-3">
+                  <span class="p-input-icon-left">
+                    <i class="my-relative bi bi-search"></i>
+                    <input type="text" pInputText [(ngModel)]="value" (input)="OnSelectChange()"
+                      placeholder="Search Employee Number" />
+                  </span>
+                </div>
+
+            </p-toolbar>
             </div>
           <div class="card">
             <p-table [value]="driver" [tableStyle]="{ 'min-width': '50rem' }">
               <ng-template pTemplate="header">
                 <tr>
-                  
+
                   <th class="text-center">Emp Number</th>
                   <th class="text-center">Emp Name</th>
                   <th class="text-center">Job Title</th>
@@ -72,18 +101,19 @@
                   <td class="text-center">{{ driver.empId.vehicleBudget }}</td>
                   <td class="text-center">{{ driver.empId.costCentre }}</td>
                   <td class="text-center">{{ driver.assignedVehicle }}</td>
-                  <td class="text-center "> 
+                  <td class="text-center ">
                     <div class="w-full flex">
                       <p-button [routerLink]="['/view-driver/', driver.id]" pTooltip="View" tooltipPosition="top" icon="bi bi-eye"class='ml mr' [outlined]="true" [rounded]="true" [raised]="true">
-                      </p-button> 
+                      </p-button>
+                      <p-button *ngIf="selectedStatus.name !== 'Active'" class="bg-color" (click)="activateDriver(driver.id)" [rounded]="true" pTooltip="Activate" tooltipPosition="top" icon="bi bi-check2" class='ml mr' [outlined]="true" [raised]="true" ></p-button>
                       <p-button [routerLink]="['/edit-driver/', driver.id]" icon="bi bi-pen" pTooltip="Edit" tooltipPosition="top" class='mr' [outlined]="true" [rounded]="true" [raised]="true" severity="success">
-                     
+
                       </p-button>
                        <p-button (click)="deleteDriver(driver.id)" icon="bi bi-trash" class='ml'  pTooltip="Trash" tooltipPosition="top" [outlined]="true" [rounded]="true" [raised]="true" severity="danger">
-                      
+
                        </p-button>
                        <p-button [routerLink]="['/driver-attachment',driver.id]"  icon="bi bi-paperclip"   pTooltip="Add Attachments" tooltipPosition="top"class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="warning">
-                     
+
                        </p-button>
                        <p-button [routerLink]="['/individual-file-list-component/','driver',driver.id]"  pTooltip="Download Attachments" tooltipPosition="top" icon="bi bi-download" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true">
                       </p-button>

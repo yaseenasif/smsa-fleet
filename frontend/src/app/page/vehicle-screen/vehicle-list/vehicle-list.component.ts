@@ -27,7 +27,7 @@ export class VehicleListComponent implements OnInit{
     size: number
   };
 
-  value: string | null = null;
+    value: string | null = null;
   totalRecords: number = 0;
 
   vehicleReplacement: VehicleReplacement = {
@@ -60,12 +60,6 @@ export class VehicleListComponent implements OnInit{
 
 
   items: MenuItem[] | undefined;
-
-  data = [
-    { name: 'John Doe', age: 30, city: 'New York' },
-    { name: 'Jane Doe', age: 25, city: 'Los Angeles' },
-  ];
-
   ngOnInit() {
       this.items = [{ label: 'Vehicle'}];
       this.vehicleStatus = [
@@ -208,21 +202,21 @@ export class VehicleListComponent implements OnInit{
     this.vId = id;
     this.statusVisible = true;
     console.log(this.vId);
-    
+
 }
 
  activateVehicle(){
   this.vehicleService.activateVehicle(this.vId).subscribe((res:Vehicle)=>{
     this.messageService.add({ severity: 'success', summary: 'Vehicle Activated'});
-//     
+//
 //     setTimeout(() => {
-// 
+//
 //       this.router.navigate(['/vehicle'])
 //     },1000)
     this.closeDialog()
     this.getAllInactiveVehicles()
   })
- } 
+ }
 
 // downloadExcel(): void {
 //   this.vehicleService.exportToExcel(this.data, 'user_data', 'Sheet1');

@@ -33,7 +33,7 @@ updateDriver(id: Number,plateNumber: String | null, updatedDriver: Driver): Obse
 deleteDriver(id: Number) {
   return this.http.delete<any>(`${this.url}/driver/${id}`)
 }
-  
+
 searchDriver(value?: number | null, query?: { page: number, size: number }): Observable<PaginatedResponse<Driver>> {
   if(value){
     query = {page: 0 , size:10};
@@ -43,5 +43,17 @@ searchDriver(value?: number | null, query?: { page: number, size: number }): Obs
 
 getUnasignedDrivers(): Observable<Driver[]> {
   return this.http.get<Driver[]>(this.url.concat('/unassigned-drivers'));
+  }
+
+  searchInactiveDriver(value?: string | null, query?: { page: number, size: number }): Observable<PaginatedResponse<Driver>> {
+    debugger
+    if (value) {
+      query = { page: 0, size: 10 };
+    }
+    value
+    return this.http.get<PaginatedResponse<Driver>>(`${this.url}/search-driver-inactive?value=${(value ? value : '')}&page=${query?.page ? query.page : ''}&size=${query?.size ? query.size : ''}`);
+  }
+  activateDriver(id: Number): Observable<Driver> {
+    return this.http.patch<Driver>(`${this.url}/driver-active/${id}`,{})
   }
 }
