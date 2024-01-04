@@ -171,7 +171,6 @@ public class VehicleService {
                 optionalVehicle.get().setLeaseStartDate(vehicleDto.getLeaseStartDate());
                 optionalVehicle.get().setLeaseExpiryDate(vehicleDto.getLeaseExpiryDate());
                 optionalVehicle.get().setUsageType(vehicleDto.getUsageType());
-                optionalVehicle.get().setAttachments(vehicleDto.getAttachments());
                 optionalVehicle.get().setUpdatedAt(LocalDate.now());
                 optionalVehicle.get().setUpdatedBy(user);
 

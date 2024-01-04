@@ -115,11 +115,28 @@ public class DriverService {
 
     public DriverDto deleteDriverById(Long id){
         Optional<Driver> driver = driverRepository.findById(id);
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        if(driver.isPresent()){
-            driver.get().setStatus(Boolean.FALSE);
-            return toDto(driverRepository.save(driver.get()));
-        }
+        if(driver.isPresent()) {
+            if (principal instanceof UserDetails) {
+                String username = ((UserDetails) principal).getUsername();
+                User user = userRepository.findByEmail(username);
+
+                Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByAssignToEmpId(driver.get().getEmpId());
+                if (vehicleAssignment.isPresent()) {
+                    driver.get().setAssignedVehicle(null);
+                    vehicleAssignment.get().setAssignToEmpId(null);
+                    vehicleAssignment.get().setAssignToEmpName(null);
+                    vehicleAssignment.get().setStatus(Boolean.FALSE);
+                    vehicleAssignment.get().setDeletedBy(user);
+                    vehicleAssignment.get().setDeletedAt(LocalDate.now());
+                    vehicleAssignmentRepository.save(vehicleAssignment.get());
+                }
+            }
+
+                driver.get().setStatus(Boolean.FALSE);
+                return toDto(driverRepository.save(driver.get()));
+            }
 
         throw new RuntimeException("Record doesn't exist");
     }

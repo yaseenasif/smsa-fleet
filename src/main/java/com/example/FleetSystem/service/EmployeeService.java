@@ -58,8 +58,29 @@ public class EmployeeService {
 
     public EmployeeDto deleteEmployeeById(Long id , EmployeeDto employeeDto) {
         Optional<Employee> employee = employeeRepository.findById(id);
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if(employee.isPresent()){
+            Optional<Driver> driver = driverRepository.findByEmpId(employee.get());
+            if (driver.isPresent()){
+                driver.get().setAssignedVehicle(null);
+                driver.get().setStatus(Boolean.FALSE);
+                driverRepository.save(driver.get());
+            }
+
+            if(principal instanceof UserDetails) {
+                String username = ((UserDetails) principal).getUsername();
+                User user = userRepository.findByEmail(username);
+
+                Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByAssignToEmpId(employee.get());
+                if (vehicleAssignment.isPresent()) {
+                    vehicleAssignment.get().setDeletedAt(LocalDate.now());
+                    vehicleAssignment.get().setDeletedBy(user);
+                    vehicleAssignment.get().setAssignToEmpName(null);
+                    vehicleAssignment.get().setAssignToEmpId(null);
+                    vehicleAssignment.get().setStatus(Boolean.FALSE);
+                }
+            }
             employee.get().setStatus(employeeDto.getStatus());
             employee.get().setDeleteStatus(Boolean.FALSE);
             return toDto(employeeRepository.save(employee.get()));

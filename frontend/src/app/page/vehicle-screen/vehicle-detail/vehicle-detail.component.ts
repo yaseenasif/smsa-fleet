@@ -37,7 +37,7 @@ export class VehicleDetailComponent implements OnInit {
     leaseStartDate: undefined,
     leaseExpiryDate: undefined,
     usageType: undefined,
-    attachments: undefined,
+    category: undefined,
     vendor: {
       id: undefined,
       vendorName: undefined,

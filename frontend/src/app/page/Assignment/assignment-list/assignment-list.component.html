@@ -80,7 +80,7 @@
                     <td class="text-center">{{ vehicleAssignment.vehicle.leaseCost }}</td>
 
                     <td class="text-center flex">
-                      <p-button [routerLink]="['/view-assignment/', vehicleAssignment.id]" pTooltip="View" tooltipPosition="top" icon="bi bi-eye" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true">
+                      <p-button [routerLink]="['/view-assignment/',vehicleAssignment.id]" pTooltip="View" tooltipPosition="top" icon="bi bi-eye" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true">
                       </p-button>
 
                       <p-button (click)="showDialog(vehicleAssignment.id)" icon="bi bi-trash" class='ml'  pTooltip="Delete Assignment" tooltipPosition="top" [outlined]="true" [rounded]="true" [raised]="true" severity="danger">

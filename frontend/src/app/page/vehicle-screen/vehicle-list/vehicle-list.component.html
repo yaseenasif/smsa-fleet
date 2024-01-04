@@ -98,6 +98,7 @@
                   <th class="text-center">Lease Start Date</th>
                   <th class="text-center">Lease Expiry Date</th>
                   <th class="text-center">Usage Type</th>
+                  <th class="text-center">Category</th>
                   <th class="text-center">Replace Vehicle</th>
 
 
@@ -125,6 +126,7 @@
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.leaseStartDate }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.leaseExpiryDate }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.usageType }}</td>
+                  <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.category }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.vehicleReplacement?vehicles.vehicleReplacement.vehicle.plateNumber:'-----'}}</td>
                   <td class="text-center flex">
 

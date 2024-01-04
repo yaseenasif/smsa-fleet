@@ -4,6 +4,8 @@ import { Vehicle } from 'src/app/modal/vehicle';
 import { VehicleService } from '../service/vehicle.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Vendor } from 'src/app/modal/vendor';
+import { ProductField } from 'src/app/modal/ProductField';
+import { ProductFieldServiceService } from '../../product-field/service/product-field-service.service';
 
 @Component({
   selector: 'app-update-vehicle',
@@ -32,7 +34,7 @@ export class UpdateVehicleComponent implements OnInit{
     leaseStartDate: undefined,
     leaseExpiryDate: undefined,
     usageType: undefined,
-    attachments: undefined,
+    category: undefined,
     vendor: {
       id: undefined,
       vendorName: undefined,
@@ -49,14 +51,18 @@ export class UpdateVehicleComponent implements OnInit{
     { id: 3, locationName: 2018 },
     { id: 3, locationName: 2019 }
   ]
-    vehicleId!: Number;
+    
+  vehicleId!: Number;
   vendors!: Vendor[];
   visible!: boolean;
+  usageTypes: ProductField | null | undefined;
+  categories: ProductField | null | undefined;
 
   constructor(private vehicleService: VehicleService,
               private route: ActivatedRoute,
               private router: Router,
-              private messageService: MessageService
+              private messageService: MessageService,
+              private productFieldService: ProductFieldServiceService
     
     ) { }
 
@@ -80,13 +86,13 @@ export class UpdateVehicleComponent implements OnInit{
     this.vehicleId = +this.route.snapshot.paramMap.get('id')!;
     this.getVehicleById(this.vehicleId)
     this.getAllVendor();
+    this.getUsageType();
+    this.getCategory();
   }
 
   getVehicleById(id: Number) {
     this.vehicleService.getVehicleById(id).subscribe((res: Vehicle) => {
-      this.vehicle = res;
-      console.log(this.vehicle);
-      
+      this.vehicle = res;      
     })
   }
 
@@ -98,7 +104,7 @@ export class UpdateVehicleComponent implements OnInit{
 
       setTimeout(() => {
         this.router.navigate(['/vehicle'])
-      },2000)
+      },1000)
       
     })
 
@@ -131,6 +137,22 @@ export class UpdateVehicleComponent implements OnInit{
         this.router.navigate(['/vehicle'])
       }, 1000)
     })  
+  }
+
+  getUsageType() {
+    this.productFieldService.getProductFieldByName('Usage Type').subscribe((res: ProductField) => {
+      this.usageTypes = res;
+    }, error => {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
+    })
+  }
+  
+  getCategory() {
+    this.productFieldService.getProductFieldByName('Category').subscribe((res: ProductField) => {
+      this.categories = res;
+    }, error => {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
+    })
   }
 }
 

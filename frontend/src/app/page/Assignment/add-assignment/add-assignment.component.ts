@@ -113,7 +113,7 @@ export class AddAssignmentComponent {
       leaseStartDate: undefined,
       leaseExpiryDate: undefined,
       usageType: undefined,
-      attachments: undefined
+      category: undefined
     }
   }
 

@@ -64,7 +64,7 @@ export interface VehicleAssignment {
         leaseStartDate: String | null | undefined
         leaseExpiryDate: String | null | undefined
         usageType: String | null | undefined
-        attachments: String | null | undefined
+        category: String | null | undefined
     }
 
 }

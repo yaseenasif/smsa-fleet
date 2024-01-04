@@ -27,7 +27,7 @@
                     required
                   />
                   <small 
-                      id="name-help" class="color-red" 
+                      id="name-help" class="p-dropdown-empty-message" 
                       *ngIf="processOrderNumber.invalid && (processOrderNumber.dirty || processOrderNumber.touched)"
                   > Process OrderNumber Name is required
                   </small>
@@ -46,7 +46,7 @@
                     required
                   />
                   <small 
-                      id="name-help" class="color-red" 
+                      id="name-help" class="p-dropdown-empty-message" 
                       *ngIf="plateNumber.invalid && (plateNumber.dirty || plateNumber.touched)"
                   > Plate Number is required
                   </small>
@@ -66,7 +66,7 @@
                     required
                   />
                   <small 
-                      id="name-help" class="color-red" 
+                      id="name-help" class="p-dropdown-empty-message" 
                       *ngIf="make.invalid && (make.dirty || make.touched)"
                   > Make is required
                   </small>
@@ -115,7 +115,7 @@
                     required
                   />
                   <small 
-                      id="name-help" class="color-red" 
+                      id="name-help" class="p-dropdown-empty-message" 
                       *ngIf="design.invalid && (design.dirty || design.touched)"
                   > Design is required
                   </small>
@@ -134,7 +134,7 @@
                     required
                   />
                   <small 
-                      id="name-help" class="color-red" 
+                      id="name-help" class="p-dropdown-empty-message" 
                       *ngIf="model.invalid && (model.dirty || model.touched)"
                   > Model is required
                   </small>
@@ -153,7 +153,7 @@
                     required
                   />
                   <small 
-                      id="name-help" class="color-red" 
+                      id="name-help" class="p-dropdown-empty-message" 
                       *ngIf="type.invalid && (type.dirty || type.touched)"
                   > Model is required
                   </small>
@@ -172,7 +172,7 @@
                     required
                   />
                   <small 
-                      id="name-help" class="color-red" 
+                      id="name-help" class="p-dropdown-empty-message" 
                       *ngIf="capacity.invalid && (capacity.dirty || capacity.touched)"
                   > Capacity is required
                   </small>
@@ -191,7 +191,7 @@
                     required
                   />
                   <small 
-                      id="name-help" class="color-red" 
+                      id="name-help" class="p-dropdown-empty-message" 
                       *ngIf="power.invalid && (power.dirty || power.touched)"
                   > Power is required
                   </small>
@@ -210,7 +210,7 @@
                     required
                   />
                   <small 
-                      id="name-help" class="color-red" 
+                      id="name-help" class="p-dropdown-empty-message" 
                       *ngIf="registrationExpiry.invalid && (registrationExpiry.dirty || registrationExpiry.touched)"
                   > Registration Expiry is required
                   </small>
@@ -229,7 +229,7 @@
                     required
                   />
                   <small 
-                      id="name-help" class="color-red" 
+                      id="name-help" class="p-dropdown-empty-message" 
                       *ngIf="fuelType.invalid && (fuelType.dirty || fuelType.touched)"
                   > Fuel Type Expiry is required
                   </small>
@@ -280,7 +280,7 @@
                     required
                   />
                   <small 
-                      id="name-help" class="color-red" 
+                      id="name-help" class="p-dropdown-empty-message" 
                       *ngIf="insuranceExpiry.invalid && (insuranceExpiry.dirty || insuranceExpiry.touched)"
                   > Insurance Expiry Expiry is required
                   </small>
@@ -299,7 +299,7 @@
                     required
                   />
                   <small 
-                      id="name-help" class="color-red" 
+                      id="name-help" class="p-dropdown-empty-message" 
                       *ngIf="leaseCost.invalid && (leaseCost.dirty || leaseCost.touched)"
                   > Lease Cost Expiry Expiry is required
                   </small>
@@ -318,7 +318,7 @@
                     required
                   />
                   <small 
-                      id="name-help" class="color-red" 
+                      id="name-help" class="p-dropdown-empty-message" 
                       *ngIf="leaseStartDate.invalid && (leaseStartDate.dirty || leaseStartDate.touched)"
                   > Lease Start Date is required
                   </small>
@@ -337,29 +337,89 @@
                     required
                   />
                   <small 
-                      id="name-help" class="color-red" 
+                      id="name-help" class="p-dropdown-empty-message" 
                       *ngIf="leaseExpiryDate.invalid && (leaseExpiryDate.dirty || leaseExpiryDate.touched)"
                   > Lease Expiry Date Start Date is required
                   </small>
                 </div>
               </div>
               <div class="col-12 md:col-12 lg:col-6">
-                <div class="flex flex-column gap-2">
+                <div class="flex flex-column gap-2 form-hook">
                   <label htmlFor="name">Usage Type</label>
-                  <input
-                    pInputText
-                    id="name"
-                    aria-describedby="name-help"
-                    name="usageType"
-                    [(ngModel)]="vehicle.usageType"
-                    #usageType="ngModel"
-                    required
-                  />
-                  <small 
-                      id="name-help" class="color-red" 
-                      *ngIf="usageType.invalid && (usageType.dirty || usageType.touched)"
-                  > Lease Expiry Date Start Date is required
-                  </small>
+                  <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="vehicle.usageType"
+                      [options]="usageTypes?.productFieldValuesList"
+                      name="usageType"
+                      #usageType="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                      placeholder="Select Usage type
+                    "
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="vehicle"
+                        >
+                          <div>{{ vehicle.usageType }}</div>
+                        </div>
+                      </ng-template>
+                      <ng-template let-usageTypes pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                          <div>{{ usageTypes.name }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
+                    <small 
+                        id="name-help" class="p-dropdown-empty-message" 
+                        *ngIf="usageType.invalid && (usageType.dirty || usageType.touched)"
+                    > Usage Type is required
+                    </small>
+                </div>
+              </div>
+
+              <div class="col-12 md:col-12 lg:col-6">
+                <div class="flex flex-column gap-2 form-hook">
+                  <label htmlFor="name">Usage Type</label>
+                  <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="vehicle.category"
+                      [options]="categories?.productFieldValuesList"
+                      name="category"
+                      #category="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                      placeholder="Select Category
+                    "
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="vehicle"
+                        >
+                          <div>{{ vehicle.category }}</div>
+                        </div>
+                      </ng-template>
+                      <ng-template let-categories pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                          <div>{{ categories.name }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
+                    <small 
+                        id="name-help" class="p-dropdown-empty-message" 
+                        *ngIf="category.invalid && (category.dirty || category.touched)"
+                    > Category is required
+                    </small>
                 </div>
               </div>
               
