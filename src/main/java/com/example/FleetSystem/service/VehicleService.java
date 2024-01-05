@@ -67,7 +67,7 @@ public class VehicleService {
     @Autowired
     EmployeeRepository employeeRepository;
 
-    public VehicleDto deleteVehicleById(Long id) {
+    public VehicleDto inactiveVehicleById(Long id) {
         Optional<Vehicle> vehicle = vehicleRepository.findById(id);
         if (vehicle.isPresent()) {
             Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByVehicle(vehicle.get());
@@ -77,6 +77,7 @@ public class VehicleService {
                 vehicleAssignment.get().setStatus(Boolean.FALSE);
                 vehicleAssignmentRepository.save(vehicleAssignment.get());
             }
+            vehicle.get().setVehicleStatus("In-Active");
             vehicle.get().setStatus(Boolean.FALSE);
             return toDto(vehicleRepository.save(vehicle.get()));
         }
@@ -97,6 +98,7 @@ public class VehicleService {
             }
 
             Vehicle vehicle1 = toEntity(vehicleDto);
+            vehicle1.setVehicleStatus("TBA");
             vehicle1.setCreatedBy(user);
             vehicle1.setCreatedAt(LocalDate.now());
             vehicle1.setStatus(Boolean.TRUE);
@@ -275,6 +277,7 @@ public class VehicleService {
                             vehicle.setLeaseCost(getIntegerValue(row.getCell(16)));
                             vehicle.setCreatedBy(user);
                             vehicle.setCreatedAt(LocalDate.now());
+                            vehicle.setVehicleStatus("TBA");
                             vehicle.setStatus(Boolean.TRUE);
                             vehicle.setUuid(uuid);
 

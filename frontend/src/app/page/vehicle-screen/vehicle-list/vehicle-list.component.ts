@@ -145,14 +145,14 @@ export class VehicleListComponent implements OnInit{
 
   }
 
-  deleteVehicle(id: Number, event: Event) {
-    event.stopPropagation();
+  // deleteVehicle(id: Number, event: Event) {
+  //   event.stopPropagation();
 
-    this.vehicleService.deleteVehicle(id).subscribe((res) => {
-      this.getAllVehicles();
+  //   this.vehicleService.inactiveVehicleById(id).subscribe((res) => {
+  //     this.getAllVehicles();
 
-    })
-  }
+  //   })
+  // }
 
   onSubmit(){
     this.vehicleService.replaceVehicle(this.vId,this.vehicleReplacement).subscribe(res=>{

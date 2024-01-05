@@ -131,10 +131,10 @@ export class UnAssignedVehiclesComponent {
 
   }
 
-  deleteVehicle(id: Number, event: Event) {
+  inactiveVehicleById(id: Number, event: Event) {
     event.stopPropagation();
 
-    this.vehicleService.deleteVehicle(id).subscribe((res) => {
+    this.vehicleService.inactiveVehicleById(id).subscribe((res) => {
       this.getAllVehicles();
 
     })

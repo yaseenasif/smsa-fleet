@@ -54,8 +54,8 @@ export class VehicleService {
     return this.http.patch<Vehicle>(`${this.url}/update-vehicle/${id}`, updatedVehicle);
   }
 
-  deleteVehicle(id: Number) {
-    return this.http.delete<any>(`${this.url}/delete-vehicle/${id}`)
+  inactiveVehicleById(id: Number) {
+    return this.http.delete<any>(`${this.url}/inactive-vehicle/${id}`)
   }
 
   saveFile(file: File): Observable<any> {

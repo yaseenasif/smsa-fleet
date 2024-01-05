@@ -49,6 +49,7 @@ public class Vehicle {
     private String category;
     private String uuid;
     private boolean status;
+    private String vehicleStatus;
     private LocalDate createdAt;
     private LocalDate updatedAt;
 
