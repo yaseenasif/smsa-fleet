@@ -25,4 +25,10 @@ public class DashboardCardsController {
         Map<String, Object> counts = dashboardCardsService.getCounts();
         return new ResponseEntity<>(counts, HttpStatus.OK);
     }
+
+    @GetMapping("/stats")
+    public ResponseEntity<Map<String, Object>> getStatsCounts() {
+        Map<String, Object> counts = dashboardCardsService.getStatsCount();
+        return new ResponseEntity<>(counts,HttpStatus.OK);
+    }
 }

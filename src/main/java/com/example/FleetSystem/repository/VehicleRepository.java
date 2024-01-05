@@ -41,4 +41,11 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long>, JpaSpec
             "RIGHT OUTER JOIN Vehicle v ON va.vehicle = v.id\n" +
             "WHERE va.vehicle IS NULL OR va.status = false AND v.status = true AND v.leaseCost <= :value")
     List<Vehicle> getAllVehiclesUnderDriverVehicleBudget(@Param("value") Integer value);
+
+    @Query("SELECT v.usageType, COUNT(v) AS total_count FROM Vehicle v GROUP BY v.usageType")
+    List<Object[]> getStatsCount();
+
+    @Query("SELECT v.region, COUNT(v) AS total_count FROM Vehicle v GROUP BY v.region")
+    List<Object[]> getRegionCounts();
+
 }
