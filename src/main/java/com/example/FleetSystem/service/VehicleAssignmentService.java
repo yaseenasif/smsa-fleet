@@ -73,6 +73,7 @@ public class VehicleAssignmentService {
                 if(employee.isPresent()) {
                     Optional<Driver> driver = driverRepository.findByEmpId(employee.get());
                     driver.ifPresent(value -> value.setAssignedVehicle(vehicle.get().getPlateNumber()));
+                    vehicle.get().setVehicleStatus("Active");
 
                     if (existingVehicleAssignment.isPresent()){
                         existingVehicleAssignment.get().setAssignToEmpId(employee.get());
@@ -129,6 +130,9 @@ public class VehicleAssignmentService {
                 Optional<Driver> driver = driverRepository.findByEmpId(optionalVehicleAssignment.get().getAssignToEmpId());
                 driver.ifPresent(value -> value.setAssignedVehicle(null));
 
+                Optional<Vehicle> vehicle = vehicleRepository.findById(optionalVehicleAssignment.get().getVehicle().getId());
+                vehicle.ifPresent(value -> value.setVehicleStatus("TBA"));
+
                 optionalVehicleAssignment.get().setStatus(Boolean.FALSE);
                 optionalVehicleAssignment.get().setDeletedAt(LocalDate.now());
                 optionalVehicleAssignment.get().setDeletedBy(user);
@@ -172,19 +176,6 @@ public class VehicleAssignmentService {
 
         throw new RuntimeException(String.format("Vehicle Assignment not found for id => %id", id));
         }
-
-//    public VehicleAssignmentDto makeVehicleAssignmentActive(Long id) {
-//        Optional<VehicleAssignment> optionalVehicleAssignment = vehicleAssignmentRepository.findById(id);
-//
-//        if(optionalVehicleAssignment.isPresent()) {
-//            if(optionalVehicleAssignment.get().isStatus()) {
-//                throw new RuntimeException("Record is already Active");
-//            }
-//            optionalVehicleAssignment.get().setStatus(Boolean.TRUE);
-//            return toDto(vehicleAssignmentRepository.save(optionalVehicleAssignment.get()));
-//        }
-//        throw new RuntimeException(String.format("VehicleAssignment Not Found by this id => %d", id));
-//    }
 
     public VehicleAssignmentDto getByPlateNumber(String plateNumber){
         Optional<Vehicle> vehicle = vehicleRepository.findByPlateNumber(plateNumber);

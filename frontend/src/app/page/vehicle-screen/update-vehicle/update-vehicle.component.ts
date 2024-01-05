@@ -129,10 +129,10 @@ export class UpdateVehicleComponent implements OnInit{
     this.visible = false;
   }
 
-  deleteVehicle() {
-    this.vehicleService.deleteVehicle(this.vehicleId).subscribe((res) => {
+  inactiveVehicleById() {
+    this.vehicleService.inactiveVehicleById(this.vehicleId).subscribe((res) => {
       this.vehicle=res;      
-      this.messageService.add({ severity: 'error', summary: 'Delete Successfully', detail: 'Vehicle has been deleted' });
+      this.messageService.add({ severity: 'error', summary: 'Vehicle Inactivated Successfully', detail: 'Vehicle has been deleted' });
       setTimeout(() => {
         this.router.navigate(['/vehicle'])
       }, 1000)

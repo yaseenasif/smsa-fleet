@@ -70,7 +70,13 @@ public class DriverService {
 
                 if(driverDto.getAssignedVehicle() != null) {
                     Optional<Vehicle> vehicle = vehicleRepository.findByPlateNumber(driverDto.getAssignedVehicle());
+                    if (vehicle.isPresent()) {
+                        vehicle.get().setVehicleStatus("Active");
+                        vehicleRepository.save(vehicle.get());
+                    }
+
                     Optional<VehicleAssignment> assignment = vehicleAssignmentRepository.findByVehicle(vehicle.get());
+
                     if (assignment.isPresent()) {
                         assignment.get().setAssignToEmpId(employee.get());
                         assignment.get().setAssignToEmpName(employee.get().getEmpName());
@@ -117,6 +123,7 @@ public class DriverService {
         Optional<Driver> driver = driverRepository.findById(id);
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
+
         if(driver.isPresent()) {
             if (principal instanceof UserDetails) {
                 String username = ((UserDetails) principal).getUsername();
@@ -124,6 +131,12 @@ public class DriverService {
 
                 Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByAssignToEmpId(driver.get().getEmpId());
                 if (vehicleAssignment.isPresent()) {
+                    Optional<Vehicle> vehicle = vehicleRepository.findById(vehicleAssignment.get().getVehicle().getId());
+                    if (vehicle.isPresent()) {
+                        vehicle.get().setVehicleStatus("TBA");
+                        vehicleRepository.save(vehicle.get());
+                    }
+
                     driver.get().setAssignedVehicle(null);
                     vehicleAssignment.get().setAssignToEmpId(null);
                     vehicleAssignment.get().setAssignToEmpName(null);
@@ -163,19 +176,27 @@ public class DriverService {
                     if (!plateNumber.isEmpty()) {
 //                        Assign vehicle
                         Optional<Vehicle> vehicle = vehicleRepository.findByPlateNumber(plateNumber);
-                        driver.get().setAssignedVehicle(plateNumber);
-                        VehicleAssignment vehicleAssignment = VehicleAssignment.builder()
-                                .assignToEmpId(driver.get().getEmpId())
-                                .assignToEmpName(driver.get().getEmpId().getEmpName())
-                                .vehicle(vehicle.get())
-                                .createdAt(LocalDate.now())
-                                .createdBy(user)
-                                .status(Boolean.TRUE)
-                                .build();
+                        if (vehicle.isPresent()) {
+                            vehicle.get().setVehicleStatus("Active");
+                            vehicleRepository.save(vehicle.get());
+
+                            driver.get().setAssignedVehicle(plateNumber);
+                            VehicleAssignment vehicleAssignment = VehicleAssignment.builder()
+                                    .assignToEmpId(driver.get().getEmpId())
+                                    .assignToEmpName(driver.get().getEmpId().getEmpName())
+                                    .vehicle(vehicle.get())
+                                    .createdAt(LocalDate.now())
+                                    .createdBy(user)
+                                    .status(Boolean.TRUE)
+                                    .build();
+
+                            vehicleAssignmentRepository.save(vehicleAssignment);
+                        }
 
 //                        Release assignment
                         Optional<Vehicle> existingVehicle = vehicleRepository.findByPlateNumber(driverDto.getAssignedVehicle());
                         if (existingVehicle.isPresent()) {
+                            existingVehicle.get().setVehicleStatus("TBA");
                             Optional<VehicleAssignment> existingAssignment = vehicleAssignmentRepository.findByVehicle(existingVehicle.get());
                             if (existingAssignment.isPresent()){
                             existingAssignment.get().setAssignToEmpId(null);
@@ -183,16 +204,17 @@ public class DriverService {
                             existingAssignment.get().setDeletedAt(LocalDate.now());
                             existingAssignment.get().setDeletedBy(user);
                             existingAssignment.get().setStatus(Boolean.FALSE);
+
                             vehicleAssignmentRepository.save(existingAssignment.get());
+                            vehicleRepository.save(existingVehicle.get());
                           }
                         }
-                        vehicleAssignmentRepository.save(vehicleAssignment);
+
                     }
 
                 return toDto(driverRepository.save(driver.get()));
             }
         }
-
         throw new RuntimeException(String.format("Driver Not Found by this Id => %d" , id));
     }
 

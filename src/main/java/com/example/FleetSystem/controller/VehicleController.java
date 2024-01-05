@@ -79,9 +79,9 @@ public class VehicleController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping("/delete-vehicle/{id}")
+    @DeleteMapping("/inactive-vehicle/{id}")
     public ResponseEntity<VehicleDto> deleteVehicleById(@PathVariable Long id) {
-        return ResponseEntity.ok(vehicleService.deleteVehicleById(id));
+        return ResponseEntity.ok(vehicleService.inactiveVehicleById(id));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

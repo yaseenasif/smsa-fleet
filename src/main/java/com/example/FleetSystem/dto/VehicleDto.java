@@ -38,6 +38,7 @@ public class VehicleDto {
     private String category;
     private String uuid;
     private boolean status;
+    private String vehicleStatus;
     private VehicleReplacement vehicleReplacement;
 
 }
