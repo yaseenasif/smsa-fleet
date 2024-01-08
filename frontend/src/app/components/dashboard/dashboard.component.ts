@@ -293,7 +293,6 @@ export class DashboardComponent implements OnInit {
         this.newNum = res.totalActiveDrivers;
         this.vendorData = res.activeVehiclesPerVendor;
         this.vehiclesPerRegion = res.totalVehiclesPerRegion
-debugger        
         this.data1 = {
           labels: this.vendorData.map((vendor) => vendor.name),
           datasets: [
@@ -347,7 +346,6 @@ debugger
   getDashboardPieChartCounts() {
     this.dashboardService.getDashboardPieChartCounts().subscribe(
       (res) => {
-        debugger
          this.departmentCount = [res.departmentCounts];
          this.vehicleCount = res.totalVehicleCount;
          this.regionCount = res.regionCounts;
