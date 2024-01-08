@@ -35,12 +35,19 @@ export class DashboardComponent implements OnInit {
   items: MenuItem[] | undefined;
   cardState: string = 'inactive';
   data: any;
+  data2: any;
+  data3: any;
   options: any;
   data1: any;
   options1: any;
   options2: any;
   options3: any;
-
+  option4:any;
+  option5:any;
+  option6:any;
+  data4:any;
+  data5:any;
+  data6:any;
   dialogVisibleRegion: boolean = false;
   dialogVisibleVendor: boolean = false;
   dashboardcounts: any;
@@ -60,6 +67,10 @@ export class DashboardComponent implements OnInit {
   };
   interval: any;
   currentView: string = "";
+  departmentCount: any;
+  vehicleCount: any;
+  regionCount: any;
+  usageTypeCount: any;
 
   // countUpOptions: CountUpOptions = {
   //   duration: 2, // Animation duration in seconds
@@ -69,7 +80,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.items = [{ label: 'Dash Board' }];
+    this.items = [{ label: 'DashBoard' }];
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
 
@@ -163,107 +174,104 @@ export class DashboardComponent implements OnInit {
     //       max: 10,
     // };
     this.getDashboardcounts();
-
+    this.getDashboardPieChartCounts();
   }
 
-  toggleCardAnimation() {
-    this.cardState = this.cardState === 'inactive' ? 'active' : 'inactive';
-  }
+  // toggleCardAnimation() {
+  //   this.cardState = this.cardState === 'inactive' ? 'active' : 'inactive';
+  // }
 
-  onChartHover(isHovered: boolean): void {
-    this.isHover = isHovered;
+      // onChartHover(isHovered: boolean): void {
+      //   this.isHover = isHovered;
 
-    // Update the options1 object dynamically when isHover changes
-    this.options1 = {
-      ...this.options1, // Spread the existing properties
-      plugins: {
-        legend: {
-          labels: {
-            color: this.isHover ? "white" : "black",
-            usePointStyle: true,
-          },
-          position: 'bottom'
-        }
-      },
-      scales: {
-        ...this.options1.scales, // Spread the existing scales properties
-        x: {
-          ...this.options1.scales.x, // Spread the existing scales.x properties
-          ticks: {
-            ...this.options1.scales.x.ticks, // Spread the existing scales.x.ticks properties
-            color: this.isHover ? "white" : "black", // Set the color based on isHover
-          },
-        },
-        y: {
-          title: {
-            display: true,
-            text: 'Total Vehicles',
-            color: this.isHover ? 'white' : "black",
-            font: {
-              weight: 'bold',
-            },
-          },
-          ticks: {
-            color: this.isHover ? 'white' : "black",
-          },
-          grid: {
-            color: this.isHover ? 'white' : "black",
-            drawBorder: false,
-          },
-        },
-      },
-    };
-  }
+      //   // Update the options1 object dynamically when isHover changes
+      //   this.options1 = {
+      //     ...this.options1, // Spread the existing properties
+      //     plugins: {
+      //       legend: {
+      //         labels: {
+      //         },
+      //       }
+      //     },
+      //     scales: {
+      //       ...this.options1.scales, // Spread the existing scales properties
+      //       x: {
+      //         ...this.options1.scales.x, // Spread the existing scales.x properties
+      //         ticks: {
+      //           ...this.options1.scales.x.ticks, // Spread the existing scales.x.ticks properties
+      //           color: this.isHover ? "white" : "black", // Set the color based on isHover
+      //         },
+      //       },
+      //       y: {
+      //         title: {
+      //           display: true,
+      //           text: 'Total Vehicles',
+      //           color: this.isHover ? 'white' : "black",
+      //           font: {
+      //             weight: 'bold',
+      //           },
+      //         },
+      //         ticks: {
+      //           color: this.isHover ? 'white' : "black",
+      //         },
+      //         grid: {
+      //           color: this.isHover ? 'white' : "black",
+      //           drawBorder: false,
+      //         },
+      //       },
+      //     },
+      //   };
+      // }
 
-  onDonut1Hover(isHovered: boolean): void {
-    this.isDonut1Hover = isHovered;
-    // Update the options1 object dynamically when isHover changes
-    this.options = {
-      ...this.options, // Spread the existing properties
-      plugins: {
-        legend: {
-          labels: {
-            color: this.isDonut1Hover ? "white" : "black",
-            usePointStyle: true,
-          },
-          position: 'bottom'
-        }
-      },
-    };
-  }
-  onDonut2Hover(isHovered: boolean): void {
-    this.isDonut2Hover = isHovered;
+  // onDonut1Hover(isHovered: boolean): void {
+  //   this.isDonut1Hover = isHovered;
+  //   // Update the options1 object dynamically when isHover changes
+  //   this.options = {
+  //     ...this.options, // Spread the existing properties
+  //     plugins: {
+  //       legend: {
+  //         labels: {
+  //           color: this.isDonut1Hover ? "white" : "black",
+  //           usePointStyle: true,
+  //         },
+  //         position: 'bottom'
+  //       }
+  //     },
+  //   };
+  // }
+  // onDonut2Hover(isHovered: boolean): void {
+  //   this.isDonut2Hover = isHovered;
     
-    // Update the options1 object dynamically when isHover changes
-    this.options2 = {
-      ...this.options2, // Spread the existing properties
-      plugins: {
-        legend: {
-          labels: {
-            color: this.isDonut2Hover ? "white" : "black",
-            usePointStyle: true,
-          },
-          position: 'bottom'
-        }
-      },
-    };
-  }
-  onDonut3Hover(isHovered: boolean): void {
-    this.isDonut3Hover = isHovered;
-    // Update the options1 object dynamically when isHover changes
-    this.options3 = {
-      ...this.options3, // Spread the existing properties
-      plugins: {
-        legend: {
-          labels: {
-            color: this.isDonut3Hover ? "white" : "black",
-            usePointStyle: true,
-          },
-          position: 'bottom'
-        }
-      },
-    };
-  }
+  //   // Update the options1 object dynamically when isHover changes
+  //   this.options2 = {
+  //     ...this.options2, // Spread the existing properties
+  //     plugins: {
+  //       legend: {
+  //         labels: {
+  //           color: this.isDonut2Hover ? "white" : "black",
+  //           usePointStyle: true,
+  //         },
+  //         position: 'bottom'
+  //       }
+  //     },
+  //   };
+  // }
+  // onDonut3Hover(isHovered: boolean): void {
+  //   this.isDonut3Hover = isHovered;
+  //   // Update the options1 object dynamically when isHover changes
+  //   this.options3 = {
+  //     ...this.options3, // Spread the existing properties
+  //     plugins: {
+  //       legend: {
+  //         labels: {
+  //           color: this.isDonut3Hover ? "white" : "black",
+  //           usePointStyle: true,
+  //         },
+  //         position: 'bottom'
+  //       }
+  //     },
+  //   };
+  // }
   showDialouge(modelId: any) {
     if (modelId == "region") {
       this.dialogVisibleRegion = true;
@@ -285,13 +293,14 @@ export class DashboardComponent implements OnInit {
         this.newNum = res.totalActiveDrivers;
         this.vendorData = res.activeVehiclesPerVendor;
         this.vehiclesPerRegion = res.totalVehiclesPerRegion
-        
+debugger        
         this.data1 = {
           labels: this.vendorData.map((vendor) => vendor.name),
           datasets: [
             {
               label: 'Vendors',
-              backgroundColor: '#4099ff',
+              backgroundColor: ['#ABC9FB'],
+              backgroundColor2: 'black',
               borderColor: '#4099ff',
               data: this.vendorData.map((vendor) => vendor.totalVehicles),
             }
@@ -305,12 +314,77 @@ export class DashboardComponent implements OnInit {
             {
               label: 'Vehicles Per Region',
               data: this.vehiclesPerRegion.map((vendor: any) => vendor.totalVehicles),
-              backgroundColor: ["#004080", "#bf9100", "#2ed8b6"],
+              backgroundColor: ["#476BAD"],
               hoverBackgroundColor: ["#73b4ff", "#ffcb80", "#59e0c5"]
-            }
+            },
           ]
         };
-
+        this.data2 = {
+          labels: this.vehiclesPerRegion?.map((region: any) => region.name),
+          datasets: [
+            {
+              label: 'Vehicles Per Region1',
+              data: this.vehiclesPerRegion.map((vendor: any) => vendor.totalVehicles),
+              backgroundColor: ["#476BAD"],
+              hoverBackgroundColor: ["#73b4ff", "#ffcb80", "#59e0c5"]
+            },
+          ]
+        };
+        this.data3 = {
+          labels: this.vehiclesPerRegion?.map((region: any) => region.name),
+          datasets: [
+            {
+              label: 'Vehicles Per Region2',
+              data: this.vehiclesPerRegion.map((vendor: any) => vendor.totalVehicles),
+              backgroundColor: ["#476BAD"],
+              hoverBackgroundColor: ["#73b4ff", "#ffcb80", "#59e0c5"]
+            },
+          ]
+        };
+       
+      });
+  }
+  getDashboardPieChartCounts() {
+    this.dashboardService.getDashboardPieChartCounts().subscribe(
+      (res) => {
+        debugger
+         this.departmentCount = [res.departmentCounts];
+         this.vehicleCount = res.totalVehicleCount;
+         this.regionCount = res.regionCounts;
+         this.usageTypeCount = res.usageTypeCounts;
+        this.data4 = {
+          labels: ['Vehicle Count'],
+          datasets: [
+            {
+              label: 'Vehicle Count',
+              data: [res.totalVehicleCount],
+              backgroundColor: ["#476BAD"],
+              hoverBackgroundColor: ["#73b4ff", "#ffcb80", "#59e0c5"]
+            },
+          ]
+        };
+        this.data5 = {
+          labels: ['Region Count'],
+          datasets: [
+            {
+              label: 'Region Count',
+              data: [2],
+              backgroundColor: ["#476BAD"],
+              hoverBackgroundColor: ["#73b4ff", "#ffcb80", "#59e0c5"]
+            },
+          ]
+        };0
+        this.data6 = {
+          labels: ['Usage Type Counts'],
+          datasets: [
+            {
+              label: 'Usage Type Counts',
+              data: [3],
+              backgroundColor: ["#476BAD"],
+              hoverBackgroundColor: ["#73b4ff", "#ffcb80", "#59e0c5"]
+            },
+          ]
+        };
       });
   }
 
