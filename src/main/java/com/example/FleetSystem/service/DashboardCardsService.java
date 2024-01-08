@@ -60,4 +60,49 @@ public class DashboardCardsService {
 
         return counts;
     }
+
+    public Map<String, Object> getStatsCount() {
+        Map<String, Object> counts = new HashMap<>();
+
+        List<Object[]> usageTypeCounts = vehicleRepository.getStatsCount();
+        Map<String, Object> usageTypeMap = new HashMap<>();
+
+        for(Object[] stat: usageTypeCounts) {
+            String usageType = (String) stat[0];
+            Object totalCount = stat[1];
+            if(usageType != null) {
+                usageTypeMap.put(usageType, totalCount);
+            }
+        }
+        counts.put("usageTypeCounts", usageTypeMap);
+
+        Long totalVehicleCounts = vehicleRepository.getActiveVehicleCount();
+        counts.put("totalVehicleCount", totalVehicleCounts);
+
+        List<Object[]> regionCounts = vehicleRepository.getRegionCounts();
+        Map<String, Object> regionMap = new HashMap<>();
+
+        for (Object[] re: regionCounts) {
+            String region = (String) re[0];
+            Object totalRegionCount = re[1];
+            if(region != null) {
+                regionMap.put(region, totalRegionCount);
+            }
+        }
+        counts.put("regionCounts", regionMap);
+
+        List<Object[]> departmentCounts = vehicleAssignmentRepository.getVehiclePerDepartmentCount();
+        Map<String, Object> departmentMap = new HashMap<>();
+
+        for(Object[] dep: departmentCounts) {
+            String department = (String) dep[0];
+            Object totalDepCounts = dep[1];
+            if(department != null) {
+                departmentMap.put(department, totalDepCounts);
+            }
+        }
+        counts.put("departmentCounts", departmentMap);
+
+        return counts;
+    }
 }

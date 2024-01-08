@@ -9,230 +9,132 @@
             <h2 class="h-color mb-3">Dash Board</h2>
           </div>
           <div class="container mt-6">
-            <div
-              class="box"
-              routerLink="/vehicle"
-              [@cardAnimation]="cardState"
-              (mouseenter)="toggleCardAnimation()"
-              (mouseleave)="toggleCardAnimation()"
-            >
-              <div
-                class="w-full h-10rem border-round-2xl flex align-items-center justify-content-around bg-c-blue"
-              >
-                <div
-                  class="card-section-i flex align-items-center justify-content-around"
-                >
-                  <i class="bi bi-car-front text-purple"></i>
+            <div class="grid">
+              <div class="col-12 lg:col-6 xl:col-3">
+                <div class="card mb-0" routerLink="/vehicle">
+                  <div class="flex justify-content-between mb-3">
+                    <div>
+                      <span class="block text-500 font-medium mb-3">Total Vehicles</span>
+                      <div class="text-900 font-medium text-xl"><span [countUp]="dashboardcounts?.totalActiveVehicles"
+                          [options]="option"></span></div>
+                    </div>
+                    <div class="flex align-items-center justify-content-center bg-blue-100 border-round"
+                      [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                      <i class="bi bi-car-front-fill text-blue-500 text-xl"></i>
+                    </div>
+                  </div>
+                  <span class="text-green-500 font-medium"> <span [countUp]="dashboardcounts?.totalActiveVehicles"
+                      [options]="option"></span> </span>
+                  <span class="text-500">&nbsp;since last visit</span>
                 </div>
-                <div
-                  class="card-section-c flex align-items-center justify-content-around flex-column"
-                >
-                  <h3 class="bg-w">Total Vehicles</h3>
-                  <p>
-                    <b class="bg-w" style="font-size: 24px"
-                      ><strong>
-                        <!-- {{dashboardcounts?.totalActiveVehicles}} -->
-                        <span
-                          [countUp]="dashboardcounts?.totalActiveVehicles"
-                          [options]="option"
-                        ></span>
-                      </strong>
-                    </b>
-                  </p>
+              </div>
+              <div class="col-12 lg:col-6 xl:col-3">
+                <div class="card mb-0" routerLink="/driver">
+                  <div class="flex justify-content-between mb-3">
+                    <div>
+                      <span class="block text-500 font-medium mb-3">Total Drivers</span>
+                      <div class="text-900 font-medium text-xl"> <span [countUp]="newNum" [options]="option"></span>
+                      </div>
+                    </div>
+                    <div class="flex align-items-center justify-content-center bg-orange-100 border-round"
+                      [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                      <i class="bi bi-person-fill text-orange-500 text-xl"></i>
+                    </div>
+                  </div>
+                  <span class="text-green-500 font-medium"> <span [countUp]="newNum" [options]="option"></span> </span>
+                  <span class="text-500">&nbsp;since last week</span>
+                </div>
+              </div>
+              <div class="col-12 lg:col-6 xl:col-3">
+                <div class="card mb-0" routerLink="/unassigned-vehicle">
+                  <div class="flex justify-content-between mb-3">
+                    <div>
+                      <span class="block text-500 font-medium mb-3">Unassigned Vehicles</span>
+                      <div class="text-900 font-medium text-xl"><span [countUp]="dashboardcounts?.unassignedVehicles"
+                          [reanimateOnClick]="false" [options]="option"></span></div>
+                    </div>
+                    <div class="flex align-items-center justify-content-center bg-cyan-100 border-round"
+                      [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                      <i class="bi bi-arrow-clockwise text-cyan-500 text-xl"></i>
+                    </div>
+                  </div>
+                  <span class="text-green-500 font-medium"><span [countUp]="dashboardcounts?.unassignedVehicles"
+                      [reanimateOnClick]="false" [options]="option"></span> </span>
+                  <span class="text-500">&nbsp;since last visit</span>
+                </div>
+              </div>
+              <div class="col-12 lg:col-6 xl:col-3">
+                <div class="card mb-0" routerLink="/total-replacement-vehicles">
+                  <div class="flex justify-content-between mb-3">
+                    <div>
+                      <span class="block text-500 font-medium mb-3">Total Replacement Vehicles</span>
+                      <div class="text-900 font-medium text-xl"> <span
+                          [countUp]="dashboardcounts?.totalVehicleReplacement" [reanimateOnClick]="false"
+                          [options]="option"></span></div>
+                    </div>
+                    <div class="flex align-items-center justify-content-center bg-purple-100 border-round"
+                      [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                      <i class="bi bi-arrow-clockwise text-purple-500 text-xl"></i>
+                    </div>
+                  </div>
+                  <span class="text-green-500 font-medium"> <span [countUp]="dashboardcounts?.totalVehicleReplacement"
+                      [reanimateOnClick]="false" [options]="option"></span> </span>
+                  <span class="text-500">&nbsp;since last visit</span>
                 </div>
               </div>
             </div>
-            <div
-              class="box"
-              routerLink="/driver"
-              [@cardAnimation]="cardState"
-              (mouseenter)="toggleCardAnimation()"
-              (mouseleave)="toggleCardAnimation()"
-            >
-              <div
-                class="w-full h-10rem border-round-2xl flex align-items-center justify-content-around bg-c-green"
-              >
-                <div
-                  class="card-section-i flex align-items-center justify-content-around"
-                >
-                  <i class="bi bi-person-fill"></i>
-                </div>
-                <div
-                  class="card-section-c flex align-items-center justify-content-around flex-column"
-                >
-                  <h3 class="bg-w">Total drivers</h3>
-                  <p>
-                    <b class="bg-w" style="font-size: 24px"
-                      ><strong>
-                        <span
-                          [countUp]="newNum"
-                          [reanimateOnClick]="false"
-                          [options]="option"
-                        ></span> </strong
-                    ></b>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <!-- <div
-              class="box"
-              (click)="showDialouge('region')"
-              [@cardAnimation]="cardState"
-              (mouseenter)="toggleCardAnimation()"
-              (mouseleave)="toggleCardAnimation()"
-            >
-              <div
-                class="w-full h-10rem border-round-2xl flex align-items-center justify-content-around bg-c-yellow"
-              >
-                <div
-                  class="card-section-i flex align-items-center justify-content-around"
-                >
-                  <i class="bi bi-geo-alt-fill"></i>
-                </div>
-                <div
-                  class="card-section-c flex align-items-center justify-content-around flex-column"
-                >
-                  <h3 class="bg-w">Vehicles per Region</h3>
-                </div>
-              </div>
-            </div> -->
-            <div
-              class="box"
-              routerLink="/unassigned-vehicle"
-              [@cardAnimation]="cardState"
-              (mouseenter)="toggleCardAnimation()"
-              (mouseleave)="toggleCardAnimation()"
-            >
-              <div
-                class="w-full h-10rem border-round-2xl flex align-items-center justify-content-around bg-c-pink"
-              >
-                <div
-                  class="card-section-i flex align-items-center justify-content-around"
-                >
-                  <i class="bi bi-arrow-counterclockwise"></i>
-                </div>
-                <div
-                  class="card-section-c flex align-items-center justify-content-around flex-column"
-                >
-                  <h3 class="bg-w">Unassigned Vehicles</h3>
-                  <p>
-                    <b class="bg-w" style="font-size: 24px"
-                      ><strong>
-                        <!-- {{dashboardcounts?.unassignedVehicles}} -->
-                        <span
-                          [countUp]="dashboardcounts?.unassignedVehicles"
-                          [reanimateOnClick]="false"
-                          [options]="option"
-                        ></span> </strong
-                    ></b>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div
-              class="box"
-              routerLink="/total-replacement-vehicles"
-              [@cardAnimation]="cardState"
-              (mouseenter)="toggleCardAnimation()"
-              (mouseleave)="toggleCardAnimation()"
-            >
-              <div
-                class="w-full h-10rem border-round-2xl flex align-items-center justify-content-around bg-c-orange"
-              >
-                <div
-                  class="card-section-i flex align-items-center justify-content-around"
-                >
-                  <i class="bi bi-arrow-counterclockwise"></i>
-                </div>
-                <div
-                  class="card-section-c flex align-items-center justify-content-around flex-column"
-                >
-                  <h3 class="bg-w">Total Replacement vehicles</h3>
-                  <p>
-                    <b class="bg-w" style="font-size: 24px"
-                      ><strong>
-                        <!-- {{dashboardcounts?.totalVehicleReplacement}} -->
-                        <span
-                          [countUp]="dashboardcounts?.totalVehicleReplacement"
-                          [reanimateOnClick]="false"
-                          [options]="option"
-                        ></span> </strong
-                    ></b>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="body-card mt-6">
-          <h2 class="h-color mb-3">Vehicles Per Vendor</h2>
-          <div class="grid mt-6">
-            <div class="col-12">
-              <div class="card">
-                <p-chart
-                  type="bar"
-                  [data]="data1"
-                  (mouseenter)="onChartHover(true)"
-                  (mouseleave)="onChartHover(false)"
-                  [options]="options1"
-                ></p-chart>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="body-card mt-6">
-          <h2 class="h-color mb-3">Vehicles Per Region</h2>
-          <div class="grid mt-6">
-            <!-- <div class="col-12 lg:col-4 md:col-12 sm:col-12">
-              <div class="card flex justify-content-center">
-                <p-chart
-                  type="doughnut"
-                  [data]="data"
-                  (mouseenter)="onDonut1Hover(true)"
-                  (mouseleave)="onDonut1Hover(false)"
-                  [options]="options"
-                ></p-chart>
-              </div>
-            </div> -->
-            <div class="col-12 lg:col-12 md:col-12 sm:col-12">
-              <div class="card flex justify-content-center">
-                <p-chart
-                  type="doughnut"
-                  [data]="data"
-                  (mouseenter)="onDonut2Hover(true)"
-                  (mouseleave)="onDonut2Hover(false)"
-                  [options]="options2"
-                ></p-chart>
-              </div>
-            </div>
-            <!-- <div class="col-12 lg:col-4 md:col-12 sm:col-12">
-              <div class="card flex justify-content-center">
-                <p-chart
-                  type="doughnut"
-                  [data]="data"
-                  (mouseenter)="onDonut3Hover(true)"
-                  (mouseleave)="onDonut3Hover(false)"
-                  [options]="options3"
-                ></p-chart>
-              </div>
-            </div> -->
           </div>
         </div>
       </div>
     </div>
-    <!-- <app-dialog-box
-      [modelId]="modelId"
-      [visible]="dialogVisibleRegion"
-      (dialogClosed)="onDialogClosed()"
-      [regionCount]="dashboardcounts?.totalVehiclesPerRegion"
-    >
-    </app-dialog-box> -->
-    <app-dialog-box
-      [modelId]="modelId"
-      [visible]="dialogVisibleVendor"
-      (dialogClosed)="onDialogClosed()"
-      [vendorCount]="dashboardcounts?.activeVehiclesPerVendor"
-    >
-    </app-dialog-box>
+    <div class="text">
+
+    <div class="grid p-fluid" style="padding-left: 7%;">
+      <div class="col-12 lg:col-6 xl:col-6">
+        <div class="card flex flex-column align-items-center"
+          style="background-color: white;border-radius: 20px;;margin-top: 20px;padding: 40px;width: 80%;padding-bottom: 100px;">
+          <h3 class="text-left ">Vehicle Per Region</h3><br>
+          <p-chart type="doughnut" style="width: 270px;" [data]="data" [options]="options2"></p-chart>
+        </div>
+      </div>
+      <div class="col-12 lg:col-6 xl:col-6">
+        <div class="card flex flex-column align-items-center"
+          style="background-color: white;border-radius: 20px;;margin-top: 20px;padding: 40px;width: 80%;padding-bottom: 100px;">
+          <h3 class="text-left ">Vehicle Count</h3><br>
+          <p-chart type="doughnut" style="width: 270px;" [data]="data4" [options]="options2"></p-chart>
+        </div>
+      </div>
+     
+    </div>
   </div>
-</div>
+
+    <div class="grid p-fluid" style="padding: 60px;">
+      <div class="col-12 lg:col-12">
+        <div class="card" style="background-color: white;border-radius: 20px;padding: 30px;margin-top: 20px;">
+          <h3>Linear Chart</h3><br>
+          <p-chart type="bar" [data]="data1" [options]="options1"></p-chart>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid p-fluid" style="padding-left: 7%;">
+      <div class="col-12 lg:col-6 xl:col-6">
+        <div class="card flex flex-column align-items-center"
+          style="background-color: white;border-radius: 20px;;margin-top: 20px;padding: 40px;width: 80%;padding-bottom: 100px;">
+          <h3 class="text-left ">Doughnut Chart</h3><br>
+          <p-chart type="doughnut" style="width: 270px;" [data]="data5" [options]="options2"></p-chart>
+        </div>
+      </div>
+      <div class="col-12 lg:col-6 xl:col-6">
+        <div class="card flex flex-column align-items-center"
+          style="background-color: white;border-radius: 20px;;margin-top: 20px;padding: 40px;width: 80%;padding-bottom: 100px;">
+          <h3 class="text-left ">Doughnut Chart</h3><br>
+          <p-chart type="doughnut" style="width: 270px;" [data]="data6" [options]="options2"></p-chart>
+        </div>
+      </div>
+     
+    </div>
+  </div>
+  <app-dialog-box [modelId]="modelId" [visible]="dialogVisibleVendor" (dialogClosed)="onDialogClosed()"
+    [vendorCount]="dashboardcounts?.activeVehiclesPerVendor">
+  </app-dialog-box>

@@ -43,4 +43,11 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long>, JpaSpec
     List<Vehicle> getAllVehiclesUnderDriverVehicleBudget(@Param("value") Integer value);
 
     List<Vehicle> findByVehicleStatus(String status);
+
+    @Query("SELECT v.usageType, COUNT(v) AS total_count FROM Vehicle v GROUP BY v.usageType")
+    List<Object[]> getStatsCount();
+
+    @Query("SELECT v.region, COUNT(v) AS total_count FROM Vehicle v GROUP BY v.region")
+    List<Object[]> getRegionCounts();
+
 }

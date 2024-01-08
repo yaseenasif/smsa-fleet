@@ -17,4 +17,12 @@ export class DashboardService {
     return this.http.get(`${this.url}/counts`);
   }
 
+
+  getDashboardPieChartCounts(): Observable<any> {
+    
+    return this.http.get(`${this.url}/stats`);
+  }
+
+
+  
 }
