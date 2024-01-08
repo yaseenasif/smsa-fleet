@@ -29,4 +29,8 @@ export interface Vehicle {
     usageType: String | null | undefined
     category: String | null | undefined
     vehicleReplacement:VehicleReplacement|null|undefined
+    employeeStatus: String | null | undefined
+    registrationStatus: Boolean | null | undefined
+    insuranceStatus: Boolean | null | undefined
+
 }

@@ -93,16 +93,23 @@ export class VehicleService {
   activateVehicle(id: Number): Observable<Vehicle> {
     return this.http.patch<Vehicle>(`${this.url}/vehicle-active/${id}`, {})
   }
-    getAllNotAssignedVehicles(): Observable<Vehicle[]> {
+  getAllNotAssignedVehicles(): Observable<Vehicle[]> {
       return this.http.get<Vehicle[]>(this.url.concat('/not-assigned-vehicle'));
     }
-      getVehicleBudget(vehicleBudget : Number):Observable<Vehicle[]>{
+  getVehicleBudget(vehicleBudget : Number):Observable<Vehicle[]>{
         return this.http.get<Vehicle[]>(`${this.url}/vehicles-under-driver-budget/${vehicleBudget}`);
       }
 
-       downloadAttachments(fileName:string):Observable<Blob>{
+  downloadAttachments(fileName:string):Observable<Blob>{
         return this.http.get(`${this.url}/download/${fileName}`,{
           responseType: 'blob'
         });
         }
+
+  searchAllVehicles(value?: string | null, vehicleStatus?: string | null, query?: { page: number, size: number }): Observable<PaginatedResponse<Vehicle>>{
+    if (value) {
+      query = { page: 0, size: 10 };
+    }
+    return this.http.get<PaginatedResponse<Vehicle>>(`${this.url}/search-all-vehicle?value=${JSON.stringify(value ? value : '')}&vehicleStatus=${vehicleStatus ? vehicleStatus : ''}&page=${query?.page ? query.page : ''}&size=${query?.size ? query.size : ''}`);
+    }      
 }

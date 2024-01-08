@@ -71,6 +71,7 @@ public class DriverService {
                 if(driverDto.getAssignedVehicle() != null) {
                     Optional<Vehicle> vehicle = vehicleRepository.findByPlateNumber(driverDto.getAssignedVehicle());
                     if (vehicle.isPresent()) {
+                        driver.setAssignedVehicle(driverDto.getAssignedVehicle());
                         vehicle.get().setVehicleStatus("Active");
                         vehicleRepository.save(vehicle.get());
                     }

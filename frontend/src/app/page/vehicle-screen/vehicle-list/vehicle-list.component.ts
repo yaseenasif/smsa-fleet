@@ -49,7 +49,7 @@ export class VehicleListComponent implements OnInit{
   vId!: number
 
   vehicleStatus : any;
-  selectedStatus = {name:'Active'};
+  selectedStatus = {name:'TBA'};
 
   size: number = 10240000; // Maximum file size (e.g., 10MB)
 
@@ -64,14 +64,20 @@ export class VehicleListComponent implements OnInit{
       this.items = [{ label: 'Vehicle'}];
       this.vehicleStatus = [
         {
+          name: 'TBA'
+        },
+        {
           name: 'Active'
         },
         {
-          name: 'Inactive'
+          name: 'In-Active'
+        },
+        {
+          name: 'Under Maintenance'
         }
       ]
-      this.getAllVehicles();
-
+      // this.getAllVehicles();
+      this.searchAllVehicles('TBA');
   }
 
   onFileSelect() {
@@ -145,14 +151,6 @@ export class VehicleListComponent implements OnInit{
 
   }
 
-  // deleteVehicle(id: Number, event: Event) {
-  //   event.stopPropagation();
-
-  //   this.vehicleService.inactiveVehicleById(id).subscribe((res) => {
-  //     this.getAllVehicles();
-
-  //   })
-  // }
 
   onSubmit(){
     this.vehicleService.replaceVehicle(this.vId,this.vehicleReplacement).subscribe(res=>{
@@ -166,26 +164,37 @@ export class VehicleListComponent implements OnInit{
   onPageChange(value?: string | null, event?: any) {
     this.query.page = event.page;
     this.query.size = event.rows;
-    if(this.selectedStatus.name == 'Active'){
-      this.getAllVehicles()
+    if(this.selectedStatus.name == 'TBA'){
+      this.searchAllVehicles('TBA')
+      }else if (this.selectedStatus.name == 'Active'){
+        this.searchAllVehicles('Active')
+      }else if (this.selectedStatus.name == 'In-Active'){
+        this.searchAllVehicles('In-Active')
       }else{
-        this.getAllInactiveVehicles()
+        this.searchAllVehicles('Under Maintenance')
       }
   }
 
 
-  flag='Active'
+  flag='TBA'
   OnSelectChange(){
     if(this.selectedStatus.name!=this.flag){
      this.query.page=0
      this.flag=this.selectedStatus.name
     }
 
-    if(this.selectedStatus.name == 'Active'){
-      this.getAllVehicles()
-      }else{
-        this.getAllInactiveVehicles()
+    if(this.selectedStatus.name == 'TBA'){
+      this.searchAllVehicles('TBA')
       }
+    else if(this.selectedStatus.name == 'Active'){
+      this.searchAllVehicles('Active')
+    }  
+    else if(this.selectedStatus.name == 'In-Active'){
+      this.searchAllVehicles('In-Active')
+      }
+   else{
+    this.searchAllVehicles('Under Maintenance')
+   }   
   }
 
   availableForReplacement(){
@@ -208,20 +217,22 @@ export class VehicleListComponent implements OnInit{
  activateVehicle(){
   this.vehicleService.activateVehicle(this.vId).subscribe((res:Vehicle)=>{
     this.messageService.add({ severity: 'success', summary: 'Vehicle Activated'});
-//
-//     setTimeout(() => {
-//
-//       this.router.navigate(['/vehicle'])
-//     },1000)
+
     this.closeDialog()
     this.getAllInactiveVehicles()
   })
  }
 
-// downloadExcel(): void {
-//   this.vehicleService.exportToExcel(this.data, 'user_data', 'Sheet1');
-// }
 downloadAttachment(fileName:string){
   this.vehicleService.downloadAttachments(fileName).subscribe(blob => saveAs(blob,fileName));
 }
+
+searchAllVehicles(vehiclestatus: string){
+  this.vehicleService.searchAllVehicles(this.value,vehiclestatus, this.query).subscribe((res: PaginatedResponse<Vehicle>)=>{
+    this.vehicles = res.content
+    this.query = { page: res.pageable.pageNumber, size: res.size }
+    this.totalRecords = res.totalElements;
+  })  
+}
+
 }

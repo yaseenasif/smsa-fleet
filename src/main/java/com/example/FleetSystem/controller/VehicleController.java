@@ -143,4 +143,13 @@ public class VehicleController {
         return ResponseEntity.ok(vehicleService.getAllVehiclesUnderDriverVehicleBudget(value));
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/search-all-vehicle")
+    public ResponseEntity<Page<VehicleDto>> searchAllVehicles(@RequestParam(value = "value", required = false) String value,
+                                                                   @RequestParam String vehicleStatus,
+                                                                   @RequestParam(defaultValue = "0") int page,
+                                                                   @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
+        VehicleSearchCriteria vehicleSearchCriteria = new ObjectMapper().readValue(value, VehicleSearchCriteria.class);
+        return ResponseEntity.ok(vehicleService.searchVehicle(vehicleSearchCriteria,vehicleStatus, page, size));
+    }
 }

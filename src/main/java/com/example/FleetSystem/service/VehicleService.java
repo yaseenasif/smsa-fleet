@@ -2,6 +2,7 @@ package com.example.FleetSystem.service;
 
 import com.example.FleetSystem.criteria.VehicleSearchCriteria;
 import com.example.FleetSystem.dto.AuditDataWrapper;
+import com.example.FleetSystem.dto.ProductFieldDto;
 import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.exception.ExcelException;
 import com.example.FleetSystem.model.*;
@@ -66,6 +67,8 @@ public class VehicleService {
     VehicleReplacementRepository vehicleReplacementRepository;
     @Autowired
     EmployeeRepository employeeRepository;
+    @Autowired
+    ProductFieldRepository productFieldRepository;
 
     public VehicleDto inactiveVehicleById(Long id) {
         Optional<Vehicle> vehicle = vehicleRepository.findById(id);
@@ -275,6 +278,8 @@ public class VehicleService {
                             vehicle.setFuelType(getStringValue(row.getCell(10)));
                             vehicle.setVendor(vendor);
                             vehicle.setLeaseCost(getIntegerValue(row.getCell(16)));
+                            vehicle.setUsageType(Objects.requireNonNull(getStringValue(row.getCell(19))).toUpperCase(Locale.ROOT));
+                            vehicle.setCategory(Objects.requireNonNull(getStringValue(row.getCell(20))).toUpperCase(Locale.ROOT));
                             vehicle.setCreatedBy(user);
                             vehicle.setCreatedAt(LocalDate.now());
                             vehicle.setVehicleStatus("TBA");
@@ -320,11 +325,11 @@ public class VehicleService {
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Error uploading the file: " + e.getMessage());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Error processing the file: " + e.getMessage());
         }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            throw new RuntimeException("Error processing the file: " + e.getMessage());
+//        }
     }
 
     private String getStringValue(Cell cell) {
@@ -365,7 +370,7 @@ public class VehicleService {
                         "S.No:", "Reg#", "PONumber", "Make", "Design", "Model", "Type", "YOM",
                         "EnginePower", "Capacity(Payload)", "FuelType", "RegistrationExpiry",
                         "RegistrationStatus", "InsuranceExpiry", "InsuranceStatus",
-                        "Supplier/Agent", "Lease/CostSR.", "Leased/PurchaseDate", "LeaseExpiry"
+                        "Supplier/Agent", "Lease/CostSR.", "Leased/PurchaseDate", "LeaseExpiry","UsageType","Category"
                 };
 
                 for (int i = 0; i < expectedHeaders.length; i++) {
@@ -436,6 +441,41 @@ public class VehicleService {
                     } else if (getIntegerValue(row.getCell(16)) == null) {
                         return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: " + row.getCell(16), "Row" + (rowNum + 1) + " and cell 17"));
                     }
+
+//                    check product field columns
+                    ProductField usageTypes = productFieldRepository.findByName("Usage Type");
+                    ProductField categories = productFieldRepository.findByName("Category");
+
+                    Optional<String> checkUsageType = usageTypes.getProductFieldValuesList().stream()
+                            .map(ProductFieldValues::getName)
+                            .filter(value -> value.equalsIgnoreCase(getStringValue(row.getCell(19))))
+                            .findFirst();
+
+                    Optional<String> checkCategory = categories.getProductFieldValuesList().stream()
+                            .map(ProductFieldValues::getName)
+                            .filter(value -> value.equalsIgnoreCase(getStringValue(row.getCell(20))))
+                            .findFirst();
+
+                    if(!checkUsageType.isPresent()){
+                        return new ExcelErrorResponse(
+                                Boolean.FALSE,
+                                Arrays.asList("Incorrect Usage Type","\nCorrect Values: " +
+                                        usageTypes.getProductFieldValuesList()
+                                                .stream()
+                                                .map(ProductFieldValues::getName)
+                                                .collect(Collectors.joining(", "))));
+                    }
+
+                    if(!checkCategory.isPresent()){
+                        return new ExcelErrorResponse(
+                                Boolean.FALSE,
+                                Arrays.asList("Incorrect Category","\nCorrect Values: " +
+                                        categories.getProductFieldValuesList()
+                                                .stream()
+                                                .map(ProductFieldValues::getName)
+                                                .collect(Collectors.joining(", "))));
+                    }
+
 
                     Optional<Vendor> vendor = Optional.ofNullable(vendorRepository.findByVendorNameIgnoreCase(getStringValue(row.getCell(15))));
 
@@ -573,6 +613,13 @@ public class VehicleService {
     public Page<VehicleDto> searchInactiveVehicles(VehicleSearchCriteria vehicleSearchCriteria, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Specification<Vehicle> vehicleSpecification = VehicleSpecification.getInactiveSearchSpecification(vehicleSearchCriteria);
+        Page<Vehicle> vehiclePage = vehicleRepository.findAll(vehicleSpecification, pageable);
+        return vehiclePage.map(this::toDto);
+    }
+
+    public Page<VehicleDto> searchVehicle(VehicleSearchCriteria vehicleSearchCriteria, String vehicleStatus, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<Vehicle> vehicleSpecification = VehicleSpecification.getVehicleSearchSpecification(vehicleSearchCriteria,vehicleStatus);
         Page<Vehicle> vehiclePage = vehicleRepository.findAll(vehicleSpecification, pageable);
         return vehiclePage.map(this::toDto);
     }

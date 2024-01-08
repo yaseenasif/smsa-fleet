@@ -44,23 +44,11 @@ export class AddVehicleComponent implements OnInit{
       officeLocation: undefined,
       attachments: undefined,
     },
-    vehicleReplacement: undefined
+    vehicleReplacement: undefined,
+    employeeStatus: undefined,
+    registrationStatus: undefined,
+    insuranceStatus: undefined
   };
-
-  // dummyData: any = [
-  //   { id: 1, locationName: 123 },
-  //   { id: 2, years: 2015 },
-  //   { id: 2, years: 2016 },
-  //   { id: 2, years: 2017 },
-  //   { id: 2, years: 2018 },
-  //   { id: 2, years: 2019 },
-  //   { id: 3, locationName: 124 },
-  //   { id: 4, locationName: 125 },
-  //   {id: 1, vendorName: 'Hanco'},
-  //   {id: 2, vendorName: 'Al jazirah'},
-  //   {id: 3, vendorName: 'Best'}
-  // ]
-
 
   selectedEmployee!:Vehicle;
   usageTypes: ProductField | null | undefined;

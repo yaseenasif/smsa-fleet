@@ -26,7 +26,9 @@
                 </ng-container>
 
               </div>
-
+              <div class="flex flex-column gap-2 ml-5">
+                <p-button label="Download Sample" (click)="downloadAttachment(fileName)" icon="bi bi-download"></p-button>
+              </div>
             </div>
             <p-toolbar>
               <div class="p-toolbar-group-start">
@@ -90,9 +92,11 @@
                   <th class="text-center">Capacity</th>
                   <th class="text-center">Power</th>
                   <th class="text-center">Registration Expiry</th>
+                  <!-- <th class="text-center">Registration Status</th> -->
                   <th class="text-center">Fuel Type</th>
                   <th class="text-center">Vendor</th>
                   <th class="text-center">Insurance Expiry</th>
+                  <!-- <th class="text-center">Insurance Status</th> -->
                   <th class="text-center">Lease Cost</th>
                   <th class="text-center">Replace Lease Cost</th>
                   <th class="text-center">Lease Start Date</th>
@@ -118,9 +122,11 @@
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.capacity }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.power }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.registrationExpiry }}</td>
+                  <!-- <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.registrationStatus }}</td> -->
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.fuelType }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.vendor.vendorName }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.insuranceExpiry }}</td>
+                  <!-- <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center" >{{ vehicles.insuranceStatus }}</td> -->
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.leaseCost }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.replaceLeaseCost }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.leaseStartDate }}</td>

@@ -70,4 +70,23 @@ public class VehicleSpecification {
                                     .getValue().toLowerCase() + "%"), criteriaBuilder.isFalse(root.get("status")));
         };
     }
+
+    public static Specification<Vehicle> getVehicleSearchSpecification(VehicleSearchCriteria vehicleSearchCriteria, String vehicleStatus) {
+
+        return (root, query, criteriaBuilder) -> {
+            if (vehicleSearchCriteria == null || vehicleSearchCriteria.getValue() == null || vehicleSearchCriteria
+                    .getValue().isEmpty()) {
+                query.orderBy(criteriaBuilder.desc(root.get("id")));
+                return criteriaBuilder.and(criteriaBuilder.equal(root.get("vehicleStatus"), vehicleStatus));
+            }
+
+            // Adjust the field name based on your entity
+            return criteriaBuilder.and
+                    (criteriaBuilder.like(criteriaBuilder.lower(root.get("plateNumber")),
+                            "%" + vehicleSearchCriteria
+                                    .getValue().toLowerCase() + "%"), criteriaBuilder.equal(root.get("vehicleStatus"), vehicleStatus));
+        };
+    }
+
+
 }

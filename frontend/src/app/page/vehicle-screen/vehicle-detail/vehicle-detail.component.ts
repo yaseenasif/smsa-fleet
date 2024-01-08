@@ -44,7 +44,10 @@ export class VehicleDetailComponent implements OnInit {
       officeLocation: undefined,
       attachments: undefined
     },
-    vehicleReplacement: undefined
+    vehicleReplacement: undefined,
+    employeeStatus: undefined,
+    registrationStatus: undefined,
+    insuranceStatus: undefined
   };
   vehicleId: Number | undefined;
 
