@@ -33,9 +33,9 @@ export class ProductFieldListComponent implements OnInit {
     })
   }
 
-  edit(id: any) {
-    this.router.navigate(['/add-product-field'], { queryParams: { id: id } });
-  }
+  // edit(id: any) {
+  //   this.router.navigate(['/add-product-field'], { queryParams: { id: id } });
+  // }
 
   deleteFieldByID(id: any) {
     this.productFieldServiceService.removeProductField(id).subscribe((res: any) => {

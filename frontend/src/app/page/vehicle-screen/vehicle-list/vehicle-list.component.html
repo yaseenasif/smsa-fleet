@@ -151,7 +151,7 @@
 
                     <p-button [routerLink]="['/vehicle-history/',vehicles.id]" pTooltip="View History" tooltipPosition="top" icon="bi bi-clock-history" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="success"></p-button>
 
-                    <p-button *ngIf="selectedStatus.name === 'Active'" (click)="showDialog(vehicles.id, $event)" pTooltip="Replace Vehicle" tooltipPosition="top" icon="bi bi-arrow-repeat" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="help"></p-button>
+                    <p-button *ngIf="selectedStatus.name === 'TBA'" (click)="showDialog(vehicles.id, $event)" pTooltip="Replace Vehicle" tooltipPosition="top" icon="bi bi-arrow-repeat" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="help"></p-button>
                   </td>
                 </tr>
               </ng-template>

@@ -90,7 +90,7 @@ public class VehicleReplacementService {
                 vehicleReplacementRepository.save(vehicleReplacement);
 
                 existingVehicle.get().setVehicleStatus("Under Maintenance");
-                existingVehicle.get().setStatus(Boolean.FALSE);
+//                existingVehicle.get().setStatus(Boolean.FALSE);
                 replacingVehicle.get().setVehicleStatus("Active");
                 replacingVehicle.get().setVehicleReplacement(vehicleReplacement);
 

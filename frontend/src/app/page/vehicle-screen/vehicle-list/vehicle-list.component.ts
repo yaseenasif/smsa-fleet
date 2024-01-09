@@ -76,7 +76,6 @@ export class VehicleListComponent implements OnInit{
           name: 'Under Maintenance'
         }
       ]
-      // this.getAllVehicles();
       this.searchAllVehicles('TBA');
   }
 
@@ -87,7 +86,7 @@ export class VehicleListComponent implements OnInit{
   showDialog(vId:number, event: Event) {
     event.stopPropagation();
     this.vId=vId;
-    this.availableForReplacement();
+    this.availableForReplacement(this.vId);
 
     this.visible = true;
   }
@@ -121,7 +120,7 @@ export class VehicleListComponent implements OnInit{
             this.messageService.add({ severity: 'success', summary: 'Upload Successful', detail: 'File uploaded successfully.' });
           }
 
-          this.getAllVehicles();
+          this.searchAllVehicles(this.selectedStatus.name);
         },
         (error) => {
           console.error('Error while saving the file:', error);
@@ -133,29 +132,29 @@ export class VehicleListComponent implements OnInit{
     }
   }
 
-  getAllVehicles() {
-    this.vehicleService.searchVehicle(this.value, this.query).subscribe((res: PaginatedResponse<Vehicle>) => {
-      this.vehicles = res.content;
-      this.query = { page: res.pageable.pageNumber, size: res.size }
-      this.totalRecords = res.totalElements;
-    })
+  // getAllVehicles() {
+  //   this.vehicleService.searchVehicle(this.value, this.query).subscribe((res: PaginatedResponse<Vehicle>) => {
+  //     this.vehicles = res.content;
+  //     this.query = { page: res.pageable.pageNumber, size: res.size }
+  //     this.totalRecords = res.totalElements;
+  //   })
 
-  }
+  // }
 
-  getAllInactiveVehicles(){
-    this.vehicleService.searchInactiveVehicle(this.value, this.query).subscribe((res: PaginatedResponse<Vehicle>) => {
-      this.vehicles = res.content;
-      this.query = { page: res.pageable.pageNumber, size: res.size }
-      this.totalRecords = res.totalElements;
-    })
+  // getAllInactiveVehicles(){
+  //   this.vehicleService.searchInactiveVehicle(this.value, this.query).subscribe((res: PaginatedResponse<Vehicle>) => {
+  //     this.vehicles = res.content;
+  //     this.query = { page: res.pageable.pageNumber, size: res.size }
+  //     this.totalRecords = res.totalElements;
+  //   })
 
-  }
+  // }
 
 
   onSubmit(){
     this.vehicleService.replaceVehicle(this.vId,this.vehicleReplacement).subscribe(res=>{
       this.messageService.add({ severity: 'success', summary: 'Vehicle Replaced', detail: 'Vehicle is successfully replaced'});
-      this.getAllVehicles();
+      this.searchAllVehicles(this.selectedStatus.name);
     },error=>{
       this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
     })
@@ -164,15 +163,7 @@ export class VehicleListComponent implements OnInit{
   onPageChange(value?: string | null, event?: any) {
     this.query.page = event.page;
     this.query.size = event.rows;
-    if(this.selectedStatus.name == 'TBA'){
-      this.searchAllVehicles('TBA')
-      }else if (this.selectedStatus.name == 'Active'){
-        this.searchAllVehicles('Active')
-      }else if (this.selectedStatus.name == 'In-Active'){
-        this.searchAllVehicles('In-Active')
-      }else{
-        this.searchAllVehicles('Under Maintenance')
-      }
+    this.searchAllVehicles(this.selectedStatus.name)
   }
 
 
@@ -182,25 +173,16 @@ export class VehicleListComponent implements OnInit{
      this.query.page=0
      this.flag=this.selectedStatus.name
     }
-
-    if(this.selectedStatus.name == 'TBA'){
-      this.searchAllVehicles('TBA')
-      }
-    else if(this.selectedStatus.name == 'Active'){
-      this.searchAllVehicles('Active')
-    }  
-    else if(this.selectedStatus.name == 'In-Active'){
-      this.searchAllVehicles('In-Active')
-      }
-   else{
-    this.searchAllVehicles('Under Maintenance')
-   }   
+  this.searchAllVehicles(this.selectedStatus.name)   
   }
 
-  availableForReplacement(){
+  availableForReplacement(id: number){
     this.vehicleService.availableForReplacement().subscribe((res:Vehicle[])=>{
-      this.replacementVehicles=res;
-    },(error)=>{})
+      this.replacementVehicles = res;
+      this.replacementVehicles = this.replacementVehicles.filter((value)=>{
+        return value.id !== id;
+      })
+    })
   }
 
   closeDialog() {
@@ -219,7 +201,7 @@ export class VehicleListComponent implements OnInit{
     this.messageService.add({ severity: 'success', summary: 'Vehicle Activated'});
 
     this.closeDialog()
-    this.getAllInactiveVehicles()
+    this.searchAllVehicles(this.selectedStatus.name)
   })
  }
 

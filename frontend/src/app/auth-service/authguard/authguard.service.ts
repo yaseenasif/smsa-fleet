@@ -24,7 +24,7 @@ export class AuthguardService {
     { permission: 'Grade', route: ['/grade-list', '/add-grade', '/edit-grade/:id',] },
     { permission: 'City', route: ['/city-list', '/add-city', '/edit-city/:id',] },
     { permission: 'ProductField', route: ['/productFields', '/add-ProductField', '/add-ProductField/:id',] },
-    { permission: 'Region', route: ['/get-all-regions', '/add-region',] },
+    { permission: 'Region', route: ['/get-all-regions', '/add-region','/add-region/:id'] },
   ];
 
   constructor(private router: Router) { }

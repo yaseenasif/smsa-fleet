@@ -470,6 +470,11 @@ const routes: Routes = [
     component: AddRegionComponent,
     canActivate: [AuthGuard]
   },
+  {
+    path: 'add-region/:id',
+    component: AddRegionComponent,
+    canActivate: [AuthGuard]
+  }
 
 ];
 

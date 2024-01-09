@@ -32,6 +32,7 @@ export class VehicleAttachmentComponent {
   fileMetaDataForInspectionForms!: FileMetaData[];
   fileMetaDataForApprovedPO!:FileMetaData[];
   fileMetaDataForInsurance!:FileMetaData[];
+  fileMetaDataForOtherDocument!: FileMetaData[];
 
   headers = new HttpHeaders({
     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
@@ -56,12 +57,14 @@ export class VehicleAttachmentComponent {
     this.fileMetaDataForInsurance=[]
     this.fileMetaDataForApprovedPO=[]
     this.fileMetaDataForInspectionForms=[]
+    this.fileMetaDataForOtherDocument=[]
 
     this.individualFileListService.getIndividualFileList('/file-meta-data-by-vehicle/'.concat(this.id)).subscribe((res:FileMetaData[])=>{     
       this.fileMetaDataForIstemara=res.filter(el=>{return el.attachmentType ==='Istemara'});
       this.fileMetaDataForInsurance=res.filter(el=>{return el.attachmentType ==='Insurance'});
       this.fileMetaDataForApprovedPO=res.filter(el=>{return el.attachmentType ==='Approved PO'});
       this.fileMetaDataForInspectionForms=res.filter(el=>{return el.attachmentType ==='Inspection forms'});
+      this.fileMetaDataForOtherDocument=res.filter(el=>{return el.attachmentType ==='Other Documents'});
     },error=>{})
   }
 

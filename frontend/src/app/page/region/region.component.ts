@@ -37,7 +37,7 @@ export class RegionComponent {
   }
 
   editRegion(id: number) {
-    this.router.navigate(['/add-region'], { queryParams: { id: id } });
+    this.router.navigate(['/add-region/id'], { queryParams: { id: id } });
   }
 
   deleteRegionById(id: number) {

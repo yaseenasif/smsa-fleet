@@ -3,6 +3,9 @@ import { MenuItem, MessageService } from 'primeng/api';
 import { VehicleAssignmentService } from '../vehicle-assignment.service';
 import { VehicleAssignment } from 'src/app/modal/vehicle-assignment';
 import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
+import { Vehicle } from 'src/app/modal/vehicle';
+import { VehicleService } from '../../vehicle-screen/service/vehicle.service';
+import { VehicleReplacement } from 'src/app/modal/vehicleReplacement';
 
 @Component({
   selector: 'app-assignment-list',
@@ -19,14 +22,23 @@ export class AssignmentListComponent {
     size: number
   };
 
+  vehicleReplacement: VehicleReplacement = {
+    id: null,
+    reason: null,
+    vehicle: null
+  }
+
   plateNumber: string | null = null;
   employeeNumber: string | null = null;
   totalRecords: number = 0;
   visible!: boolean;
+  visibleReplacement!: boolean;
   vehicleAssignmentId!: Number;
+  replacementVehicles!: Array<Vehicle>;
+  vId!: number;
 
   constructor(private vehicleAssignmentService: VehicleAssignmentService,
-    private messageService: MessageService) { }
+    private messageService: MessageService,private vehicleService:VehicleService) { }
   
 
   products:any=[{name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
@@ -105,6 +117,32 @@ export class AssignmentListComponent {
       this.vehicleAssignment = res.content;
       this.query = { page: res.pageable.pageNumber, size: res.size }
       this.totalRecords = res.totalElements;
+  })
+}
+
+showDialogForReplacement(vId:number, event: Event) {
+  event.stopPropagation();
+  this.vId = vId
+  this.availableForReplacement(vId);
+
+  this.visibleReplacement = true;
+}
+
+availableForReplacement(id: number){
+  this.vehicleService.availableForReplacement().subscribe((res:Vehicle[])=>{
+    this.replacementVehicles = res;
+    this.replacementVehicles = this.replacementVehicles.filter((value)=>{
+      return value.id !== id;
+    })
+  })
+}
+
+onSubmit(){
+  this.vehicleService.replaceVehicle(this.vId,this.vehicleReplacement).subscribe(res=>{
+    this.messageService.add({ severity: 'success', summary: 'Vehicle Replaced', detail: 'Vehicle is successfully replaced'});
+    this.getAllVehicleAssignment()
+  },error=>{
+    this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
   })
 }
  

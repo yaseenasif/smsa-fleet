@@ -48,7 +48,7 @@ public class Vehicle {
     private String region;
     private String category;
     private String uuid;
-    private boolean status;
+//    private boolean status;
     private String vehicleStatus;
     private LocalDate createdAt;
     private LocalDate updatedAt;

@@ -2,7 +2,6 @@ package com.example.FleetSystem.service;
 
 import com.example.FleetSystem.criteria.VehicleSearchCriteria;
 import com.example.FleetSystem.dto.AuditDataWrapper;
-import com.example.FleetSystem.dto.ProductFieldDto;
 import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.exception.ExcelException;
 import com.example.FleetSystem.model.*;
@@ -70,7 +69,7 @@ public class VehicleService {
     @Autowired
     ProductFieldRepository productFieldRepository;
 
-    public VehicleDto inactiveVehicleById(Long id) {
+    public VehicleDto finalReturnVehicleById(Long id) {
         Optional<Vehicle> vehicle = vehicleRepository.findById(id);
         if (vehicle.isPresent()) {
             Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByVehicle(vehicle.get());
@@ -81,7 +80,7 @@ public class VehicleService {
                 vehicleAssignmentRepository.save(vehicleAssignment.get());
             }
             vehicle.get().setVehicleStatus("In-Active");
-            vehicle.get().setStatus(Boolean.FALSE);
+//            vehicle.get().setStatus(Boolean.FALSE);
             return toDto(vehicleRepository.save(vehicle.get()));
         }
         throw new RuntimeException("Record doesn't exist");
@@ -104,7 +103,7 @@ public class VehicleService {
             vehicle1.setVehicleStatus("TBA");
             vehicle1.setCreatedBy(user);
             vehicle1.setCreatedAt(LocalDate.now());
-            vehicle1.setStatus(Boolean.TRUE);
+//            vehicle1.setStatus(Boolean.TRUE);
 
             Date currentDate = Date.valueOf(LocalDate.now());
 
@@ -189,10 +188,11 @@ public class VehicleService {
     public VehicleDto makeVehicleActive(Long id) {
         Optional<Vehicle> vehicle = vehicleRepository.findById(id);
         if (vehicle.isPresent()) {
-            if (vehicle.get().isStatus()) {
-                throw new RuntimeException("Record is already Active");
-            }
-            vehicle.get().setStatus(Boolean.TRUE);
+//            if (vehicle.get().isStatus()) {
+//                throw new RuntimeException("Record is already Active");
+//            }
+//            vehicle.get().setStatus(Boolean.TRUE);
+            vehicle.get().setVehicleStatus("TBA");
             return toDto(vehicleRepository.save(vehicle.get()));
         }
         throw new RuntimeException(String.format("Vehicle Not Found by this Id => %d", id));
@@ -283,7 +283,7 @@ public class VehicleService {
                             vehicle.setCreatedBy(user);
                             vehicle.setCreatedAt(LocalDate.now());
                             vehicle.setVehicleStatus("TBA");
-                            vehicle.setStatus(Boolean.TRUE);
+//                            vehicle.setStatus(Boolean.TRUE);
                             vehicle.setUuid(uuid);
 
                             if (String.valueOf(row.getCell(12)).replaceAll("\\s", "").equalsIgnoreCase("valid")) {
