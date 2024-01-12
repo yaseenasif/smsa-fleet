@@ -6,6 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Vendor } from 'src/app/modal/vendor';
 import { ProductField } from 'src/app/modal/ProductField';
 import { ProductFieldServiceService } from '../../product-field/service/product-field-service.service';
+import { Region } from 'src/app/modal/Region';
+import { RegionService } from '../../region/service/region.service';
 
 @Component({
   selector: 'app-update-vehicle',
@@ -15,6 +17,8 @@ import { ProductFieldServiceService } from '../../product-field/service/product-
 })
 export class UpdateVehicleComponent implements OnInit{
   items: MenuItem[] | undefined;
+  cities: any[] = [];;
+  region !: Region[];
   vehicle : Vehicle = {
     id: undefined,
     processOrderNumber: undefined,
@@ -34,7 +38,13 @@ export class UpdateVehicleComponent implements OnInit{
     leaseStartDate: undefined,
     leaseExpiryDate: undefined,
     usageType: undefined,
-    category: undefined,
+    region: {
+      id: undefined,
+      name: undefined,
+      country: undefined,
+      cities: undefined,
+      status: undefined,
+    },    category: undefined,
     vendor: {
       id: undefined,
       vendorName: undefined,
@@ -54,7 +64,7 @@ export class UpdateVehicleComponent implements OnInit{
     { id: 3, locationName: 2018 },
     { id: 3, locationName: 2019 }
   ]
-    
+
   vehicleId!: Number;
   vendors!: Vendor[];
   visible!: boolean;
@@ -65,8 +75,9 @@ export class UpdateVehicleComponent implements OnInit{
               private route: ActivatedRoute,
               private router: Router,
               private messageService: MessageService,
+              private regionService:RegionService,
               private productFieldService: ProductFieldServiceService
-    
+
     ) { }
 
 
@@ -75,7 +86,7 @@ export class UpdateVehicleComponent implements OnInit{
   uploadedFiles: any[] = [];
 
   onUpload(event: any) {
-    
+
   }
 
    onUpload1(event:any) {
@@ -83,7 +94,7 @@ export class UpdateVehicleComponent implements OnInit{
         this.uploadedFiles.push(file);
     }
   }
-  
+
   ngOnInit(): void {
     this.items = [{ label: 'Vehicle',routerLink:'/vehicle'},{ label: 'Edit Vehicle'}];
     this.vehicleId = +this.route.snapshot.paramMap.get('id')!;
@@ -91,11 +102,13 @@ export class UpdateVehicleComponent implements OnInit{
     this.getAllVendor();
     this.getUsageType();
     this.getCategory();
+    this.getRegion();
+
   }
 
   getVehicleById(id: Number) {
     this.vehicleService.getVehicleById(id).subscribe((res: Vehicle) => {
-      this.vehicle = res;      
+      this.vehicle = res;
     })
   }
 
@@ -103,16 +116,16 @@ export class UpdateVehicleComponent implements OnInit{
 
     this.vehicleService.updateVehicle(this.vehicleId!, vehicle).subscribe((res) => {
       this.vehicle=res;
-      this.messageService.add({ severity: 'success', summary: 'Update Successfully', detail: 'Message Content' });  
+      this.messageService.add({ severity: 'success', summary: 'Update Successfully', detail: 'Message Content' });
 
       setTimeout(() => {
         this.router.navigate(['/vehicle'])
       },1000)
-      
+
     })
 
   }
-  
+
 
   onSubmit() {
     this.updateVehicle(this.vehicle);
@@ -134,12 +147,12 @@ export class UpdateVehicleComponent implements OnInit{
 
   inactiveVehicleById() {
     this.vehicleService.inactiveVehicleById(this.vehicleId).subscribe((res) => {
-      this.vehicle=res;      
+      this.vehicle=res;
       this.messageService.add({ severity: 'error', summary: 'Vehicle Inactivated Successfully', detail: 'Vehicle has been deleted' });
       setTimeout(() => {
         this.router.navigate(['/vehicle'])
       }, 1000)
-    })  
+    })
   }
 
   getUsageType() {
@@ -149,13 +162,22 @@ export class UpdateVehicleComponent implements OnInit{
       this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
     })
   }
-  
+
   getCategory() {
     this.productFieldService.getProductFieldByName('Category').subscribe((res: ProductField) => {
       this.categories = res;
     }, error => {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
     })
+  }
+  getRegion() {
+    this.regionService.getRegion().subscribe((regions: Region[]) => {
+      this.region = regions;
+      this.region.forEach((region: any) => {
+        this.cities.push(JSON.parse(region.cities))
+      })
+
+    });
   }
 }
 
