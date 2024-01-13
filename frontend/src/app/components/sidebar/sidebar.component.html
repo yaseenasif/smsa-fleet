@@ -67,6 +67,12 @@
         <span class="nav-text"> Vehicle </span>
       </span>
     </li>
+    <li class="child" *ngIf="hasPermission('ProjectVehicle')">
+      <span class="sidebar-list-hover" routerLink="/project-vehicle">
+        <i class="bi bi-truck"></i>
+        <span class="nav-text"> Project Vehicle </span>
+      </span>
+    </li>
     <li class="child" *ngIf="hasPermission('Assignment')">
       <span class="sidebar-list-hover" routerLink="/assignment">
         <i class="bi bi-clipboard2-check"></i>

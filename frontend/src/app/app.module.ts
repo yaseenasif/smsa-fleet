@@ -125,6 +125,9 @@ import { AssignmentHistoryComponent } from './page/Assignment/assignment-history
 import { CountUpModule } from 'ngx-countup';
 import { MessageService } from 'primeng/api';
 import { UnAssignedVehiclesComponent } from './page/vehicle-screen/un-assigned-vehicles/un-assigned-vehicles.component';
+import { ProjectVehicleComponent } from './page/project-vehicle/project-vehicle.component';
+import { AddProjectVehicleComponent } from './page/project-vehicle/add-project-vehicle/add-project-vehicle.component';
+import { EditProjectVehicleComponent } from './page/project-vehicle/edit-project-vehicle/edit-project-vehicle.component';
 
 @NgModule({
   declarations: [
@@ -209,6 +212,9 @@ import { UnAssignedVehiclesComponent } from './page/vehicle-screen/un-assigned-v
     AddRegionComponent,
     AssignmentHistoryComponent,
     UnAssignedVehiclesComponent,
+    ProjectVehicleComponent,
+    AddProjectVehicleComponent,
+    EditProjectVehicleComponent,
   ],
   imports: [
     ConfirmDialogModule,
