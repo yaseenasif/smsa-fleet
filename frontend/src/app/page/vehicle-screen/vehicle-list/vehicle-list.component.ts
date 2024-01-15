@@ -20,7 +20,7 @@ export class VehicleListComponent implements OnInit{
   fileUpload!: FileUpload;
 
   fileSelected: boolean = false;
-  visible: boolean = false;
+  // visible: boolean = false;
 
   query !: {
     page: number,
@@ -30,11 +30,11 @@ export class VehicleListComponent implements OnInit{
     value: string | null = null;
   totalRecords: number = 0;
 
-  vehicleReplacement: VehicleReplacement = {
-    id: null,
-    reason: null,
-    vehicle: null
-  }
+  // vehicleReplacement: VehicleReplacement ={
+  //   id:undefined,
+  //   reason:undefined,
+  //   vehicle:undefined
+  // }
 
   statusVisible!: boolean;
 
@@ -45,17 +45,17 @@ export class VehicleListComponent implements OnInit{
     ) { }
 
   vehicles!: Array<Vehicle>;
-  replacementVehicles!: Array<Vehicle>;
+  // replacementVehicles!: Array<Vehicle>;
   vId!: number
 
   vehicleStatus : any;
   selectedStatus = {name:'TBA'};
 
-  size: number = 10240000; // Maximum file size (e.g., 10MB)
+  size: number = 10240000;
 
   uploadedFiles: any[] = [];
   fileName : string = 'vehicleSample.xlsx'
-
+  replacementCheck: boolean = false;
 
 
 
@@ -74,6 +74,9 @@ export class VehicleListComponent implements OnInit{
         },
         {
           name: 'Under Maintenance'
+        },
+        {
+          name: 'Replacement'
         }
       ]
       this.searchAllVehicles('TBA');
@@ -83,13 +86,13 @@ export class VehicleListComponent implements OnInit{
     this.fileSelected = true;
   }
 
-  showDialog(vId:number, event: Event) {
-    event.stopPropagation();
-    this.vId=vId;
-    this.availableForReplacement(this.vId);
+  // showDialog(vId:number, event: Event) {
+  //   event.stopPropagation();
+  //   this.vId=vId;
+  //   this.availableForReplacement(this.vId);
 
-    this.visible = true;
-  }
+  //   this.visible = true;
+  // }
 
   onCancel() {
     // Handle cancel logic her
@@ -151,14 +154,14 @@ export class VehicleListComponent implements OnInit{
   // }
 
 
-  onSubmit(){
-    this.vehicleService.replaceVehicle(this.vId,this.vehicleReplacement).subscribe(res=>{
-      this.messageService.add({ severity: 'success', summary: 'Vehicle Replaced', detail: 'Vehicle is successfully replaced'});
-      this.searchAllVehicles(this.selectedStatus.name);
-    },error=>{
-      this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
-    })
-  }
+  // onSubmit(){
+  //   this.vehicleService.replaceVehicle(this.vId,this.vehicleReplacement).subscribe(res=>{
+  //     this.messageService.add({ severity: 'success', summary: 'Vehicle Replaced', detail: 'Vehicle is successfully replaced'});
+  //     this.searchAllVehicles(this.selectedStatus.name);
+  //   },error=>{
+  //     this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
+  //   })
+  // }
 
   onPageChange(value?: string | null, event?: any) {
     this.query.page = event.page;
@@ -176,14 +179,14 @@ export class VehicleListComponent implements OnInit{
   this.searchAllVehicles(this.selectedStatus.name)   
   }
 
-  availableForReplacement(id: number){
-    this.vehicleService.availableForReplacement().subscribe((res:Vehicle[])=>{
-      this.replacementVehicles = res;
-      this.replacementVehicles = this.replacementVehicles.filter((value)=>{
-        return value.id !== id;
-      })
-    })
-  }
+  // availableForReplacement(id: number){
+  //   this.vehicleService.availableForReplacement().subscribe((res:Vehicle[])=>{
+  //     this.replacementVehicles = res;
+  //     this.replacementVehicles = this.replacementVehicles.filter((value)=>{
+  //       return value.id !== id;
+  //     })
+  //   })
+  // }
 
   closeDialog() {
     this.statusVisible = false;
@@ -216,5 +219,11 @@ searchAllVehicles(vehiclestatus: string){
     this.totalRecords = res.totalElements;
   })  
 }
+
+ replaceVehicle(id: Number){
+   this.replacementCheck = true;
+  this.router.navigate(['/add-vehicle/replacementCheck/vId'], { queryParams: { 
+    replacementCheck: this.replacementCheck, vId: id} });
+ }
 
 }

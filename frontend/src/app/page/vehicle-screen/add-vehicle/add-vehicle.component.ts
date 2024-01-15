@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MenuItem, MessageService } from 'primeng/api';
 import { Vehicle } from 'src/app/modal/vehicle';
 import { VehicleService } from '../service/vehicle.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Vendor } from 'src/app/modal/vendor';
 import { ProductFieldServiceService } from '../../product-field/service/product-field-service.service';
 import { ProductField } from 'src/app/modal/ProductField';
+import { VehicleReplacement } from 'src/app/modal/vehicleReplacement';
 
 
 @Component({
@@ -16,6 +17,8 @@ import { ProductField } from 'src/app/modal/ProductField';
 })
 export class AddVehicleComponent implements OnInit{
   vendors!:Vendor[];
+
+  replacementCheck: boolean | undefined;
 
   items: MenuItem[] | undefined;
   vehicle: Vehicle = {
@@ -53,12 +56,19 @@ export class AddVehicleComponent implements OnInit{
   selectedEmployee!:Vehicle;
   usageTypes: ProductField | null | undefined;
   categories: ProductField | null | undefined;
+  vId!: number;
+  vehicleReplacement: VehicleReplacement = {
+    id:undefined,
+    reason:undefined,
+    vehicle:undefined
+  }
   
   constructor( 
     private vehicleService: VehicleService,
     private messageService: MessageService,
     private router: Router,
-    private productFieldService: ProductFieldServiceService
+    private productFieldService: ProductFieldServiceService,
+    private route: ActivatedRoute
     ) { }
   
   name!:string;
@@ -75,20 +85,32 @@ export class AddVehicleComponent implements OnInit{
     this.getAllVendor();
     this.getUsageType();
     this.getCategory();
+
+    this.route.queryParams.subscribe(params => {
+      this.replacementCheck = params['replacementCheck'] === 'true';
+      this.vId = params['vId'];
+    });
   }
 
   onSubmit() {
-    this.vehicleService.addVehicle(this.vehicle).subscribe((res) => {
-
-      this.messageService.add({ severity: 'Add Successfully', summary: 'Add Successfully', detail: 'Message Content' });  
-
-      setTimeout(() => {
-        this.router.navigate(['/vehicle'])
-      },5000)
-
-    });
-  
+   
+    if(this.replacementCheck){
+      this.vehicleReplacement.vehicle = this.vehicle;
+     this.vehicleService.replaceVehicle(this.vId,this.vehicleReplacement).subscribe(res=>{
+      this.messageService.add({ severity: 'success', summary: 'Vehicle Replaced', detail: 'Vehicle is successfully replaced'});
+      this.router.navigate(['/vehicle'])
+    },error=>{
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
+    })
   }
+  else if(!this.replacementCheck){
+      this.vehicleService.addVehicle(this.vehicle).subscribe((res) => {
+      this.messageService.add({ severity: 'Add Successfully', summary: 'Add Successfully', detail: 'Message Content' });  
+      this.router.navigate(['/vehicle'])
+        
+  })
+ }
+}
   
 
   getAllVendor(){

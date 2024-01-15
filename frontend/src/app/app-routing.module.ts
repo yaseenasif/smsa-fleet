@@ -219,6 +219,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'add-vehicle/:replacementCheck/vId',
+    component: AddVehicleComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'edit-vehicle/:id',
     component: UpdateVehicleComponent,
     canActivate: [AuthGuard]

@@ -17,9 +17,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -39,9 +39,8 @@ public class VehicleReplacementService {
     @Transactional
     public VehicleReplacementDto replaceVehicleById(Long id, VehicleReplacementDto vehicleReplacementDto) {
         Optional<Vehicle> existingVehicle = vehicleRepository.findById(id);
-        Optional<Vehicle> replacingVehicle = vehicleRepository.findById(vehicleReplacementDto.getVehicle().getId());
 
-        if (existingVehicle.isPresent() && replacingVehicle.isPresent()) {
+        if (existingVehicle.isPresent()) {
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if (principal instanceof UserDetails) {
                 String username = ((UserDetails) principal).getUsername();
@@ -54,12 +53,32 @@ public class VehicleReplacementService {
                         .reason(vehicleReplacementDto.getReason())
                         .build();
 
+                Vehicle replacingVehicle = vehicleReplacementDto.getVehicle();
+                replacingVehicle.setCreatedBy(user);
+                replacingVehicle.setCreatedAt(LocalDate.now());
+
+                Date currentDate = Date.valueOf(LocalDate.now());
+
+                if (currentDate.before(vehicleReplacementDto.getVehicle().getRegistrationExpiry()) || currentDate.equals(vehicleReplacementDto.getVehicle().getRegistrationExpiry())) {
+                    replacingVehicle.setRegistrationStatus(Boolean.TRUE);
+                } else if (currentDate.after(vehicleReplacementDto.getVehicle().getRegistrationExpiry())) {
+                    replacingVehicle.setRegistrationStatus(Boolean.FALSE);
+                }
+
+                if (currentDate.before(vehicleReplacementDto.getVehicle().getInsuranceExpiry()) || currentDate.equals(vehicleReplacementDto.getVehicle().getInsuranceExpiry())) {
+                    replacingVehicle.setInsuranceStatus(Boolean.TRUE);
+                } else if (currentDate.after(vehicleReplacementDto.getVehicle().getInsuranceExpiry())) {
+                    replacingVehicle.setInsuranceStatus(Boolean.FALSE);
+                }
+                
                 Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByVehicle(existingVehicle.get());
                 if(vehicleAssignment.isPresent()){
+
+                    vehicleRepository.save(replacingVehicle);
                     VehicleAssignment vehicleAssignment1 = VehicleAssignment.builder()
                             .assignToEmpId(vehicleAssignment.get().getAssignToEmpId())
                             .assignToEmpName(vehicleAssignment.get().getAssignToEmpName())
-                            .vehicle(replacingVehicle.get())
+                            .vehicle(replacingVehicle)
                             .createdBy(user)
                             .createdAt(LocalDate.now())
                             .status(Boolean.TRUE)
@@ -73,29 +92,30 @@ public class VehicleReplacementService {
                     vehicleAssignment.get().setAssignToEmpName(null);
                     vehicleAssignmentRepository.save(vehicleAssignment.get());
 
+                }else{
+                    replacingVehicle.setVehicleStatus("TBA");
                 }
 
                 if (existingVehicle.get().getVehicleReplacement() == null) {
                     vehicleReplacement.setVehicle(existingVehicle.get());
-                    replacingVehicle.get().setReplaceLeaseCost(existingVehicle.get().getLeaseCost()-replacingVehicle.get().getLeaseCost());
+                    replacingVehicle.setReplaceLeaseCost(existingVehicle.get().getLeaseCost()-replacingVehicle.getLeaseCost());
                 }else{
                     Optional<VehicleReplacement> vehicleReplacement1 = vehicleReplacementRepository.findById(existingVehicle.get().getVehicleReplacement().getId());
                     vehicleReplacement1.ifPresent(replacement -> {
                         vehicleReplacement.setVehicle(replacement.getVehicle());
-                        replacingVehicle.get().setReplaceLeaseCost(vehicleReplacement1.get().getVehicle().getLeaseCost()
-                                - replacingVehicle.get().getLeaseCost());
+                        replacingVehicle.setReplaceLeaseCost(vehicleReplacement1.get().getVehicle().getLeaseCost()
+                                - replacingVehicle.getLeaseCost());
                     });
                 }
 
                 vehicleReplacementRepository.save(vehicleReplacement);
 
                 existingVehicle.get().setVehicleStatus("Under Maintenance");
-//                existingVehicle.get().setStatus(Boolean.FALSE);
-                replacingVehicle.get().setVehicleStatus("Active");
-                replacingVehicle.get().setVehicleReplacement(vehicleReplacement);
+                replacingVehicle.setVehicleStatus("Replacement");
+                replacingVehicle.setVehicleReplacement(vehicleReplacement);
 
                 vehicleRepository.save(existingVehicle.get());
-                vehicleRepository.save(replacingVehicle.get());
+                vehicleRepository.save(replacingVehicle);
                 return toDto(vehicleReplacement);
 
             }
@@ -110,4 +130,9 @@ public class VehicleReplacementService {
     private VehicleReplacement toEntity(VehicleReplacementDto vehicleReplacementDto) {
         return modelMapper.map(vehicleReplacementDto, VehicleReplacement.class);
     }
+
+    private Vehicle toVehicleEntity(VehicleDto vehicleDto) {
+        return modelMapper.map(vehicleDto, Vehicle.class);
+    }
+
 }

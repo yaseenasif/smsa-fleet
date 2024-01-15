@@ -1,5 +1,6 @@
 package com.example.FleetSystem.controller;
 
+import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.dto.VehicleReplacementDto;
 import com.example.FleetSystem.model.VehicleReplacement;
 import com.example.FleetSystem.service.VehicleReplacementService;

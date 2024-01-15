@@ -381,7 +381,25 @@
                   </small>
                 </div>
               </div>
-              
+              <div *ngIf="replacementCheck" class="col-12 md:col-12 lg:col-6">
+                <div class="flex flex-column gap-2">
+                  <label htmlFor="name">Reason For Replacement</label>
+                  <input
+                    pInputText
+                    id="name"
+                    aria-describedby="name-help"
+                    name="reason"
+                    [(ngModel)]="vehicleReplacement.reason"
+                    #reason="ngModel"
+                    required
+                  />
+                  <small 
+                      id="name-help" class="p-dropdown-empty-message" 
+                      *ngIf="reason.invalid && (reason.dirty || reason.touched)"
+                  > Reason is required
+                  </small>
+                </div>
+              </div>
               </div>
               <div class="flex align-items-center justify-content-end mt-4">
                 <p-button
@@ -391,12 +409,14 @@
                   styleClass="p-button-text"
                   >
                 </p-button>
-                <p-button label="Save" type="submit" class="bg-b-color ml" [disabled]="vehicleForm.invalid || vehicleForm.invalid === null"> </p-button>
+                <p-button *ngIf="!replacementCheck" label="Save" type="submit" class="bg-b-color ml" [disabled]="vehicleForm.invalid || vehicleForm.invalid === null"> </p-button>
+
+                <p-button *ngIf="replacementCheck" label="Replace" type="submit" class="bg-b-color ml" [disabled]="vehicleForm.invalid || vehicleForm.invalid === null"> </p-button>
               </div>
             </form>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </div>   
   </div>

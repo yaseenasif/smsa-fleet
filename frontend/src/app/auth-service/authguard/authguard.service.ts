@@ -15,7 +15,7 @@ export class AuthguardService {
     { permission: 'Dashboard', route: ['/home',"/"] },
     { permission: 'Employee', route: ['/employee', '/add-employee', '/edit-employee/:id', '/employee-attachment/:id','view-employee/:id'] },
     { permission: 'Driver', route: ['/driver', '/add-driver', '/edit-driver/:id', '/driver-attachment/:id', '/view-driver/:id'] },
-    { permission: 'Vehicle', route: ['/vehicle', '/add-vehicle', '/edit-vehicle/:id', '/vehicle-history/:id', '/vehicle-attachment/:id', '/vehicle-detail/:id','/view-vehicle/:id','/unassigned-vehicle'] },
+    { permission: 'Vehicle', route: ['/vehicle', '/add-vehicle','/add-vehicle/:replacementCheck/:vId', '/edit-vehicle/:id', '/vehicle-history/:id', '/vehicle-attachment/:id', '/vehicle-detail/:id','/view-vehicle/:id','/unassigned-vehicle'] },
     { permission: 'Assignment', route: ['/assignment', '/add-assignment', '/edit-assignment/:id', '/assignment-attachment/:id', '/view-assignment/:id', '/assignment-history/:id',] },
     { permission: 'User', route: ['/user', '/add-user', '/edit-user/:id'] },
     { permission: 'Vendor', route: ['/vendor', '/add-vendor', '/edit-vendor/:id', '/vendor-attachment/:id',] },
@@ -25,6 +25,7 @@ export class AuthguardService {
     { permission: 'City', route: ['/city-list', '/add-city', '/edit-city/:id',] },
     { permission: 'ProductField', route: ['/productFields', '/add-ProductField', '/add-ProductField/:id',] },
     { permission: 'Region', route: ['/get-all-regions', '/add-region','/add-region/:id'] },
+    { permission: 'Download Attachment', route: ['/individual-file-list-component/:call-type/:id']}
   ];
 
   constructor(private router: Router) { }

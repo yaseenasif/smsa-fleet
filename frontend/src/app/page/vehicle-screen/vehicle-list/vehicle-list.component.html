@@ -151,7 +151,8 @@
 
                     <p-button [routerLink]="['/vehicle-history/',vehicles.id]" pTooltip="View History" tooltipPosition="top" icon="bi bi-clock-history" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="success"></p-button>
 
-                    <p-button *ngIf="selectedStatus.name === 'TBA'" (click)="showDialog(vehicles.id, $event)" pTooltip="Replace Vehicle" tooltipPosition="top" icon="bi bi-arrow-repeat" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="help"></p-button>
+                    <p-button (click)="replaceVehicle(vehicles.id)" pTooltip="Replace Vehicle" tooltipPosition="top" icon="bi bi-arrow-repeat" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="help">
+                    </p-button>
                   </td>
                 </tr>
               </ng-template>
@@ -184,7 +185,7 @@
   </p-dialog>
 
 
-<p-dialog class="dialog-hook" header="Header" [blockScroll]="true" [(visible)]="visible" [style]="{ width: '50vw',height: '80vh' }">
+<!-- <p-dialog class="dialog-hook" header="Header" [blockScroll]="true" [(visible)]="visible" [style]="{ width: '50vw',height: '80vh' }">
   <ng-template pTemplate="header">
       <span class="text-xl font-bold">Replacement Application</span>
   </ng-template>
@@ -242,4 +243,4 @@
 
   </ng-template>
 
-</p-dialog>
+</p-dialog> -->
