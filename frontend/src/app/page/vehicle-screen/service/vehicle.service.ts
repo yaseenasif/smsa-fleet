@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Region } from 'src/app/modal/Region';
 import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
 import { Vehicle } from 'src/app/modal/vehicle';
 import { VehicleHistory } from 'src/app/modal/vehicle-history';
@@ -44,7 +45,7 @@ export class VehicleService {
     return this.http.get<PaginatedResponse<Vehicle>>(`${this.url}/search-unassigned-vehicle?value=${JSON.stringify(value ? value : '')}&page=${query?.page ? query.page : ''}&size=${query?.size ? query.size : ''}`);
   }
 
- 
+
 
   getVehicleById(id: Number) {
     return this.http.get<Vehicle>(`${this.url}/vehicle/${id}`);
@@ -111,5 +112,9 @@ export class VehicleService {
       query = { page: 0, size: 10 };
     }
     return this.http.get<PaginatedResponse<Vehicle>>(`${this.url}/search-all-vehicle?value=${JSON.stringify(value ? value : '')}&vehicleStatus=${vehicleStatus ? vehicleStatus : ''}&page=${query?.page ? query.page : ''}&size=${query?.size ? query.size : ''}`);
-    }      
+    }
+    getRegion(): Observable<Region[]> {
+      return this.http.get<Region[]>(`${this.url}/get-active-region`);
+    }
+
 }

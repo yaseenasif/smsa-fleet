@@ -8,6 +8,8 @@ import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
 import { PageEvent } from 'src/app/modal/pageEvent';
 import { Router } from '@angular/router';
 import * as saveAs from 'file-saver';
+import { Region } from 'src/app/modal/Region';
+import { RegionService } from '../../region/service/region.service';
 
 @Component({
   selector: 'app-vehicle-list',
@@ -41,13 +43,14 @@ export class VehicleListComponent implements OnInit{
   constructor(
     private vehicleService: VehicleService,
     private messageService: MessageService,
-    private router: Router
+    private router: Router,
+    private regionService: RegionService,
     ) { }
 
   vehicles!: Array<Vehicle>;
   // replacementVehicles!: Array<Vehicle>;
   vId!: number
-
+  region !: Region[];
   vehicleStatus : any;
   selectedStatus = {name:'TBA'};
 
@@ -176,7 +179,7 @@ export class VehicleListComponent implements OnInit{
      this.query.page=0
      this.flag=this.selectedStatus.name
     }
-  this.searchAllVehicles(this.selectedStatus.name)   
+  this.searchAllVehicles(this.selectedStatus.name)
   }
 
   // availableForReplacement(id: number){
@@ -217,13 +220,15 @@ searchAllVehicles(vehiclestatus: string){
     this.vehicles = res.content
     this.query = { page: res.pageable.pageNumber, size: res.size }
     this.totalRecords = res.totalElements;
-  })  
+  })
 }
 
  replaceVehicle(id: Number){
    this.replacementCheck = true;
-  this.router.navigate(['/add-vehicle/replacementCheck/vId'], { queryParams: { 
+  this.router.navigate(['/add-vehicle/replacementCheck/vId'], { queryParams: {
     replacementCheck: this.replacementCheck, vId: id} });
  }
+
+
 
 }

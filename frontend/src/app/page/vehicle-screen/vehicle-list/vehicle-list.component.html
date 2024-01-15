@@ -102,6 +102,7 @@
                   <th class="text-center">Lease Start Date</th>
                   <th class="text-center">Lease Expiry Date</th>
                   <th class="text-center">Usage Type</th>
+                  <th class="text-center">Region</th>
                   <th class="text-center">Category</th>
                   <th class="text-center">Replace Vehicle</th>
 
@@ -109,7 +110,7 @@
                   <th class="text-center">Actions</th>
                 </tr>
               </ng-template>
-              <ng-template pTemplate="body" let-vehicles>
+              <ng-template pTemplate="body" let-vehicles let-region>
                 <tr>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.id }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.processOrderNumber }}</td>
@@ -132,6 +133,7 @@
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.leaseStartDate }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.leaseExpiryDate }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.usageType }}</td>
+                  <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.region }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.category }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.vehicleReplacement?vehicles.vehicleReplacement.vehicle.plateNumber:'-----'}}</td>
                   <td class="text-center flex">

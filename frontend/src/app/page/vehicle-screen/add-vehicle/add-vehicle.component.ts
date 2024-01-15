@@ -7,6 +7,8 @@ import { Vendor } from 'src/app/modal/vendor';
 import { ProductFieldServiceService } from '../../product-field/service/product-field-service.service';
 import { ProductField } from 'src/app/modal/ProductField';
 import { VehicleReplacement } from 'src/app/modal/vehicleReplacement';
+import { RegionService } from '../../region/service/region.service';
+import { Region } from 'src/app/modal/Region';
 
 
 @Component({
@@ -20,6 +22,8 @@ export class AddVehicleComponent implements OnInit{
 
   replacementCheck: boolean | undefined;
 
+  cities: any[] = [];
+  region !: Region[];
   items: MenuItem[] | undefined;
   vehicle: Vehicle = {
     id: undefined,
@@ -40,6 +44,13 @@ export class AddVehicleComponent implements OnInit{
     leaseStartDate: undefined,
     leaseExpiryDate: undefined,
     usageType: undefined,
+    region: {
+      id: undefined,
+      name: undefined,
+      country: undefined,
+      cities: undefined,
+      status: undefined,
+    },
     category: undefined,
     vendor: {
       id: undefined,
@@ -62,29 +73,33 @@ export class AddVehicleComponent implements OnInit{
     reason:undefined,
     vehicle:undefined
   }
-  
-  constructor( 
+
+  constructor(
     private vehicleService: VehicleService,
     private messageService: MessageService,
     private router: Router,
     private productFieldService: ProductFieldServiceService,
+    private regionService:RegionService,
+    private productFieldService: ProductFieldServiceService,
     private route: ActivatedRoute
     ) { }
-  
+
   name!:string;
 
 
    onUpload(event: any) {
-    
+
   }
 
-   
-  
+
+
   ngOnInit(): void {
     this.items = [{ label: 'Vehicle',routerLink:'/vehicle'},{ label: 'Add Vehicle'}];
     this.getAllVendor();
     this.getUsageType();
     this.getCategory();
+    this.getRegion();
+
 
     this.route.queryParams.subscribe(params => {
       this.replacementCheck = params['replacementCheck'] === 'true';
@@ -93,7 +108,7 @@ export class AddVehicleComponent implements OnInit{
   }
 
   onSubmit() {
-   
+
     if(this.replacementCheck){
       this.vehicleReplacement.vehicle = this.vehicle;
      this.vehicleService.replaceVehicle(this.vId,this.vehicleReplacement).subscribe(res=>{
@@ -105,13 +120,13 @@ export class AddVehicleComponent implements OnInit{
   }
   else if(!this.replacementCheck){
       this.vehicleService.addVehicle(this.vehicle).subscribe((res) => {
-      this.messageService.add({ severity: 'Add Successfully', summary: 'Add Successfully', detail: 'Message Content' });  
+      this.messageService.add({ severity: 'Add Successfully', summary: 'Add Successfully', detail: 'Message Content' });
       this.router.navigate(['/vehicle'])
-        
+
   })
  }
 }
-  
+
 
   getAllVendor(){
     this.vehicleService.getAllVendor().subscribe((res:Vendor[])=>{
@@ -126,13 +141,22 @@ export class AddVehicleComponent implements OnInit{
       this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
     })
   }
-  
+
   getCategory() {
     this.productFieldService.getProductFieldByName('Category').subscribe((res: ProductField) => {
       this.categories = res;
     }, error => {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
     })
+  }
+  getRegion() {
+    this.regionService.getRegion().subscribe((regions: Region[]) => {
+      this.region = regions;
+      this.region.forEach((region: any) => {
+        this.cities.push(JSON.parse(region.cities))
+      })
+
+    });
   }
 }
 

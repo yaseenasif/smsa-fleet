@@ -77,6 +77,9 @@ import { AssignmentHistoryComponent } from './page/Assignment/assignment-history
 import { RegionComponent } from './page/region/region.component';
 import { AddRegionComponent } from './page/region/add-region/add-region.component';
 import { UnAssignedVehiclesComponent } from './page/vehicle-screen/un-assigned-vehicles/un-assigned-vehicles.component';
+import { ProjectVehicleComponent } from './page/project-vehicle/project-vehicle.component';
+import { AddProjectVehicleComponent } from './page/project-vehicle/add-project-vehicle/add-project-vehicle.component';
+import { EditProjectVehicleComponent } from './page/project-vehicle/edit-project-vehicle/edit-project-vehicle.component';
 
 // NgModule({
 //   imports: [FormsModule],
@@ -271,6 +274,21 @@ const routes: Routes = [
   {
     path: 'edit-vendor/:id',
     component: EditVendorComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'project-vehicle',
+    component: ProjectVehicleComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'add-project-vehicle',
+    component: AddProjectVehicleComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'edit-project-vehicle/:id',
+    component: EditProjectVehicleComponent,
     canActivate: [AuthGuard]
   },
   // {

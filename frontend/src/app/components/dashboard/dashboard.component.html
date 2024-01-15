@@ -87,52 +87,45 @@
         </div>
       </div>
     </div>
-    <div class="text">
-
-    <div class="grid p-fluid" style="padding-left: 7%;">
-      <div class="col-12 lg:col-6 xl:col-6">
-        <div class="card flex flex-column align-items-center"
-          style="background-color: white;border-radius: 20px;;margin-top: 20px;padding: 40px;width: 80%;padding-bottom: 100px;">
-          <h3 class="text-left ">Vehicle Per Region</h3><br>
-          <p-chart type="doughnut" style="width: 270px;" [data]="data" [options]="options2"></p-chart>
-        </div>
-      </div>
-      <div class="col-12 lg:col-6 xl:col-6">
-        <div class="card flex flex-column align-items-center"
-          style="background-color: white;border-radius: 20px;;margin-top: 20px;padding: 40px;width: 80%;padding-bottom: 100px;">
-          <h3 class="text-left ">Vehicle Count</h3><br>
-          <p-chart type="doughnut" style="width: 270px;" [data]="data4" [options]="options2"></p-chart>
-        </div>
-      </div>
-     
-    </div>
-  </div>
 
     <div class="grid p-fluid" style="padding: 60px;">
-      <div class="col-12 lg:col-12">
-        <div class="card" style="background-color: white;border-radius: 20px;padding: 30px;margin-top: 20px;">
-          <h3>Linear Chart</h3><br>
+      <div class="col-12 lg:col-8">
+        <div class="card" style="background-color: white;border-radius: 20px;padding: 30px;">
+          <h3>Vehicle Per Vendor</h3><br>
           <p-chart type="bar" [data]="data1" [options]="options1"></p-chart>
         </div>
       </div>
+      <div class="col-12 lg:col-6 xl:col-4">
+        <div class="card flex flex-column align-items-center"
+          style="background-color: white;border-radius: 20px; padding: 70px;width: 100%;padding-bottom: 100px;">
+          <h3 class="text-left ">Active Vehicle Per Region</h3><br>
+          <p-chart type="doughnut" style="width: 270px;" [data]="data" [options]="options2"></p-chart>
+        </div>
+      </div>
     </div>
-
     <div class="grid p-fluid" style="padding-left: 7%;">
-      <div class="col-12 lg:col-6 xl:col-6">
+      <div class="col-12 lg:col-6 xl:col-4">
         <div class="card flex flex-column align-items-center"
           style="background-color: white;border-radius: 20px;;margin-top: 20px;padding: 40px;width: 80%;padding-bottom: 100px;">
-          <h3 class="text-left ">Doughnut Chart</h3><br>
-          <p-chart type="doughnut" style="width: 270px;" [data]="data5" [options]="options2"></p-chart>
+          <h3 class="text-left ">Vehicle Per Region</h3><br>
+          <p-chart type="pie" style="width: 270px;" [data]="data4" [options]="options2"></p-chart>
         </div>
       </div>
-      <div class="col-12 lg:col-6 xl:col-6">
+      <div class="col-12 lg:col-6 xl:col-4">
+        <div class="card flex flex-column align-items-center"
+          style="background-color: white; border-radius: 20px; margin-top: 20px; padding: 40px; width: 80%; padding-bottom: 100px;">
+          <h3 class="text-left ">Vehicle Per Usage Count</h3><br>
+          <p-chart type="pie" style="width: 270px;" [data]="data6"></p-chart>
+        </div>
+      </div>
+      <div class="col-12 lg:col-6 xl:col-4">
         <div class="card flex flex-column align-items-center"
           style="background-color: white;border-radius: 20px;;margin-top: 20px;padding: 40px;width: 80%;padding-bottom: 100px;">
-          <h3 class="text-left ">Doughnut Chart</h3><br>
-          <p-chart type="doughnut" style="width: 270px;" [data]="data6" [options]="options2"></p-chart>
+          <h3 class="text-left ">Vehicle Per Department</h3><br>
+          <p-chart type="pie" style="width: 270px;" [data]="data5" [options]="options2"></p-chart>
         </div>
       </div>
-     
+
     </div>
   </div>
   <app-dialog-box [modelId]="modelId" [visible]="dialogVisibleVendor" (dialogClosed)="onDialogClosed()"

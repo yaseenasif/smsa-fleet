@@ -11,6 +11,14 @@ export interface Vehicle {
     type: String | null | undefined
     capacity: String | null | undefined
     power: String | null | undefined
+    region:{
+        id: number | null | undefined;
+        name: string | null | undefined;
+        country: string | null | undefined;
+        cities: string | null | undefined| string[];
+        status: boolean | null | undefined;
+        [key: string]: any;
+    }
     registrationExpiry: String | null | undefined
     fuelType: String | null | undefined
      vendor:
@@ -19,7 +27,7 @@ export interface Vehicle {
         vendorName: String| null | undefined
         officeLocation: String | null | undefined
         attachments: String | null | undefined
-       
+
     }
     insuranceExpiry: String | null | undefined
     leaseCost: Number | null | undefined
@@ -27,6 +35,7 @@ export interface Vehicle {
     leaseStartDate: String | null | undefined
     leaseExpiryDate: String | null | undefined
     usageType: String | null | undefined
+    // region : String | null | undefined
     category: String | null | undefined
     vehicleReplacement:VehicleReplacement|null|undefined
     employeeStatus: String | null | undefined
