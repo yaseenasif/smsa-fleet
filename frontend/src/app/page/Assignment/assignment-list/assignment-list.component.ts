@@ -3,9 +3,8 @@ import { MenuItem, MessageService } from 'primeng/api';
 import { VehicleAssignmentService } from '../vehicle-assignment.service';
 import { VehicleAssignment } from 'src/app/modal/vehicle-assignment';
 import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
-import { Vehicle } from 'src/app/modal/vehicle';
 import { VehicleService } from '../../vehicle-screen/service/vehicle.service';
-import { VehicleReplacement } from 'src/app/modal/vehicleReplacement';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-assignment-list',
@@ -22,35 +21,37 @@ export class AssignmentListComponent {
     size: number
   };
 
-  vehicleReplacement: VehicleReplacement = {
-    id: null,
-    reason: null,
-    vehicle: null
-  }
+  // vehicleReplacement: VehicleReplacement = {
+  //   id: null,
+  //   reason: null,
+  //   vehicle: null
+  // }
 
   plateNumber: string | null = null;
   employeeNumber: string | null = null;
   totalRecords: number = 0;
   visible!: boolean;
-  visibleReplacement!: boolean;
+  // visibleReplacement!: boolean;
   vehicleAssignmentId!: Number;
-  replacementVehicles!: Array<Vehicle>;
-  vId!: number;
+  // replacementVehicles!: Array<Vehicle>;
+  // vId!: number;
+  replacementCheck: boolean = false;
 
   constructor(private vehicleAssignmentService: VehicleAssignmentService,
-    private messageService: MessageService,private vehicleService:VehicleService) { }
+    private messageService: MessageService,private vehicleService:VehicleService,
+    private router: Router) { }
   
 
-  products:any=[{name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
-  {name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
-  {name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
-  {name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
-  {name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
-  {name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
-  {name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
-  {name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
-  {name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
-  {name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},];
+  // products:any=[{name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
+  // {name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
+  // {name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
+  // {name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
+  // {name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
+  // {name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
+  // {name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
+  // {name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
+  // {name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
+  // {name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},];
   items: MenuItem[] | undefined;
 
  
@@ -119,31 +120,11 @@ export class AssignmentListComponent {
       this.totalRecords = res.totalElements;
   })
 }
-
-showDialogForReplacement(vId:number, event: Event) {
-  event.stopPropagation();
-  this.vId = vId
-  this.availableForReplacement(vId);
-
-  this.visibleReplacement = true;
-}
-
-availableForReplacement(id: number){
-  this.vehicleService.availableForReplacement().subscribe((res:Vehicle[])=>{
-    this.replacementVehicles = res;
-    this.replacementVehicles = this.replacementVehicles.filter((value)=>{
-      return value.id !== id;
-    })
-  })
-}
-
-onSubmit(){
-  this.vehicleService.replaceVehicle(this.vId,this.vehicleReplacement).subscribe(res=>{
-    this.messageService.add({ severity: 'success', summary: 'Vehicle Replaced', detail: 'Vehicle is successfully replaced'});
-    this.getAllVehicleAssignment()
-  },error=>{
-    this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
-  })
-}
  
+replaceVehicle(id: Number){
+  this.replacementCheck = true;
+ this.router.navigate(['/add-vehicle/replacementCheck/vId'], { queryParams: { 
+   replacementCheck: this.replacementCheck, vId: id} });
+}
+
 }

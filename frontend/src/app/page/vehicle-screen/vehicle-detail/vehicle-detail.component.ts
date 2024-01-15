@@ -14,7 +14,7 @@ export class VehicleDetailComponent implements OnInit {
     private vehicleService: VehicleService,
     private route: ActivatedRoute,
     ) { }
-  
+
   vId!:number
 
   items: MenuItem[] | undefined;
@@ -37,7 +37,14 @@ export class VehicleDetailComponent implements OnInit {
     leaseStartDate: undefined,
     leaseExpiryDate: undefined,
     usageType: undefined,
-    category: undefined,
+    region: {
+      id: undefined,
+      name: undefined,
+      country: undefined,
+      cities: undefined,
+      status: undefined,
+    },
+        category: undefined,
     vendor: {
       id: undefined,
       vendorName: undefined,
@@ -51,7 +58,7 @@ export class VehicleDetailComponent implements OnInit {
   };
   vehicleId: Number | undefined;
 
- 
+
 
 
   ngOnInit() {
@@ -64,8 +71,8 @@ export class VehicleDetailComponent implements OnInit {
   getAllVehicles() {
 
     this.vehicleService.getAllVehicles().subscribe((res: Vehicle[]) => {
-     
-      
+
+
     })
 
   }

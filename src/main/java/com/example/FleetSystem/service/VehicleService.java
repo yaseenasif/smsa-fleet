@@ -175,6 +175,7 @@ public class VehicleService {
                 optionalVehicle.get().setLeaseStartDate(vehicleDto.getLeaseStartDate());
                 optionalVehicle.get().setLeaseExpiryDate(vehicleDto.getLeaseExpiryDate());
                 optionalVehicle.get().setUsageType(vehicleDto.getUsageType());
+                optionalVehicle.get().setRegion(vehicleDto.getRegion());
                 optionalVehicle.get().setUpdatedAt(LocalDate.now());
                 optionalVehicle.get().setUpdatedBy(user);
 
@@ -279,6 +280,7 @@ public class VehicleService {
                             vehicle.setVendor(vendor);
                             vehicle.setLeaseCost(getIntegerValue(row.getCell(16)));
                             vehicle.setUsageType(Objects.requireNonNull(getStringValue(row.getCell(19))).toUpperCase(Locale.ROOT));
+                            vehicle.setRegion(Objects.requireNonNull(getStringValue(row.getCell(19))).toUpperCase(Locale.ROOT));
                             vehicle.setCategory(Objects.requireNonNull(getStringValue(row.getCell(20))).toUpperCase(Locale.ROOT));
                             vehicle.setCreatedBy(user);
                             vehicle.setCreatedAt(LocalDate.now());

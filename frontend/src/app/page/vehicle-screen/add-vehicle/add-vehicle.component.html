@@ -3,7 +3,7 @@
     <div class="body-position">
       <div class="body-holder">
         <app-dashboard-head></app-dashboard-head>
-  
+
         <div class="main">
           <div class="card flex justify-content-center">
             <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
@@ -26,8 +26,8 @@
                       #processOrderNumber="ngModel"
                       required
                     />
-                    <small 
-                        id="name-help" class="p-dropdown-empty-message" 
+                    <small
+                        id="name-help" class="p-dropdown-empty-message"
                         *ngIf="processOrderNumber.invalid && (processOrderNumber.dirty || processOrderNumber.touched)"
                     > Process OrderNumber Name is required
                     </small>
@@ -45,12 +45,12 @@
                     #plateNumber="ngModel"
                     required
                   />
-                  <small 
-                      id="name-help" class="p-dropdown-empty-message" 
+                  <small
+                      id="name-help" class="p-dropdown-empty-message"
                       *ngIf="plateNumber.invalid && (plateNumber.dirty || plateNumber.touched)"
                   > Plate Number is required
                   </small>
-                  
+
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
@@ -65,8 +65,8 @@
                       #make="ngModel"
                       required
                     />
-                    <small 
-                        id="name-help" class="p-dropdown-empty-message" 
+                    <small
+                        id="name-help" class="p-dropdown-empty-message"
                         *ngIf="make.invalid && (make.dirty || make.touched)"
                     > Make is required
                     </small>
@@ -98,8 +98,8 @@
                       #design="ngModel"
                       required
                     />
-                    <small 
-                        id="name-help" class="p-dropdown-empty-message" 
+                    <small
+                        id="name-help" class="p-dropdown-empty-message"
                         *ngIf="design.invalid && (design.dirty || design.touched)"
                     > Design is required
                     </small>
@@ -117,8 +117,8 @@
                       #model="ngModel"
                       required
                     />
-                    <small 
-                        id="name-help" class="p-dropdown-empty-message" 
+                    <small
+                        id="name-help" class="p-dropdown-empty-message"
                         *ngIf="model.invalid && (model.dirty || model.touched)"
                     > Model is required
                     </small>
@@ -136,8 +136,8 @@
                       #type="ngModel"
                       required
                     />
-                    <small 
-                        id="name-help" class="p-dropdown-empty-message" 
+                    <small
+                        id="name-help" class="p-dropdown-empty-message"
                         *ngIf="type.invalid && (type.dirty || type.touched)"
                     > Model is required
                     </small>
@@ -155,8 +155,8 @@
                       #capacity="ngModel"
                       required
                     />
-                    <small 
-                        id="name-help" class="p-dropdown-empty-message" 
+                    <small
+                        id="name-help" class="p-dropdown-empty-message"
                         *ngIf="capacity.invalid && (capacity.dirty || capacity.touched)"
                     > Capacity is required
                     </small>
@@ -174,10 +174,78 @@
                       #power="ngModel"
                       required
                     />
-                    <small 
-                        id="name-help" class="p-dropdown-empty-message" 
+                    <small
+                        id="name-help" class="p-dropdown-empty-message"
                         *ngIf="power.invalid && (power.dirty || power.touched)"
                     > Power is required
+                    </small>
+                  </div>
+                </div>
+                <!-- <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2 form-hook">
+                    <label htmlFor="name">Region</label>
+                    <p-dropdown
+                      class="w-full"
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="region"
+                      [(ngModel)]="vehicle.region"
+                      #region="ngModel"
+                    />
+                    <small
+                        id="name-help" class="p-dropdown-empty-message"
+                        *ngIf="region.invalid && (region.dirty || region.touched)"
+                    > Region is required
+                    </small>
+                  </div>
+                </div> -->
+                <!-- <ng-template pTemplate="selectedItem">
+                  <div
+                    class="flex align-items-center gap-2"
+                    *ngIf="vehicle.vendor"
+                  >
+                    <div>{{ vehicle.vendor.vendorName }}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-vendors pTemplate="item">
+                  <div class="flex align-items-center gap-2">
+                    <div>{{ vendors.vendorName }}</div>
+                  </div>
+                </ng-template> -->
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2 form-hook">
+                    <label htmlFor="name">Region</label>
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="vehicle.region.name"
+                      [options]="region"
+                      name="region"
+                      #regionModel="ngModel"
+                      [required]="true"
+                      optionLabel="regionName"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="regionName"
+                      [showClear]="true"
+                      placeholder="Select Region"
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div class="flex align-items-center gap-2" *ngIf="vehicle.region">
+                          <div>{{ vehicle.region.name }}</div>
+                        </div>
+                      </ng-template>
+                      <ng-template let-region pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                          <div>{{ region.name }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
+                    <small
+                      id="name-help"
+                      class="p-dropdown-empty-message"
+                      *ngIf="regionModel.invalid && (regionModel.dirty || regionModel.touched)"
+                    > Region is required
                     </small>
                   </div>
                 </div>
@@ -204,8 +272,8 @@
                       #fuelType="ngModel"
                       required
                     />
-                    <small 
-                        id="name-help" class="p-dropdown-empty-message" 
+                    <small
+                        id="name-help" class="p-dropdown-empty-message"
                         *ngIf="fuelType.invalid && (fuelType.dirty || fuelType.touched)"
                     > Fuel Type Expiry is required
                     </small>
@@ -242,8 +310,8 @@
                         </div>
                       </ng-template>
                     </p-dropdown>
-                    <small 
-                        id="name-help" class="p-dropdown-empty-message" 
+                    <small
+                        id="name-help" class="p-dropdown-empty-message"
                         *ngIf="vendor.invalid && (vendor.dirty || vendor.touched)"
                     > Vendor is required
                     </small>
@@ -272,8 +340,8 @@
                       #leaseCost="ngModel"
                       required
                     />
-                    <small 
-                        id="name-help" class="p-dropdown-empty-message" 
+                    <small
+                        id="name-help" class="p-dropdown-empty-message"
                         *ngIf="leaseCost.invalid && (leaseCost.dirty || leaseCost.touched)"
                     > Lease Cost is required
                     </small>
@@ -334,8 +402,8 @@
                         </div>
                       </ng-template>
                     </p-dropdown>
-                    <small 
-                        id="name-help" class="p-dropdown-empty-message" 
+                    <small
+                        id="name-help" class="p-dropdown-empty-message"
                         *ngIf="usageType.invalid && (usageType.dirty || usageType.touched)"
                     > Usage Type is required
                     </small>
@@ -374,14 +442,33 @@
                       </div>
                     </ng-template>
                   </p-dropdown>
-                  <small 
-                      id="name-help" class="p-dropdown-empty-message" 
+                  <small
+                      id="name-help" class="p-dropdown-empty-message"
                       *ngIf="category.invalid && (category.dirty || category.touched)"
                   > Category is required
                   </small>
                 </div>
               </div>
-              
+
+              <div *ngIf="replacementCheck" class="col-12 md:col-12 lg:col-6">
+                <div class="flex flex-column gap-2">
+                  <label htmlFor="name">Reason For Replacement</label>
+                  <input
+                    pInputText
+                    id="name"
+                    aria-describedby="name-help"
+                    name="reason"
+                    [(ngModel)]="vehicleReplacement.reason"
+                    #reason="ngModel"
+                    required
+                  />
+                  <small
+                      id="name-help" class="p-dropdown-empty-message"
+                      *ngIf="reason.invalid && (reason.dirty || reason.touched)"
+                  > Reason is required
+                  </small>
+                </div>
+              </div>
               </div>
               <div class="flex align-items-center justify-content-end mt-4">
                 <p-button
@@ -391,7 +478,9 @@
                   styleClass="p-button-text"
                   >
                 </p-button>
-                <p-button label="Save" type="submit" class="bg-b-color ml" [disabled]="vehicleForm.invalid || vehicleForm.invalid === null"> </p-button>
+                <p-button *ngIf="!replacementCheck" label="Save" type="submit" class="bg-b-color ml" [disabled]="vehicleForm.invalid || vehicleForm.invalid === null"> </p-button>
+
+                <p-button *ngIf="replacementCheck" label="Replace" type="submit" class="bg-b-color ml" [disabled]="vehicleForm.invalid || vehicleForm.invalid === null"> </p-button>
               </div>
             </form>
             </div>

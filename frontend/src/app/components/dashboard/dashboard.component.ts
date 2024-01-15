@@ -32,6 +32,7 @@ import { trigger, state, style, transition, animate, keyframes } from '@angular/
 
 export class DashboardComponent implements OnInit {
   vehiclesPerRegion: any = [];
+
   items: MenuItem[] | undefined;
   cardState: string = 'inactive';
   data: any;
@@ -70,7 +71,7 @@ export class DashboardComponent implements OnInit {
   departmentCount: any;
   vehicleCount: any;
   regionCount: any;
-  usageTypeCount: any;
+  usageTypeCounts: any;
 
   // countUpOptions: CountUpOptions = {
   //   duration: 2, // Animation duration in seconds
@@ -241,7 +242,7 @@ export class DashboardComponent implements OnInit {
   // }
   // onDonut2Hover(isHovered: boolean): void {
   //   this.isDonut2Hover = isHovered;
-    
+
   //   // Update the options1 object dynamically when isHover changes
   //   this.options2 = {
   //     ...this.options2, // Spread the existing properties
@@ -340,51 +341,64 @@ export class DashboardComponent implements OnInit {
             },
           ]
         };
-       
+
       });
   }
   getDashboardPieChartCounts() {
     this.dashboardService.getDashboardPieChartCounts().subscribe(
       (res) => {
-         this.departmentCount = [res.departmentCounts];
+         this.departmentCount = res.departmentCounts;
          this.vehicleCount = res.totalVehicleCount;
          this.regionCount = res.regionCounts;
-         this.usageTypeCount = res.usageTypeCounts;
-        this.data4 = {
-          labels: ['Vehicle Count'],
+         this.usageTypeCounts = res.usageTypeCounts;
+         const labels1 = Object.keys(this.regionCount);
+           const totalRegionCount: number = Object.values<number>(this.regionCount).reduce((acc, count) => acc + count, 0);
+           const regionPercentages: number[] = Object.keys(this.regionCount).map(region => {
+             return (this.regionCount[region] as number / totalRegionCount) * 100;
+           });
+           this.data4 = {
+          labels:labels1,
           datasets: [
             {
-              label: 'Vehicle Count',
-              data: [res.totalVehicleCount],
+              label: 'Percentage',
+              data: regionPercentages,
               backgroundColor: ["#476BAD"],
               hoverBackgroundColor: ["#73b4ff", "#ffcb80", "#59e0c5"]
             },
           ]
         };
-        this.data5 = {
-          labels: ['Region Count'],
-          datasets: [
-            {
-              label: 'Region Count',
-              data: [2],
-              backgroundColor: ["#476BAD"],
-              hoverBackgroundColor: ["#73b4ff", "#ffcb80", "#59e0c5"]
-            },
-          ]
-        };0
+        const labels2 = Object.keys(this.departmentCount);
+        const totalDepartCount: number = Object.values<number>(this.departmentCount).reduce((acc, count) => acc + count, 0);
+        const departPercentage: number[] = Object.keys(this.departmentCount).map(region => {
+          return (this.departmentCount[region] as number / totalDepartCount) * 100;
+        });
+      this.data5 = {
+        labels: labels2,
+        datasets: [
+          {
+            label: 'Percentage',
+            data: departPercentage,
+            backgroundColor: ["#476BAD", "#73b4ff", "#ffcb80", "#59e0c5"],
+            hoverBackgroundColor: ["#73b4ff", "#ffcb80", "#59e0c5"]
+          },
+        ]
+      };
+      const totalUsageTypeCount = this.usageTypeCounts['NON-OPERATIONAL'] + this.usageTypeCounts.OPERATIONAL;
+      const nonOperationalPercentage = (this.usageTypeCounts['NON-OPERATIONAL'] / totalUsageTypeCount) * 100;
+      const operationalPercentage = (this.usageTypeCounts['OPERATIONAL'] / totalUsageTypeCount) * 100;
+        const labels = Object.keys(this.usageTypeCounts); // Dynamically get labels from object keys
         this.data6 = {
-          labels: ['Usage Type Counts'],
+          labels:labels,
           datasets: [
             {
-              label: 'Usage Type Counts',
-              data: [3],
-              backgroundColor: ["#476BAD"],
-              hoverBackgroundColor: ["#73b4ff", "#ffcb80", "#59e0c5"]
+              label: 'Percentage',
+              data: [operationalPercentage,nonOperationalPercentage],
+              backgroundColor: ["#476BAD","#ABC9FB"],
+              hoverBackgroundColor: ["#C3EDF5", "#EAD6FD"]
             },
           ]
         };
       });
   }
-
 
 }

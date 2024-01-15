@@ -102,6 +102,7 @@
                   <th class="text-center">Lease Start Date</th>
                   <th class="text-center">Lease Expiry Date</th>
                   <th class="text-center">Usage Type</th>
+                  <th class="text-center">Region</th>
                   <th class="text-center">Category</th>
                   <th class="text-center">Replace Vehicle</th>
 
@@ -109,7 +110,7 @@
                   <th class="text-center">Actions</th>
                 </tr>
               </ng-template>
-              <ng-template pTemplate="body" let-vehicles>
+              <ng-template pTemplate="body" let-vehicles let-region>
                 <tr>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.id }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.processOrderNumber }}</td>
@@ -132,6 +133,7 @@
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.leaseStartDate }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.leaseExpiryDate }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.usageType }}</td>
+                  <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.region }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.category }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.vehicleReplacement?vehicles.vehicleReplacement.vehicle.plateNumber:'-----'}}</td>
                   <td class="text-center flex">
@@ -151,7 +153,8 @@
 
                     <p-button [routerLink]="['/vehicle-history/',vehicles.id]" pTooltip="View History" tooltipPosition="top" icon="bi bi-clock-history" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="success"></p-button>
 
-                    <p-button *ngIf="selectedStatus.name === 'TBA'" (click)="showDialog(vehicles.id, $event)" pTooltip="Replace Vehicle" tooltipPosition="top" icon="bi bi-arrow-repeat" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="help"></p-button>
+                    <p-button (click)="replaceVehicle(vehicles.id)" pTooltip="Replace Vehicle" tooltipPosition="top" icon="bi bi-arrow-repeat" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="help">
+                    </p-button>
                   </td>
                 </tr>
               </ng-template>
@@ -184,7 +187,7 @@
   </p-dialog>
 
 
-<p-dialog class="dialog-hook" header="Header" [blockScroll]="true" [(visible)]="visible" [style]="{ width: '50vw',height: '80vh' }">
+<!-- <p-dialog class="dialog-hook" header="Header" [blockScroll]="true" [(visible)]="visible" [style]="{ width: '50vw',height: '80vh' }">
   <ng-template pTemplate="header">
       <span class="text-xl font-bold">Replacement Application</span>
   </ng-template>
@@ -242,4 +245,4 @@
 
   </ng-template>
 
-</p-dialog>
+</p-dialog> -->
