@@ -80,7 +80,6 @@ export class AddVehicleComponent implements OnInit{
     private router: Router,
     private productFieldService: ProductFieldServiceService,
     private regionService:RegionService,
-    private productFieldService: ProductFieldServiceService,
     private route: ActivatedRoute
     ) { }
 
