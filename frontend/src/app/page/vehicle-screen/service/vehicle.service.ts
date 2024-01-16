@@ -117,4 +117,8 @@ export class VehicleService {
       return this.http.get<Region[]>(`${this.url}/get-active-region`);
     }
 
+  deleteReplacementVehicle(id: Number): Observable<Vehicle>{
+    return this.http.patch<Vehicle>(`${this.url}/delete-replacement-vehicle/${id}`,{});
+  }  
+
 }

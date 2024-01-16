@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface VehicleReplacementRepository extends JpaRepository<VehicleReplacement,Long> {
@@ -19,4 +20,5 @@ public interface VehicleReplacementRepository extends JpaRepository<VehicleRepla
             "on vr.id = v.vehicleReplacement\n" +
             "where vr.vehicle = :vehicle")
     List<Vehicle> findReplacementByVehicle(Vehicle vehicle);
+
 }

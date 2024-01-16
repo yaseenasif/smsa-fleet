@@ -25,4 +25,6 @@ public interface VehicleAssignmentRepository extends JpaRepository<VehicleAssign
 
     @Query("SELECT e.department, COUNT(va) AS totalVehicles FROM Employee e INNER JOIN VehicleAssignment va ON e.id = va.assignToEmpId GROUP BY e.department")
     List<Object[]> getVehiclePerDepartmentCount();
+
+    Optional<VehicleAssignment> findByVehicleAndStatusIsTrue(Vehicle vehicle);
 }
