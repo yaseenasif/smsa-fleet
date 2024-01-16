@@ -1,1 +1,105 @@
-<p>edit-project-vehicle works!</p>
+<div class="flex flex-row">
+    <app-sidebar></app-sidebar>
+    <div class="body-position">
+      <div class="body-holder">
+        <app-dashboard-head></app-dashboard-head>
+  
+        <div class="main">
+          <div class="card flex justify-content-center">
+            <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+          </div>
+          <div class="body-card">
+            <p-toast></p-toast>
+            <div class="card">
+              <h1 class="mb-4 h-color">Update Project Vehicle</h1>
+              <form #vehicleForm="ngForm" (ngSubmit)="onSubmit()">
+              <div class="grid" *ngFor="let projectVehicleField of projectVehicle; let i = index">
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Project Name</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="projectName{{i}}"
+                      [(ngModel)]="projectVehicleField.projectName"
+                      #projectName="ngModel"
+                      required
+                    />
+                    <small
+                        id="name-help" class="p-dropdown-empty-message"
+                        *ngIf="projectName.invalid && (projectName.dirty || projectName.touched)"
+                    > Project Name is required
+                    </small>
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Plate Number</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="plateNumber{{i}}"
+                      [(ngModel)]="projectVehicleField.plateNumber"
+                      #plateNumber="ngModel"
+                      required
+                    />
+                    <small
+                        id="name-help" class="p-dropdown-empty-message"
+                        *ngIf="plateNumber.invalid && (plateNumber.dirty || plateNumber.touched)"
+                    > Plate Number is required
+                    </small>
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-5">
+                  <div class="flex flex-column gap-2 form-hook">
+                    <label htmlFor="name">Vendor</label>
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="projectVehicleField.vendor"
+                      [options]="vendors"
+                      name="vendor{{i}}"
+                      #vendor="ngModel"
+                      [required]="true"
+                      optionLabel="vendorName"
+                      [filter]="true"
+                      filterBy="vendorName"
+                      [showClear]="true"
+                      placeholder="Select Vendor
+                    "
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="projectVehicleField.vendor"
+                        >
+                          <div>{{ projectVehicleField.vendor.vendorName }}</div>
+                        </div>
+                      </ng-template>
+                      <ng-template let-vendors pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                          <div>{{ vendors.vendorName }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
+                    <small
+                        id="name-help" class="p-dropdown-empty-message"
+                        *ngIf="vendor.invalid && (vendor.dirty || vendor.touched)"
+                    > Vendor is required
+                    </small>
+                  </div>
+                </div>
+              </div>
+              <div class="flex align-items-center justify-content-end mt-4">
+                <button type="button" class="bg-o-color mr" [routerLink]="['/project-vehicle']">Cancel</button>
+                <p-button label="Save" type="submit" class="bg-b-color ml"></p-button>
+              </div>
+            </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
