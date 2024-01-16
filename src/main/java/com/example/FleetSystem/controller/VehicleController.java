@@ -152,4 +152,10 @@ public class VehicleController {
         VehicleSearchCriteria vehicleSearchCriteria = new ObjectMapper().readValue(value, VehicleSearchCriteria.class);
         return ResponseEntity.ok(vehicleService.searchVehicle(vehicleSearchCriteria,vehicleStatus, page, size));
     }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PatchMapping("/delete-replacement-vehicle/{id}")
+    public ResponseEntity<VehicleDto> deleteReplacementVehicle(@PathVariable Long id){
+        return ResponseEntity.ok(vehicleService.deleteReplacementVehicle(id));
+    }
 }

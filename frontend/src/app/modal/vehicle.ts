@@ -11,14 +11,7 @@ export interface Vehicle {
     type: String | null | undefined
     capacity: String | null | undefined
     power: String | null | undefined
-    region:{
-        id: number | null | undefined;
-        name: string | null | undefined;
-        country: string | null | undefined;
-        cities: string | null | undefined| string[];
-        status: boolean | null | undefined;
-        [key: string]: any;
-    }
+    region: String | null | undefined
     registrationExpiry: String | null | undefined
     fuelType: String | null | undefined
      vendor:

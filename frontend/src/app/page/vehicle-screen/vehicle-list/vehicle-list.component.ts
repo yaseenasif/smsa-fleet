@@ -39,6 +39,7 @@ export class VehicleListComponent implements OnInit{
   // }
 
   statusVisible!: boolean;
+  replacementVisible!: boolean;
 
   constructor(
     private vehicleService: VehicleService,
@@ -48,7 +49,6 @@ export class VehicleListComponent implements OnInit{
     ) { }
 
   vehicles!: Array<Vehicle>;
-  // replacementVehicles!: Array<Vehicle>;
   vId!: number
   region !: Region[];
   vehicleStatus : any;
@@ -156,16 +156,6 @@ export class VehicleListComponent implements OnInit{
 
   // }
 
-
-  // onSubmit(){
-  //   this.vehicleService.replaceVehicle(this.vId,this.vehicleReplacement).subscribe(res=>{
-  //     this.messageService.add({ severity: 'success', summary: 'Vehicle Replaced', detail: 'Vehicle is successfully replaced'});
-  //     this.searchAllVehicles(this.selectedStatus.name);
-  //   },error=>{
-  //     this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
-  //   })
-  // }
-
   onPageChange(value?: string | null, event?: any) {
     this.query.page = event.page;
     this.query.size = event.rows;
@@ -182,17 +172,9 @@ export class VehicleListComponent implements OnInit{
   this.searchAllVehicles(this.selectedStatus.name)
   }
 
-  // availableForReplacement(id: number){
-  //   this.vehicleService.availableForReplacement().subscribe((res:Vehicle[])=>{
-  //     this.replacementVehicles = res;
-  //     this.replacementVehicles = this.replacementVehicles.filter((value)=>{
-  //       return value.id !== id;
-  //     })
-  //   })
-  // }
-
   closeDialog() {
     this.statusVisible = false;
+    this.replacementVisible = false;
   }
 
   showStatusDialog(id: number) {
@@ -230,5 +212,17 @@ searchAllVehicles(vehiclestatus: string){
  }
 
 
+ deleteReplacementVehicle(){
+   this.vehicleService.deleteReplacementVehicle(this.vId).subscribe((res)=>{
+    this.messageService.add({ severity: 'success', summary: 'Vehicle Deleted'});
+    this.closeDialog()
+    this.searchAllVehicles(this.selectedStatus.name)
 
+   })
+ }
+
+ showReplacementDialog(id: number){
+   this.vId = id;
+   this.replacementVisible = true;
+ }
 }

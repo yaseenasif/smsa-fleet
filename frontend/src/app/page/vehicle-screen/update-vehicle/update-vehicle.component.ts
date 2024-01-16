@@ -38,13 +38,8 @@ export class UpdateVehicleComponent implements OnInit{
     leaseStartDate: undefined,
     leaseExpiryDate: undefined,
     usageType: undefined,
-    region: {
-      id: undefined,
-      name: undefined,
-      country: undefined,
-      cities: undefined,
-      status: undefined,
-    },    category: undefined,
+    region: undefined,
+    category: undefined,
     vendor: {
       id: undefined,
       vendorName: undefined,

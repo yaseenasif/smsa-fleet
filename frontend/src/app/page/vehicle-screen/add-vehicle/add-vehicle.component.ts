@@ -44,13 +44,7 @@ export class AddVehicleComponent implements OnInit{
     leaseStartDate: undefined,
     leaseExpiryDate: undefined,
     usageType: undefined,
-    region: {
-      id: undefined,
-      name: undefined,
-      country: undefined,
-      cities: undefined,
-      status: undefined,
-    },
+    region: undefined,
     category: undefined,
     vendor: {
       id: undefined,
