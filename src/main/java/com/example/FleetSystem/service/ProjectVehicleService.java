@@ -2,6 +2,7 @@ package com.example.FleetSystem.service;
 
 import com.example.FleetSystem.dto.ProjectVehicleDto;
 import com.example.FleetSystem.model.ProjectVehicle;
+import com.example.FleetSystem.model.ProjectVehicleValues;
 import com.example.FleetSystem.model.User;
 import com.example.FleetSystem.model.Vendor;
 import com.example.FleetSystem.repository.ProjectVehicleRepository;
@@ -13,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -48,31 +50,33 @@ public class ProjectVehicleService {
         return modelMapper.map(projectVehicleDto, ProjectVehicle.class);
     }
 
-    public List<ProjectVehicleDto> save(List<ProjectVehicleDto> projectVehicleDtoList) {
+    @Transactional
+    public ProjectVehicleDto save(ProjectVehicleDto projectVehicleDto) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal instanceof UserDetails) {
             String username = ((UserDetails) principal).getUsername();
             User user = userRepository.findByEmail(username);
 
-            List<ProjectVehicle> projectVehicles = projectVehicleDtoList.stream()
-                    .map(dto -> toEntity(dto)).collect(Collectors.toList());
+            ProjectVehicle projectVehicle = toEntity(projectVehicleDto);
+            projectVehicle.setCreatedBy(user);
+            projectVehicle.setStatus(Boolean.TRUE);
+            projectVehicle.setCreatedAt(LocalDate.now());
 
-            for(ProjectVehicle projectVehicle : projectVehicles) {
-                if(projectVehicleRepository.existsByProjectName(projectVehicle.getProjectName())) {
-                    throw new RuntimeException("Project with the same name already exist");
+            List<ProjectVehicleValues> projectVehicleValues = projectVehicleDto.getProjectVehicleValuesList();
+                for (ProjectVehicleValues values : projectVehicleValues) {
+                    values.setProjectVehicle(projectVehicle);
+                    values.setStatus(Boolean.TRUE);
                 }
-            }
 
-            projectVehicles.forEach(projectVehicle -> {
-                projectVehicle.setStatus(Boolean.TRUE);
-                projectVehicle.setDate(LocalDate.now());
-            });
+                projectVehicle.setProjectVehicleValuesList(projectVehicleValues);
+                ProjectVehicle savedProjectVehicle = projectVehicleRepository.save(projectVehicle);
 
-            List<ProjectVehicle> savedProjectVehicle = projectVehicleRepository.saveAll(projectVehicles);
-
-            return savedProjectVehicle.stream().map(this::toDto).collect(Collectors.toList());
+            return toDto(savedProjectVehicle);
         }
-        throw new RuntimeException("Error in adding Project Vehicle");
+        else {
+            throw new RuntimeException("Error in adding Project Vehicle");
+
+        }
     }
 
     public List<ProjectVehicleDto> getAll() {
@@ -87,7 +91,7 @@ public class ProjectVehicleService {
         else throw new RuntimeException(String.format("Project vehicle not found with id => %id", id));
     }
 
-    public ProjectVehicleDto updateProjectVehicleById(Long id, ProjectVehicleDto projectVehicleDto) {
+    public ProjectVehicleDto updateProjectVehicleById(Long id, ProjectVehicle projectVehicle) {
         Optional<ProjectVehicle> optionalProjectVehicle = projectVehicleRepository.findById(id);
 
         if(optionalProjectVehicle.isPresent()) {
@@ -96,11 +100,31 @@ public class ProjectVehicleService {
                 String username = ((UserDetails) principal).getUsername();
                 User user = userRepository.findByEmail(username);
 
-                optionalProjectVehicle.get().setProjectName(projectVehicleDto.getProjectName());
-                optionalProjectVehicle.get().setPlateNumber(projectVehicleDto.getPlateNumber());
-                optionalProjectVehicle.get().setVendor(projectVehicleDto.getVendor());
+                ProjectVehicle existingProjectVehicle = optionalProjectVehicle.get();
+                existingProjectVehicle.setProjectName(projectVehicle.getProjectName());
+                existingProjectVehicle.setUpdatedAt(LocalDate.now());
+                existingProjectVehicle.setUpdateBy(user);
 
-                return toDto(projectVehicleRepository.save(optionalProjectVehicle.get()));
+                List<ProjectVehicleValues> existingProjectVehicleValues = existingProjectVehicle.getProjectVehicleValuesList();
+                List<ProjectVehicleValues> newProjectVehicleValues = projectVehicle.getProjectVehicleValuesList();
+
+                for(ProjectVehicleValues newValue : newProjectVehicleValues) {
+                    Optional<ProjectVehicleValues> existingValues = existingProjectVehicleValues.stream()
+                            .filter(pv -> pv.getId().equals(newValue.getId())).findAny();
+                    if(existingValues.isPresent()) {
+                        ProjectVehicleValues existingPv = existingValues.get();
+                        existingPv.setPlateNumber(newValue.getPlateNumber());
+                        existingPv.setStatus(Boolean.TRUE);
+                        existingPv.setProjectVehicle(existingProjectVehicle);
+                        existingPv.setVendor(newValue.getVendor());
+                    }
+                    else {
+                        newValue.setProjectVehicle(existingProjectVehicle);
+                        existingProjectVehicleValues.add(newValue);
+                    }
+                }
+
+                return toDto(projectVehicleRepository.save(existingProjectVehicle));
             }
         }
         throw new RuntimeException(String.format("Project Vehicle Not Found with id => %d", id));
