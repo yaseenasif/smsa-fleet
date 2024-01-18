@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,10 +20,18 @@ public class ProjectVehicle {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String projectName;
-    private LocalDate date;
-    private String plateNumber;
+    private LocalDate createdAt;
+    private LocalDate updatedAt;
     private Boolean status;
 
+    @OneToMany(mappedBy = "projectVehicle", cascade = CascadeType.ALL)
+    private List<ProjectVehicleValues> projectVehicleValuesList;
+
     @ManyToOne
-    private Vendor vendor;
+    @JoinColumn(name = "created_by")
+    private User createdBy;
+
+    @ManyToOne
+    @JoinColumn(name = "updated_by")
+    private User updateBy;
 }
