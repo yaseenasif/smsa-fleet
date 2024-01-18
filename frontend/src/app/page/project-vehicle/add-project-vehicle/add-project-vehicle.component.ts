@@ -81,9 +81,7 @@ constructor(private projectVehicleService : PrjectVehicleService,
         this.router.navigate(['/project-vehicle'])
       }, 5000)
     },
-      (error) => {
-        this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
-      })
+    )
   }
 
 }

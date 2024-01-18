@@ -52,7 +52,7 @@
                   </small>
                 </div>
               </div>
-              <div class="col-12 md:col-12 lg:col-5">
+              <!-- <div class="col-12 md:col-12 lg:col-5">
                 <div class="flex flex-column gap-2 form-hook">
                   <label htmlFor="name">Vendor</label>
                   <p-dropdown
@@ -89,14 +89,22 @@
                   > Vendor is required
                   </small>
                 </div>
-              </div>
+              </div> -->
 
               <div class="flex align-items-center justify-content-end mt-4 col-12 md:col-12 lg:col-1">
                 <i class="bi bi-trash3" (click)="removeField(i)" *ngIf="i >= 1">Remove</i>
             </div>
             </div>
+            <div class="row text-right mt-4 mb-3">
+              <p-button
+                (click)="addMoreField()"
+                type="submit"
+                icon="bi bi-plus"
+                class="bg-b-color ml"
+              >
+              </p-button>
+            </div>
             <div class="flex align-items-center justify-content-end mt-4">
-              <p-button type="button" (click)="addMoreField()">Add More Field</p-button>&nbsp;&nbsp;
               <p-button type="button" (click)="onSubmit()">Submit</p-button>
             </div>
           </form>
