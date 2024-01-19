@@ -20,6 +20,7 @@ public class ProjectVehicle {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String projectName;
+    private Date date;
     private LocalDate createdAt;
     private LocalDate updatedAt;
     private Boolean status;

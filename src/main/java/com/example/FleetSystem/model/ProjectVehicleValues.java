@@ -21,6 +21,8 @@ public class ProjectVehicleValues {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String plateNumber;
+    private String rentalLease;
+    private Integer leaseCost;
     private Boolean status;
 
     @ManyToOne

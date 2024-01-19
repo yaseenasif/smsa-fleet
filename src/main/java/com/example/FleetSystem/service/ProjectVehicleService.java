@@ -102,6 +102,7 @@ public class ProjectVehicleService {
 
                 ProjectVehicle existingProjectVehicle = optionalProjectVehicle.get();
                 existingProjectVehicle.setProjectName(projectVehicle.getProjectName());
+                existingProjectVehicle.setDate(projectVehicle.getDate());
                 existingProjectVehicle.setUpdatedAt(LocalDate.now());
                 existingProjectVehicle.setUpdateBy(user);
 
@@ -114,6 +115,8 @@ public class ProjectVehicleService {
                     if(existingValues.isPresent()) {
                         ProjectVehicleValues existingPv = existingValues.get();
                         existingPv.setPlateNumber(newValue.getPlateNumber());
+                        existingPv.setLeaseCost(newValue.getLeaseCost());
+                        existingPv.setRentalLease(newValue.getRentalLease());
                         existingPv.setStatus(Boolean.TRUE);
                         existingPv.setProjectVehicle(existingProjectVehicle);
                         existingPv.setVendor(newValue.getVendor());
