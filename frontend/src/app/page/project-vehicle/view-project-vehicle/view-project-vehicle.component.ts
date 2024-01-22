@@ -1,18 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuItem, MessageService } from 'primeng/api';
 import { ProjectVehicle, ProjectVehicleValues } from 'src/app/modal/project-vehicle';
 import { PrjectVehicleService } from '../service/prject-vehicle.service';
-import { Vendor } from 'src/app/modal/vendor';
+import { MenuItem } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VendorService } from '../../vendor-screen/service/vendor.service';
+import { Vendor } from 'src/app/modal/vendor';
 
 @Component({
-  selector: 'app-edit-project-vehicle',
-  templateUrl: './edit-project-vehicle.component.html',
-  styleUrls: ['./edit-project-vehicle.component.scss'],
-  providers: [MessageService]
+  selector: 'app-view-project-vehicle',
+  templateUrl: './view-project-vehicle.component.html',
+  styleUrls: ['./view-project-vehicle.component.scss']
 })
-export class EditProjectVehicleComponent implements OnInit {
+export class ViewProjectVehicleComponent implements OnInit {
   items: MenuItem[] | undefined;
   vendors!: Vendor[];
 
@@ -38,14 +37,13 @@ export class EditProjectVehicleComponent implements OnInit {
 
   constructor(
     private projectVehicleService: PrjectVehicleService,
-    private messageService: MessageService,
     private router: Router,
     private route: ActivatedRoute,
     private vendorService: VendorService
   ) { }
 
   ngOnInit(): void {
-    this.items = [{ label: 'Project Vehicle', routerLink: '/project-vehicle' }, { label: 'Edit Project Vehicle' }];
+    this.items = [{ label: 'Project Vehicle', routerLink: '/project-vehicle' }, { label: 'View Project Vehicle' }];
     this.getAllVendors();
     this.projectVehicleId = +this.route.snapshot.paramMap.get('id')!;
     this.getProjectVehicleById(this.projectVehicleId);
@@ -60,52 +58,13 @@ export class EditProjectVehicleComponent implements OnInit {
 
   }
   patchProjectVehicle(obj: ProjectVehicle) {
-    debugger
     obj.date = new Date
     this.projectVehicle = obj
   }
-  addMoreFieldValue() {
-    const newFieldValue: ProjectVehicleValues = {
-      id: null,
-      plateNumber: null,
-      leaseCost: null,
-      rentalLease: null,
-      vendor: {
-        id: null,
-        vendorName: null,
-        officeLocation: null,
-        contactPersonList: [],
-        attachments: null
-      }
-    };
-
-    this.projectVehicle.projectVehicleValuesList.push(newFieldValue);
-
-  }
-
-
-  removeFieldValue(index: number) {
-    if (this.projectVehicle.projectVehicleValuesList.length > 1) {
-      this.projectVehicle.projectVehicleValuesList.splice(index, 1);
-    }
-  }
-
   getAllVendors() {
     this.vendorService.getVendor().subscribe((res: Vendor[]) => {
       this.vendors = res;
     });
   }
-  onSubmit() {
-    // const singleProjectVehicleArray: ProjectVehicle[] = [this.projectVehicle];
-    this.projectVehicleService.updateProjectVehicle(this.projectVehicleId!,this.projectVehicle).subscribe(
-      (res: ProjectVehicle) => {
-        this.messageService.add({ severity: 'success', summary: 'Project Vehicle Updated Successfully' });
-        setTimeout(() => {
-          this.router.navigate(['/project-vehicle']);
-        }, 1000);
-      },
-      (error) => {
-      }
-    );
-  }
+
 }

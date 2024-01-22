@@ -52,13 +52,13 @@
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-vehicles>
-                <tr>
-                  <td>{{vehicles.id}}</td>
-                  <td>{{vehicles.projectName}}</td>
-                  <td>{{vehicles.date}}</td>
-                  <td class="text-center flex">
-                    <!-- <p-button [routerLink]="['/add-project-vehicle']" pTooltip="View" tooltipPosition="top" [rounded]="true" icon="bi bi-eye" [raised]="true" class='ml mr' [outlined]="true"></p-button> -->
-                    <p-button [routerLink]="['/edit-project-vehicle', projectVehicleId]" pTooltip="Edit" tooltipPosition="top" [rounded]="true" icon="bi bi-pen" [raised]="true" class='ml mr' severity="success" [outlined]="true"></p-button>
+                <tr >
+                  <td style="text-align: center;">{{vehicles.id}}</td>
+                  <td style="text-align: center;">{{vehicles.projectName}}</td>
+                  <td style="text-align: center;">{{vehicles.date}}</td>
+                  <td class="text-center flex" style="text-align: center;padding-left: 30%;">
+                    <p-button [routerLink]="['/edit-project-vehicle', vehicles.id]" pTooltip="Edit" tooltipPosition="top" [rounded]="true" icon="bi bi-pen" [raised]="true" class='ml mr' severity="success" [outlined]="true"></p-button>
+                    <p-button [routerLink]="['/view-project-vehicle', vehicles.id]" pTooltip="View" tooltipPosition="top" [rounded]="true" icon="bi bi-eye" [raised]="true" class='ml mr' severity="primary" [outlined]="true"></p-button>
                     <p-button (click)="deleteProjectVehicleById(vehicles.id)" pTooltip="Delete Project Vehicle" tooltipPosition="top" [rounded]="true" icon="bi bi-trash" [raised]="true"  severity="danger"class='ml mr' [outlined]="true"></p-button>
                   </td>
                 </tr>

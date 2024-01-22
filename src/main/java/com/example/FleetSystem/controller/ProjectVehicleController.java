@@ -18,7 +18,7 @@ public class ProjectVehicleController {
     ProjectVehicleService projectVehicleService;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping("/add-project-vehicle")
+        @PostMapping("/add-project-vehicle")
     public ResponseEntity<ProjectVehicleDto> addProjectVehicle(@RequestBody ProjectVehicleDto projectVehicleDto) {
         return ResponseEntity.ok(projectVehicleService.save(projectVehicleDto));
     }
