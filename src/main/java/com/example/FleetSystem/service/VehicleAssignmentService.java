@@ -255,4 +255,15 @@ public class VehicleAssignmentService {
         Page<VehicleAssignment> vehicleAssignmentPage = vehicleAssignmentRepository.findAll(vehicleAssignmentSpecification,pageable);
         return vehicleAssignmentPage.map(this::toDto);
     }
+
+    public VehicleAssignmentDto getByVehicleId(Long vehicleId) {
+        Optional<Vehicle> vehicle = vehicleRepository.findById(vehicleId);
+        if (vehicle.isPresent()){
+            Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByVehicleAndStatusIsTrue(vehicle.get());
+            if (vehicleAssignment.isPresent()) {
+                return toDto(vehicleAssignment.get());
+            }
+        }
+        throw new RuntimeException(String.format("Vehicle not Found By id => %d",vehicleId));
+    }
 }

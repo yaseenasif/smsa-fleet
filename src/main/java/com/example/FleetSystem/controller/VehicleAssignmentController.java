@@ -129,4 +129,10 @@ public class VehicleAssignmentController {
         employeeSearchCriteria.setValue(value);
         return ResponseEntity.ok(vehicleAssignmentService.searchInactiveAssignmentByEmployeeNumber(employeeSearchCriteria,page, size));
     }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/get-by-vehicleId/{id}")
+    public ResponseEntity<VehicleAssignmentDto> getByVehicleId(@PathVariable Long id){
+        return ResponseEntity.ok(vehicleAssignmentService.getByVehicleId(id));
+    }
 }

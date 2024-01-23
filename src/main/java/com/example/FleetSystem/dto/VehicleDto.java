@@ -32,6 +32,7 @@ public class VehicleDto {
     private boolean insuranceStatus;
     private Integer leaseCost;
     private Integer replaceLeaseCost;
+    private Date replacementDate;
     private Date leaseStartDate;
     private Date leaseExpiryDate;
     private String usageType;

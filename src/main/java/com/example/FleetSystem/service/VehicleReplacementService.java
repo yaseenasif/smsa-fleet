@@ -6,6 +6,7 @@ import com.example.FleetSystem.model.User;
 import com.example.FleetSystem.model.Vehicle;
 import com.example.FleetSystem.model.VehicleAssignment;
 import com.example.FleetSystem.model.VehicleReplacement;
+import com.example.FleetSystem.payload.ReplacementRequest;
 import com.example.FleetSystem.repository.UserRepository;
 import com.example.FleetSystem.repository.VehicleAssignmentRepository;
 import com.example.FleetSystem.repository.VehicleReplacementRepository;
@@ -37,7 +38,7 @@ public class VehicleReplacementService {
     VehicleAssignmentRepository vehicleAssignmentRepository;
 
     @Transactional
-    public VehicleReplacementDto replaceVehicleById(Long id, VehicleReplacementDto vehicleReplacementDto) {
+    public VehicleReplacementDto replaceVehicleById(Long id, ReplacementRequest replacementRequest) {
         Optional<Vehicle> existingVehicle = vehicleRepository.findById(id);
 
         if (existingVehicle.isPresent()) {
@@ -50,51 +51,57 @@ public class VehicleReplacementService {
                         .builder()
                         .replacedAt(LocalDateTime.now())
                         .replacedBy(user)
-                        .reason(vehicleReplacementDto.getReason())
+                        .reason(replacementRequest.getReplacement().getReason())
                         .build();
 
-                Vehicle replacingVehicle = vehicleReplacementDto.getVehicle();
+                Vehicle replacingVehicle = replacementRequest.getReplacement().getVehicle();
                 replacingVehicle.setCreatedBy(user);
                 replacingVehicle.setCreatedAt(LocalDate.now());
 
                 Date currentDate = Date.valueOf(LocalDate.now());
 
-                if (currentDate.before(vehicleReplacementDto.getVehicle().getRegistrationExpiry()) || currentDate.equals(vehicleReplacementDto.getVehicle().getRegistrationExpiry())) {
+                if (currentDate.before(replacementRequest.getReplacement().getVehicle().getRegistrationExpiry()) || currentDate.equals(replacementRequest.getReplacement().getVehicle().getRegistrationExpiry())) {
                     replacingVehicle.setRegistrationStatus(Boolean.TRUE);
-                } else if (currentDate.after(vehicleReplacementDto.getVehicle().getRegistrationExpiry())) {
+                } else if (currentDate.after(replacementRequest.getReplacement().getVehicle().getRegistrationExpiry())) {
                     replacingVehicle.setRegistrationStatus(Boolean.FALSE);
                 }
 
-                if (currentDate.before(vehicleReplacementDto.getVehicle().getInsuranceExpiry()) || currentDate.equals(vehicleReplacementDto.getVehicle().getInsuranceExpiry())) {
+                if (currentDate.before(replacementRequest.getReplacement().getVehicle().getInsuranceExpiry()) || currentDate.equals(replacementRequest.getReplacement().getVehicle().getInsuranceExpiry())) {
                     replacingVehicle.setInsuranceStatus(Boolean.TRUE);
-                } else if (currentDate.after(vehicleReplacementDto.getVehicle().getInsuranceExpiry())) {
+                } else if (currentDate.after(replacementRequest.getReplacement().getVehicle().getInsuranceExpiry())) {
                     replacingVehicle.setInsuranceStatus(Boolean.FALSE);
                 }
                 
                 Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByVehicle(existingVehicle.get());
-                if(vehicleAssignment.isPresent()){
-
+                if(vehicleAssignment.isPresent()) {
                     vehicleRepository.save(replacingVehicle);
                     VehicleAssignment vehicleAssignment1 = VehicleAssignment.builder()
-                            .assignToEmpId(vehicleAssignment.get().getAssignToEmpId())
-                            .assignToEmpName(vehicleAssignment.get().getAssignToEmpName())
                             .vehicle(replacingVehicle)
                             .createdBy(user)
                             .createdAt(LocalDate.now())
                             .status(Boolean.TRUE)
                             .build();
-                    vehicleAssignmentRepository.save(vehicleAssignment1);
+
+                    if (replacementRequest.getAssignment() == null){
+                    vehicleAssignment1.setAssignToEmpId(vehicleAssignment.get().getAssignToEmpId());
+                    vehicleAssignment1.setAssignToEmpName(vehicleAssignment.get().getAssignToEmpName());
+
+                    }else{
+                        vehicleAssignment1.setAssignToEmpId(replacementRequest.getAssignment().getAssignToEmpId());
+                        vehicleAssignment1.setAssignToEmpName(replacementRequest.getAssignment().getAssignToEmpName());
+                    }
 
                     vehicleAssignment.get().setStatus(Boolean.FALSE);
                     vehicleAssignment.get().setDeletedAt(LocalDate.now());
                     vehicleAssignment.get().setDeletedBy(user);
                     vehicleAssignment.get().setAssignToEmpId(null);
                     vehicleAssignment.get().setAssignToEmpName(null);
-                    vehicleAssignmentRepository.save(vehicleAssignment.get());
 
-                }else{
-                    replacingVehicle.setVehicleStatus("TBA");
-                }
+                    vehicleAssignmentRepository.save(vehicleAssignment.get());
+                    vehicleAssignmentRepository.save(vehicleAssignment1);
+
+                }else replacingVehicle.setVehicleStatus("TBA");
+
 
                 if (existingVehicle.get().getVehicleReplacement() == null) {
                     vehicleReplacement.setVehicle(existingVehicle.get());

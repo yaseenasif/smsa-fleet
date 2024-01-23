@@ -89,14 +89,6 @@ export class VehicleListComponent implements OnInit{
     this.fileSelected = true;
   }
 
-  // showDialog(vId:number, event: Event) {
-  //   event.stopPropagation();
-  //   this.vId=vId;
-  //   this.availableForReplacement(this.vId);
-
-  //   this.visible = true;
-  // }
-
   onCancel() {
     // Handle cancel logic her
     this.fileSelected = false;
@@ -137,24 +129,6 @@ export class VehicleListComponent implements OnInit{
       );
     }
   }
-
-  // getAllVehicles() {
-  //   this.vehicleService.searchVehicle(this.value, this.query).subscribe((res: PaginatedResponse<Vehicle>) => {
-  //     this.vehicles = res.content;
-  //     this.query = { page: res.pageable.pageNumber, size: res.size }
-  //     this.totalRecords = res.totalElements;
-  //   })
-
-  // }
-
-  // getAllInactiveVehicles(){
-  //   this.vehicleService.searchInactiveVehicle(this.value, this.query).subscribe((res: PaginatedResponse<Vehicle>) => {
-  //     this.vehicles = res.content;
-  //     this.query = { page: res.pageable.pageNumber, size: res.size }
-  //     this.totalRecords = res.totalElements;
-  //   })
-
-  // }
 
   onPageChange(value?: string | null, event?: any) {
     this.query.page = event.page;
@@ -225,4 +199,14 @@ searchAllVehicles(vehiclestatus: string){
    this.vId = id;
    this.replacementVisible = true;
  }
+
+//  navigateToAddVehicle() {
+//    this.replacementCheck = false
+//   this.router.navigate(['/add-vehicle/replacementCheck/vId'], {
+//     queryParams: {
+//       replacementCheck: this.replacementCheck,
+//       vId: this.vId
+//     }
+//   });
+// }
 }

@@ -34,5 +34,6 @@ export interface Vehicle {
     employeeStatus: String | null | undefined
     registrationStatus: Boolean | null | undefined
     insuranceStatus: Boolean | null | undefined
+    replacementDate: Date | null | undefined
 
 }

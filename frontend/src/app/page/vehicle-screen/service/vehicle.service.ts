@@ -9,6 +9,8 @@ import { VehicleReplacement } from 'src/app/modal/vehicleReplacement';
 import { Vendor } from 'src/app/modal/vendor';
 import { environment } from 'src/environments/environment';
 import * as XLSX from 'xlsx';
+import { VehicleAssignment } from 'src/app/modal/vehicle-assignment';
+import { ReplacementRequest } from 'src/app/modal/replacementRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -70,8 +72,8 @@ export class VehicleService {
     return this.http.get<Vendor[]>(`${this.url}/get-active-vendors/`)
   }
 
-  replaceVehicle(vehicleId: number, replaceWith: VehicleReplacement): Observable<VehicleReplacement> {
-    return this.http.patch<VehicleReplacement>(`${this.url}/replace-vehicle/${vehicleId}`, replaceWith);
+  replaceVehicle(vehicleId: number, replacementRequest: ReplacementRequest): Observable<VehicleReplacement> {
+    return this.http.patch<VehicleReplacement>(`${this.url}/replace-vehicle/${vehicleId}`, replacementRequest);
   }
 
   getVehicleHistoryById(id: Number): Observable<VehicleHistory[]> {

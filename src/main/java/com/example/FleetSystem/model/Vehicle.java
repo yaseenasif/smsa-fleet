@@ -44,6 +44,7 @@ public class Vehicle {
     private Date leaseStartDate;
     private Date leaseExpiryDate;
     private Integer replaceLeaseCost;
+    private Date replacementDate;
     private String usageType;
     private String region;
     private String category;
