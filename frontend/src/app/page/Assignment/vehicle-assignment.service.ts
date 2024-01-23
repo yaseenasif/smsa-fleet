@@ -52,4 +52,8 @@ searchAssignmentByEmployeeNumber(value?: string | null, query?: { page: number, 
   }
   return this.http.get<PaginatedResponse<VehicleAssignment>>(`${this.url}/search-assignment-empno?value=${JSON.stringify(value ? value : '')}&page=${query?.page ? query.page : ''}&size=${query?.size ? query.size : ''}`);
 }
+
+  getAssignmentByVehicleId(vehicleId: Number): Observable<VehicleAssignment>{
+  return this.http.get<VehicleAssignment>(`${this.url}/get-by-vehicleId/${vehicleId}`);
+ }
 }

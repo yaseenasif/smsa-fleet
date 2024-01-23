@@ -140,14 +140,14 @@ export class UnAssignedVehiclesComponent {
     })
   }
 
-  onSubmit() {
-    this.vehicleService.replaceVehicle(this.vId, this.vehicleReplacement).subscribe(res => {
-      this.messageService.add({ severity: 'success', summary: 'Vehicle Replaced', detail: 'Vehicle is successfully replaced' });
-      this.getAllVehicles();
-    }, error => {
-      this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
-    })
-  }
+  // onSubmit() {
+  //   this.vehicleService.replaceVehicle(this.vId, this.vehicleReplacement).subscribe(res => {
+  //     this.messageService.add({ severity: 'success', summary: 'Vehicle Replaced', detail: 'Vehicle is successfully replaced' });
+  //     this.getAllVehicles();
+  //   }, error => {
+  //     this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
+  //   })
+  // }
 
   onPageChange(value?: string | null, event?: any) {
     this.query.page = event.page;
