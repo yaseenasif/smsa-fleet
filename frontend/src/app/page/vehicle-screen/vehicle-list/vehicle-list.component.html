@@ -11,7 +11,7 @@
         <div class="body-card">
           <p-toast [showTransitionOptions]="'0ms'" [hideTransitionOptions]="'5000ms'"></p-toast>
           <div class="table-head">
-            <div class="flex mb-2 align-items-center gap-1" style="justify-content: flex-end; align-items: flex-end;">
+            <div *ngIf="!vehicletab && !unAssignedVehicleTab" class="flex mb-2 align-items-center gap-1" style="justify-content: flex-end; align-items: flex-end;">
 
               <p-button class="bg-b-color" routerLink="/add-vehicle">
                 <i class=" bi bi-plus-lg" style="font-size: 20px;font-weight: bold;"></i>&nbsp;Add Vehicle
@@ -32,9 +32,10 @@
             </div>
             <p-toolbar>
               <div class="p-toolbar-group-start">
-                <h2 class="h-color">Vehicle</h2>
+                <h2 class="h-color" *ngIf="!unAssignedVehicleTab">Vehicle</h2>
+                <h2 class="h-color" *ngIf="unAssignedVehicleTab">UnAssigned Vehicle</h2>
               </div>
-              <div class="form-hook">
+              <div class="form-hook" *ngIf="!unAssignedVehicleTab" >
               <p-dropdown
                       class="w-full"
                       [(ngModel)]="selectedStatus"
@@ -138,22 +139,21 @@
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.vehicleReplacement?vehicles.vehicleReplacement.vehicle.plateNumber:'-----'}}</td>
                   <td class="text-center flex">
 
-
                     <p-button [routerLink]="['/view-vehicle/', vehicles.id]" pTooltip="View" tooltipPosition="top" [rounded]="true" icon="bi bi-eye" [raised]="true" class='ml mr' [outlined]="true"></p-button>
 
-                    <p-button *ngIf="selectedStatus.name !== 'Active'" class="bg-color" (click)="showStatusDialog(vehicles.id)" [rounded]="true" pTooltip="Activate" tooltipPosition="top" icon="bi bi-check2" class='ml mr' [outlined]="true" [raised]="true" ></p-button>
+                    <p-button *ngIf="selectedStatus.name !== 'Active' && !vehicletab && !unAssignedVehicleTab" class="bg-color" (click)="showStatusDialog(vehicles.id)" [rounded]="true" pTooltip="Activate" tooltipPosition="top" icon="bi bi-check2" class='ml mr' [outlined]="true" [raised]="true" ></p-button>
 
-                    <p-button [routerLink]="['/edit-vehicle/', vehicles.id]" pTooltip="Edit" tooltipPosition="top" icon="bi bi-pen" [rounded]="true" class='ml mr' [outlined]="true" [raised]="true" severity="success"></p-button>
+                    <p-button *ngIf="!vehicletab && !unAssignedVehicleTab" [routerLink]="['/edit-vehicle/', vehicles.id]" pTooltip="Edit" tooltipPosition="top" icon="bi bi-pen" [rounded]="true" class='ml mr' [outlined]="true" [raised]="true" severity="success"></p-button>
 
-                    <p-button *ngIf="selectedStatus.name === 'Replacement'" (click)="showReplacementDialog(vehicles.id)" pTooltip="Delete" tooltipPosition="top" icon="bi bi-trash" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="danger"></p-button>
+                    <p-button *ngIf="selectedStatus.name === 'Replacement' && !vehicletab" (click)="showReplacementDialog(vehicles.id)" pTooltip="Delete" tooltipPosition="top" icon="bi bi-trash" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="danger"></p-button>
 
-                    <p-button [routerLink]="['/vehicle-attachment/',vehicles.id]" pTooltip="Add Attachments" tooltipPosition="top" icon="bi bi-paperclip" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="warning"></p-button>
+                    <p-button *ngIf="!vehicletab && !unAssignedVehicleTab" [routerLink]="['/vehicle-attachment/',vehicles.id]" pTooltip="Add Attachments" tooltipPosition="top" icon="bi bi-paperclip" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="warning"></p-button>
 
-                    <p-button [routerLink]="['/individual-file-list-component/','vehicle',vehicles.id]" pTooltip="View Attachments" tooltipPosition="top" icon="bi bi-download" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true"></p-button>
+                    <p-button *ngIf="!vehicletab && !unAssignedVehicleTab" [routerLink]="['/individual-file-list-component/','vehicle',vehicles.id]" pTooltip="View Attachments" tooltipPosition="top" icon="bi bi-download" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true"></p-button>
 
-                    <p-button [routerLink]="['/vehicle-history/',vehicles.id]" pTooltip="View History" tooltipPosition="top" icon="bi bi-clock-history" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="success"></p-button>
+                    <p-button *ngIf="!vehicletab && !unAssignedVehicleTab" [routerLink]="['/vehicle-history/',vehicles.id]" pTooltip="View History" tooltipPosition="top" icon="bi bi-clock-history" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="success"></p-button>
 
-                    <p-button (click)="replaceVehicle(vehicles.id)" pTooltip="Replace Vehicle" tooltipPosition="top" icon="bi bi-arrow-repeat" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="help">
+                    <p-button *ngIf="!vehicletab && !unAssignedVehicleTab" (click)="replaceVehicle(vehicles.id)" pTooltip="Replace Vehicle" tooltipPosition="top" icon="bi bi-arrow-repeat" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="help">
                     </p-button>
                   </td>
                 </tr>

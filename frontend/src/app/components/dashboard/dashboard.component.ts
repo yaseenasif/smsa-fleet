@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { DashboardService } from './service/dashboard.service';
 import { trigger, state, style, transition, animate, keyframes } from '@angular/animations';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -72,12 +73,14 @@ export class DashboardComponent implements OnInit {
   vehicleCount: any;
   regionCount: any;
   usageTypeCounts: any;
+  vehicletab: boolean | undefined;
+  unAssignVehicleTab: boolean | undefined;
 
   // countUpOptions: CountUpOptions = {
   //   duration: 2, // Animation duration in seconds
   // };
 
-  constructor(private dashboardService: DashboardService) { }
+  constructor(private dashboardService: DashboardService, private router: Router) { }
 
   ngOnInit(): void {
 
@@ -399,6 +402,20 @@ export class DashboardComponent implements OnInit {
           ]
         };
       });
+  }
+
+  redirectToTheVehicles() {
+    this.vehicletab = true;
+    this.router.navigate(['/vehicle/vehicletab'], { queryParams: {
+      vehicletab: this.vehicletab} });
+    
+  }
+
+  redirectToTheUnassignedVehicles(){
+    this.unAssignVehicleTab = true;
+    this.router.navigate(['/vehicle/unAssignVehicleTab'], { queryParams: {
+      unAssignVehicleTab: this.unAssignVehicleTab} });
+
   }
 
 }

@@ -11,7 +11,7 @@
           <div class="container mt-6">
             <div class="grid">
               <div class="col-12 lg:col-6 xl:col-3">
-                <div class="card mb-0" routerLink="/vehicle">
+                <div class="card mb-0" (click)="redirectToTheVehicles()">
                   <div class="flex justify-content-between mb-3">
                     <div>
                       <span class="block text-500 font-medium mb-3">Total Vehicles</span>
@@ -45,8 +45,8 @@
                   <span class="text-500">&nbsp;since last week</span>
                 </div>
               </div>
-              <div class="col-12 lg:col-6 xl:col-3">
-                <div class="card mb-0" routerLink="/unassigned-vehicle">
+              <div class="col-12 lg:col-6 xl:col-3"  (click)="redirectToTheUnassignedVehicles()" >
+                <div class="card mb-0" >
                   <div class="flex justify-content-between mb-3">
                     <div>
                       <span class="block text-500 font-medium mb-3">Unassigned Vehicles</span>

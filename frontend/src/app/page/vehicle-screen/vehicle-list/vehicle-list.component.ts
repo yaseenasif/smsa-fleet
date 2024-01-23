@@ -6,7 +6,7 @@ import { FileUpload } from 'primeng/fileupload';
 import { VehicleReplacement } from 'src/app/modal/vehicleReplacement';
 import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
 import { PageEvent } from 'src/app/modal/pageEvent';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as saveAs from 'file-saver';
 import { Region } from 'src/app/modal/Region';
 import { RegionService } from '../../region/service/region.service';
@@ -40,12 +40,16 @@ export class VehicleListComponent implements OnInit{
 
   statusVisible!: boolean;
   replacementVisible!: boolean;
+  vehicletab: boolean | undefined;
+  tempTab: boolean | undefined;
+  unAssignedVehicleTab: boolean | undefined;
 
   constructor(
     private vehicleService: VehicleService,
     private messageService: MessageService,
     private router: Router,
     private regionService: RegionService,
+    private route: ActivatedRoute
     ) { }
 
   vehicles!: Array<Vehicle>;
@@ -83,7 +87,14 @@ export class VehicleListComponent implements OnInit{
         }
       ]
       this.searchAllVehicles('TBA');
-  }
+
+      this.route.queryParams.subscribe(params => {
+        this.vehicletab = params['vehicletab'] === 'true';
+        this.unAssignedVehicleTab = params['unAssignVehicleTab'] === 'true';
+
+      });
+}
+
 
   onFileSelect() {
     this.fileSelected = true;

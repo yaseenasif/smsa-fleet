@@ -203,6 +203,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'vehicle/:vehicletab',
+    component: VehicleListComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'unassigned-vehicle',
     component: UnAssignedVehiclesComponent,
     canActivate: [AuthGuard]
