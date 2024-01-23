@@ -69,7 +69,7 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-vehicleAssignment>
                   <tr>
-                    <td class="text-center">{{ vehicleAssignment.vehicle.plateNumber }}</td>
+                    <td class="text-center" [routerLink]="'/view-vehicle/' + vehicleAssignment.vehicle.id">{{ vehicleAssignment.vehicle.plateNumber }}</td>
                     <td class="text-center">{{ vehicleAssignment.assignToEmpId.employeeNumber }}</td>
                     <td class="text-center">{{ vehicleAssignment.assignToEmpName }}</td>
                     <td class="text-center">{{ vehicleAssignment.vehicle.design }}</td>
