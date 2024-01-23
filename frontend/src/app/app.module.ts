@@ -128,6 +128,7 @@ import { UnAssignedVehiclesComponent } from './page/vehicle-screen/un-assigned-v
 import { ProjectVehicleComponent } from './page/project-vehicle/project-vehicle.component';
 import { AddProjectVehicleComponent } from './page/project-vehicle/add-project-vehicle/add-project-vehicle.component';
 import { EditProjectVehicleComponent } from './page/project-vehicle/edit-project-vehicle/edit-project-vehicle.component';
+import { ViewProjectVehicleComponent } from './page/project-vehicle/view-project-vehicle/view-project-vehicle.component';
 
 @NgModule({
   declarations: [
@@ -215,6 +216,7 @@ import { EditProjectVehicleComponent } from './page/project-vehicle/edit-project
     ProjectVehicleComponent,
     AddProjectVehicleComponent,
     EditProjectVehicleComponent,
+    ViewProjectVehicleComponent,
   ],
   imports: [
     ConfirmDialogModule,

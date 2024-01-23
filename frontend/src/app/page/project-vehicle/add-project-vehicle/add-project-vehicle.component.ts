@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MenuItem, MessageService } from 'primeng/api';
-import { ProjectVehicle } from 'src/app/modal/project-vehicle';
+import { ProjectVehicle, ProjectVehicleValues } from 'src/app/modal/project-vehicle';
 import { Vendor } from 'src/app/modal/vendor';
 import { PrjectVehicleService } from '../service/prject-vehicle.service';
 import { Router } from '@angular/router';
@@ -11,79 +11,84 @@ import { VendorService } from '../../vendor-screen/service/vendor.service';
   templateUrl: './add-project-vehicle.component.html',
   styleUrls: ['./add-project-vehicle.component.scss'],
   providers: [MessageService]
-
 })
-export class AddProjectVehicleComponent {
-constructor(private projectVehicleService : PrjectVehicleService,
-  private messageService : MessageService,
-  private router: Router,
-  private vendorService : VendorService
-  ){}
+export class AddProjectVehicleComponent implements OnInit {
   items: MenuItem[] | undefined;
+  vendors!: Vendor[];
 
-  vendors !: Vendor[];
-  additionalPlateNumbers: String[] = [];
-  additionalVendors: Vendor[] = [];
-
-  projectVehicle : ProjectVehicle[] = [
-    {
-      id: undefined,
-      projectName: undefined,
-      plateNumber: undefined,
+  projectVehicle: ProjectVehicle = {
+    id: null,
+    projectName: null,
+    date: null,
+    projectVehicleValuesList: [{
+      id: null,
+      plateNumber: null,
+      leaseCost: null,
+      rentalLease: null,
       vendor: {
-        id: undefined,
-        vendorName: undefined,
-        officeLocation: undefined,
+        id: null,
+        vendorName: null,
+        officeLocation: null,
         contactPersonList: [],
-        attachments: undefined
+        attachments: null
       }
-    }
-  ]
+    }]
+  };
+
+  constructor(
+    private projectVehicleService: PrjectVehicleService,
+    private messageService: MessageService,
+    private router: Router,
+    private vendorService: VendorService
+  ) {}
 
   ngOnInit(): void {
-    this.items = [{ label: 'Project Vehicle',routerLink:'/project-vehicle'},{ label: 'Add Project Vehicle'}];
-  this.getAllVendors();
+    this.items = [{ label: 'Project Vehicle', routerLink: '/project-vehicle' }, { label: 'Add Project Vehicle' }];
+    this.getAllVendors();
+    console.log(this.projectVehicle);
   }
 
-  addMoreField() {
-    const newProjectField: ProjectVehicle = {
-      id: undefined,
-      projectName: undefined,
-      plateNumber: undefined,
+  addMoreFieldValue() {
+    const newFieldValue: ProjectVehicleValues = {
+      id: null,
+      plateNumber: null,
+      leaseCost: null,
+      rentalLease: null,
       vendor: {
-        id: undefined,
-        vendorName: undefined,
-        officeLocation: undefined,
+        id: null,
+        vendorName: null,
+        officeLocation: null,
         contactPersonList: [],
-        attachments: undefined
+        attachments: null
       }
-    }
+    };
 
-    this.projectVehicle.push(newProjectField);
+    this.projectVehicle.projectVehicleValuesList.push(newFieldValue);
+
   }
 
-  removeField(index: number) {
-    if (this.projectVehicle.length > 1) {
-      this.projectVehicle.splice(index, 1);
+ 
+  removeFieldValue(index: number) {
+    if (this.projectVehicle.projectVehicleValuesList.length > 1) {
+      this.projectVehicle.projectVehicleValuesList.splice(index, 1);
     }
   }
+
   getAllVendors() {
-    this.vendorService.getVendor().subscribe(
-      (res: Vendor[]) => {
-        this.vendors = res;
+    this.vendorService.getVendor().subscribe((res: Vendor[]) => {
+      this.vendors = res;
+    });
+  }
+  onSubmit() {
+    this.projectVehicleService.addProjectVehicle(this.projectVehicle).subscribe(
+      (res: ProjectVehicle) => {
+        this.messageService.add({ severity: 'success', summary: 'Project Vehicle Added Successfully' });
+        setTimeout(() => {
+          this.router.navigate(['/project-vehicle']);
+        }, 1000);
+      },
+      (error) => {
       }
     );
   }
-  onSubmit() {
-    this.projectVehicleService.addProjectVehicle(this.projectVehicle).subscribe((res: ProjectVehicle) => {
-      this.messageService.add({ severity: 'success', summary: 'Project Vehicle Added Successfully' });
-      setTimeout(() => {
-        this.router.navigate(['/project-vehicle'])
-      }, 5000)
-    },
-      (error) => {
-        this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
-      })
-  }
-
 }

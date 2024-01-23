@@ -4,7 +4,8 @@ import { VehicleAssignmentService } from '../vehicle-assignment.service';
 import { VehicleAssignment } from 'src/app/modal/vehicle-assignment';
 import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
 import { VehicleService } from '../../vehicle-screen/service/vehicle.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Vehicle } from 'src/app/modal/vehicle';
 
 @Component({
   selector: 'app-assignment-list',
@@ -13,7 +14,8 @@ import { Router } from '@angular/router';
   providers: [MessageService]
 })
 export class AssignmentListComponent {
-  
+  vehicle!: Vehicle;
+  vehicleId: Number | undefined;
   vehicleAssignment !: VehicleAssignment[]
 
   query !: {
@@ -39,7 +41,7 @@ export class AssignmentListComponent {
 
   constructor(private vehicleAssignmentService: VehicleAssignmentService,
     private messageService: MessageService,private vehicleService:VehicleService,
-    private router: Router) { }
+    private router: Router,private route: ActivatedRoute) { }
   
 
   // products:any=[{name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
@@ -60,6 +62,8 @@ export class AssignmentListComponent {
       this.items = [{ label: 'Vehicle Assignment'}];
     
       this.getAllVehicleAssignment();
+      this.vehicleId = +this.route.snapshot.paramMap.get('id')!;
+      this.getVehicleById(this.vehicleId);
     }
 
     turner=true;
@@ -126,5 +130,9 @@ replaceVehicle(id: Number){
  this.router.navigate(['/add-vehicle/replacementCheck/vId'], { queryParams: { 
    replacementCheck: this.replacementCheck, vId: id} });
 }
-
+getVehicleById(id: Number) {
+  this.vehicleService.getVehicleById(id).subscribe((res: Vehicle) => {
+    this.vehicle = res;
+  })
+}
 }

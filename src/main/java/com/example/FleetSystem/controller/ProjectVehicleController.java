@@ -18,10 +18,9 @@ public class ProjectVehicleController {
     ProjectVehicleService projectVehicleService;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping("/add-project-vehicle")
-    public ResponseEntity<List<ProjectVehicleDto>> addProjectVehicle(@RequestBody List<ProjectVehicleDto> projectVehicleDtoList) {
-        List<ProjectVehicleDto> savedProjectVehicles = projectVehicleService.save(projectVehicleDtoList);
-        return ResponseEntity.ok(projectVehicleService.save(savedProjectVehicles));
+        @PostMapping("/add-project-vehicle")
+    public ResponseEntity<ProjectVehicleDto> addProjectVehicle(@RequestBody ProjectVehicleDto projectVehicleDto) {
+        return ResponseEntity.ok(projectVehicleService.save(projectVehicleDto));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -38,8 +37,8 @@ public class ProjectVehicleController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PatchMapping("/update-project-vehicle/{id}")
-    public ResponseEntity<ProjectVehicleDto> updateProjectVehicleById(@PathVariable Long id, @RequestBody ProjectVehicleDto projectVehicleDto) {
-        return ResponseEntity.ok(projectVehicleService.updateProjectVehicleById(id, projectVehicleDto));
+    public ResponseEntity<ProjectVehicleDto> updateProjectVehicleById(@PathVariable Long id, @RequestBody ProjectVehicle projectVehicle) {
+        return ResponseEntity.ok(projectVehicleService.updateProjectVehicleById(id, projectVehicle));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

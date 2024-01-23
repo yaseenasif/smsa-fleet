@@ -21,7 +21,7 @@ export class AuthguardService {
     { permission: 'Vendor', route: ['/vendor', '/add-vendor', '/edit-vendor/:id', '/vendor-attachment/:id',] },
     { permission: 'Permission', route: ['/permission', '/add-permission', '/edit-permission/:id'] },
     { permission: 'Role', route: ['/role', '/add-role', '/edit-role/:id',] },
-    { permission: 'ProjectVehicle', route: ['/project-vehicle', '/add-project-vehicle', '/edit-project-vehicle/:id'] },
+    { permission: 'ProjectVehicle', route: ['/project-vehicle', '/add-project-vehicle', '/edit-project-vehicle/:id', '/view-project-vehicle/:id',] },
     { permission: 'Grade', route: ['/grade-list', '/add-grade', '/edit-grade/:id',] },
     { permission: 'City', route: ['/city-list', '/add-city', '/edit-city/:id',] },
     { permission: 'ProductField', route: ['/productFields', '/add-ProductField', '/add-ProductField/:id',] },

@@ -11,7 +11,7 @@ export class PrjectVehicleService {
   constructor(private http: HttpClient) { }
   url = environment.baseurl;
 
-  addProjectVehicle(projectVehicle: ProjectVehicle[]): Observable<ProjectVehicle> {
+  addProjectVehicle(projectVehicle: ProjectVehicle): Observable<ProjectVehicle> {
     return this.http.post<ProjectVehicle>(`${this.url}/add-project-vehicle`, projectVehicle);
   }
 
@@ -21,12 +21,12 @@ export class PrjectVehicleService {
   deleteGradeByProjectVehicle(id: Number) {
     return this.http.delete<ProjectVehicle>(`${this.url}/delete-project-vehicle/${id}`)
   }
-  updateProjectVehicle(id: Number, updateProjectVehicle: ProjectVehicle): Observable<ProjectVehicle> {
+  updateProjectVehicle(id: number, updateProjectVehicle: ProjectVehicle): Observable<ProjectVehicle> {
     const updateUrl = `${this.url}/update-project-vehicle/${id}`;
     return this.http.patch<ProjectVehicle>(updateUrl, updateProjectVehicle);
   }
   getProjectVehicleById(id : Number){
-    return this.http.get<ProjectVehicle[]>(`${this.url}/project-vehicle/${id}`);
+    return this.http.get<ProjectVehicle>(`${this.url}/project-vehicle/${id}`);
 
   }
 }
