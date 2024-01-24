@@ -10,6 +10,8 @@ export interface ProjectVehicleValues {
   id: Number | null | undefined
   plateNumber: String | null | undefined
   leaseCost: Number | null | undefined
-  rentalLease: String | null | undefined 
+  type: String | null | undefined
+  origin: String | null | undefined
+  destination: String | null | undefined
   vendor: Vendor
 }

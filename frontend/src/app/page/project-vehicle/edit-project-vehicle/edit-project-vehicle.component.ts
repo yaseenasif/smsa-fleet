@@ -5,6 +5,8 @@ import { PrjectVehicleService } from '../service/prject-vehicle.service';
 import { Vendor } from 'src/app/modal/vendor';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VendorService } from '../../vendor-screen/service/vendor.service';
+import { ProductFieldServiceService } from '../../product-field/service/product-field-service.service';
+import { ProductField } from 'src/app/modal/ProductField';
 
 @Component({
   selector: 'app-edit-project-vehicle',
@@ -15,6 +17,8 @@ import { VendorService } from '../../vendor-screen/service/vendor.service';
 export class EditProjectVehicleComponent implements OnInit {
   items: MenuItem[] | undefined;
   vendors!: Vendor[];
+  projectNames: ProductField | null | undefined;
+  replacementCheck: boolean | undefined;
 
   projectVehicle: ProjectVehicle = {
     id: null,
@@ -24,7 +28,9 @@ export class EditProjectVehicleComponent implements OnInit {
       id: null,
       plateNumber: null,
       leaseCost: null,
-      rentalLease: null,
+      type: null,
+      origin: null,
+      destination: null,
       vendor: {
         id: null,
         vendorName: null,
@@ -34,6 +40,8 @@ export class EditProjectVehicleComponent implements OnInit {
       }
     }]
   };
+  
+  types : ProductField | null | undefined;
   projectVehicleId: number | undefined | null;
 
   constructor(
@@ -41,7 +49,9 @@ export class EditProjectVehicleComponent implements OnInit {
     private messageService: MessageService,
     private router: Router,
     private route: ActivatedRoute,
-    private vendorService: VendorService
+    private vendorService: VendorService,
+    private productFieldService: ProductFieldServiceService,
+
   ) { }
 
   ngOnInit(): void {
@@ -49,7 +59,14 @@ export class EditProjectVehicleComponent implements OnInit {
     this.getAllVendors();
     this.projectVehicleId = +this.route.snapshot.paramMap.get('id')!;
     this.getProjectVehicleById(this.projectVehicleId);
+    this.getProjectName()
+    this.getType()
   }
+  projectVehicleField: any = {
+    leaseType: null,
+    origin: null,
+    destinition: null,
+  };
   getProjectVehicleById(id: number) {
     this.projectVehicleService.getProjectVehicleById(id).subscribe(
       (res: ProjectVehicle) => {
@@ -69,13 +86,16 @@ export class EditProjectVehicleComponent implements OnInit {
       id: null,
       plateNumber: null,
       leaseCost: null,
-      rentalLease: null,
+      type: null,
+      origin: null,
+      destination: null,
       vendor: {
         id: null,
         vendorName: null,
         officeLocation: null,
         contactPersonList: [],
         attachments: null
+    
       }
     };
 
@@ -107,5 +127,32 @@ export class EditProjectVehicleComponent implements OnInit {
       (error) => {
       }
     );
+  }
+  getProjectName() {
+    this.productFieldService.getProductFieldByName('Project Name').subscribe((res: ProductField) => {
+      this.projectNames = res;
+      console.log(res);
+      
+    }, error => {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
+    })
+  }
+  getType() {
+    this.productFieldService.getProductFieldByName('Type').subscribe((res: ProductField) => {
+      this.types = res;
+      console.log(res);
+      
+    }, error => {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
+    })
+  }
+
+  onLeaseTypeChange() {
+    if (this.projectVehicleField.leaseType !== 'rentalLease') {
+      this.projectVehicle.projectVehicleValuesList.forEach(item => {
+        item.origin = null;
+        item.destination = null;
+      });
+    }
   }
 }

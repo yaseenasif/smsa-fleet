@@ -5,6 +5,8 @@ import { Vendor } from 'src/app/modal/vendor';
 import { PrjectVehicleService } from '../service/prject-vehicle.service';
 import { Router } from '@angular/router';
 import { VendorService } from '../../vendor-screen/service/vendor.service';
+import { ProductFieldServiceService } from '../../product-field/service/product-field-service.service';
+import { ProductField } from 'src/app/modal/ProductField';
 
 @Component({
   selector: 'app-add-project-vehicle',
@@ -15,8 +17,13 @@ import { VendorService } from '../../vendor-screen/service/vendor.service';
 export class AddProjectVehicleComponent implements OnInit {
   items: MenuItem[] | undefined;
   vendors!: Vendor[];
+  projectNames: ProductField | null | undefined;
+  types : ProductField | null | undefined;
+  replacementCheck: boolean | undefined;
 
-  projectVehicle: ProjectVehicle = {
+
+
+   projectVehicle: ProjectVehicle = {
     id: null,
     projectName: null,
     date: null,
@@ -24,7 +31,9 @@ export class AddProjectVehicleComponent implements OnInit {
       id: null,
       plateNumber: null,
       leaseCost: null,
-      rentalLease: null,
+      type: null,
+      origin: null,
+      destination: null,
       vendor: {
         id: null,
         vendorName: null,
@@ -34,26 +43,37 @@ export class AddProjectVehicleComponent implements OnInit {
       }
     }]
   };
+  
 
   constructor(
     private projectVehicleService: PrjectVehicleService,
     private messageService: MessageService,
     private router: Router,
-    private vendorService: VendorService
+    private vendorService: VendorService,
+    private productFieldService: ProductFieldServiceService,
+
   ) {}
 
   ngOnInit(): void {
     this.items = [{ label: 'Project Vehicle', routerLink: '/project-vehicle' }, { label: 'Add Project Vehicle' }];
     this.getAllVendors();
     console.log(this.projectVehicle);
+    this.getProjectName();
+    this.getType()
   }
-
+  projectVehicleField: any = {
+    leaseType: null,
+    origin: null,
+    destinition: null,
+  };
   addMoreFieldValue() {
     const newFieldValue: ProjectVehicleValues = {
       id: null,
       plateNumber: null,
       leaseCost: null,
-      rentalLease: null,
+      type: null,
+      origin: null,
+      destination: null,
       vendor: {
         id: null,
         vendorName: null,
@@ -90,5 +110,32 @@ export class AddProjectVehicleComponent implements OnInit {
       (error) => {
       }
     );
+  }
+  getProjectName() {
+    this.productFieldService.getProductFieldByName('Project Name').subscribe((res: ProductField) => {
+      this.projectNames = res;
+      console.log(res);
+      
+    }, error => {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
+    })
+  }
+  getType() {
+    this.productFieldService.getProductFieldByName('Type').subscribe((res: ProductField) => {
+      this.types = res;
+      console.log(res);
+      
+    }, error => {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
+    })
+  }
+
+  onLeaseTypeChange() {
+    if (this.projectVehicleField.leaseType !== 'rentalLease') {
+      this.projectVehicle.projectVehicleValuesList.forEach(item => {
+        item.origin = null;
+        item.destination = null;
+      });
+    }
   }
 }
