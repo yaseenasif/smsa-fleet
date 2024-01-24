@@ -116,7 +116,9 @@ public class ProjectVehicleService {
                         ProjectVehicleValues existingPv = existingValues.get();
                         existingPv.setPlateNumber(newValue.getPlateNumber());
                         existingPv.setLeaseCost(newValue.getLeaseCost());
-                        existingPv.setRentalLease(newValue.getRentalLease());
+                        existingPv.setType(newValue.getType());
+                        existingPv.setOrigin(newValue.getOrigin());
+                        existingPv.setDestination(newValue.getDestination());
                         existingPv.setStatus(Boolean.TRUE);
                         existingPv.setProjectVehicle(existingProjectVehicle);
                         existingPv.setVendor(newValue.getVendor());

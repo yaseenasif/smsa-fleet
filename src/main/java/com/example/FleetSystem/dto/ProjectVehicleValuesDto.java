@@ -14,8 +14,10 @@ public class ProjectVehicleValuesDto {
 
     private Long id;
     private String plateNumber;
-    private String rentalLease;
+    private String type;
     private Integer leaseCost;
+    private String origin;
+    private String destination;
     private Boolean status;
     private Vendor vendor;
 }
