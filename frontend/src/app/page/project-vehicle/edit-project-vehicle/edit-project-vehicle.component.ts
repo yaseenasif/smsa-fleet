@@ -119,7 +119,9 @@ export class EditProjectVehicleComponent implements OnInit {
     // const singleProjectVehicleArray: ProjectVehicle[] = [this.projectVehicle];
     this.projectVehicleService.updateProjectVehicle(this.projectVehicleId!,this.projectVehicle).subscribe(
       (res: ProjectVehicle) => {
-        this.messageService.add({ severity: 'success', summary: 'Project Vehicle Updated Successfully' });
+        this.messageService.add({    severity: 'success',
+        summary: 'Update Successfully',
+        detail: 'Project Vehicle has been updated', });
         setTimeout(() => {
           this.router.navigate(['/project-vehicle']);
         }, 1000);

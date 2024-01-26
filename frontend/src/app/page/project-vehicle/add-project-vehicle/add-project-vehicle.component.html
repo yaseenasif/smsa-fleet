@@ -105,9 +105,6 @@
                       [filter]="true"
                       filterBy="name"
                       [showClear]="true"
-                      [disabled]="replacementCheck ? true : false "
-                      placeholder="Select Type
-                    "
                     >
                       <ng-template pTemplate="selectedItem">
                         <div
@@ -124,10 +121,11 @@
                       </ng-template>
                     </p-dropdown>
                     <small
-                        id="name-help" class="p-dropdown-empty-message"
-                        *ngIf="type.invalid && (type.dirty || type.touched)"
-                    > Type is required
-                    </small>
+                    id="name-help"
+                    class="p-dropdown-empty-message"
+                    *ngIf="type.invalid && (type.dirty || type.touched) && !type.value"
+                  >
+                  </small>
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6"  style="margin-top: 38px;">
@@ -141,43 +139,6 @@
                     </small>
                   </div>
                 </div>
-                <!-- <div class="col-12 md:col-12 lg:col-6" style="margin-top:36px;">
-                  <div class="flex flex-column gap-2 form-hook">
-                    <label htmlFor="rentalLease">Rental Lease</label>
-                    <input pInputText id="rentalLease" aria-describedby="rentalLease-help" name="rentalLease{{i}}"
-                      [(ngModel)]="projectVehicleField.rentalLease" #rentalLease="ngModel" required />
-                    <small id="rentalLease-help" class="p-dropdown-empty-message"
-                      *ngIf="rentalLease.invalid && (rentalLease.dirty || rentalLease.touched)"> Rental Lease is
-                      required
-                    </small>
-                  </div>
-                </div> -->
-                <!-- <div class="col-12 md:col-12 lg:col-6">
-                  <div class="flex flex-column gap-2 form-hook">
-                    <label for="leaseType">Lease Type</label>
-                    <p-dropdown
-                      class="w-full"
-                      [(ngModel)]="projectVehicleField.type"
-                      name="leaseType"
-                      #leaseType="ngModel"
-                      [required]="true"
-                      optionLabel="label"
-                      optionValue="value"
-                      (change)="onLeaseTypeChange()"
-                    >
-                      <p-dropdown label="Rental Lease" value="rentalLease">Rental Lease</p-dropdown>
-                      <p-dropdown label="Lease" value="lease">Leased</p-dropdown>
-                    </p-dropdown>
-                    <small
-                      id="leaseType-help"
-                      class="p-dropdown-empty-message"
-                      *ngIf="leaseType.invalid && (leaseType.dirty || leaseType.touched)"
-                    >
-                      Lease Type is required
-                    </small>
-                  </div>
-                </div>
-                 -->
                  <div *ngIf="projectVehicleField.type === 'RENTAL LEASE'" class="col-12 md:col-12 lg:col-12" style="margin-top: 16px;">
                   <div class="flex flex-row gap-2">
                     <div class="col-12 md:col-6 lg:col-6">

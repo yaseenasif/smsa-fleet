@@ -102,7 +102,7 @@ export class AddProjectVehicleComponent implements OnInit {
   onSubmit() {
     this.projectVehicleService.addProjectVehicle(this.projectVehicle).subscribe(
       (res: ProjectVehicle) => {
-        this.messageService.add({ severity: 'success', summary: 'Project Vehicle Added Successfully' });
+        this.messageService.add({ severity: 'success', summary: 'Project Vehicle Added Successfully', detail: 'Project Vehicle has been added'});
         setTimeout(() => {
           this.router.navigate(['/project-vehicle']);
         }, 1000);

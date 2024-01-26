@@ -106,8 +106,6 @@
                       filterBy="name"
                       [showClear]="true"
                       [disabled]="replacementCheck ? true : false "
-                      placeholder="Select Type
-                    "
                     >
                       <ng-template pTemplate="selectedItem">
                         <div
@@ -219,8 +217,7 @@
                     <label htmlFor="name">Vendor</label>
                     <p-dropdown class="w-full" [(ngModel)]="projectVehicleField.vendor" [options]="vendors"
                       name="vendor{{i}}" #vendor="ngModel" [required]="true" optionLabel="vendorName" [filter]="true"
-                      filterBy="vendorName" [showClear]="true" placeholder="Select Vendor
-                      ">
+                      filterBy="vendorName" [showClear]="true" >
                       <ng-template pTemplate="selectedItem">
                         <div class="flex align-items-center gap-2" *ngIf="projectVehicleField.vendor">
                           <div>{{ projectVehicleField.vendor.vendorName }}</div>

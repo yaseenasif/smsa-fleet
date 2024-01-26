@@ -129,6 +129,7 @@ import { ProjectVehicleComponent } from './page/project-vehicle/project-vehicle.
 import { AddProjectVehicleComponent } from './page/project-vehicle/add-project-vehicle/add-project-vehicle.component';
 import { EditProjectVehicleComponent } from './page/project-vehicle/edit-project-vehicle/edit-project-vehicle.component';
 import { ViewProjectVehicleComponent } from './page/project-vehicle/view-project-vehicle/view-project-vehicle.component';
+import { SpeedDialModule } from 'primeng/speeddial';
 
 @NgModule({
   declarations: [
@@ -253,6 +254,7 @@ import { ViewProjectVehicleComponent } from './page/project-vehicle/view-project
     TooltipModule,
     ToggleButtonModule,
     ChipsModule,
+    SpeedDialModule,
     CountUpModule,
     NgxUiLoaderHttpModule.forRoot({
       showForeground: true
