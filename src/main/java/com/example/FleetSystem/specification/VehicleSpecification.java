@@ -1,6 +1,7 @@
 package com.example.FleetSystem.specification;
 
 import com.example.FleetSystem.criteria.VehicleSearchCriteria;
+import com.example.FleetSystem.model.Employee;
 import com.example.FleetSystem.model.Vehicle;
 import com.example.FleetSystem.model.VehicleAssignment;
 import org.springframework.data.jpa.domain.Specification;
