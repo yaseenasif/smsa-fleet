@@ -266,4 +266,25 @@ public class VehicleAssignmentService {
         }
         throw new RuntimeException(String.format("Vehicle not Found By id => %d",vehicleId));
     }
+
+    public Page<VehicleAssignmentDto> searchAssignmentByRegion(VehicleSearchCriteria vehicleSearchCriteria, String vehicleStatus, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<VehicleAssignment> vehicleAssignmentSpecification = VehicleAssignmentSpecification.getSearchSpecificationByRegion(vehicleSearchCriteria,vehicleStatus);
+        Page<VehicleAssignment> vehicleAssignmentPage = vehicleAssignmentRepository.findAll(vehicleAssignmentSpecification,pageable);
+        return vehicleAssignmentPage.map(this::toDto);
+    }
+
+    public Page<VehicleAssignmentDto> searchAssignmentByDepartment(VehicleSearchCriteria vehicleSearchCriteria, String vehicleStatus, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<VehicleAssignment> vehicleAssignmentSpecification = VehicleAssignmentSpecification.getSearchSpecificationByDepartment(vehicleSearchCriteria,vehicleStatus);
+        Page<VehicleAssignment> vehicleAssignmentPage = vehicleAssignmentRepository.findAll(vehicleAssignmentSpecification,pageable);
+        return vehicleAssignmentPage.map(this::toDto);
+    }
+
+    public Page<VehicleAssignmentDto> searchAssignmentBySection(VehicleSearchCriteria vehicleSearchCriteria,String vehicleStatus, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<VehicleAssignment> vehicleAssignmentSpecification = VehicleAssignmentSpecification.getSearchSpecificationBySection(vehicleSearchCriteria,vehicleStatus);
+        Page<VehicleAssignment> vehicleAssignmentPage = vehicleAssignmentRepository.findAll(vehicleAssignmentSpecification,pageable);
+        return vehicleAssignmentPage.map(this::toDto);
+    }
 }
