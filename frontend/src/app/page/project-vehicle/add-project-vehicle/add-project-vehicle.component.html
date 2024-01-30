@@ -14,7 +14,7 @@
             <h1 class="mb-4 h-color">Add Project Vehicle</h1>
             <form #vehicleForm="ngForm" (ngSubmit)="onSubmit()">
               <div class="grid">
-                <div class="col-12 md:col-12 lg:col-6">
+                <!-- <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">Project Name</label>
                     <input pInputText id="name" aria-describedby="name-help" name="projectName"
@@ -22,6 +22,46 @@
                     <small id="name-help" class="p-dropdown-empty-message"
                       *ngIf="projectName.invalid && (projectName.dirty || projectName.touched)"> Project Name is
                       required
+                    </small>
+                  </div>
+                </div> -->
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2 form-hook">
+                    <label htmlFor="name">Project Name</label>
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="projectVehicle.projectName"
+                      [options]="projectNames?.productFieldValuesList"
+                      name="projectName"
+                      #projectName="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                      [disabled]="replacementCheck ? true : false "
+                      placeholder="Select Project Name
+                    "
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="projectVehicle"
+                        >
+                          <div>{{ projectVehicle.projectName }}</div>
+                        </div>
+                      </ng-template>
+                      <ng-template let-projectNames pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                          <div>{{ projectNames.name }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
+                    <small
+                        id="name-help" class="p-dropdown-empty-message"
+                        *ngIf="projectName.invalid && (projectName.dirty || projectName.touched)"
+                    > Project Name is required
                     </small>
                   </div>
                 </div>
@@ -46,11 +86,50 @@
               <h1 class="mb-4 h-color">Add Vehicles</h1>
               <div class="grid"
                 *ngFor="let projectVehicleField of projectVehicle.projectVehicleValuesList; let i = index">
+                
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2 form-hook">
                     <div>
                       <h2 style="color: #400099;">{{i+1}}.</h2>
                      </div>
+                    <label htmlFor="name">Type</label>
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="projectVehicleField.type"
+                      [options]="types?.productFieldValuesList"
+                      name="type"
+                      #type="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="type"
+                        >
+                          <div>{{ projectVehicleField.type }}</div>
+                        </div>
+                      </ng-template>
+                      <ng-template let-types pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                          <div>{{ types.name }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
+                    <small
+                    id="name-help"
+                    class="p-dropdown-empty-message"
+                    *ngIf="type.invalid && (type.dirty || type.touched) && !type.value"
+                  >
+                  </small>
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6"  style="margin-top: 38px;">
+                  <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="plateNumber">Plate Number</label>
                     <input pInputText id="plateNumber" aria-describedby="plateNumber-help" name="plateNumber{{i}}"
                       [(ngModel)]="projectVehicleField.plateNumber" #plateNumber="ngModel" required />
@@ -60,17 +139,32 @@
                     </small>
                   </div>
                 </div>
-                <div class="col-12 md:col-12 lg:col-6" style="margin-top:36px;">
-                  <div class="flex flex-column gap-2 form-hook">
-                    <label htmlFor="rentalLease">Rental Lease</label>
-                    <input pInputText id="rentalLease" aria-describedby="rentalLease-help" name="rentalLease{{i}}"
-                      [(ngModel)]="projectVehicleField.rentalLease" #rentalLease="ngModel" required />
-                    <small id="rentalLease-help" class="p-dropdown-empty-message"
-                      *ngIf="rentalLease.invalid && (rentalLease.dirty || rentalLease.touched)"> Rental Lease is
-                      required
-                    </small>
-                  </div>
+                 <div *ngIf="projectVehicleField.type === 'RENTAL LEASE'" class="col-12 md:col-12 lg:col-12" style="margin-top: 16px;">
+                  <div class="flex flex-row gap-2">
+                    <div class="col-12 md:col-6 lg:col-6">
+                      <div class="flex flex-column gap-2 form-hook">
+                        <label for="origin">Origin</label>
+                        <input pInputText id="origin" name="origin" [(ngModel)]="projectVehicleField.origin" #origin="ngModel" required />
+                        <small id="origin-help" class="p-dropdown-empty-message" *ngIf="origin.invalid && (origin.dirty || origin.touched)">
+                          Origin is required
+                        </small>
+                      </div>
+                    </div>
+                    <div class="col-12 md:col-6 lg:col-6">
+                      <div class="flex flex-column gap-2 form-hook">
+                        <label for="destination">Destination</label>
+                        <input pInputText id="destination" name="destination" [(ngModel)]="projectVehicleField.destination" #destination="ngModel" required />
+                        <small
+                          id="destination-help"
+                          class="p-dropdown-empty-message"
+                          *ngIf="destination.invalid && (destination.dirty || destination.touched)"
+                        >
+                          Destination is required
+                        </small>
+                      </div>
+                    </div>
                 </div>
+                  </div>
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="cost">Cost</label>
@@ -104,6 +198,7 @@
                   </small>
                 </div>
               </div>
+            
               <div class="row text-right mt-4 mb-3">
                 <div *ngIf="projectVehicle.projectVehicleValuesList.length > 1">
                   <p-button icon="bi bi-trash" (click)="removeFieldValue(i)"

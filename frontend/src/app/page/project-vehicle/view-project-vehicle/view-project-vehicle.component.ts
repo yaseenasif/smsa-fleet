@@ -23,7 +23,9 @@ export class ViewProjectVehicleComponent implements OnInit {
       id: null,
       plateNumber: null,
       leaseCost: null,
-      rentalLease: null,
+      type: null,
+      origin: null,
+      destination: null,
       vendor: {
         id: null,
         vendorName: null,

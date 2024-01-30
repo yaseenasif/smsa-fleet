@@ -80,4 +80,59 @@ public class VehicleAssignmentSpecification {
                             "%" + employeeSearchCriteria.getValue() + "%"),criteriaBuilder.isTrue(root.get("status")));
         };
     }
+
+    public static Specification<VehicleAssignment> getSearchSpecificationByRegion(VehicleSearchCriteria vehicleSearchCriteria,String vehicleStatus) {
+        return (root, query, criteriaBuilder) -> {
+            if (vehicleSearchCriteria == null || vehicleSearchCriteria.getValue() == null || vehicleSearchCriteria
+                    .getValue().isEmpty()) {
+                query.orderBy(criteriaBuilder.desc(root.get("id")));
+                return criteriaBuilder.and(criteriaBuilder.equal(root.get("vehicleStatus"),vehicleStatus));
+            }
+
+            Join<VehicleAssignment, Vehicle> vehicleJoin = root.join("vehicle");
+            // Adjust the field name based on your entity
+            return criteriaBuilder.and
+                    (criteriaBuilder.like(criteriaBuilder.lower(vehicleJoin.get("region")),
+                            "%" + vehicleSearchCriteria
+                                    .getValue().toLowerCase() + "%"),criteriaBuilder.equal(vehicleJoin.get("vehicleStatus"), vehicleStatus));
+        };
+    }
+
+    public static Specification<VehicleAssignment> getSearchSpecificationByDepartment(VehicleSearchCriteria vehicleSearchCriteria,String vehicleStatus) {
+        return (root, query, criteriaBuilder) -> {
+            if (vehicleSearchCriteria == null || vehicleSearchCriteria.getValue() == null || vehicleSearchCriteria
+                    .getValue().isEmpty()) {
+                query.orderBy(criteriaBuilder.desc(root.get("id")));
+                return criteriaBuilder.and(criteriaBuilder.equal(root.get("vehicleStatus"), vehicleStatus));
+            }
+
+            Join<VehicleAssignment, Employee> employeeJoin = root.join("assignToEmpId");
+            Join<VehicleAssignment, Vehicle> vehicleJoin = root.join("vehicle");
+
+            // Adjust the field name based on your entity
+            return criteriaBuilder.and
+                    (criteriaBuilder.like(criteriaBuilder.lower(employeeJoin.get("department")),
+                            "%" + vehicleSearchCriteria
+                                    .getValue().toLowerCase() + "%"),criteriaBuilder.equal(vehicleJoin.get("vehicleStatus"),vehicleStatus));
+        };
+    }
+
+    public static Specification<VehicleAssignment> getSearchSpecificationBySection(VehicleSearchCriteria vehicleSearchCriteria, String vehicleStatus) {
+        return (root, query, criteriaBuilder) -> {
+            if (vehicleSearchCriteria == null || vehicleSearchCriteria.getValue() == null || vehicleSearchCriteria
+                    .getValue().isEmpty()) {
+                query.orderBy(criteriaBuilder.desc(root.get("id")));
+                return criteriaBuilder.and(criteriaBuilder.equal(root.get("vehicleStatus"), vehicleStatus));
+            }
+
+            Join<VehicleAssignment, Employee> employeeJoin = root.join("assignToEmpId");
+            Join<VehicleAssignment, Vehicle> vehicleJoin = root.join("vehicle");
+
+            // Adjust the field name based on your entity
+            return criteriaBuilder.and
+                    (criteriaBuilder.like(criteriaBuilder.lower(employeeJoin.get("section")),
+                            "%" + vehicleSearchCriteria
+                                    .getValue().toLowerCase() + "%"),criteriaBuilder.equal(vehicleJoin.get("vehicleStatus"),vehicleStatus));
+        };
+    }
 }

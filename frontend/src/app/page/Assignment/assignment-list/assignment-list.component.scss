@@ -106,3 +106,32 @@
     position: absolute;
     top: 14px;
   }
+  #hoverPlateNumber {
+    position: relative;
+  }
+  
+  #hoverPlateNumber::before,
+  #hoverPlateNumber::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px; 
+    bottom: 0;
+    background-color: transparent;
+    transition: background-color 0.3s ease; 
+  }
+  
+  #hoverPlateNumber:hover::before,
+  #hoverPlateNumber:hover::after {
+    background-color: #400099; 
+  }
+  
+  #hoverPlateNumber:hover {
+    text-decoration: none; 
+    cursor: pointer; 
+  }
+  .style{
+    top: 14px;
+    position: absolute;
+  }

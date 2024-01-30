@@ -35,16 +35,26 @@
                                 <label for="">{{projectVehicleField.plateNumber}}</label>
                             </div>
                             <div class="col-12 md:col-12 lg:col-6">
-                                <label htmlFor="name" Style="color: #2e026d"><strong> Rental Lease: </strong></label>
-                                <label for="">{{projectVehicleField.rentalLease}}</label>
+                                <label htmlFor="name" Style="color: #2e026d"><strong> Type: </strong></label>
+                                <label for="">{{projectVehicleField.type}}</label>
+                            </div>
+                            <div *ngIf="projectVehicleField.type === 'RENTAL LEASE'">
+                                <div class="col-12 md:col-12 lg:col-6">
+                                    <label htmlFor="name" style="color: #2e026d"><strong> Origin: </strong></label>
+                                    <label for="">{{projectVehicleField.origin}}</label>
+                                </div>
+                                <div class="col-12 md:col-12 lg:col-6">
+                                    <label htmlFor="name" style="color: #2e026d"><strong> Destination: </strong></label>
+                                    <label for="">{{projectVehicleField.destination}}</label>
+                                </div>
                             </div>
                             <div class="col-12 md:col-12 lg:col-6">
                                 <label htmlFor="name" Style="color: #2e026d"><strong>Lease Cost: </strong></label>
-                                <label for="">{{projectVehicleField.rentalLease}}</label>
+                                <label for="">{{projectVehicleField.leaseCost}}</label>
                             </div>
                             <div class="col-12 md:col-12 lg:col-6">
                                 <label htmlFor="name" Style="color: #2e026d"><strong>Vendor: </strong></label>
-                                <label for="">{{projectVehicleField.rentalLease}}</label>
+                                <label for="">{{projectVehicleField.vendor.vendorName}}</label>
                             </div>
                         </div>
                         </div>

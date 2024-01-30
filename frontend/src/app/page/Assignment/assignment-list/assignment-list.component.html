@@ -1,142 +1,135 @@
 <div class="flex flex-row">
-    <app-sidebar></app-sidebar>
-    <div class="body-position">
-      <div class="body-holder">
-        <app-dashboard-head></app-dashboard-head>
+  <app-sidebar></app-sidebar>
+  <div class="body-position">
+    <div class="body-holder">
+      <app-dashboard-head></app-dashboard-head>
 
-        <div class="main">
-          <p-toast></p-toast>
-          <div class="card flex justify-content-center">
-              <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+      <div class="main">
+        <p-toast></p-toast>
+        <div class="card flex justify-content-center">
+          <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+        </div>
+        <div class="body-card">
+          <div class="table-head">
+            <div class="flex mb-2 align-items-center gap-1" style="justify-content: flex-end; align-items: flex-end;">
+              <p-button class="bg-b-color" routerLink="/add-assignment">
+                <i class="bi bi-plus-lg" style="font-size: 20px;font-weight: bold;"></i>&nbsp;Add Vehicle Assignment
+              </p-button>
+            </div>
+            <p-toolbar>
+              <div>
+                <h3 class="p-toolbar-group-start h-color "><strong> Search By :&nbsp; </strong>
+                  <p-dropdown [options]="Number" (onChange)="onSearchTypeChange($event)" optionLabel="name"
+                    placeholder="Select a Number"></p-dropdown>
+
+                </h3>
+              </div>
+              <div class="card flex flex-wrap justify-content-center">
+                <span class="p-input-icon-left">
+                  <i class="bi bi-search style"></i>
+                  <input  type="text" pInputText [(ngModel)]="searchTerm" (input)="search()"
+                    [placeholder]="placeHolder" />
+                </span>
+              </div>
+            </p-toolbar>
+            <p-toolbar>
+              <div class="p-toolbar-group-start">
+                <h2 class="h-color">Vehicle Assignments</h2>
+              </div>
+            </p-toolbar>
           </div>
-          <div class="body-card">
-              <div class="table-head">
-                <div class="flex mb-2 align-items-center gap-1" style="justify-content: flex-end; align-items: flex-end;">
-                  <p-button class="bg-b-color" routerLink="/add-assignment">
-                    <i class="bi bi-plus-lg" style="font-size: 20px;font-weight: bold;"></i>&nbsp;Add Vehicle Assignment
+
+
+          <div class="card">
+            <p-table [value]="vehicleAssignment" [tableStyle]="{ 'min-width': '50rem' }">
+              <ng-template pTemplate="header">
+                <tr>
+
+                  <th class="text-center">Vehicle Plate Number</th>
+                  <th class="text-center">Assigned (Emp NO)</th>
+                  <th class="text-center">Assigned (Emp Name)</th>
+                  <th class="text-center">Design</th>
+                  <th class="text-center">Make</th>
+                  <th class="text-center">Model</th>
+                  <th class="text-center">Year</th>
+                  <th class="text-center">Lease Expiry</th>
+                  <th class="text-center">Lease Cost</th>
+
+
+                  <th class="text-center"> Actions</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-vehicleAssignment>
+                <tr>
+                  <td class="text-center" id="hoverPlateNumber"
+                    [routerLink]="'/view-vehicle/' + vehicleAssignment.vehicle.id">{{
+                    vehicleAssignment.vehicle.plateNumber }}</td>
+                  <td class="text-center">{{ vehicleAssignment.assignToEmpId.employeeNumber }}</td>
+                  <td class="text-center">{{ vehicleAssignment.assignToEmpName }}</td>
+                  <td class="text-center">{{ vehicleAssignment.vehicle.design }}</td>
+                  <td class="text-center">{{ vehicleAssignment.vehicle.make }}</td>
+                  <td class="text-center">{{ vehicleAssignment.vehicle.model }}</td>
+                  <td class="text-center">{{ vehicleAssignment.vehicle.year }}</td>
+                  <td class="text-center">{{ vehicleAssignment.vehicle.leaseExpiryDate }}</td>
+                  <td class="text-center">{{ vehicleAssignment.vehicle.leaseCost }}</td>
+
+                  <td class="text-center flex">
+                    <p-button [routerLink]="['/view-assignment/',vehicleAssignment.id]" pTooltip="View"
+                      tooltipPosition="top" icon="bi bi-eye" class='ml mr' [outlined]="true" [rounded]="true"
+                      [raised]="true">
+                    </p-button>
+
+                    <p-button (click)="showDialog(vehicleAssignment.id)" icon="bi bi-trash" class='ml'
+                      pTooltip="Delete Assignment" tooltipPosition="top" [outlined]="true" [rounded]="true"
+                      [raised]="true" severity="danger">
+
+                    </p-button>
+
+
+                    <p-button [routerLink]="['/assignment-attachment',vehicleAssignment.id]" pTooltip="Add Attachments"
+                      tooltipPosition="top" icon="bi bi-paperclip" class='ml mr' [outlined]="true" [rounded]="true"
+                      [raised]="true" severity="warning">
+
+                    </p-button>
+
+                    <p-button [routerLink]="['/assignment-history/',vehicleAssignment.vehicle.id]"
+                      pTooltip="View History" tooltipPosition="top" icon="bi bi-clock-history" class='ml mr'
+                      [outlined]="true" [rounded]="true" [raised]="true" severity="success"></p-button>
+
+                    <p-button
+                      [routerLink]="['/individual-file-list-component/','vehicle-assignment',vehicleAssignment.id]"
+                      pTooltip="Download Attachments" tooltipPosition="top" icon="bi bi-download" class='ml mr'
+                      [outlined]="true" [rounded]="true" [raised]="true" severity="success">
+                    </p-button>
+                    <p-button (click)="replaceVehicle(vehicleAssignment.vehicle.id)" pTooltip="Replace Vehicle"
+                      tooltipPosition="top" icon="bi bi-arrow-repeat" class='ml mr' [outlined]="true" [rounded]="true"
+                      [raised]="true" severity="help"></p-button>
+                  </td>
+                </tr>
+                <p-dialog [closable]="false" [(visible)]="visible" [breakpoints]="{ '960px': '75vw' }"
+                  [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false"
+                  header="Are you Sure you want to delete this assignment?">
+                  <p-button icon="pi pi-check" (click)="closeDialog()" label="Close"
+                    styleClass="p-button-text"></p-button>
+                  <p-button label="Delete" type="submit" class="bg-b-color ml"
+                    (click)="deleteVehicleAssignment(vehicleAssignmentId)">
                   </p-button>
-              </div>
-                  <p-toolbar>
-                      <div>
-                        <h3 class="p-toolbar-group-start h-color "><strong> Search By: </strong>
-                         <p-toggleButton class="ml-3" (click)="booleanTurner()" onLabel="Employee Number" offLabel="Plate Number"></p-toggleButton>
-                        </h3>
-                      </div>
-                      <div class="card flex flex-wrap justify-content-center">
-                        <span class="p-input-icon-left">
-                          <i class="my-relative bi bi-search"></i>
-                          <input *ngIf="!turner" type="text" pInputText [(ngModel)]="employeeNumber" (input)="getAllVehicleAssignmentByEmployeeNum()"
-                            placeholder="Search Employee Number" />
-                            <input *ngIf="turner" type="text" pInputText [(ngModel)]="plateNumber" (input)="getAllVehicleAssignmentByPlateNum()"
-                            placeholder="Search Plate Number" />
-                        </span>
-                      </div>
-                      <!-- <div class="card flex flex-wrap justify-content-center">
-                        <span class="p-input-icon-left">
-                          <i class="my-relative bi bi-search"></i>
-                          <input type="text" pInputText [(ngModel)]="plateNumber" (input)="getAllVehicleAssignment()"
-                            placeholder="Search Employee Number" />
-                        </span>
-                      </div> -->
+                </p-dialog>
+              </ng-template>
 
-                  </p-toolbar>
-                  <p-toolbar>
-                      <div class="p-toolbar-group-start">
-                        <h2 class="h-color">Vehicle Assignments</h2>
-                      </div>
-                  </p-toolbar>
-              </div>
+            </p-table>
 
+            <div class="card flex justify-content-center">
 
-            <div class="card">
-              <p-table [value]="vehicleAssignment" [tableStyle]="{ 'min-width': '50rem' }">
-                <ng-template pTemplate="header">
-                  <tr>
+              <p-paginator [rows]="query.size" [first]="query.page * query.size" [totalRecords]="totalRecords"
+                (onPageChange)="onPageChange($event)" [alwaysShow]="false" [pageLinkSize]="4"
+                [showCurrentPageReport]="true">
+              </p-paginator>
 
-                    <th class="text-center">Vehicle Plate Number</th>
-                    <th class="text-center">Assigned (Emp NO)</th>
-                    <th class="text-center">Assigned (Emp Name)</th>
-                    <th class="text-center">Design</th>
-                    <th class="text-center">Make</th>
-                    <th class="text-center">Model</th>
-                    <th class="text-center">Year</th>
-                    <th class="text-center">Lease Expiry</th>
-                    <th class="text-center">Lease Cost</th>
-
-
-                    <th class="text-center"> Actions</th>
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-vehicleAssignment>
-                  <tr>
-                    <td class="text-center" [routerLink]="'/view-vehicle/' + vehicleAssignment.vehicle.id">{{ vehicleAssignment.vehicle.plateNumber }}</td>
-                    <td class="text-center">{{ vehicleAssignment.assignToEmpId.employeeNumber }}</td>
-                    <td class="text-center">{{ vehicleAssignment.assignToEmpName }}</td>
-                    <td class="text-center">{{ vehicleAssignment.vehicle.design }}</td>
-                    <td class="text-center">{{ vehicleAssignment.vehicle.make }}</td>
-                    <td class="text-center">{{ vehicleAssignment.vehicle.model }}</td>
-                    <td class="text-center">{{ vehicleAssignment.vehicle.year }}</td>
-                    <td class="text-center">{{ vehicleAssignment.vehicle.leaseExpiryDate }}</td>
-                    <td class="text-center">{{ vehicleAssignment.vehicle.leaseCost }}</td>
-
-                    <td class="text-center flex">
-                      <p-button [routerLink]="['/view-assignment/',vehicleAssignment.id]" pTooltip="View" tooltipPosition="top" icon="bi bi-eye" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true">
-                      </p-button>
-
-                      <p-button (click)="showDialog(vehicleAssignment.id)" icon="bi bi-trash" class='ml'  pTooltip="Delete Assignment" tooltipPosition="top" [outlined]="true" [rounded]="true" [raised]="true" severity="danger">
-
-                      </p-button>
-
-                
-                       <p-button [routerLink]="['/assignment-attachment',vehicleAssignment.id]"  pTooltip="Add Attachments" tooltipPosition="top" icon="bi bi-paperclip" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="warning">
-
-                       </p-button>
-
-                       <p-button [routerLink]="['/assignment-history/',vehicleAssignment.vehicle.id]" pTooltip="View History" tooltipPosition="top" icon="bi bi-clock-history" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="success"></p-button>
-
-                       <p-button [routerLink]="['/individual-file-list-component/','vehicle-assignment',vehicleAssignment.id]" pTooltip="Download Attachments" tooltipPosition="top" icon="bi bi-download" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="success">
-                      </p-button>
-                      <p-button (click)="replaceVehicle(vehicleAssignment.vehicle.id)" pTooltip="Replace Vehicle" tooltipPosition="top" icon="bi bi-arrow-repeat" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="help"></p-button>
-                    </td>
-                  </tr>
-                  <p-dialog
-      [closable]="false"
-      [(visible)]="visible"
-      [breakpoints]="{ '960px': '75vw' }"
-      [style]="{ width: '50vw' }"
-      [draggable]="false"
-      [resizable]="false"
-      header="Are you Sure you want to delete this assignment?"
-    >
-        <p-button
-          icon="pi pi-check"
-          (click)="closeDialog()"
-          label="Close"
-          styleClass="p-button-text"
-        ></p-button>
-        <p-button
-          label="Delete"
-          type="submit"
-          class="bg-b-color ml"
-          (click)="deleteVehicleAssignment(vehicleAssignmentId)">
-        </p-button>
-    </p-dialog>
-                </ng-template>
-
-              </p-table>
-
-              <div class="card flex justify-content-center">
-
-                <p-paginator [rows]="query.size" [first]="query.page * query.size" [totalRecords]="totalRecords"
-                  (onPageChange)="onPageChange($event)" [alwaysShow]="false" [pageLinkSize]="4"
-                  [showCurrentPageReport]="true">
-                </p-paginator>
-
-              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  
+</div>
