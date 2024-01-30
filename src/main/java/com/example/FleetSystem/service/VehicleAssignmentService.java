@@ -195,9 +195,9 @@ public class VehicleAssignmentService {
         return vehicleAssignments.stream().map(this::toDto).collect(Collectors.toList());
     }
 
-    public VehicleAssignmentDto toDto(VehicleAssignment vehicleAssignment){
-        return modelMapper.map(vehicleAssignment, VehicleAssignmentDto.class);
-    }
+        public VehicleAssignmentDto toDto(VehicleAssignment vehicleAssignment){
+            return modelMapper.map(vehicleAssignment, VehicleAssignmentDto.class);
+        }
 
     private VehicleAssignment toEntity(VehicleAssignmentDto vehicleAssignmentDto){
         return modelMapper.map(vehicleAssignmentDto , VehicleAssignment.class);
@@ -260,9 +260,7 @@ public class VehicleAssignmentService {
         Optional<Vehicle> vehicle = vehicleRepository.findById(vehicleId);
         if (vehicle.isPresent()){
             Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByVehicleAndStatusIsTrue(vehicle.get());
-            if (vehicleAssignment.isPresent()) {
-                return toDto(vehicleAssignment.get());
-            }
+            return vehicleAssignment.map(this::toDto).orElse(null);
         }
         throw new RuntimeException(String.format("Vehicle not Found By id => %d",vehicleId));
     }

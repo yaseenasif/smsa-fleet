@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
 import * as XLSX from 'xlsx';
 import { VehicleAssignment } from 'src/app/modal/vehicle-assignment';
 import { ReplacementRequest } from 'src/app/modal/replacementRequest';
+import { FinalReturnRequest } from 'src/app/modal/finalReturnRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -57,8 +58,8 @@ export class VehicleService {
     return this.http.patch<Vehicle>(`${this.url}/update-vehicle/${id}`, updatedVehicle);
   }
 
-  inactiveVehicleById(id: Number) {
-    return this.http.delete<any>(`${this.url}/inactive-vehicle/${id}`)
+  finalReturnVehicleById(id: Number,finalReturnRequest: FinalReturnRequest) {
+    return this.http.patch<any>(`${this.url}/final-return-vehicle/${id}`,finalReturnRequest)
   }
 
   saveFile(file: File): Observable<any> {
@@ -123,4 +124,7 @@ export class VehicleService {
     return this.http.patch<Vehicle>(`${this.url}/delete-replacement-vehicle/${id}`,{});
   }  
 
+  findReplacementVehicle(id: Number): Observable<Vehicle>{
+    return this.http.get<Vehicle>(`${this.url}/find-replacement-vehicle/${id}`);
+   }
 }

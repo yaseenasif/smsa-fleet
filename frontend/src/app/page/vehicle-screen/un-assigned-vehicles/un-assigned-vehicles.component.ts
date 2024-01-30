@@ -131,14 +131,14 @@ export class UnAssignedVehiclesComponent {
 
   }
 
-  inactiveVehicleById(id: Number, event: Event) {
-    event.stopPropagation();
+  // inactiveVehicleById(id: Number, event: Event) {
+  //   event.stopPropagation();
 
-    this.vehicleService.inactiveVehicleById(id).subscribe((res) => {
-      this.getAllVehicles();
+  //   this.vehicleService.inactiveVehicleById(id).subscribe((res) => {
+  //     this.getAllVehicles();
 
-    })
-  }
+  //   })
+  // }
 
   // onSubmit() {
   //   this.vehicleService.replaceVehicle(this.vId, this.vehicleReplacement).subscribe(res => {

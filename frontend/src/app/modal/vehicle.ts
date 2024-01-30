@@ -31,7 +31,8 @@ export interface Vehicle {
     // region : String | null | undefined
     category: String | null | undefined
     vehicleReplacement:VehicleReplacement|null|undefined
-    employeeStatus: String | null | undefined
+    vehicleStatus: String | null | undefined
+    replacementVehicleStatus: String | null | undefined
     registrationStatus: Boolean | null | undefined
     insuranceStatus: Boolean | null | undefined
     replacementDate: Date | null | undefined

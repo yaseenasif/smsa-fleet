@@ -48,15 +48,7 @@ export class AddAssignmentComponent {
   
   vehicleAssignment: VehicleAssignment = {
     id: undefined,
-    design: undefined,
-    make: undefined,
     assignToEmpName: undefined,
-    model: undefined,
-    year: undefined,
-    leaseExpiry: undefined,
-    leaseCost: undefined,
-    plateNumber: undefined,
-    attachments: undefined,
     assignToEmpId: {
       id:  undefined,
       empName:  undefined,
@@ -113,7 +105,9 @@ export class AddAssignmentComponent {
       leaseStartDate: undefined,
       leaseExpiryDate: undefined,
       usageType: undefined,
-      category: undefined
+      category: undefined,
+      replacementDate: undefined,
+      replaceLeaseCost: undefined
     }
   }
 
@@ -179,12 +173,12 @@ export class AddAssignmentComponent {
   getVehicleData() {
 
     this.vehicleAssignment.vehicle = this.selectedVehicle;
-    this.vehicleAssignment.make = this.selectedVehicle.make;
-    this.vehicleAssignment.design = this.selectedVehicle.design;
-    this.vehicleAssignment.model = this.selectedVehicle.model;
-    this.vehicleAssignment.year = this.selectedVehicle.year;
-    this.vehicleAssignment.leaseExpiry = this.selectedVehicle.leaseExpiryDate;
-    this.vehicleAssignment.leaseCost = this.selectedVehicle.leaseCost;
+    // this.vehicleAssignment.make = this.selectedVehicle.make;
+    // this.vehicleAssignment.design = this.selectedVehicle.design;
+    // this.vehicleAssignment.model = this.selectedVehicle.model;
+    // this.vehicleAssignment.year = this.selectedVehicle.year;
+    // this.vehicleAssignment.leaseExpiry = this.selectedVehicle.leaseExpiryDate;
+    // this.vehicleAssignment.leaseCost = this.selectedVehicle.leaseCost;
     // this.vehicleAssignment.plateNumber = this.selectedVehicle.plateNumber;
     this.vehiclePlateNumber = this.selectedVehicle.plateNumber;
     

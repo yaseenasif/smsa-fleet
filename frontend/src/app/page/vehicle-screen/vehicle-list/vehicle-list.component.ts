@@ -210,14 +210,4 @@ searchAllVehicles(vehiclestatus: string){
    this.vId = id;
    this.replacementVisible = true;
  }
-
-//  navigateToAddVehicle() {
-//    this.replacementCheck = false
-//   this.router.navigate(['/add-vehicle/replacementCheck/vId'], {
-//     queryParams: {
-//       replacementCheck: this.replacementCheck,
-//       vId: this.vId
-//     }
-//   });
-// }
 }

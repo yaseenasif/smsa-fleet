@@ -83,6 +83,7 @@
                 <tr>
 
                   <th class="text-center">ID</th>
+                  <th *ngIf="selectedStatus.name === 'Replacement'" class="text-center">Status</th>
                   <th class="text-center">PO Number</th>
                   <th class="text-center">Plate Number</th>
                   <th class="text-center">Make</th>
@@ -114,6 +115,7 @@
               <ng-template pTemplate="body" let-vehicles let-region>
                 <tr>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.id }}</td>
+                  <td [classList]="vehicles.vehicleReplacement?'color-orange':null" *ngIf="selectedStatus.name === 'Replacement'" class="text-center">{{ vehicles.replacementVehicleStatus }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.processOrderNumber }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.plateNumber }}</td>
                   <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.make }}</td>

@@ -8,6 +8,9 @@ import { ProductField } from 'src/app/modal/ProductField';
 import { ProductFieldServiceService } from '../../product-field/service/product-field-service.service';
 import { Region } from 'src/app/modal/Region';
 import { RegionService } from '../../region/service/region.service';
+import { VehicleAssignmentService } from '../../Assignment/vehicle-assignment.service';
+import { VehicleAssignment } from 'src/app/modal/vehicle-assignment';
+import { FinalReturnRequest } from 'src/app/modal/finalReturnRequest';
 
 @Component({
   selector: 'app-update-vehicle',
@@ -17,7 +20,9 @@ import { RegionService } from '../../region/service/region.service';
 })
 export class UpdateVehicleComponent implements OnInit{
   items: MenuItem[] | undefined;
-  cities: any[] = [];;
+  cities: any[] = [];
+  assignment!: VehicleAssignment;
+
   region !: Region[];
   vehicle : Vehicle = {
     id: undefined,
@@ -47,7 +52,8 @@ export class UpdateVehicleComponent implements OnInit{
       attachments: undefined
     },
     vehicleReplacement: undefined,
-    employeeStatus: undefined,
+    vehicleStatus: undefined,
+    replacementVehicleStatus: undefined,
     registrationStatus: undefined,
     insuranceStatus: undefined,
     replacementDate: undefined
@@ -64,15 +70,26 @@ export class UpdateVehicleComponent implements OnInit{
   vehicleId!: Number;
   vendors!: Vendor[];
   visible!: boolean;
+  assignmentDialogVisible!: boolean;
   usageTypes: ProductField | null | undefined;
   categories: ProductField | null | undefined;
+  replacementVehicle!: Vehicle 
+
+  finalReturnRequest: FinalReturnRequest = {
+    replacementVehicle: undefined,
+    changedAssignment: undefined
+  }
+
+  replacementCheck: boolean = false;
+  finalReturn: boolean = false;
 
   constructor(private vehicleService: VehicleService,
               private route: ActivatedRoute,
               private router: Router,
               private messageService: MessageService,
               private regionService:RegionService,
-              private productFieldService: ProductFieldServiceService
+              private productFieldService: ProductFieldServiceService,
+              private vehicleAssignmentService: VehicleAssignmentService
 
     ) { }
 
@@ -100,6 +117,8 @@ export class UpdateVehicleComponent implements OnInit{
     this.getCategory();
     this.getRegion();
 
+    this.findReplacementVehicle();
+    this.findAssignmentByVehicleId();
   }
 
   getVehicleById(id: Number) {
@@ -138,17 +157,17 @@ export class UpdateVehicleComponent implements OnInit{
   }
 
   closeDialog() {
+    debugger
     this.visible = false;
+    if(this.assignment){
+      this.assignmentDialogVisible = true;
+    }else{
+      this.finalReturnVehicle();
+    }
   }
 
-  inactiveVehicleById() {
-    this.vehicleService.inactiveVehicleById(this.vehicleId).subscribe((res) => {
-      this.vehicle=res;
-      this.messageService.add({ severity: 'error', summary: 'Vehicle Inactivated Successfully', detail: 'Vehicle has been deleted' });
-      setTimeout(() => {
-        this.router.navigate(['/vehicle'])
-      }, 1000)
-    })
+  closeAssignmentDialog(){
+    this.assignmentDialogVisible =false;
   }
 
   getUsageType() {
@@ -175,5 +194,34 @@ export class UpdateVehicleComponent implements OnInit{
 
     });
   }
-}
 
+  findReplacementVehicle(){
+    this.vehicleService.findReplacementVehicle(this.vehicleId).subscribe((res)=>{
+      this.replacementVehicle = res;
+    })
+  }
+
+  findAssignmentByVehicleId(){
+    this.vehicleAssignmentService.getAssignmentByVehicleId(this.vehicleId).subscribe((res)=>{
+      this.assignment = res;
+    })
+  } 
+  
+  finalReturnVehicle(){
+    debugger
+    this.finalReturnRequest.changedAssignment = null
+    this.finalReturnRequest.replacementVehicle = null
+    this.vehicleService.finalReturnVehicleById(this.vehicleId,this.finalReturnRequest).subscribe((res)=>{
+      this.messageService.add({ severity: 'Success', summary: 'Final Returned', detail: 'Vehicle Final Returned Successfully' });
+          setTimeout(() => {
+            this.router.navigate(['/vehicle'])
+    })
+  })
+ }
+
+ navigateToAddVehicle(){
+   this.finalReturn = true
+  this.router.navigate(['/add-vehicle/finalReturn/vId'], { queryParams: {
+    finalReturn: this.finalReturn, vId: this.vehicleId} });
+ }
+}

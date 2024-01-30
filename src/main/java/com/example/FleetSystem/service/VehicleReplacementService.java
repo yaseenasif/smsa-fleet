@@ -74,6 +74,7 @@ public class VehicleReplacementService {
                 
                 Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByVehicle(existingVehicle.get());
                 if(vehicleAssignment.isPresent()) {
+                    replacingVehicle.setReplacementVehicleStatus("Assigned");
                     vehicleRepository.save(replacingVehicle);
                     VehicleAssignment vehicleAssignment1 = VehicleAssignment.builder()
                             .vehicle(replacingVehicle)
@@ -100,7 +101,7 @@ public class VehicleReplacementService {
                     vehicleAssignmentRepository.save(vehicleAssignment.get());
                     vehicleAssignmentRepository.save(vehicleAssignment1);
 
-                }else replacingVehicle.setVehicleStatus("TBA");
+                }else replacingVehicle.setReplacementVehicleStatus("Unassigned");
 
 
                 if (existingVehicle.get().getVehicleReplacement() == null) {
