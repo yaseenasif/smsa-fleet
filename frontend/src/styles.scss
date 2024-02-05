@@ -1,6 +1,7 @@
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css");
+@import "primeicons/primeicons.css";
 $primary-color: #400099;
 $base-bg-color: #ebf1f4;
 $hover-bg-color:#4d0fa3;
@@ -125,7 +126,7 @@ overflow: none;
 
 .form-hook>.p-inputwrapper>.p-password>.p-password-panel{
     display:none;
-}  
+}
 .p-dropdown-empty-message{
     color: red!important;
 }

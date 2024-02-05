@@ -1,8 +1,10 @@
 package com.example.FleetSystem.service;
+
 import com.example.FleetSystem.criteria.EmployeeSearchCriteria;
 import com.example.FleetSystem.criteria.VehicleSearchCriteria;
+import com.example.FleetSystem.dto.Obj;
+import com.example.FleetSystem.dto.PaginationResponse;
 import com.example.FleetSystem.dto.VehicleAssignmentDto;
-import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.model.Employee;
 import com.example.FleetSystem.model.User;
 import com.example.FleetSystem.model.Vehicle;
@@ -12,7 +14,6 @@ import com.example.FleetSystem.repository.UserRepository;
 import com.example.FleetSystem.repository.VehicleAssignmentRepository;
 import com.example.FleetSystem.repository.VehicleRepository;
 import com.example.FleetSystem.specification.VehicleAssignmentSpecification;
-import com.example.FleetSystem.specification.VehicleSpecification;
 import com.example.FleetSystem.model.*;
 import com.example.FleetSystem.payload.ResponseMessage;
 import com.example.FleetSystem.repository.*;
@@ -27,8 +28,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -60,22 +65,25 @@ public class VehicleAssignmentService {
     @Autowired
     DriverRepository driverRepository;
 
+    @Autowired
+    EntityManager entityManager;
+
     public VehicleAssignmentDto save(VehicleAssignmentDto vehicleAssignmentDto) {
         Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(principle instanceof UserDetails) {
+        if (principle instanceof UserDetails) {
             String username = ((UserDetails) principle).getUsername();
             User user = userRepository.findByEmail(username);
 
             Optional<Vehicle> vehicle = vehicleRepository.findByPlateNumber(vehicleAssignmentDto.getVehicle().getPlateNumber());
             Optional<Employee> employee = employeeRepository.findById(vehicleAssignmentDto.getAssignToEmpId().getId());
-            if(vehicle.isPresent()) {
+            if (vehicle.isPresent()) {
                 Optional<VehicleAssignment> existingVehicleAssignment = vehicleAssignmentRepository.findByVehicle(vehicle.get());
-                if(employee.isPresent()) {
+                if (employee.isPresent()) {
                     Optional<Driver> driver = driverRepository.findByEmpId(employee.get());
                     driver.ifPresent(value -> value.setAssignedVehicle(vehicle.get().getPlateNumber()));
                     vehicle.get().setVehicleStatus("Active");
 
-                    if (existingVehicleAssignment.isPresent()){
+                    if (existingVehicleAssignment.isPresent()) {
                         existingVehicleAssignment.get().setAssignToEmpId(employee.get());
                         existingVehicleAssignment.get().setAssignToEmpName(employee.get().getEmpName());
                         existingVehicleAssignment.get().setStatus(Boolean.TRUE);
@@ -83,22 +91,20 @@ public class VehicleAssignmentService {
                         existingVehicleAssignment.get().setUpdatedAt(LocalDate.now());
                         return toDto(vehicleAssignmentRepository.save(existingVehicleAssignment.get()));
                     }
-                        VehicleAssignment vehicleAssignment = toEntity(vehicleAssignmentDto);
-                        vehicleAssignment.setVehicle(vehicle.get());
-                        vehicleAssignment.setAssignToEmpId(employee.get());
-                        vehicleAssignment.setAssignToEmpName(employee.get().getEmpName());
-                        vehicleAssignment.setStatus(Boolean.TRUE);
-                        vehicleAssignment.setCreatedAt(LocalDate.now());
-                        vehicleAssignment.setCreatedBy(user);
+                    VehicleAssignment vehicleAssignment = toEntity(vehicleAssignmentDto);
+                    vehicleAssignment.setVehicle(vehicle.get());
+                    vehicleAssignment.setAssignToEmpId(employee.get());
+                    vehicleAssignment.setAssignToEmpName(employee.get().getEmpName());
+                    vehicleAssignment.setStatus(Boolean.TRUE);
+                    vehicleAssignment.setCreatedAt(LocalDate.now());
+                    vehicleAssignment.setCreatedBy(user);
 
-                        VehicleAssignment savedAssignment = vehicleAssignmentRepository.save(vehicleAssignment);
-                        return toDto(savedAssignment);
-                }
-                else {
+                    VehicleAssignment savedAssignment = vehicleAssignmentRepository.save(vehicleAssignment);
+                    return toDto(savedAssignment);
+                } else {
                     throw new RuntimeException("Employee Not Found");
                 }
-            }
-            else {
+            } else {
                 throw new RuntimeException("Vehicle Not Found");
             }
 
@@ -113,7 +119,7 @@ public class VehicleAssignmentService {
     public VehicleAssignmentDto getById(Long id) {
         Optional<VehicleAssignment> optionalVehicleAssignment = vehicleAssignmentRepository.findById(id);
 
-        if(optionalVehicleAssignment.isPresent()) {
+        if (optionalVehicleAssignment.isPresent()) {
             return toDto(optionalVehicleAssignment.get());
         }
         throw new RuntimeException(String.format("Vehicle Not Found On this Id => %d", id));
@@ -121,7 +127,7 @@ public class VehicleAssignmentService {
 
     public void deleteVehicleAssignmentById(Long id) {
         Optional<VehicleAssignment> optionalVehicleAssignment = vehicleAssignmentRepository.findById(id);
-        if(optionalVehicleAssignment.isPresent()) {
+        if (optionalVehicleAssignment.isPresent()) {
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if (principal instanceof UserDetails) {
                 String username = ((UserDetails) principal).getUsername();
@@ -140,16 +146,15 @@ public class VehicleAssignmentService {
                 optionalVehicleAssignment.get().setAssignToEmpName(null);
                 vehicleAssignmentRepository.save(optionalVehicleAssignment.get());
             }
-        }
-        else throw new RuntimeException("Record does not exist");
+        } else throw new RuntimeException("Record does not exist");
     }
 
     public VehicleAssignmentDto updateById(Long id, VehicleAssignmentDto vehicleAssignmentDto) {
 
         Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findById(id);
-        if(vehicleAssignment.isPresent()) {
+        if (vehicleAssignment.isPresent()) {
             Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            if(principle instanceof UserDetails) {
+            if (principle instanceof UserDetails) {
                 String username = ((UserDetails) principle).getUsername();
                 User user = userRepository.findByEmail(username);
 
@@ -158,8 +163,8 @@ public class VehicleAssignmentService {
                     vehicleAssignment.get().setAssignToEmpId(employee.get());
                     vehicleAssignment.get().setAssignToEmpName(employee.get().getEmpName());
 
-                    if(!vehicleAssignmentDto.isStatus()){
-                     vehicleAssignment.get().setStatus(Boolean.TRUE);
+                    if (!vehicleAssignmentDto.isStatus()) {
+                        vehicleAssignment.get().setStatus(Boolean.TRUE);
                     }
 
                     vehicleAssignment.get().setUpdatedBy(user);
@@ -175,9 +180,9 @@ public class VehicleAssignmentService {
         }
 
         throw new RuntimeException(String.format("Vehicle Assignment not found for id => %id", id));
-        }
+    }
 
-    public VehicleAssignmentDto getByPlateNumber(String plateNumber){
+    public VehicleAssignmentDto getByPlateNumber(String plateNumber) {
         Optional<Vehicle> vehicle = vehicleRepository.findByPlateNumber(plateNumber);
 
         if (vehicle.isPresent()) {
@@ -188,19 +193,19 @@ public class VehicleAssignmentService {
             }
         }
 
-         throw new RuntimeException(String.format("Record Not Found By the PlateNumber : %s",plateNumber));
+        throw new RuntimeException(String.format("Record Not Found By the PlateNumber : %s", plateNumber));
     }
 
-    public List<VehicleAssignmentDto> toDtoList(List<VehicleAssignment> vehicleAssignments){
+    public List<VehicleAssignmentDto> toDtoList(List<VehicleAssignment> vehicleAssignments) {
         return vehicleAssignments.stream().map(this::toDto).collect(Collectors.toList());
     }
 
-        public VehicleAssignmentDto toDto(VehicleAssignment vehicleAssignment){
-            return modelMapper.map(vehicleAssignment, VehicleAssignmentDto.class);
-        }
+    public VehicleAssignmentDto toDto(VehicleAssignment vehicleAssignment) {
+        return modelMapper.map(vehicleAssignment, VehicleAssignmentDto.class);
+    }
 
-    private VehicleAssignment toEntity(VehicleAssignmentDto vehicleAssignmentDto){
-        return modelMapper.map(vehicleAssignmentDto , VehicleAssignment.class);
+    private VehicleAssignment toEntity(VehicleAssignmentDto vehicleAssignmentDto) {
+        return modelMapper.map(vehicleAssignmentDto, VehicleAssignment.class);
     }
 
 
@@ -208,7 +213,7 @@ public class VehicleAssignmentService {
         Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findById(id);
         FileMetaData byFileName = fileMetaDataRepository.findByFileName(multipartFile.getOriginalFilename());
 
-        if(byFileName == null) {
+        if (byFileName == null) {
             String fileUrl = storageService.uploadFile(multipartFile.getBytes(), multipartFile.getOriginalFilename());
             String originalFileName = multipartFile.getOriginalFilename();
             String fileExtension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
@@ -223,66 +228,133 @@ public class VehicleAssignmentService {
             return ResponseMessage.builder()
                     .message(Collections.singletonList("File uploaded to the server successfully"))
                     .build();
-        }
-        else {
+        } else {
             throw new RuntimeException(String.format("File already exists on the bucket with the same name"));
         }
     }
+
     public Page<VehicleAssignmentDto> searchAssignmentByPlateNumber(VehicleSearchCriteria vehicleSearchCriteria, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Specification<VehicleAssignment> vehicleAssignmentSpecification = VehicleAssignmentSpecification.getSearchSpecificationByPlateNumber(vehicleSearchCriteria);
-        Page<VehicleAssignment> vehicleAssignmentPage = vehicleAssignmentRepository.findAll(vehicleAssignmentSpecification,pageable);
+        Page<VehicleAssignment> vehicleAssignmentPage = vehicleAssignmentRepository.findAll(vehicleAssignmentSpecification, pageable);
         return vehicleAssignmentPage.map(this::toDto);
     }
 
     public Page<VehicleAssignmentDto> searchInactiveAssignmentByPlateNumber(VehicleSearchCriteria vehicleSearchCriteria, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Specification<VehicleAssignment> vehicleAssignmentSpecification = VehicleAssignmentSpecification.getInactiveSearchSpecificationByPlateNumber(vehicleSearchCriteria);
-        Page<VehicleAssignment> vehicleAssignmentPage = vehicleAssignmentRepository.findAll(vehicleAssignmentSpecification,pageable);
+        Page<VehicleAssignment> vehicleAssignmentPage = vehicleAssignmentRepository.findAll(vehicleAssignmentSpecification, pageable);
         return vehicleAssignmentPage.map(this::toDto);
     }
 
     public Page<VehicleAssignmentDto> searchAssignmentByEmployeeNumber(EmployeeSearchCriteria employeeSearchCriteria, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Specification<VehicleAssignment> vehicleAssignmentSpecification = VehicleAssignmentSpecification.getSearchSpecificationByEmployeeNumber(employeeSearchCriteria);
-        Page<VehicleAssignment> vehicleAssignmentPage = vehicleAssignmentRepository.findAll(vehicleAssignmentSpecification,pageable);
+        Page<VehicleAssignment> vehicleAssignmentPage = vehicleAssignmentRepository.findAll(vehicleAssignmentSpecification, pageable);
         return vehicleAssignmentPage.map(this::toDto);
     }
 
     public Page<VehicleAssignmentDto> searchInactiveAssignmentByEmployeeNumber(EmployeeSearchCriteria employeeSearchCriteria, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Specification<VehicleAssignment> vehicleAssignmentSpecification = VehicleAssignmentSpecification.getInactiveSearchSpecificationByEmployeeNumber(employeeSearchCriteria);
-        Page<VehicleAssignment> vehicleAssignmentPage = vehicleAssignmentRepository.findAll(vehicleAssignmentSpecification,pageable);
+        Page<VehicleAssignment> vehicleAssignmentPage = vehicleAssignmentRepository.findAll(vehicleAssignmentSpecification, pageable);
         return vehicleAssignmentPage.map(this::toDto);
     }
 
     public VehicleAssignmentDto getByVehicleId(Long vehicleId) {
         Optional<Vehicle> vehicle = vehicleRepository.findById(vehicleId);
-        if (vehicle.isPresent()){
+        if (vehicle.isPresent()) {
             Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByVehicleAndStatusIsTrue(vehicle.get());
             return vehicleAssignment.map(this::toDto).orElse(null);
         }
-        throw new RuntimeException(String.format("Vehicle not Found By id => %d",vehicleId));
+        throw new RuntimeException(String.format("Vehicle not Found By id => %d", vehicleId));
     }
 
     public Page<VehicleAssignmentDto> searchAssignmentByRegion(VehicleSearchCriteria vehicleSearchCriteria, String vehicleStatus, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Specification<VehicleAssignment> vehicleAssignmentSpecification = VehicleAssignmentSpecification.getSearchSpecificationByRegion(vehicleSearchCriteria,vehicleStatus);
-        Page<VehicleAssignment> vehicleAssignmentPage = vehicleAssignmentRepository.findAll(vehicleAssignmentSpecification,pageable);
+        Specification<VehicleAssignment> vehicleAssignmentSpecification = VehicleAssignmentSpecification.getSearchSpecificationByRegion(vehicleSearchCriteria, vehicleStatus);
+        Page<VehicleAssignment> vehicleAssignmentPage = vehicleAssignmentRepository.findAll(vehicleAssignmentSpecification, pageable);
         return vehicleAssignmentPage.map(this::toDto);
     }
 
     public Page<VehicleAssignmentDto> searchAssignmentByDepartment(VehicleSearchCriteria vehicleSearchCriteria, String vehicleStatus, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Specification<VehicleAssignment> vehicleAssignmentSpecification = VehicleAssignmentSpecification.getSearchSpecificationByDepartment(vehicleSearchCriteria,vehicleStatus);
-        Page<VehicleAssignment> vehicleAssignmentPage = vehicleAssignmentRepository.findAll(vehicleAssignmentSpecification,pageable);
+        Specification<VehicleAssignment> vehicleAssignmentSpecification = VehicleAssignmentSpecification.getSearchSpecificationByDepartment(vehicleSearchCriteria, vehicleStatus);
+        Page<VehicleAssignment> vehicleAssignmentPage = vehicleAssignmentRepository.findAll(vehicleAssignmentSpecification, pageable);
         return vehicleAssignmentPage.map(this::toDto);
     }
 
-    public Page<VehicleAssignmentDto> searchAssignmentBySection(VehicleSearchCriteria vehicleSearchCriteria,String vehicleStatus, int page, int size) {
+    public Page<VehicleAssignmentDto> searchAssignmentBySection(VehicleSearchCriteria vehicleSearchCriteria, String vehicleStatus, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Specification<VehicleAssignment> vehicleAssignmentSpecification = VehicleAssignmentSpecification.getSearchSpecificationBySection(vehicleSearchCriteria,vehicleStatus);
-        Page<VehicleAssignment> vehicleAssignmentPage = vehicleAssignmentRepository.findAll(vehicleAssignmentSpecification,pageable);
+        Specification<VehicleAssignment> vehicleAssignmentSpecification = VehicleAssignmentSpecification.getSearchSpecificationBySection(vehicleSearchCriteria, vehicleStatus);
+        Page<VehicleAssignment> vehicleAssignmentPage = vehicleAssignmentRepository.findAll(vehicleAssignmentSpecification, pageable);
         return vehicleAssignmentPage.map(this::toDto);
     }
+
+    public Page<VehicleAssignmentDto> getVehicleAssignmentBySearchCriteria(int pageNumber, int pageSize, VehicleAssignmentDto searchCriteria) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+
+        Specification<VehicleAssignment> vehicleAssignmentSpecification = VehicleAssignmentSpecification.getSearchSpecificationByCriteria(searchCriteria);
+
+        Page<VehicleAssignment> vehicleAssignmentPage = vehicleAssignmentRepository.findAll(vehicleAssignmentSpecification, pageable);
+
+        return vehicleAssignmentPage.map(this::toDto);
+    }
+
+    //    public PaginationResponse getVehicleAssignmentBySearchCriteria(int pageNumber, int pageSize, VehicleAssignmentDto searchCriteria) {
+//        Pageable page = PageRequest.of(pageNumber, pageSize);
+//        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+//        CriteriaQuery<VehicleAssignment> cq = criteriaBuilder.createQuery(VehicleAssignment.class);
+//        Root<VehicleAssignment> vehicleAssignmentRoot = cq.from(VehicleAssignment.class);
+//
+//        Join<VehicleAssignment, Employee> employeeJoin = vehicleAssignmentRoot.join("assignToEmpId");
+//        List<Predicate> predicates = new ArrayList<>();
+//
+//        if (searchCriteria.getAssignToEmpId().getRegion() != null) {
+//            predicates.add(criteriaBuilder.like(employeeJoin.get("region"), searchCriteria.getAssignToEmpId().getRegion()));
+//        }
+//
+//        if (searchCriteria.getAssignToEmpId().getDepartment() != null) {
+//            predicates.add(criteriaBuilder.like(employeeJoin.get("department"), searchCriteria.getAssignToEmpId().getDepartment()));
+//        }
+//
+//        if (searchCriteria.getAssignToEmpId().getSection() != null) {
+//            predicates.add(criteriaBuilder.like(employeeJoin.get("section"), searchCriteria.getAssignToEmpId().getSection()));
+//        }
+//
+//        cq.where(predicates.toArray(new Predicate[0]));
+//        TypedQuery<VehicleAssignment> query = entityManager.createQuery(cq);
+//
+//        int firstResult = pageNumber * pageSize;
+//        query.setFirstResult(firstResult);
+//        query.setMaxResults(pageSize);
+//
+//        List<VehicleAssignment> resultList = query.getResultList();
+//
+//        CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
+//        Root<VehicleAssignment> countRoot = countQuery.from(VehicleAssignment.class);  // Use the same root
+//        countQuery.select(criteriaBuilder.count(countRoot));
+//        countQuery.where(predicates.toArray(new Predicate[0]));
+//
+//        Join<VehicleAssignment, Employee> countEmployeeJoin = countRoot.join("assignToEmpId");
+//        predicates.forEach(predicate -> countEmployeeJoin.on(predicate));
+//
+//        Long totalElements = entityManager.createQuery(countQuery).getSingleResult();
+//
+//        List<VehicleAssignmentDto> dtoList = resultList.stream()
+//                .map(this::toDto)
+//                .collect(Collectors.toList());
+//
+//        PaginationResponse paginationResponse = new PaginationResponse();
+//        Obj obj = new Obj();
+//        obj.setPageNumber(pageNumber);
+//        paginationResponse.setContent(dtoList);
+//        paginationResponse.setPageable(obj);
+//        paginationResponse.setSize(pageSize);
+//        paginationResponse.setTotalElements(totalElements.intValue());
+//        paginationResponse.setTotalPages((int) Math.ceil((double) totalElements / pageSize));
+//        paginationResponse.setLastPage(pageNumber >= (Math.ceil((double) totalElements / pageSize) - 1));
+//
+//        return paginationResponse;
+//    }
 }

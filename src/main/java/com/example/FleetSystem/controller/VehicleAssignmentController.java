@@ -3,14 +3,17 @@ package com.example.FleetSystem.controller;
 import com.example.FleetSystem.criteria.EmployeeSearchCriteria;
 import com.example.FleetSystem.criteria.VehicleSearchCriteria;
 import com.example.FleetSystem.dto.DriverDto;
+import com.example.FleetSystem.dto.PaginationResponse;
 import com.example.FleetSystem.dto.VehicleAssignmentDto;
 import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.model.Vehicle;
+import com.example.FleetSystem.model.VehicleAssignment;
 import com.example.FleetSystem.payload.ResponseMessage;
 import com.example.FleetSystem.service.StorageService;
 import com.example.FleetSystem.service.VehicleAssignmentService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import javafx.scene.control.Pagination;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.core.io.ByteArrayResource;
@@ -72,7 +75,7 @@ public class VehicleAssignmentController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/vehicle-assignment-plateNumber/{plateNumber}")
-    public ResponseEntity<VehicleAssignmentDto> getByPlateNumber(@PathVariable String plateNumber){
+    public ResponseEntity<VehicleAssignmentDto> getByPlateNumber(@PathVariable String plateNumber) {
         return ResponseEntity.ok(vehicleAssignmentService.getByPlateNumber(plateNumber));
     }
 
@@ -92,78 +95,99 @@ public class VehicleAssignmentController {
                 .header("Content-disposition", "attachment; filename=\"" + fileName + "\"")
                 .body(resource);
     }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/search-assignment")
-    public ResponseEntity<Page<VehicleAssignmentDto>> searchAssignmentByPlateNumber(@RequestParam(value = "value",required = false) String value,
+    public ResponseEntity<Page<VehicleAssignmentDto>> searchAssignmentByPlateNumber(@RequestParam(value = "value", required = false) String value,
                                                                                     @RequestParam(defaultValue = "0") int page,
                                                                                     @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
         VehicleSearchCriteria vehicleSearchCriteria = new ObjectMapper().readValue(value, VehicleSearchCriteria.class);
-        return ResponseEntity.ok(vehicleAssignmentService.searchAssignmentByPlateNumber(vehicleSearchCriteria,page, size));
+        return ResponseEntity.ok(vehicleAssignmentService.searchAssignmentByPlateNumber(vehicleSearchCriteria, page, size));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/search-assignment-by-region")
-    public ResponseEntity<Page<VehicleAssignmentDto>> searchAssignmentByRegion(@RequestParam(value = "value",required = false) String value,
-                                                                                    @RequestParam String vehicleStatus,
-                                                                                    @RequestParam(defaultValue = "0") int page,
-                                                                                    @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
-        VehicleSearchCriteria vehicleSearchCriteria = new ObjectMapper().readValue(value, VehicleSearchCriteria.class);
-        return ResponseEntity.ok(vehicleAssignmentService.searchAssignmentByRegion(vehicleSearchCriteria,vehicleStatus,page, size));
-    }
-
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/search-assignment-by-department")
-    public ResponseEntity<Page<VehicleAssignmentDto>> searchAssignmentByDepartment(@RequestParam(value = "value",required = false) String value,
+    public ResponseEntity<Page<VehicleAssignmentDto>> searchAssignmentByRegion(@RequestParam(value = "value", required = false) String value,
                                                                                @RequestParam String vehicleStatus,
                                                                                @RequestParam(defaultValue = "0") int page,
                                                                                @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
         VehicleSearchCriteria vehicleSearchCriteria = new ObjectMapper().readValue(value, VehicleSearchCriteria.class);
-        return ResponseEntity.ok(vehicleAssignmentService.searchAssignmentByDepartment(vehicleSearchCriteria,vehicleStatus,page, size));
+        return ResponseEntity.ok(vehicleAssignmentService.searchAssignmentByRegion(vehicleSearchCriteria, vehicleStatus, page, size));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/search-assignment-by-section")
-    public ResponseEntity<Page<VehicleAssignmentDto>> searchAssignmentBySection(@RequestParam(value = "value",required = false) String value,
+    @GetMapping("/search-assignment-by-department")
+    public ResponseEntity<Page<VehicleAssignmentDto>> searchAssignmentByDepartment(@RequestParam(value = "value", required = false) String value,
                                                                                    @RequestParam String vehicleStatus,
                                                                                    @RequestParam(defaultValue = "0") int page,
                                                                                    @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
         VehicleSearchCriteria vehicleSearchCriteria = new ObjectMapper().readValue(value, VehicleSearchCriteria.class);
-        return ResponseEntity.ok(vehicleAssignmentService.searchAssignmentBySection(vehicleSearchCriteria,vehicleStatus,page, size));
+        return ResponseEntity.ok(vehicleAssignmentService.searchAssignmentByDepartment(vehicleSearchCriteria, vehicleStatus, page, size));
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/search-assignment-by-section")
+    public ResponseEntity<Page<VehicleAssignmentDto>> searchAssignmentBySection(@RequestParam(value = "value", required = false) String value,
+                                                                                @RequestParam String vehicleStatus,
+                                                                                @RequestParam(defaultValue = "0") int page,
+                                                                                @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
+        VehicleSearchCriteria vehicleSearchCriteria = new ObjectMapper().readValue(value, VehicleSearchCriteria.class);
+        return ResponseEntity.ok(vehicleAssignmentService.searchAssignmentBySection(vehicleSearchCriteria, vehicleStatus, page, size));
     }
 
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/search-assignment-inactive")
-    public ResponseEntity<Page<VehicleAssignmentDto>> searchInactiveAssignmentByPlateNumber(@RequestParam(value = "value",required = false) String value,
-                                                                                    @RequestParam(defaultValue = "0") int page,
-                                                                                    @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
+    public ResponseEntity<Page<VehicleAssignmentDto>> searchInactiveAssignmentByPlateNumber(@RequestParam(value = "value", required = false) String value,
+                                                                                            @RequestParam(defaultValue = "0") int page,
+                                                                                            @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
         VehicleSearchCriteria vehicleSearchCriteria = new ObjectMapper().readValue(value, VehicleSearchCriteria.class);
-        return ResponseEntity.ok(vehicleAssignmentService.searchInactiveAssignmentByPlateNumber(vehicleSearchCriteria,page, size));
+        return ResponseEntity.ok(vehicleAssignmentService.searchInactiveAssignmentByPlateNumber(vehicleSearchCriteria, page, size));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/search-assignment-empno")
-    public ResponseEntity<Page<VehicleAssignmentDto>> searchAssignmentByEmployeeNumber(@RequestParam(value = "value",required = false) String value,
-                                                                                    @RequestParam(defaultValue = "0") int page,
-                                                                                    @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
+    public ResponseEntity<Page<VehicleAssignmentDto>> searchAssignmentByEmployeeNumber(@RequestParam(value = "value", required = false) String value,
+                                                                                       @RequestParam(defaultValue = "0") int page,
+                                                                                       @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
         EmployeeSearchCriteria employeeSearchCriteria = new ObjectMapper().readValue(value, EmployeeSearchCriteria.class);
 
-        return ResponseEntity.ok(vehicleAssignmentService.searchAssignmentByEmployeeNumber(employeeSearchCriteria,page, size));
+        return ResponseEntity.ok(vehicleAssignmentService.searchAssignmentByEmployeeNumber(employeeSearchCriteria, page, size));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/search-assignment-empno-inactive")
-    public ResponseEntity<Page<VehicleAssignmentDto>> searchInactiveAssignmentByEmployeeNumber(@RequestParam(value = "value",required = false) Long value,
-                                                                                    @RequestParam(defaultValue = "0") int page,
-                                                                                    @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
+    public ResponseEntity<Page<VehicleAssignmentDto>> searchInactiveAssignmentByEmployeeNumber(@RequestParam(value = "value", required = false) Long value,
+                                                                                               @RequestParam(defaultValue = "0") int page,
+                                                                                               @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
         EmployeeSearchCriteria employeeSearchCriteria = new EmployeeSearchCriteria();
         employeeSearchCriteria.setValue(value);
-        return ResponseEntity.ok(vehicleAssignmentService.searchInactiveAssignmentByEmployeeNumber(employeeSearchCriteria,page, size));
+        return ResponseEntity.ok(vehicleAssignmentService.searchInactiveAssignmentByEmployeeNumber(employeeSearchCriteria, page, size));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/get-by-vehicleId/{id}")
-    public ResponseEntity<VehicleAssignmentDto> getByVehicleId(@PathVariable Long id){
+    public ResponseEntity<VehicleAssignmentDto> getByVehicleId(@PathVariable Long id) {
         return ResponseEntity.ok(vehicleAssignmentService.getByVehicleId(id));
     }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/search-assignment-by-any")
+    public ResponseEntity<Page<VehicleAssignmentDto>> search(
+            @RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "15", required = false) Integer pageSize,
+            @RequestBody VehicleAssignmentDto vehicleAssignmentDto) {
+        Page<VehicleAssignmentDto> pageResult = vehicleAssignmentService.getVehicleAssignmentBySearchCriteria(pageNumber, pageSize, vehicleAssignmentDto);
+        return ResponseEntity.ok(pageResult);
+    }
+
+    //    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PostMapping("/search-assignment-by-any/search")
+//    public ResponseEntity<PaginationResponse> search(
+//            @RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
+//            @RequestParam(value = "pageSize", defaultValue = "15", required = false) Integer pageSize,
+//            @RequestBody VehicleAssignmentDto vehicleAssignmentDto) {
+//        PaginationResponse paginationResponse = vehicleAssignmentService.getVehicleAssignmentBySearchCriteria(pageNumber, pageSize, vehicleAssignmentDto);
+//        return ResponseEntity.ok(paginationResponse);
+//    }
 }
