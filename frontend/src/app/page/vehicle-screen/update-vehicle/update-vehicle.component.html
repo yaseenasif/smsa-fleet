@@ -490,7 +490,7 @@
       [style]="{ width: '50vw' }"
       [draggable]="false"
       [resizable]="false"
-      header="Replace Vehicle"
+      header="Add New Vehicle"
     >
 
     <div *ngIf="vehicle.vehicleStatus === 'Under Maintenance'" >
@@ -504,7 +504,7 @@
     </div>
 
     <h3 *ngIf="vehicle.vehicleStatus === 'Under Maintenance'">Do you want to make this Replacement Permenant Or Want to Replace with new Vehicle?<br></h3>
-    <h3 *ngIf="vehicle.vehicleStatus !== 'Under Maintenance'">Do you want to add replacing Vehicle? </h3><br>
+    <h3 *ngIf="vehicle.vehicleStatus !== 'Under Maintenance'">Do you want to add new Vehicle? </h3><br>
     <div class="button-container">
       <p-button
         icon="pi pi-check"
@@ -540,7 +540,7 @@
       </div><br>
     </div>
 
-    <h3>Final Returning this vehicle will release the assignment. Are you sure you want to final return this vehicle? </h3><br>
+    <h3>Final Returning this vehicle will release the assignment and will be inactive. Are you sure you want to final return this vehicle? </h3><br>
     <div class="button-container">
       <p-button
         icon="pi pi-check"

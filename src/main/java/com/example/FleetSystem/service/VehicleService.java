@@ -292,13 +292,9 @@ public class VehicleService {
         throw new RuntimeException(String.format("Vehicle Not Found by this Id => %d", id));
     }
 
-    public VehicleDto makeVehicleActive(Long id) {
+    public VehicleDto activateVehicle(Long id) {
         Optional<Vehicle> vehicle = vehicleRepository.findById(id);
         if (vehicle.isPresent()) {
-//            if (vehicle.get().isStatus()) {
-//                throw new RuntimeException("Record is already Active");
-//            }
-//            vehicle.get().setStatus(Boolean.TRUE);
             vehicle.get().setVehicleStatus("TBA");
             return toDto(vehicleRepository.save(vehicle.get()));
         }
@@ -675,7 +671,6 @@ public class VehicleService {
     public List<VehicleHistoryResponse> getVehicleHistoryById(Long id) {
 
         Optional<Vehicle> vehicle = vehicleRepository.findById(id);
-//        Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findHistoryByVehicle(vehicle.get());
 
         List<AuditDataWrapper> assignmentList = vehicleAssignmentAuditService.retrieveAuditData(vehicle.get().getId());
 
@@ -800,5 +795,7 @@ public class VehicleService {
         }
         throw new RuntimeException(String.format("vehicle not found By id => %d",id));
     }
+
+
 }
 

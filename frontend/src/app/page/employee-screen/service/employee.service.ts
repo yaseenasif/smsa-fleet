@@ -75,4 +75,8 @@ export class EmployeeService {
   activateEmployee(id: Number): Observable<Employee> {
     return this.http.patch<Employee>(`${this.url}/employee-active/${id}`, {})
   }
+
+  getLastAssignedEmployeeByVehicleId(id: Number): Observable<Employee> {
+    return this.http.get<Employee>(`${this.url}/get-last-assignment/${id}`);
+  }
 }

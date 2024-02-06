@@ -5,6 +5,7 @@ import com.example.FleetSystem.criteria.VehicleSearchCriteria;
 import com.example.FleetSystem.dto.DriverDto;
 import com.example.FleetSystem.dto.VehicleAssignmentDto;
 import com.example.FleetSystem.dto.VehicleDto;
+import com.example.FleetSystem.model.Employee;
 import com.example.FleetSystem.model.Vehicle;
 import com.example.FleetSystem.payload.ResponseMessage;
 import com.example.FleetSystem.service.StorageService;
@@ -165,5 +166,11 @@ public class VehicleAssignmentController {
     @GetMapping("/get-by-vehicleId/{id}")
     public ResponseEntity<VehicleAssignmentDto> getByVehicleId(@PathVariable Long id){
         return ResponseEntity.ok(vehicleAssignmentService.getByVehicleId(id));
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/get-last-assignment/{id}")
+    public ResponseEntity<Employee> getLastAssignmentByVehicleId(@PathVariable Long id){
+        return ResponseEntity.ok(vehicleAssignmentService.getLastAssignmentByVehicleId(id));
     }
 }

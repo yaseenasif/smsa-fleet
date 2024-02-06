@@ -95,7 +95,7 @@ export class VehicleService {
   }
 
   activateVehicle(id: Number): Observable<Vehicle> {
-    return this.http.patch<Vehicle>(`${this.url}/vehicle-active/${id}`, {})
+    return this.http.patch<Vehicle>(`${this.url}/activate-vehicle/${id}`, {})
   }
   getAllNotAssignedVehicles(): Observable<Vehicle[]> {
       return this.http.get<Vehicle[]>(this.url.concat('/not-assigned-vehicle'));

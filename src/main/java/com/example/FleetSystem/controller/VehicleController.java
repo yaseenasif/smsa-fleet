@@ -86,9 +86,9 @@ public class VehicleController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PatchMapping("/vehicle-active/{id}")
-    public ResponseEntity<VehicleDto> makeVehicleActive(@PathVariable Long id) {
-        return ResponseEntity.ok(vehicleService.makeVehicleActive(id));
+    @PatchMapping("/activate-vehicle/{id}")
+    public ResponseEntity<VehicleDto> activateVehicleById(@PathVariable Long id) {
+        return ResponseEntity.ok(vehicleService.activateVehicle(id));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

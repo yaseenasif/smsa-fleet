@@ -101,4 +101,5 @@ export class VehicleAssignmentService {
   getAssignmentByVehicleId(vehicleId: Number): Observable<VehicleAssignment> {
     return this.http.get<VehicleAssignment>(`${this.url}/get-by-vehicleId/${vehicleId}`);
   }
+  
 }
