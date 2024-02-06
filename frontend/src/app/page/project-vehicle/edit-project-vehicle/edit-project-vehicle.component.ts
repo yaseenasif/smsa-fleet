@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuItem, MessageService } from 'primeng/api';
+import { MenuItem, MessageService, SelectItem } from 'primeng/api';
 import { ProjectVehicle, ProjectVehicleValues } from 'src/app/modal/project-vehicle';
 import { PrjectVehicleService } from '../service/prject-vehicle.service';
 import { Vendor } from 'src/app/modal/vendor';
@@ -19,6 +19,10 @@ export class EditProjectVehicleComponent implements OnInit {
   vendors!: Vendor[];
   projectNames: ProductField | null | undefined;
   replacementCheck: boolean | undefined;
+  vehicleTypes: SelectItem[] = [
+    { label: 'Rental', value: 'Rental' },
+    { label: 'Leased', value: 'Leased' },
+  ];
 
   projectVehicle: ProjectVehicle = {
     id: null,
@@ -31,6 +35,9 @@ export class EditProjectVehicleComponent implements OnInit {
       type: null,
       origin: null,
       destination: null,
+      rentalDate: null,
+      startLease: null,
+      expiryLease: null,
       vendor: {
         id: null,
         vendorName: null,
@@ -40,8 +47,8 @@ export class EditProjectVehicleComponent implements OnInit {
       }
     }]
   };
-  
-  types : ProductField | null | undefined;
+
+  types: ProductField | null | undefined;
   projectVehicleId: number | undefined | null;
 
   constructor(
@@ -60,13 +67,15 @@ export class EditProjectVehicleComponent implements OnInit {
     this.projectVehicleId = +this.route.snapshot.paramMap.get('id')!;
     this.getProjectVehicleById(this.projectVehicleId);
     this.getProjectName()
-    this.getType()
   }
   projectVehicleField: any = {
     leaseType: null,
     origin: null,
     destinition: null,
   };
+  duration:number[]=[];
+  minDueDate: Date | null | undefined;
+
   getProjectVehicleById(id: number) {
     this.projectVehicleService.getProjectVehicleById(id).subscribe(
       (res: ProjectVehicle) => {
@@ -79,7 +88,11 @@ export class EditProjectVehicleComponent implements OnInit {
   patchProjectVehicle(obj: ProjectVehicle) {
     debugger
     obj.date = new Date
+    this.convertInDate(obj)
     this.projectVehicle = obj
+    for (let index = 0; index < obj.projectVehicleValuesList.length; index++) {
+    this.updateDuration(index)      
+    }
   }
   addMoreFieldValue() {
     const newFieldValue: ProjectVehicleValues = {
@@ -89,13 +102,16 @@ export class EditProjectVehicleComponent implements OnInit {
       type: null,
       origin: null,
       destination: null,
+      rentalDate: null,
+      startLease: null,
+      expiryLease: null,
       vendor: {
         id: null,
         vendorName: null,
         officeLocation: null,
         contactPersonList: [],
         attachments: null
-    
+
       }
     };
 
@@ -117,11 +133,13 @@ export class EditProjectVehicleComponent implements OnInit {
   }
   onSubmit() {
     // const singleProjectVehicleArray: ProjectVehicle[] = [this.projectVehicle];
-    this.projectVehicleService.updateProjectVehicle(this.projectVehicleId!,this.projectVehicle).subscribe(
+    this.projectVehicleService.updateProjectVehicle(this.projectVehicleId!, this.projectVehicle).subscribe(
       (res: ProjectVehicle) => {
-        this.messageService.add({    severity: 'success',
-        summary: 'Update Successfully',
-        detail: 'Project Vehicle has been updated', });
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Update Successfully',
+          detail: 'Project Vehicle has been updated',
+        });
         setTimeout(() => {
           this.router.navigate(['/project-vehicle']);
         }, 1000);
@@ -134,21 +152,11 @@ export class EditProjectVehicleComponent implements OnInit {
     this.productFieldService.getProductFieldByName('Project Name').subscribe((res: ProductField) => {
       this.projectNames = res;
       console.log(res);
-      
-    }, error => {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
-    })
-  }
-  getType() {
-    this.productFieldService.getProductFieldByName('Type').subscribe((res: ProductField) => {
-      this.types = res;
-      console.log(res);
-      
-    }, error => {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
-    })
-  }
 
+    }, error => {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
+    })
+  }
   onLeaseTypeChange() {
     if (this.projectVehicleField.leaseType !== 'rentalLease') {
       this.projectVehicle.projectVehicleValuesList.forEach(item => {
@@ -157,4 +165,49 @@ export class EditProjectVehicleComponent implements OnInit {
       });
     }
   }
+  private convertInDate(obj: ProjectVehicle) {
+    if (typeof obj.date === 'string') {
+        obj.date = new Date(obj.date);
+    }
+    obj.projectVehicleValuesList.forEach((value) => {
+        if (typeof value.rentalDate === 'string') {
+            value.rentalDate = new Date(value.rentalDate);
+        }
+        if (typeof value.startLease === 'string') {
+            value.startLease = new Date(value.startLease);
+        }
+        if (typeof value.expiryLease === 'string') {
+            value.expiryLease = new Date(value.expiryLease);
+        }
+    });
+}
+updateDuration(i: number) {
+  if (this.projectVehicle.projectVehicleValuesList[i].startLease) {
+      this.minDueDate = new Date(this.projectVehicle.projectVehicleValuesList[i].startLease!);
+  } else {
+      this.minDueDate = null;
+  }
+  debugger;
+
+  if (this.projectVehicle.projectVehicleValuesList[i].startLease && this.projectVehicle.projectVehicleValuesList[i].expiryLease) {
+      debugger;
+      const startLeaseTime = this.projectVehicle.projectVehicleValuesList[i].startLease!.getTime();
+      const expiryLeaseTime = this.projectVehicle.projectVehicleValuesList[i].expiryLease!.getTime();
+
+      if (expiryLeaseTime < startLeaseTime) {
+          this.duration[i] = Number(null); // Convert null to number type
+          console.error('Expiry date is before start date.');
+      } else {
+          const timeDifference = expiryLeaseTime - startLeaseTime;
+          const durationInDays = timeDifference / (1000 * 60 * 60 * 24);
+
+          this.duration[i] = durationInDays;
+          console.log('Duration:', this.duration);
+      }
+  } else {
+      this.duration[i] = 0;
+      console.error('Start date or expiry date is undefined.');
+  }
+}
+
 }

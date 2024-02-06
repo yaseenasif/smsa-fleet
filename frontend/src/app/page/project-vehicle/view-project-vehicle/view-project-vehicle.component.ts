@@ -14,8 +14,8 @@ import { Vendor } from 'src/app/modal/vendor';
 export class ViewProjectVehicleComponent implements OnInit {
   items: MenuItem[] | undefined;
   vendors!: Vendor[];
-
-  projectVehicle: ProjectVehicle = {
+  duration:number[]=[];
+  minDueDate: Date | null | undefined;  projectVehicle: ProjectVehicle = {
     id: null,
     projectName: null,
     date: null,
@@ -26,6 +26,9 @@ export class ViewProjectVehicleComponent implements OnInit {
       type: null,
       origin: null,
       destination: null,
+      rentalDate: null,
+      startLease:null,
+      expiryLease:null,
       vendor: {
         id: null,
         vendorName: null,
@@ -61,12 +64,76 @@ export class ViewProjectVehicleComponent implements OnInit {
   }
   patchProjectVehicle(obj: ProjectVehicle) {
     obj.date = new Date
+    this.convertInDate(obj)
     this.projectVehicle = obj
+    console.log(obj);
+    for (let index = 0; index < obj.projectVehicleValuesList.length; index++) {
+    this.updateDuration(index) 
+
+    }
+    
+  }
+  calculateDuration(startLease: Date | null | undefined, expiryLease: Date | null | undefined): number {
+    if (startLease && expiryLease) {
+      const startLeaseDate = new Date(startLease);
+      const expiryLeaseDate = new Date(expiryLease);
+  
+      if (!isNaN(startLeaseDate.getTime()) && !isNaN(expiryLeaseDate.getTime())) {
+        const durationInMilliseconds = expiryLeaseDate.getTime() - startLeaseDate.getTime();
+        const durationInDays = durationInMilliseconds / (1000 * 60 * 60 * 24);
+        return durationInDays;
+      }
+    }
+  
+    return -1; // Indicate an error or invalid date(s)
   }
   getAllVendors() {
     this.vendorService.getVendor().subscribe((res: Vendor[]) => {
       this.vendors = res;
     });
   }
-
+  updateDuration(i: number) {
+    if (this.projectVehicle.projectVehicleValuesList[i].startLease) {
+        this.minDueDate = new Date(this.projectVehicle.projectVehicleValuesList[i].startLease!);
+    } else {
+        this.minDueDate = null;
+    }
+    debugger;
+  
+    if (this.projectVehicle.projectVehicleValuesList[i].startLease && this.projectVehicle.projectVehicleValuesList[i].expiryLease) {
+        debugger;
+        const startLeaseTime = this.projectVehicle.projectVehicleValuesList[i].startLease!.getTime();
+        const expiryLeaseTime = this.projectVehicle.projectVehicleValuesList[i].expiryLease!.getTime();
+  
+        if (expiryLeaseTime < startLeaseTime) {
+            this.duration[i] = Number(null); // Convert null to number type
+            console.error('Expiry date is before start date.');
+        } else {
+            const timeDifference = expiryLeaseTime - startLeaseTime;
+            const durationInDays = timeDifference / (1000 * 60 * 60 * 24);
+  
+            this.duration[i] = durationInDays;
+            console.log('Duration:', this.duration);
+        }
+    } else {
+        this.duration[i] = 0;
+        console.error('Start date or expiry date is undefined.');
+    }
+  }
+  private convertInDate(obj: ProjectVehicle) {
+    if (typeof obj.date === 'string') {
+        obj.date = new Date(obj.date);
+    }
+    obj.projectVehicleValuesList.forEach((value) => {
+        if (typeof value.rentalDate === 'string') {
+            value.rentalDate = new Date(value.rentalDate);
+        }
+        if (typeof value.startLease === 'string') {
+            value.startLease = new Date(value.startLease);
+        }
+        if (typeof value.expiryLease === 'string') {
+            value.expiryLease = new Date(value.expiryLease);
+        }
+    });
+}
 }

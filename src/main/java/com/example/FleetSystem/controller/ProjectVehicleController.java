@@ -40,7 +40,7 @@ public class ProjectVehicleController {
     public ResponseEntity<ProjectVehicleDto> updateProjectVehicleById(@PathVariable Long id, @RequestBody ProjectVehicle projectVehicle) {
         return ResponseEntity.ok(projectVehicleService.updateProjectVehicleById(id, projectVehicle));
     }
-
+   
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/delete-project-vehicle/{id}")
     public ResponseEntity<ProjectVehicleDto> deleteProjectVehicleById(@PathVariable Long id) {

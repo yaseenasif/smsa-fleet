@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 @Builder
 @AllArgsConstructor
@@ -25,6 +26,9 @@ public class ProjectVehicleValues {
     private Integer leaseCost;
     private String origin;
     private String destination;
+    private String rentalDate;
+    private Date startLease;
+    private Date expiryLease;
     private Boolean status;
 
     @ManyToOne

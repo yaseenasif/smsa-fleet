@@ -38,7 +38,7 @@
                                 <label htmlFor="name" Style="color: #2e026d"><strong> Type: </strong></label>
                                 <label for="">{{projectVehicleField.type}}</label>
                             </div>
-                            <div *ngIf="projectVehicleField.type === 'RENTAL LEASE'">
+                            <div *ngIf="projectVehicleField.type === 'Rental'">
                                 <div class="col-12 md:col-12 lg:col-6">
                                     <label htmlFor="name" style="color: #2e026d"><strong> Origin: </strong></label>
                                     <label for="">{{projectVehicleField.origin}}</label>
@@ -46,6 +46,24 @@
                                 <div class="col-12 md:col-12 lg:col-6">
                                     <label htmlFor="name" style="color: #2e026d"><strong> Destination: </strong></label>
                                     <label for="">{{projectVehicleField.destination}}</label>
+                                </div>
+                                <div class="col-12 md:col-12 lg:col-6">
+                                    <label htmlFor="name" style="color: #2e026d"><strong> Rental Date: </strong></label>
+                                    <label for="">{{projectVehicleField.rentalDate | date}}</label>
+                                </div>
+                            </div>
+                            <div *ngIf="projectVehicleField.type === 'Leased'">
+                                <div class="col-12 md:col-12 lg:col-6">
+                                    <label htmlFor="name" style="color: #2e026d" ><strong> Start Lease: </strong></label>
+                                    <label for="">{{projectVehicleField.startLease | date}}</label>
+                                </div>
+                                <div class="col-12 md:col-12 lg:col-6">
+                                    <label htmlFor="name" style="color: #2e026d"><strong> Expiry Lease: </strong></label>
+                                    <label for="">{{projectVehicleField.expiryLease | date}}</label>
+                                </div>
+                                <div class="col-12 md:col-12 lg:col-6">
+                                    <label htmlFor="name" style="color: #2e026d"><strong> Duration: </strong></label>
+                                    <label for="">{{ duration[i] }} days</label>
                                 </div>
                             </div>
                             <div class="col-12 md:col-12 lg:col-6">

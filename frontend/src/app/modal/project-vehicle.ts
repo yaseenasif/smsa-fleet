@@ -9,9 +9,12 @@ export interface ProjectVehicle {
 export interface ProjectVehicleValues {
   id: Number | null | undefined
   plateNumber: String | null | undefined
-  leaseCost: Number | null | undefined
+  leaseCost: number | null | undefined
   type: String | null | undefined
   origin: String | null | undefined
   destination: String | null | undefined
+  rentalDate: Date | null | undefined
+  startLease:  Date | null | undefined
+  expiryLease: Date | null | undefined
   vendor: Vendor
 }
