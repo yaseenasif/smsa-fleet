@@ -40,6 +40,8 @@
                     optionLabel="vehicle.plateNumber"
                     optionValue="vehicle.plateNumber"
                     placeholder="Plate No#"
+                    [filter]="true"
+                    filterBy="vehicle.plateNumber"
                     [disabled]="empNoSearch || criteriaSearch"
                   ></p-dropdown>
                 </h3>
@@ -54,6 +56,8 @@
                     optionLabel="assignToEmpId.employeeNumber"
                     optionValue="assignToEmpId.employeeNumber"
                     placeholder="Employee No#"
+                    [filter]="true"
+                    filterBy="assignToEmpId.employeeNumber"
                     [disabled]="plateNoSearch || criteriaSearch"
                   ></p-dropdown>
                 </h3>
