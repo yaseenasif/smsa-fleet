@@ -10,6 +10,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as saveAs from 'file-saver';
 import { Region } from 'src/app/modal/Region';
 import { RegionService } from '../../region/service/region.service';
+import { VehicleAssignmentService } from '../../Assignment/vehicle-assignment.service';
+import { VehicleAssignment } from 'src/app/modal/vehicle-assignment';
+import { EmployeeService } from '../../employee-screen/service/employee.service';
+import { Employee } from 'src/app/modal/employee';
 
 @Component({
   selector: 'app-vehicle-list',
@@ -43,17 +47,19 @@ export class VehicleListComponent implements OnInit{
   vehicletab: boolean | undefined;
   tempTab: boolean | undefined;
   unAssignedVehicleTab: boolean | undefined;
+  lastAssignedEmployee!: Employee;
 
   constructor(
     private vehicleService: VehicleService,
     private messageService: MessageService,
     private router: Router,
     private regionService: RegionService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private employeeService: EmployeeService
     ) { }
 
   vehicles!: Array<Vehicle>;
-  vId!: number
+  vId!: Number
   region !: Region[];
   vehicleStatus : any;
   selectedStatus = {name:'TBA'};
@@ -93,6 +99,7 @@ export class VehicleListComponent implements OnInit{
         this.unAssignedVehicleTab = params['unAssignVehicleTab'] === 'true';
 
       });
+
 }
 
 
@@ -162,11 +169,10 @@ export class VehicleListComponent implements OnInit{
     this.replacementVisible = false;
   }
 
-  showStatusDialog(id: number) {
+  showActivationDialog(id: Number) {
     this.vId = id;
     this.statusVisible = true;
-    console.log(this.vId);
-
+    this.getLastAssignmentByVehicleId(id)
 }
 
  activateVehicle(){
@@ -211,13 +217,9 @@ searchAllVehicles(vehiclestatus: string){
    this.replacementVisible = true;
  }
 
-//  navigateToAddVehicle() {
-//    this.replacementCheck = false
-//   this.router.navigate(['/add-vehicle/replacementCheck/vId'], {
-//     queryParams: {
-//       replacementCheck: this.replacementCheck,
-//       vId: this.vId
-//     }
-//   });
-// }
+ getLastAssignmentByVehicleId(id: Number){
+   this.employeeService.getLastAssignedEmployeeByVehicleId(id).subscribe((res)=>{
+     this.lastAssignedEmployee = res;
+   })
+ }
 }

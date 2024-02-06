@@ -1,6 +1,7 @@
 package com.example.FleetSystem.service;
 import com.example.FleetSystem.criteria.EmployeeSearchCriteria;
 import com.example.FleetSystem.criteria.VehicleSearchCriteria;
+import com.example.FleetSystem.dto.AuditDataWrapper;
 import com.example.FleetSystem.dto.VehicleAssignmentDto;
 import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.model.Employee;
@@ -30,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -59,6 +61,8 @@ public class VehicleAssignmentService {
     StorageService storageService;
     @Autowired
     DriverRepository driverRepository;
+    @Autowired
+    VehicleAssignmentAuditService vehicleAssignmentAuditService;
 
     public VehicleAssignmentDto save(VehicleAssignmentDto vehicleAssignmentDto) {
         Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -195,9 +199,9 @@ public class VehicleAssignmentService {
         return vehicleAssignments.stream().map(this::toDto).collect(Collectors.toList());
     }
 
-    public VehicleAssignmentDto toDto(VehicleAssignment vehicleAssignment){
-        return modelMapper.map(vehicleAssignment, VehicleAssignmentDto.class);
-    }
+        public VehicleAssignmentDto toDto(VehicleAssignment vehicleAssignment){
+            return modelMapper.map(vehicleAssignment, VehicleAssignmentDto.class);
+        }
 
     private VehicleAssignment toEntity(VehicleAssignmentDto vehicleAssignmentDto){
         return modelMapper.map(vehicleAssignmentDto , VehicleAssignment.class);
@@ -260,9 +264,7 @@ public class VehicleAssignmentService {
         Optional<Vehicle> vehicle = vehicleRepository.findById(vehicleId);
         if (vehicle.isPresent()){
             Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByVehicleAndStatusIsTrue(vehicle.get());
-            if (vehicleAssignment.isPresent()) {
-                return toDto(vehicleAssignment.get());
-            }
+            return vehicleAssignment.map(this::toDto).orElse(null);
         }
         throw new RuntimeException(String.format("Vehicle not Found By id => %d",vehicleId));
     }
@@ -286,5 +288,24 @@ public class VehicleAssignmentService {
         Specification<VehicleAssignment> vehicleAssignmentSpecification = VehicleAssignmentSpecification.getSearchSpecificationBySection(vehicleSearchCriteria,vehicleStatus);
         Page<VehicleAssignment> vehicleAssignmentPage = vehicleAssignmentRepository.findAll(vehicleAssignmentSpecification,pageable);
         return vehicleAssignmentPage.map(this::toDto);
+    }
+
+    public Employee getLastAssignmentByVehicleId(Long id){
+        Optional<Vehicle> vehicle = vehicleRepository.findById(id);
+        if (vehicle.isPresent()) {
+            List<AuditDataWrapper> assignmentList = vehicleAssignmentAuditService.retrieveAuditData(vehicle.get().getId());
+
+            for (int i = assignmentList.size() - 1; i >= 0; i--) {
+                AuditDataWrapper assignment = assignmentList.get(i);
+                if (assignment.getEntity().isStatus()) {
+                    Optional<Employee> employee = employeeRepository.findById(assignment.getEntity().getAssignToEmpId().getId());
+                    if (employee.isPresent()) {
+                        return employee.get();
+                    }
+                }
+            }
+            throw new RuntimeException("No Last Assignment Found");
+        }
+        throw new RuntimeException(String.format("Vehicle not found By id => %d",id));
     }
 }

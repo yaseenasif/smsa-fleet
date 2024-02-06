@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { MenuItem, MessageService } from 'primeng/api';
 import { Vehicle } from 'src/app/modal/vehicle';
 import { VehicleService } from '../service/vehicle.service';
@@ -14,6 +14,7 @@ import { VehicleAssignment } from 'src/app/modal/vehicle-assignment';
 import { EmployeeService } from '../../employee-screen/service/employee.service';
 import { Employee } from 'src/app/modal/employee';
 import { ReplacementRequest } from 'src/app/modal/replacementRequest';
+import { FinalReturnRequest } from 'src/app/modal/finalReturnRequest';
 
 
 @Component({
@@ -32,7 +33,73 @@ export class AddVehicleComponent implements OnInit{
   region !: Region[];
   items: MenuItem[] | undefined;
 
-  // changedAssignment!: VehicleAssignment;
+  finalReturnRequest: FinalReturnRequest = {
+    replacementVehicle: undefined,
+    changedAssignment: {
+      id: undefined,
+      assignToEmpName: undefined,
+      assignToEmpId: {
+          id: undefined,
+      empName: undefined,
+      employeeNumber: undefined,
+      budgetRef: undefined,
+      gender: undefined,
+      maritalStatus: undefined,
+      dateOfBirth: undefined,
+      joiningDate: undefined,
+      jobTitle: undefined,
+      status: undefined,
+      region: undefined,
+      location: undefined,
+      organization: undefined,
+      division: undefined,
+      deptCode: undefined,
+      department: undefined,
+      contactNumber: undefined,
+      section: undefined,
+      nationalIdNumber: undefined,
+      svEmployeeNumber: undefined,
+      svEmployeeName: undefined,
+      city: undefined,
+      age: undefined,
+      nationality: undefined,
+      companyEmailAddress: undefined,
+      grade: undefined,
+      licenseNumber: undefined,
+      vehicleBudget: undefined,
+      costCentre: undefined,
+                  },
+      vehicle: {
+          id: undefined,
+          processOrderNumber: undefined,
+          plateNumber: undefined,
+          make: undefined,
+          year: undefined,
+          design: undefined,
+          model: undefined,
+          type: undefined,
+          capacity: undefined,
+          power: undefined,
+          registrationExpiry: undefined,
+          fuelType: undefined,
+          vendor: {
+              id: undefined,
+              vendorName: undefined,
+              officeLocation: undefined,
+              attachments: undefined,
+              },
+          insuranceExpiry: undefined,
+          leaseCost: undefined,
+          leaseStartDate: undefined,
+          leaseExpiryDate: undefined,
+          usageType: undefined,
+          category: undefined,
+          replacementDate: undefined,
+          replaceLeaseCost: undefined
+    
+    }
+  }
+}
   unassignedEmployees!: Employee[];
   selectedUnassignedEmployee!: Employee;
 
@@ -64,7 +131,8 @@ export class AddVehicleComponent implements OnInit{
       attachments: undefined,
     },
     vehicleReplacement: undefined,
-    employeeStatus: undefined,
+    vehicleStatus: undefined,
+    replacementVehicleStatus: undefined,
     registrationStatus: undefined,
     insuranceStatus: undefined,
     replacementDate: undefined
@@ -74,12 +142,6 @@ export class AddVehicleComponent implements OnInit{
   categories: ProductField | null | undefined;
   vId!: number;
 
-  // vehicleReplacement: VehicleReplacement = {
-  //   id:undefined,
-  //   reason:undefined,
-  //   vehicle:undefined
-  // }
-
   replacementRequest: ReplacementRequest = {
     replacement: {
           id:undefined,
@@ -88,15 +150,7 @@ export class AddVehicleComponent implements OnInit{
       },
     assignment: {
       id: undefined,
-    design:  undefined,
-    make:  undefined,
     assignToEmpName:  undefined,
-    model:  undefined,
-    year:  undefined,
-    leaseExpiry:  undefined,
-    leaseCost: undefined,
-    plateNumber:  undefined,
-    attachments:  undefined,
     assignToEmpId: {
         id:undefined,
     empName: undefined,
@@ -152,7 +206,9 @@ export class AddVehicleComponent implements OnInit{
         leaseStartDate:  undefined,
         leaseExpiryDate:  undefined,
         usageType:  undefined,
-        category:  undefined
+        category:  undefined,
+        replacementDate: undefined,
+        replaceLeaseCost: undefined
     }
     }
   }
@@ -160,6 +216,8 @@ export class AddVehicleComponent implements OnInit{
   visible: boolean= false;
   empName: string | null | undefined;
   previousVehicle!: Vehicle;
+  finalReturn!: boolean;
+  temporaryReplacementVehicle!: Vehicle;
 
   constructor(
     private vehicleService: VehicleService,
@@ -170,19 +228,14 @@ export class AddVehicleComponent implements OnInit{
     private route: ActivatedRoute,
     private vehicleAssignmentService: VehicleAssignmentService,
     private employeeService: EmployeeService
-    ) {
-      console.log(this.replacementRequest);
-      
-     }
+    ) {}
 
   name!:string;
 
 
-   onUpload(event: any) {
+  //  onUpload(event: any) {
 
-  }
-
-
+  // }
 
   ngOnInit(): void {
     this.items = [{ label: 'Vehicle',routerLink:'/vehicle'},{ label: 'Add Vehicle'}];
@@ -197,13 +250,21 @@ export class AddVehicleComponent implements OnInit{
       this.vId = params['vId'];
     });
 
+    this.route.queryParams.subscribe(params => {
+      this.finalReturn = params['finalReturn'] === 'true';
+      this.vId = params['vId'];
+    });
+
     if(this.vId){
-    this.getAssignmentbyVehicleId(this.vId);    
-    this.getVehicleById(this.vId);
+      this.findReplacementVehicle(this.vId);
+      this.getVehicleById(this.vId);
+      this.getAssignmentbyVehicleId(this.vId);
     }
-    this.getUnassignedEmployee();
+
+    this.getUnassignedEmployee();    
     
   }
+
 
   onSubmit() {
 
@@ -216,7 +277,17 @@ export class AddVehicleComponent implements OnInit{
       this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
     })
   }
-  else if(!this.replacementCheck){
+  else if(this.finalReturn){
+    this.finalReturnRequest.changedAssignment = null
+    this.finalReturnRequest.replacementVehicle = this.vehicle
+    this.vehicleService.finalReturnVehicleById(this.vId,this.finalReturnRequest).subscribe((res)=>{
+      this.messageService.add({ severity: 'success', summary: 'Final Returned', detail: 'Vehicle has been Final Returned'});
+      this.router.navigate(['/vehicle']) 
+    },error=>{
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
+    })
+  }
+  else if(!this.replacementCheck && !this.finalReturn){
       this.vehicleService.addVehicle(this.vehicle).subscribe((res) => {
       this.messageService.add({ severity: 'Add Successfully', summary: 'Add Successfully', detail: 'Message Content' });
       this.router.navigate(['/vehicle'])
@@ -247,6 +318,7 @@ export class AddVehicleComponent implements OnInit{
       this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
     })
   }
+
   getRegion() {
     this.regionService.getRegion().subscribe((regions: Region[]) => {
       this.region = regions;
@@ -257,9 +329,9 @@ export class AddVehicleComponent implements OnInit{
     });
   }
 
-  getAssignmentbyVehicleId(vehicleId: Number){
-    this.vehicleAssignmentService.getAssignmentByVehicleId(vehicleId).subscribe((res)=>{
-      this.vehicleAssignment = res;      
+  getAssignmentbyVehicleId(id: Number){
+      this.vehicleAssignmentService.getAssignmentByVehicleId(id).subscribe((res)=>{
+      this.vehicleAssignment = res;
     })
   }
 
@@ -291,6 +363,7 @@ showEmpName() {
 
  replaceVehicleWithAssignment(){
    debugger
+  if(this.replacementCheck){
    this.replacementRequest.assignment!.assignToEmpId = this.selectedUnassignedEmployee
    this.replacementRequest.assignment!.assignToEmpName = this.empName
    this.replacementRequest.assignment!.vehicle = this.vehicle
@@ -300,16 +373,27 @@ showEmpName() {
     this.messageService.add({ severity: 'success', summary: 'Vehicle Replaced', detail: 'Vehicle is successfully replaced'});
     this.router.navigate(['/vehicle'])
   },error=>{
-    console.log(error.error);
-    
     this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
   })
+ }else if(this.finalReturn){
+   this.finalReturnRequest.changedAssignment!.assignToEmpId = this.selectedUnassignedEmployee
+   this.finalReturnRequest.changedAssignment!.assignToEmpName = this.empName
+   this.finalReturnRequest.changedAssignment!.vehicle = this.vehicle
+   this.finalReturnRequest.replacementVehicle = this.vehicle
 
+   this.vehicleService.finalReturnVehicleById(this.vId,this.finalReturnRequest).subscribe((res)=>{
+    this.messageService.add({ severity: 'success', summary: 'Final Returned', detail: 'Vehicle has been final returned'});
+    this.router.navigate(['/vehicle'])
+  },error=>{
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
+  })
  }
+}
 
  replaceVehicleWithoutAssignment(){
    debugger
-   this.replacementRequest.assignment = null
+  if(this.replacementCheck){ 
+  this.replacementRequest.assignment = null
    this.replacementRequest.replacement!.vehicle = this.vehicle 
 
    this.vehicleService.replaceVehicle(this.vId,this.replacementRequest).subscribe(res=>{
@@ -318,24 +402,43 @@ showEmpName() {
   },error=>{    
     this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
   })
+ }else if(this.finalReturn){
+   this.finalReturnRequest.changedAssignment = null
+   this.finalReturnRequest.replacementVehicle = this.vehicle
 
+   this.vehicleService.finalReturnVehicleById(this.vId,this.finalReturnRequest).subscribe((res)=>{
+    this.messageService.add({ severity: 'success', summary: 'Final Returned', detail: 'Vehicle has been final returned'});
+    this.router.navigate(['/vehicle'])
+  },error=>{    
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
+  })
  }
+}
 
  getVehicleById(id: Number){
    this.vehicleService.getVehicleById(id).subscribe((res)=>{
     
      this.previousVehicle = res;
 
-     console.log(this.previousVehicle.vendor.vendorName);
-
-     this.vehicle.vendor = this.previousVehicle.vendor;
-    this.vehicle.region = this.previousVehicle.region 
-    this.vehicle.usageType = this.previousVehicle.usageType 
+     if(this.replacementCheck){
+      this.vehicle.vendor = this.previousVehicle.vendor;
+      this.vehicle.region = this.previousVehicle.region 
+      this.vehicle.usageType = this.previousVehicle.usageType 
+    }
 
    },error=>{    
     this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
   })
  }
 
-}
+ findReplacementVehicle(id: Number){
+  this.vehicleService.findReplacementVehicle(id).subscribe((res)=>{
+    this.temporaryReplacementVehicle = res;
 
+    if(this.temporaryReplacementVehicle){
+      this.getAssignmentbyVehicleId(this.temporaryReplacementVehicle.id!)
+    }
+  })
+ }
+
+}

@@ -4,6 +4,7 @@ import com.example.FleetSystem.criteria.VehicleSearchCriteria;
 import com.example.FleetSystem.dto.VehicleAssignmentDto;
 import com.example.FleetSystem.dto.VehicleCountPerVendorDto;
 import com.example.FleetSystem.dto.VehicleDto;
+import com.example.FleetSystem.payload.FinalReturnRequest;
 import com.example.FleetSystem.payload.ResponseMessage;
 import com.example.FleetSystem.payload.VehicleHistoryResponse;
 import com.example.FleetSystem.service.StorageService;
@@ -79,15 +80,15 @@ public class VehicleController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping("/inactive-vehicle/{id}")
-    public ResponseEntity<VehicleDto> deleteVehicleById(@PathVariable Long id) {
-        return ResponseEntity.ok(vehicleService.finalReturnVehicleById(id));
+    @PatchMapping("/final-return-vehicle/{id}")
+    public ResponseEntity<VehicleDto> finalReturnVehicleById(@PathVariable Long id, @RequestBody FinalReturnRequest finalReturnRequest) {
+        return ResponseEntity.ok(vehicleService.finalReturnVehicleById(id,finalReturnRequest));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PatchMapping("/vehicle-active/{id}")
-    public ResponseEntity<VehicleDto> makeVehicleActive(@PathVariable Long id) {
-        return ResponseEntity.ok(vehicleService.makeVehicleActive(id));
+    @PatchMapping("/activate-vehicle/{id}")
+    public ResponseEntity<VehicleDto> activateVehicleById(@PathVariable Long id) {
+        return ResponseEntity.ok(vehicleService.activateVehicle(id));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -157,5 +158,10 @@ public class VehicleController {
     @PatchMapping("/delete-replacement-vehicle/{id}")
     public ResponseEntity<VehicleDto> deleteReplacementVehicle(@PathVariable Long id){
         return ResponseEntity.ok(vehicleService.deleteReplacementVehicle(id));
+    }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/find-replacement-vehicle/{id}")
+    public ResponseEntity<VehicleDto> findReplacementVehicleById(@PathVariable Long id){
+        return ResponseEntity.ok(vehicleService.findReplacementVehicleById(id));
     }
 }

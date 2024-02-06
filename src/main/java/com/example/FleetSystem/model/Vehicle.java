@@ -51,6 +51,7 @@ public class Vehicle {
     private String uuid;
 //    private boolean status;
     private String vehicleStatus;
+    private String replacementVehicleStatus;
     private LocalDate createdAt;
     private LocalDate updatedAt;
 
