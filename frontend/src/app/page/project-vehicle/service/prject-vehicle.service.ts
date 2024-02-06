@@ -27,6 +27,5 @@ export class PrjectVehicleService {
   }
   getProjectVehicleById(id : Number){
     return this.http.get<ProjectVehicle>(`${this.url}/project-vehicle/${id}`);
-
   }
 }

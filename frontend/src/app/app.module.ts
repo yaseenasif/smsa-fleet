@@ -130,6 +130,7 @@ import { AddProjectVehicleComponent } from './page/project-vehicle/add-project-v
 import { EditProjectVehicleComponent } from './page/project-vehicle/edit-project-vehicle/edit-project-vehicle.component';
 import { ViewProjectVehicleComponent } from './page/project-vehicle/view-project-vehicle/view-project-vehicle.component';
 import { SpeedDialModule } from 'primeng/speeddial';
+import { ShowVehicleComponent } from './page/project-vehicle/show-vehicle/show-vehicle.component';
 
 @NgModule({
   declarations: [
@@ -218,6 +219,7 @@ import { SpeedDialModule } from 'primeng/speeddial';
     AddProjectVehicleComponent,
     EditProjectVehicleComponent,
     ViewProjectVehicleComponent,
+    ShowVehicleComponent,
   ],
   imports: [
     ConfirmDialogModule,

@@ -48,17 +48,24 @@
                   <th class="text-center">ID</th>
                   <th class="text-center">Project Name</th>
                   <th class="text-center">Date</th>
+                  <th class="text-center">Number of Rental</th>
+                  <th class="text-center">Number of Lease</th>
+                  <th class="text-center">total Cost of Rental</th>
                   <th class="text-center">Actions</th>
                 </tr>
               </ng-template>
-              <ng-template pTemplate="body" let-vehicles>
+              <ng-template pTemplate="body" let-vehicles let-i="rowIndex">
                 <tr >
                   <td style="text-align: center;">{{vehicles.id}}</td>
                   <td style="text-align: center;">{{vehicles.projectName}}</td>
                   <td style="text-align: center;">{{vehicles.date}}</td>
+                  <td style="text-align: center;">{{ countRental && countRental[countRental.length - 1] }}</td>
+                  <td style="text-align: center;">{{ countLease && countLease[countLease.length - 1] }}</td>
+                  <td style="text-align: center;">{{ totalRentalCost }}</td>
                   <td class="text-center flex" style="text-align: center;padding-left: 30%;">
                     <p-button [routerLink]="['/edit-project-vehicle', vehicles.id]" pTooltip="Edit" tooltipPosition="top" [rounded]="true" icon="bi bi-pen" [raised]="true" class='ml mr' severity="success" [outlined]="true"></p-button>
                     <p-button [routerLink]="['/view-project-vehicle', vehicles.id]" pTooltip="View" tooltipPosition="top" [rounded]="true" icon="bi bi-eye" [raised]="true" class='ml mr' severity="primary" [outlined]="true"></p-button>
+                    <p-button [routerLink]="['/show-vehicle']" pTooltip="Show Vehilce" tooltipPosition="top" [rounded]="true" icon="bi bi-truck" [raised]="true" class='ml mr' severity="warning" [outlined]="true"></p-button>
                     <p-button (click)="deleteProjectVehicleById(vehicles.id)" pTooltip="Delete Project Vehicle" tooltipPosition="top" [rounded]="true" icon="bi bi-trash" [raised]="true"  severity="danger"class='ml mr' [outlined]="true"></p-button>
                   </td>
                 </tr>

@@ -81,6 +81,7 @@ import { ProjectVehicleComponent } from './page/project-vehicle/project-vehicle.
 import { AddProjectVehicleComponent } from './page/project-vehicle/add-project-vehicle/add-project-vehicle.component';
 import { EditProjectVehicleComponent } from './page/project-vehicle/edit-project-vehicle/edit-project-vehicle.component';
 import { ViewProjectVehicleComponent } from './page/project-vehicle/view-project-vehicle/view-project-vehicle.component';
+import { ShowVehicleComponent } from './page/project-vehicle/show-vehicle/show-vehicle.component';
 
 // NgModule({
 //   imports: [FormsModule],
@@ -300,6 +301,11 @@ const routes: Routes = [
   {
     path: 'view-project-vehicle/:id',
     component: ViewProjectVehicleComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'show-vehicle',
+    component: ShowVehicleComponent,
     canActivate: [AuthGuard]
   },
   // {
