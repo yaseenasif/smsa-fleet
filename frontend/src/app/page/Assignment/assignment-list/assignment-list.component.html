@@ -65,6 +65,8 @@
                     (onChange)="getSearchAssignmentByAnyValue($event.value)"
                     optionLabel="department"
                     placeholder="Department"
+                    [filter]="true"
+                    filterBy="department"
                     [disabled]="plateNoSearch || empNoSearch"
                   ></p-dropdown>
                 </h3>
@@ -76,6 +78,8 @@
                     [options]="sectionList"
                     (onChange)="getSearchAssignmentByAnyValue($event.value)"
                     optionLabel="section"
+                    [filter]="true"
+                    filterBy="section"
                     placeholder="Section"
                     [disabled]="plateNoSearch || empNoSearch"
                   ></p-dropdown>
@@ -87,6 +91,8 @@
                     [options]="regionList"
                     (onChange)="getSearchAssignmentByAnyValue($event.value)"
                     optionLabel="region"
+                    [filter]="true"
+                    filterBy="region"
                     placeholder="Region"
                     [disabled]="plateNoSearch || empNoSearch"
                   ></p-dropdown>
@@ -98,7 +104,7 @@
                     label="Search"
                     class="bg-b-color"
                     (onClick)="searchCriteria()"
-                    icon="pi pi-filter-slash"
+                    icon="pi pi-filter"
                     [disabled]="!criteriaSearch"
                   ></p-button>
                 </h3>

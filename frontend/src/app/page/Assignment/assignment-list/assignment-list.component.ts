@@ -11,6 +11,8 @@ import { PageEvent } from 'src/app/modal/pageEvent';
 import { ProductFieldServiceService } from '../../product-field/service/product-field-service.service';
 import { ErrorService } from 'src/app/CommonServices/Error/error.service';
 import { ConcateSearch } from 'src/app/modal/SearchCriteria';
+import { RegionService } from '../../region/service/region.service';
+import { Region } from 'src/app/modal/Region';
 
 @Component({
   selector: 'app-assignment-list',
@@ -53,7 +55,7 @@ export class AssignmentListComponent {
   plateNoSearch: boolean = false;
   empNoSearch: boolean = false;
   someObservable: any;
-  regionList: ProductFieldValue[] = [];
+  regionList: Region[] = [];
   departmentList: ProductFieldValue[] = [];
   sectionList: ProductFieldValue[] = [];
   criteriaSearch: boolean = false;
@@ -61,11 +63,12 @@ export class AssignmentListComponent {
 
   constructor(
     private vehicleAssignmentService: VehicleAssignmentService,
-    private vehicleService: VehicleService,
-    private router: Router,
-    private route: ActivatedRoute,
     private productFieldService: ProductFieldServiceService,
     private errorHandleService: ErrorService,
+    private vehicleService: VehicleService,
+    private regionService: RegionService,
+    private route: ActivatedRoute,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -157,14 +160,17 @@ export class AssignmentListComponent {
   }
 
   private getRegionValues(productName: string) {
-    this.productFieldService.getProductFieldByName(productName).subscribe(
-      (res: ProductField) => {
-        this.regionList = res.productFieldValuesList.map((productFieldValue: ProductFieldValue) => ({
-          name: productFieldValue.name,
-          region: productFieldValue.name,
-          id: productFieldValue.id,
-          status: productFieldValue.status,
-        }));
+    this.regionService.getRegion().subscribe(
+      (res: Region[]) => {
+        debugger
+        this.regionList = res.map((obj: Region) => ({
+          id: obj.id,
+          name: obj.name,
+          region: obj.name,
+          country: obj.country,
+          cities: obj.cities,
+          status: obj.status
+        }));;
       },
       (error) => {
         this.errorHandleService.showError(error.error);
@@ -226,18 +232,15 @@ export class AssignmentListComponent {
   }
 
   searchCriteria() {
-
     this.vehicleAssignmentService.searchAssignmentByAnyValue(this.query, this.globalTransformObj)
       .subscribe((res: PaginatedResponse<VehicleAssignment>) => {
         debugger
         this.vehicleAssignment = res.content;
         this.query = { page: res.pageable.pageNumber, size: res.size };
         this.totalRecords = res.totalElements;
-
       }, error => {
         this.errorHandleService.showError(error.error);
       });
-
   }
 
 }
