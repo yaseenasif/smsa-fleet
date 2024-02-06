@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
@@ -101,5 +101,29 @@ export class VehicleAssignmentService {
   getAssignmentByVehicleId(vehicleId: Number): Observable<VehicleAssignment> {
     return this.http.get<VehicleAssignment>(`${this.url}/get-by-vehicleId/${vehicleId}`);
   }
-  
+
+
+  // searchAssignmentByAnyValue(value?: string | null,vehicleStatus?: string | null,  query?: { page: number, size: number }): Observable<PaginatedResponse<VehicleAssignment>> {
+  //   return this.http.get<PaginatedResponse<VehicleAssignment>>(
+  //     `${this.url}/search-assignment-by-any`,
+  //     {
+  //       params: {
+  //         value: value ? JSON.stringify(value) : '',
+  //         vehicleStatus: vehicleStatus!,
+  //         page: query?.page?.toString() || '0',
+  //         size: query?.size?.toString() || '10',
+  //       },
+  //     }
+  //   );
+  // }
+
+  searchAssignmentByAnyValue(pageInfo?: { page: number, size: number }, search?: any): Observable<PaginatedResponse<VehicleAssignment>> {
+    let params = new HttpParams();
+
+    if (pageInfo?.hasOwnProperty('page')) {
+      params = params.set('pageNumber', pageInfo.page);
+      params = params.set('pageSize', pageInfo.size);
+    }
+    return this.http.post<PaginatedResponse<VehicleAssignment>>(`${this.url}/search-assignment-by-any`, search ? search : {}, { params });
+  }
 }

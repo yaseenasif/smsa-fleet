@@ -5,6 +5,7 @@ import { EmployeeService } from '../service/employee.service';
 import { FileUpload } from 'primeng/fileupload';
 import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
 import { saveAs } from 'file-saver';
+import { PageEvent } from 'src/app/modal/pageEvent';
 
 @Component({
   selector: 'app-employee-list',
@@ -12,29 +13,32 @@ import { saveAs } from 'file-saver';
   styleUrls: ['./employee-list.component.scss'],
   providers: [MessageService]
 })
-export class EmployeeListComponent implements OnInit{
+export class EmployeeListComponent implements OnInit {
   @ViewChild('fileUpload', { static: false })
   fileUpload!: FileUpload;
   fileSelected: boolean = false;
 
 
   constructor(
-              private employeeService: EmployeeService,
-              private messageService: MessageService) { }
+    private employeeService: EmployeeService,
+    private messageService: MessageService
+  ) { }
 
   employee!: Employee[];
   statusVisible!: boolean;
   vId!: number
-  query !: {
-    page: number,
-    size: number
+
+  query: PageEvent = {
+    page: 0,
+    size: 10,
   };
+  
   value: number | null = null;
-    totalRecords: number = 0;
-  fileName : string = 'empSample.xlsx'
+  totalRecords: number = 0;
+  fileName: string = 'empSample.xlsx'
   items: MenuItem[] | undefined;
-  selectedStatus = {name:'Active'};
-  employeeStatus : any;
+  selectedStatus = { name: 'Active' };
+  employeeStatus: any;
 
   ngOnInit(): void {
 
@@ -103,38 +107,38 @@ export class EmployeeListComponent implements OnInit{
       this.employee = res.content;
       this.query = { page: res.pageable.pageNumber, size: res.size }
       this.totalRecords = res.totalElements;
-    console.log(res);
+      console.log(res);
 
     })
 
   }
   getAllInactiveEmployee() {
     const stringValue = this.value !== null ? String(this.value) : null;
-    this.employeeService.searchInactiveEmployee(stringValue, this.query).subscribe((res:PaginatedResponse<Employee>) => {
-        this.employee = res.content;
-        debugger
-        this.query = { page: typeof res.pageable.pageNumber === 'number' ? res.pageable.pageNumber : 0, size: typeof res.size === 'number' ? res.size : 10 };
-        this.totalRecords = res.totalElements;
+    this.employeeService.searchInactiveEmployee(stringValue, this.query).subscribe((res: PaginatedResponse<Employee>) => {
+      this.employee = res.content;
+      debugger
+      this.query = { page: typeof res.pageable.pageNumber === 'number' ? res.pageable.pageNumber : 0, size: typeof res.size === 'number' ? res.size : 10 };
+      this.totalRecords = res.totalElements;
     });
-}
+  }
   onPageChange(event?: any) {
     this.query.page = event.page;
     this.query.size = event.rows;
     this.getAllEmployees()
   }
 
-  flag='Active'
-  OnSelectChange(){
-    if(this.selectedStatus.name!=this.flag){
-     this.query.page=0
-     this.flag=this.selectedStatus.name
+  flag = 'Active'
+  OnSelectChange() {
+    if (this.selectedStatus.name != this.flag) {
+      this.query.page = 0
+      this.flag = this.selectedStatus.name
     }
 
-    if(this.selectedStatus.name == 'Active'){
+    if (this.selectedStatus.name == 'Active') {
       this.getAllEmployees()
-      }else{
-        this.getAllInactiveEmployee()
-      }
+    } else {
+      this.getAllInactiveEmployee()
+    }
   }
 
 
@@ -143,16 +147,16 @@ export class EmployeeListComponent implements OnInit{
   }
 
 
-downloadAttachment(fileName:string){
-  this.employeeService.downloadAttachments(fileName).subscribe(blob => saveAs(blob,fileName));
-}
-activateEmployee(id:number){
-  this.employeeService.activateEmployee(id).subscribe((res:Employee)=>{
-    this.messageService.add({ severity: 'success', summary: 'Employee Activated'});
-    this.closeDialog()
-    this.getAllInactiveEmployee()
-  })
- }
+  downloadAttachment(fileName: string) {
+    this.employeeService.downloadAttachments(fileName).subscribe(blob => saveAs(blob, fileName));
+  }
+  activateEmployee(id: number) {
+    this.employeeService.activateEmployee(id).subscribe((res: Employee) => {
+      this.messageService.add({ severity: 'success', summary: 'Employee Activated' });
+      this.closeDialog()
+      this.getAllInactiveEmployee()
+    })
+  }
 
 
 }

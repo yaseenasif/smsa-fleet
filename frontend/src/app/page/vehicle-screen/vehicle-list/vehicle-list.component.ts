@@ -28,9 +28,9 @@ export class VehicleListComponent implements OnInit{
   fileSelected: boolean = false;
   // visible: boolean = false;
 
-  query !: {
-    page: number,
-    size: number
+  query: PageEvent = {
+    page: 0,
+    size: 10,
   };
 
     value: string | null = null;
