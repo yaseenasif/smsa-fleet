@@ -18,5 +18,5 @@ public interface FileMetaDataRepository extends JpaRepository<FileMetaData, Long
 
     List<FileMetaData> findByVehicleAssignment(Optional<VehicleAssignment> vehicleAssignment);
 
-    List<FileMetaData> findByDriver(Optional<Driver> driver);
+//    List<FileMetaData> findByDriver(Optional<Driver> driver);
 }

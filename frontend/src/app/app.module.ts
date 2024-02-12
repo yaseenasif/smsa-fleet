@@ -8,9 +8,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DashboardHeadComponent } from './components/dashboard-head/dashboard-head.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { UpdateDriverComponent } from './page/driver/update-driver/update-driver.component';
-import { AddDriverComponent } from './page/driver/add-driver/add-driver.component';
-import { DriverListComponent } from './page/driver/driver-list/driver-list.component';
+// import { UpdateDriverComponent } from './page/driver/update-driver/update-driver.component';
+// import { AddDriverComponent } from './page/driver/add-driver/add-driver.component';
+// import { DriverListComponent } from './page/driver/driver-list/driver-list.component';
 import { AddLocationComponent } from './page/location/add-location/add-location.component';
 import { UpdateLocationComponent } from './page/location/update-location/update-location.component';
 import { LocationListComponent } from './page/location/location-list/location-list.component';
@@ -33,7 +33,7 @@ import { CommonModule } from '@angular/common';
 import { ProductFieldListComponent } from './page/product-field/product-field-list/product-field-list.component';
 import { ProductFieldAddComponent } from './page/product-field/product-field-add/product-field-add.component';
 import { FormsModule } from '@angular/forms'
-import { DomesticShippingListComponent } from './page/shipping-order/domestic/domestic-shipping-list/domestic-shipping-list.component';
+// import { DomesticShippingListComponent } from './page/shipping-order/domestic/domestic-shipping-list/domestic-shipping-list.component';
 import { NgxUiLoaderModule, NgxUiLoaderHttpModule } from "ngx-ui-loader";
 import { TimelineModule } from 'primeng/timeline';
 import { TooltipModule } from 'primeng/tooltip';
@@ -56,19 +56,7 @@ import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { DomesticShippingOrderHistoryComponent } from './page/shipping-order/domestic/domestic-shipping-order-history/domestic-shipping-order-history.component';
-import { AddDomesticShippingComponent } from './page/shipping-order/domestic/add-domestic-shipping/add-domestic-shipping.component';
-import { UpdateDomesticShippingComponent } from './page/shipping-order/domestic/update-domestic-shipping/update-domestic-shipping.component';
-import { TileComponent } from './page/shipping-order/international/by-road/tile/tile.component';
-import { InternationalShippingListComponent } from './page/shipping-order/international/by-road/international-shipping-list-road/international-shipping-list.component';
-import { InternationalShippingOrderHistoryComponent } from './page/shipping-order/international/by-road/international-shipping-order-history-by-road/international-shipping-order-history.component';
-import { AddInternationalShippingComponent } from './page/shipping-order/international/by-road/add-international-shipping-by-road/add-international-shipping.component';
-import { UpdateInternationalShippingComponent } from './page/shipping-order/international/by-road/update-international-shipping-by-road/update-international-shipping.component';
 import { PasswordModule } from 'primeng/password';
-import { AddInternationalShipmentByRoadComponent } from './page/shipping-order/international/by-air/add-international-shipment-by-air/add-international-shipment-by-road.component';
-import { InternationalShipmentListAirComponent } from './page/shipping-order/international/by-air/international-shipment-list-air/international-shipment-list-air.component';
-import { InternationalShipmentOrderHistoryByAirComponent } from './page/shipping-order/international/by-air/international-shipment-order-history-by-air/international-shipment-order-history-by-air.component';
-import { UpdateInternationalShipmentByAirComponent } from './page/shipping-order/international/by-air/update-international-shipment-by-air/update-international-shipment-by-air.component';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { DomesticSummaryComponent } from './page/bounds/domestic/domestic-summary/domestic-summary.component';
 import { InternationalSummaryByRoadComponent } from './page/bounds/international/international-summary-by-road/international-summary-by-road.component';
@@ -100,7 +88,6 @@ import { VehicleDetailComponent } from './page/vehicle-screen/vehicle-detail/veh
 import { VehicleHistoryComponent } from './page/vehicle-screen/vehicle-history/vehicle-history.component';
 import { CardModule } from 'primeng/card';
 import { VehicleAttachmentComponent } from './page/vehicle-screen/vehicle-attachment/vehicle-attachment.component';
-import { DriverAttachmentComponent } from './page/driver/driver-attachment/driver-attachment.component';
 import { AssigmentAttachmentComponent } from './page/Assignment/assigment-attachment/assigment-attachment.component';
 import { VendorAttachmentComponent } from './page/vendor-screen/vendor-attachment/vendor-attachment.component';
 import { EmployeeAttachmentComponent } from './page/employee-screen/employee-attachment/employee-attachment.component';
@@ -115,7 +102,6 @@ import { ViewVehicleComponent } from './page/vehicle-screen/view-vehicle/view-ve
 import { ViewEmployeeComponent } from './page/employee-screen/view-employee/view-employee.component';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ViewAssignmentComponent } from './page/Assignment/view-assignment/view-assignment.component';
-import { ViewDriverComponent } from './page/driver/view-driver/view-driver.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { ChipsModule } from 'primeng/chips';
 import { RegionComponent } from './page/region/region.component';
@@ -139,9 +125,6 @@ import { ShowVehicleComponent } from './page/project-vehicle/show-vehicle/show-v
     DashboardHeadComponent,
     DashboardComponent,
     SidebarComponent,
-    UpdateDriverComponent,
-    AddDriverComponent,
-    DriverListComponent,
     AddLocationComponent,
     UpdateLocationComponent,
     LocationListComponent,
@@ -162,19 +145,6 @@ import { ShowVehicleComponent } from './page/project-vehicle/show-vehicle/show-v
     RoleListComponent,
     AddRoleComponent,
     EditRoleComponent,
-    DomesticShippingListComponent,
-    DomesticShippingOrderHistoryComponent,
-    AddDomesticShippingComponent,
-    UpdateDomesticShippingComponent,
-    TileComponent,
-    InternationalShippingListComponent,
-    InternationalShippingOrderHistoryComponent,
-    AddInternationalShippingComponent,
-    UpdateInternationalShippingComponent,
-    AddInternationalShipmentByRoadComponent,
-    InternationalShipmentListAirComponent,
-    InternationalShipmentOrderHistoryByAirComponent,
-    UpdateInternationalShipmentByAirComponent,
     DomesticSummaryComponent,
     InternationalSummaryByRoadComponent,
     InternationalSummaryByAirComponent,
@@ -198,7 +168,6 @@ import { ShowVehicleComponent } from './page/project-vehicle/show-vehicle/show-v
     EditGradeComponent,
     VehicleHistoryComponent,
     VehicleAttachmentComponent,
-    DriverAttachmentComponent,
     AssigmentAttachmentComponent,
     VendorAttachmentComponent,
     EmployeeAttachmentComponent,
@@ -207,7 +176,6 @@ import { ShowVehicleComponent } from './page/project-vehicle/show-vehicle/show-v
     ViewVehicleComponent,
     ViewEmployeeComponent,
     ViewAssignmentComponent,
-    ViewDriverComponent,
     AddCityComponent,
     EditCityComponent,
     CityListComponent,

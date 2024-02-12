@@ -1,23 +1,23 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+// import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddDriverComponent } from './add-driver.component';
+// import { AddDriverComponent } from './add-driver.component';
 
-describe('AddDriverComponent', () => {
-  let component: AddDriverComponent;
-  let fixture: ComponentFixture<AddDriverComponent>;
+// describe('AddDriverComponent', () => {
+//   let component: AddDriverComponent;
+//   let fixture: ComponentFixture<AddDriverComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ AddDriverComponent ]
-    })
-    .compileComponents();
+//   beforeEach(async () => {
+//     await TestBed.configureTestingModule({
+//       declarations: [ AddDriverComponent ]
+//     })
+//     .compileComponents();
 
-    fixture = TestBed.createComponent(AddDriverComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+//     fixture = TestBed.createComponent(AddDriverComponent);
+//     component = fixture.componentInstance;
+//     fixture.detectChanges();
+//   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+//   it('should create', () => {
+//     expect(component).toBeTruthy();
+//   });
+// });

@@ -43,12 +43,6 @@ export class IndividualFileListComponent implements OnInit{
       this.fileMetaData=res;
     },error=>{})
    }
-   else if(this.callType==='driver'){
-    this.items = [{ label: 'Driver List', routerLink: '/driver' }, { label: 'View Attachment' }];
-    this.individualFileListService.getIndividualFileList('/file-meta-data-by-driver/'.concat(this.id)).subscribe((res:FileMetaData[])=>{
-      this.fileMetaData=res;
-    },error=>{})
-   }
    else{
 
    }

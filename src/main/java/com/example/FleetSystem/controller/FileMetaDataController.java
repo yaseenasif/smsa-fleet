@@ -34,8 +34,8 @@ public class FileMetaDataController {
         return ResponseEntity.ok(fileMetaDataService.getFileMetaDataByVehicleAssignment(id));
     }
 
-    @GetMapping("/file-meta-data-by-driver/{id}")
-    public ResponseEntity<List<FileMetaDataDto>> getMetaDataByDriver(@PathVariable Long id) {
-        return ResponseEntity.ok(fileMetaDataService.getFileMetaDataByDriver(id));
-    }
+//    @GetMapping("/file-meta-data-by-driver/{id}")
+//    public ResponseEntity<List<FileMetaDataDto>> getMetaDataByDriver(@PathVariable Long id) {
+//        return ResponseEntity.ok(fileMetaDataService.getFileMetaDataByDriver(id));
+//    }
 }

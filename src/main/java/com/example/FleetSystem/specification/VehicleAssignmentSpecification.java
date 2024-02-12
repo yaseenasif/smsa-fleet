@@ -3,7 +3,7 @@ package com.example.FleetSystem.specification;
 import com.example.FleetSystem.criteria.EmployeeSearchCriteria;
 import com.example.FleetSystem.criteria.VehicleSearchCriteria;
 import com.example.FleetSystem.dto.VehicleAssignmentDto;
-import com.example.FleetSystem.model.Driver;
+//import com.example.FleetSystem.model.Driver;
 import com.example.FleetSystem.model.Employee;
 import com.example.FleetSystem.model.Vehicle;
 import com.example.FleetSystem.model.VehicleAssignment;

@@ -3,7 +3,7 @@ package com.example.FleetSystem.service;
 import com.example.FleetSystem.dto.VehicleCountPerVendorDto;
 import com.example.FleetSystem.dto.VehiclePerRegionCountDto;
 import com.example.FleetSystem.model.Vehicle;
-import com.example.FleetSystem.repository.DriverRepository;
+//import com.example.FleetSystem.repository.DriverRepository;
 import com.example.FleetSystem.repository.VehicleAssignmentRepository;
 import com.example.FleetSystem.repository.VehicleReplacementRepository;
 import com.example.FleetSystem.repository.VehicleRepository;
@@ -21,8 +21,8 @@ public class DashboardCardsService {
     @Autowired
     VehicleRepository vehicleRepository;
 
-    @Autowired
-    DriverRepository driverRepository;
+//    @Autowired
+//    DriverRepository driverRepository;
 
     @Autowired
     VehicleReplacementRepository vehicleReplacementRepository;
@@ -43,8 +43,8 @@ public class DashboardCardsService {
                 .collect(Collectors.toList());
         counts.put("activeVehiclesPerVendor", vehicleCountPerVendorDtoList);
 
-        Long totalActiveDrivers = driverRepository.getActiveDriversCount();
-        counts.put("totalActiveDrivers", totalActiveDrivers);
+//        Long totalActiveDrivers = driverRepository.getActiveDriversCount();
+//        counts.put("totalActiveDrivers", totalActiveDrivers);
 
         Long totalVehicleReplacement = vehicleReplacementRepository.getVehicleReplacementCount();
         counts.put("totalVehicleReplacement", totalVehicleReplacement);

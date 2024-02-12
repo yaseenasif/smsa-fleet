@@ -66,8 +66,8 @@ public class VehicleAssignmentService {
 
     @Autowired
     StorageService storageService;
-    @Autowired
-    DriverRepository driverRepository;
+//    @Autowired
+//    DriverRepository driverRepository;
     @Autowired
     VehicleAssignmentAuditService vehicleAssignmentAuditService;
 
@@ -85,8 +85,8 @@ public class VehicleAssignmentService {
             if (vehicle.isPresent()) {
                 Optional<VehicleAssignment> existingVehicleAssignment = vehicleAssignmentRepository.findByVehicle(vehicle.get());
                 if (employee.isPresent()) {
-                    Optional<Driver> driver = driverRepository.findByEmpId(employee.get());
-                    driver.ifPresent(value -> value.setAssignedVehicle(vehicle.get().getPlateNumber()));
+//                    Optional<Driver> driver = driverRepository.findByEmpId(employee.get());
+//                    driver.ifPresent(value -> value.setAssignedVehicle(vehicle.get().getPlateNumber()));
                     vehicle.get().setVehicleStatus("Active");
 
                     if (existingVehicleAssignment.isPresent()) {
@@ -139,8 +139,8 @@ public class VehicleAssignmentService {
                 String username = ((UserDetails) principal).getUsername();
                 User user = userRepository.findByEmail(username);
 
-                Optional<Driver> driver = driverRepository.findByEmpId(optionalVehicleAssignment.get().getAssignToEmpId());
-                driver.ifPresent(value -> value.setAssignedVehicle(null));
+//                Optional<Driver> driver = driverRepository.findByEmpId(optionalVehicleAssignment.get().getAssignToEmpId());
+//                driver.ifPresent(value -> value.setAssignedVehicle(null));
 
                 Optional<Vehicle> vehicle = vehicleRepository.findById(optionalVehicleAssignment.get().getVehicle().getId());
                 vehicle.ifPresent(value -> value.setVehicleStatus("TBA"));
