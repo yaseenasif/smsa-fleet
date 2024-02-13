@@ -38,6 +38,7 @@ export class EditProjectVehicleComponent implements OnInit {
       rentalDate: null,
       startLease: null,
       expiryLease: null,
+      duration:null,
       vendor: {
         id: null,
         vendorName: null,
@@ -105,6 +106,7 @@ export class EditProjectVehicleComponent implements OnInit {
       rentalDate: null,
       startLease: null,
       expiryLease: null,
+      duration:null,
       vendor: {
         id: null,
         vendorName: null,
@@ -200,7 +202,6 @@ updateDuration(i: number) {
       } else {
           const timeDifference = expiryLeaseTime - startLeaseTime;
           const durationInDays = timeDifference / (1000 * 60 * 60 * 24);
-
           this.duration[i] = durationInDays;
           console.log('Duration:', this.duration);
       }

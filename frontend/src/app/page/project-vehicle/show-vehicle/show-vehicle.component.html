@@ -23,7 +23,7 @@
                                     <label for="vehicleType">Select Vehicle Type:</label>
                                     <p-dropdown id="vehicleType" [(ngModel)]="selectedVehicleType"
                                         [options]="vehicleTypes" optionLabel="label" optionValue="value"
-                                        placeholder="All" (onChange)="getAllProjectVehicle($event.value)"></p-dropdown>
+                                        placeholder="All" (onChange)="getProjectVehicleById(projectVehicleId!,$event.value)"></p-dropdown>
                                 </div>
                             </div>
                         </p-toolbar>
@@ -31,7 +31,8 @@
 
 
                     <div class="card">
-                        <p-table [value]="projectVehicles" [tableStyle]="{ 'min-width': '50rem' }">
+                        <p-table [value]="projectVehicle?.projectVehicleValuesList!"
+                            [tableStyle]="{ 'min-width': '50rem' }">
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th class="text-center">ID</th>
@@ -51,38 +52,39 @@
                                     <th class="text-center">Vendor</th>
                                 </tr>
                             </ng-template>
-                            <ng-template pTemplate="body" let-vehicles>
-                                <tr *ngFor="let projectVehicleValue of vehicles.projectVehicleValuesList , let i = index" >
+                            <ng-template pTemplate="body" let-projectVehicleValue>
+                                <tr>
                                     <td style="text-align: center;">{{ projectVehicleValue.id }}</td>
                                     <td style="text-align: center;">{{ projectVehicleValue.plateNumber }}</td>
                                     <td style="text-align: center;">{{ projectVehicleValue.leaseCost }}</td>
                                     <td style="text-align: center;">{{ projectVehicleValue.type }}</td>
                                     <td style="text-align: center;" *ngIf="showOriginDestination">{{
-                                        projectVehicleValue.type !== 'Leased' ? projectVehicleValue?.origin:''}}</td>
+                                        projectVehicleValue.type != 'Leased' ? projectVehicleValue?.origin:''}}</td>
                                     <td style="text-align: center;" *ngIf="showOriginDestination">{{
-                                        projectVehicleValue.type !== 'Leased' ? projectVehicleValue.destination : ''}}
+                                        projectVehicleValue.type != 'Leased' ? projectVehicleValue.destination : ''}}
                                     </td>
                                     <td style="text-align: center;" *ngIf="showOriginDestination"> {{
-                                        projectVehicleValue.type !== 'Leased' ? (projectVehicleValue.rentalDate | date:
+                                        projectVehicleValue.type != 'Leased' ? (projectVehicleValue.rentalDate | date:
                                         'mediumDate') : '' }}
                                     </td>
                                     <td style="text-align: center;" *ngIf="showLease"> {{
-                                        projectVehicleValue.type === 'Leased' ? (projectVehicleValue?.startLease | date:
+                                        projectVehicleValue.type == 'Leased' ? (projectVehicleValue?.startLease | date:
                                         'mediumDate') : '' }}
                                     </td>
-                                     <td style="text-align: center;" *ngIf="showLease"> {{
-                                        projectVehicleValue.type === 'Leased' ? (projectVehicleValue?.expiryLease | date:
+                                    <td style="text-align: center;" *ngIf="showLease"> {{
+                                        projectVehicleValue.type == 'Leased' ? (projectVehicleValue?.expiryLease | date:
                                         'mediumDate') : '' }}
                                     </td>
                                     <td style="text-align: center;" *ngIf="showLease">
-                                        {{ projectVehicleValue.type === 'Leased' ? duration[i] : '' }}
-                                      </td>
+                                        {{ projectVehicleValue.type == 'Leased' ? projectVehicleValue.duration : '' }}
+                                    </td>
                                     <td style="text-align: center;">{{ projectVehicleValue.vendor.vendorName }}</td>
-                                    <!-- Assuming 'name' is a property of the 'vendor' object -->
                                 </tr>
                             </ng-template>
                         </p-table>
                     </div>
+
+
                 </div>
             </div>
         </div>

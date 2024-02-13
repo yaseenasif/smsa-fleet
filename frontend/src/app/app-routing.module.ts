@@ -304,7 +304,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'show-vehicle',
+    path: 'show-vehicle/:id',
     component: ShowVehicleComponent,
     canActivate: [AuthGuard]
   },
