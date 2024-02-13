@@ -189,10 +189,10 @@ updateDuration(i: number) {
   } else {
       this.minDueDate = null;
   }
-  debugger;
+  
 
   if (this.projectVehicle.projectVehicleValuesList[i].startLease && this.projectVehicle.projectVehicleValuesList[i].expiryLease) {
-      debugger;
+      
       const startLeaseTime = this.projectVehicle.projectVehicleValuesList[i].startLease!.getTime();
       const expiryLeaseTime = this.projectVehicle.projectVehicleValuesList[i].expiryLease!.getTime();
 

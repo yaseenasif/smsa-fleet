@@ -26,8 +26,8 @@ public class FileMetaDataService {
     @Autowired
     VehicleAssignmentRepository vehicleAssignmentRepository;
 
-    @Autowired
-    DriverRepository driverRepository;
+//    @Autowired
+//    DriverRepository driverRepository;
 
     @Autowired
     ModelMapper modelMapper;
@@ -64,16 +64,16 @@ public class FileMetaDataService {
             throw new RuntimeException(String.format("No data found against this vehicle Assignment id => %d", id));
         }
     }
-    public List<FileMetaDataDto> getFileMetaDataByDriver(Long id) {
-        Optional<Driver> driver = driverRepository.findById(id);
-        List<FileMetaData> fileMetaDataByDriver = fileMetaDataRepository.findByDriver(driver);
-        if(!fileMetaDataByDriver.isEmpty()) {
-            return toDtoList(fileMetaDataByDriver);
-        }
-        else {
-            throw new RuntimeException(String.format("No data found against this driver id => %d", id));
-        }
-    }
+//    public List<FileMetaDataDto> getFileMetaDataByDriver(Long id) {
+//        Optional<Driver> driver = driverRepository.findById(id);
+//        List<FileMetaData> fileMetaDataByDriver = fileMetaDataRepository.findByDriver(driver);
+//        if(!fileMetaDataByDriver.isEmpty()) {
+//            return toDtoList(fileMetaDataByDriver);
+//        }
+//        else {
+//            throw new RuntimeException(String.format("No data found against this driver id => %d", id));
+//        }
+//    }
 
     public List<FileMetaDataDto> toDtoList(List<FileMetaData> fileMetaData) {
         return fileMetaData.stream().map(this::toDto).collect(Collectors.toList());

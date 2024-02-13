@@ -57,9 +57,6 @@ export class EmployeeService {
     return this.http.get<any>(`${this.url}/check-assigned-employee/${empId}`);
   }
 
-  getEmployeesNotDriver(): Observable<Employee[]> {
-    return this.http.get<Employee[]>(`${this.url}/get-employee-not-driver`)
-  }
   downloadAttachments(empSample: string): Observable<Blob> {
     return this.http.get(`${this.url}/download/${empSample}`, {
       responseType: 'blob'

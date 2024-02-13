@@ -33,8 +33,8 @@ public class FileMetaData {
     @JoinColumn(name = "vehicle_assignment_id")
     private VehicleAssignment vehicleAssignment;
 
-    @ManyToOne
-    @JoinColumn(name = "driver_id")
-    private Driver driver;
+//    @ManyToOne
+//    @JoinColumn(name = "driver_id")
+//    private Driver driver;
 
 }

@@ -7,8 +7,6 @@ import { Employee } from 'src/app/modal/employee';
 import { EmployeeService } from '../../employee-screen/service/employee.service';
 import { VehicleAssignmentService } from '../vehicle-assignment.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DriverService } from '../../driver/driver.service';
-import { Driver } from 'src/app/modal/driver';
 
 @Component({
   selector: 'app-add-assignment',
@@ -32,8 +30,7 @@ export class AddAssignmentComponent {
 
   vehicleId !: number
 
-  selecteUnAssigneddEmployee !: Employee
-  selectedUnassignedDriver!: Driver
+  selectedUnAssignedEmployee !: Employee
 
   vehicle !: Vehicle[]
 
@@ -42,7 +39,6 @@ export class AddAssignmentComponent {
   employee !: Employee[]
 
   unAssignedEmployee !: Employee[]
-  unAssignedDriver !: Driver[]
   
   vehicleAssignmentId: Number | undefined | null
   
@@ -127,7 +123,7 @@ export class AddAssignmentComponent {
   }
 
   constructor( private vehicleService: VehicleService, private employeeService: EmployeeService,
-     private vehicleAssignmentService: VehicleAssignmentService, private driverService: DriverService,
+     private vehicleAssignmentService: VehicleAssignmentService,
      private route: ActivatedRoute,
      private router: Router,
      private messageService: MessageService) { }
@@ -140,13 +136,7 @@ export class AddAssignmentComponent {
     this.items = [{ label: 'Vehicle Assignment',routerLink:'/assignment'},{ label: 'Add Vehicle Assignment'}];
     
     this.getAllVehicles();
-
-    // this.getAllEmployee();
-
-    // this.getAllUnAssignedEmployees();
-
-    this.getAllUnAssignedDrivers();
-
+    this.getAllUnAssignedEmployees();
   }
 
   getVehicleAssignmentById(id: Number) {
@@ -173,13 +163,6 @@ export class AddAssignmentComponent {
   getVehicleData() {
 
     this.vehicleAssignment.vehicle = this.selectedVehicle;
-    // this.vehicleAssignment.make = this.selectedVehicle.make;
-    // this.vehicleAssignment.design = this.selectedVehicle.design;
-    // this.vehicleAssignment.model = this.selectedVehicle.model;
-    // this.vehicleAssignment.year = this.selectedVehicle.year;
-    // this.vehicleAssignment.leaseExpiry = this.selectedVehicle.leaseExpiryDate;
-    // this.vehicleAssignment.leaseCost = this.selectedVehicle.leaseCost;
-    // this.vehicleAssignment.plateNumber = this.selectedVehicle.plateNumber;
     this.vehiclePlateNumber = this.selectedVehicle.plateNumber;
     
     this.assignedEmployeeNumber = null
@@ -235,21 +218,9 @@ export class AddAssignmentComponent {
   }
 
   getUnAssignedEmployeeData() {
-    this.selecteUnAssigneddEmployee = (this.unAssignedEmployee.find((el) => {return el.id == this.unAssignedEmployeeId}))!
-    this.vehicleAssignment.assignToEmpName = this.selecteUnAssigneddEmployee.empName
-    this.vehicleAssignment.assignToEmpId = this.selecteUnAssigneddEmployee
-  }
-
-  getAllUnAssignedDrivers() {
-    this.driverService.getUnasignedDrivers().subscribe((res: Driver[]) => {
-      this.unAssignedDriver = res;
-    })
-  }
-
-  getUnAssignedDriverData() {
-    this.selectedUnassignedDriver = (this.unAssignedDriver.find((el) => {return el.id == this.unassignedDriverId}))!
-    this.vehicleAssignment.assignToEmpName = this.selectedUnassignedDriver.empId.empName
-    this.vehicleAssignment.assignToEmpId = this.selectedUnassignedDriver.empId
+    this.selectedUnAssignedEmployee = (this.unAssignedEmployee.find((el) => {return el.id == this.unAssignedEmployeeId}))!
+    this.vehicleAssignment.assignToEmpName = this.selectedUnAssignedEmployee.empName
+    this.vehicleAssignment.assignToEmpId = this.selectedUnAssignedEmployee
   }
 }
 

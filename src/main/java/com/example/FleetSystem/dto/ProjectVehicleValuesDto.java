@@ -2,7 +2,11 @@ package com.example.FleetSystem.dto;
 
 import com.example.FleetSystem.model.ProjectVehicle;
 import com.example.FleetSystem.model.Vendor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+
+import javax.persistence.*;
+import java.sql.Date;
 
 @Getter
 @Setter
@@ -18,6 +22,11 @@ public class ProjectVehicleValuesDto {
     private Integer leaseCost;
     private String origin;
     private String destination;
+    private String rentalDate;
+    private Date startLease;
+    private Date expiryLease;
     private Boolean status;
-    private Vendor vendor;
+    private VendorDto vendorDto;
+    private ProjectVehicleDto projectVehicleDto;
 }
+

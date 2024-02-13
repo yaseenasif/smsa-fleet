@@ -1,33 +1,43 @@
 import { Component } from '@angular/core';
-import { MenuItem, MessageService, SelectItem } from 'primeng/api';
+import { MenuItem } from 'primeng/api';
 import { VehicleAssignmentService } from '../vehicle-assignment.service';
 import { VehicleAssignment } from 'src/app/modal/vehicle-assignment';
 import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
 import { VehicleService } from '../../vehicle-screen/service/vehicle.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Vehicle } from 'src/app/modal/vehicle';
+import { Vehicle } from 'src/app/modal/vehicle';;
+import { ProductField, ProductFieldValue } from 'src/app/modal/ProductField';
+import { PageEvent } from 'src/app/modal/pageEvent';
+import { ProductFieldServiceService } from '../../product-field/service/product-field-service.service';
+import { ErrorService } from 'src/app/CommonServices/Error/error.service';
+import { ConcateSearch } from 'src/app/modal/SearchCriteria';
+import { RegionService } from '../../region/service/region.service';
+import { Region } from 'src/app/modal/Region';
 
 @Component({
   selector: 'app-assignment-list',
   templateUrl: './assignment-list.component.html',
-  styleUrls: ['./assignment-list.component.scss'],
-  providers: [MessageService]
+  styleUrls: ['./assignment-list.component.scss']
 })
 export class AssignmentListComponent {
+  items: MenuItem[] | undefined;
+
   vehicle!: Vehicle;
   vehicleId: Number | undefined;
   vehicleAssignment !: VehicleAssignment[]
 
-  query !: {
-    page: number,
-    size: number
+  query: PageEvent = {
+    page: 0,
+    size: 10,
   };
 
-  // vehicleReplacement: VehicleReplacement = {
-  //   id: null,
-  //   reason: null,
-  //   vehicle: null
-  // }
+  globalTransformObj: ConcateSearch = {
+    assignToEmpId: {
+      department: undefined,
+      region: undefined,
+      section: undefined
+    }
+  };
 
   plateNumber: string | null = null;
   employeeNumber: string | null = null;
@@ -36,80 +46,70 @@ export class AssignmentListComponent {
   regionNumber: string | null = null;
   totalRecords: number = 0;
   visible!: boolean;
-  // visibleReplacement!: boolean;
   vehicleAssignmentId!: Number;
   replacementCheck: boolean = false;
-  Number: any[] | undefined;
+  searchByNumberList: VehicleAssignment[] = [];
   selectedSearchType: any = "Search Plate Number";
   placeHolder: any = "Search Plate Number"
   searchTerm: string | null = null;
-
-  constructor(private vehicleAssignmentService: VehicleAssignmentService,
-    private messageService: MessageService, private vehicleService: VehicleService,
-    private router: Router, private route: ActivatedRoute) { }
-
-
-  // products:any=[{name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
-  // {name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
-  // {name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
-  // {name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
-  // {name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
-  // {name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
-  // {name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
-  // {name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
-  // {name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},
-  // {name:"Demo",contactNumber:"Demo",referenceNumber:"Demo"},];
-  items: MenuItem[] | undefined;
+  plateNoSearch: boolean = false;
+  empNoSearch: boolean = false;
+  someObservable: any;
+  regionList: Region[] = [];
+  departmentList: ProductFieldValue[] = [];
+  sectionList: ProductFieldValue[] = [];
+  criteriaSearch: boolean = false;
 
 
+  constructor(
+    private vehicleAssignmentService: VehicleAssignmentService,
+    private productFieldService: ProductFieldServiceService,
+    private errorHandleService: ErrorService,
+    private vehicleService: VehicleService,
+    private regionService: RegionService,
+    private route: ActivatedRoute,
+    private router: Router,
+  ) { }
 
   ngOnInit() {
     this.items = [{ label: 'Vehicle Assignment' }];
-
-    // this.getAllVehicleAssignment();
+    this.getRegionValues("Region");
+    this.getDepartmentValues("Department");
+    this.getSectionValues("Section");
     this.getAllVehicleAssignmentByPlateNum();
-
     this.vehicleId = +this.route.snapshot.paramMap.get('id')!;
     if (this.vehicleId) {
       this.getVehicleById(this.vehicleId);
     }
-    this.Number = [
-      { name: 'Plate Number', value: 'Search Plate Number' },
-      { name: 'Employee Number', value: 'Search Employee Number' },
-      { name: 'Region', value: 'Search Region' },
-      { name: 'Department', value: 'Search Department' },
-      { name: 'Section', value: 'Search Section' }
-    ];
-
   }
 
-  turner = true;
   getAllVehicleAssignment() {
-
     this.vehicleAssignmentService.searchAssignmentByPlateNumber(this.plateNumber, this.query).subscribe((res: PaginatedResponse<VehicleAssignment>) => {
       this.vehicleAssignment = res.content;
       this.query = { page: res.pageable.pageNumber, size: res.size }
       this.totalRecords = res.totalElements;
+    }, error => {
+      this.errorHandleService.showError(error.error);
     })
-
-
   }
 
   deleteVehicleAssignment(id: Number) {
     this.vehicleAssignmentService.deleteVehicleAssignment(id).subscribe((res) => {
       this.vehicleAssignment = res;
-      this.messageService.add({ severity: 'error', summary: 'Delete Successfully', detail: 'Assignment has been deleted' });
-
+      this.errorHandleService.showError("Assignment has been deleted");
       this.getAllVehicleAssignment();
       this.closeDialog();
-    })
+    }, error => {
+      this.errorHandleService.showError(error.error);
+    });
   }
 
   onPageChange(event?: any) {
     this.query.page = event.page;
     this.query.size = event.rows;
-    this.getAllVehicleAssignment()
+    this.getAllVehicleAssignment();
   }
+
   showDialog(id: Number) {
     this.vehicleAssignmentId = id;
     this.visible = true;
@@ -119,80 +119,30 @@ export class AssignmentListComponent {
     this.visible = false;
   }
 
-  onSearchTypeChange(event: { originalEvent: Event, value: SelectItem }) {
-    this.placeHolder = event.value.value;
-    this.selectedSearchType = event.value.value;
-  }
-
-  search() {
-    if (this.searchTerm) {
-      switch (this.selectedSearchType) {
-        case 'Search Employee Number':
-          this.getAllVehicleAssignmentByEmployeeNum();
-          break;
-        case 'Search Plate Number':
-          this.getAllVehicleAssignmentByPlateNum();
-          break;
-        case 'Search Region':
-          this.getSearchAssignmentByRegion();
-          break;
-        case 'Search Department':
-          this.getSearchAssignmentByDepartment();
-          break;
-        case 'Search Section':
-          this.getSearchAssignmentBySection();
-          break;
-        default:
-          break;
-      }
-    } else {
-      this.getAllVehicleAssignment();
-    }
-  }
-
-  getAllVehicleAssignmentByEmployeeNum() {
-    this.vehicleAssignmentService.searchAssignmentByEmployeeNumber(this.searchTerm, this.query)
+  getAllVehicleAssignmentByEmployeeNum(searchTerm?: string) {
+    this.empNoSearch = searchTerm ? true : false;
+    this.vehicleAssignmentService.searchAssignmentByEmployeeNumber(searchTerm, this.query)
       .subscribe((res: PaginatedResponse<VehicleAssignment>) => {
         this.vehicleAssignment = res.content;
         this.query = { page: res.pageable.pageNumber, size: res.size };
         this.totalRecords = res.totalElements;
+      }, error => {
+        this.errorHandleService.showError(error.error);
       });
   }
 
-  getAllVehicleAssignmentByPlateNum() {
-    this.vehicleAssignmentService.searchAssignmentByPlateNumber(this.searchTerm, this.query)
+  getAllVehicleAssignmentByPlateNum(searchTerm?: string) {
+    this.plateNoSearch = searchTerm ? true : false;
+    this.vehicleAssignmentService.searchAssignmentByPlateNumber(searchTerm, this.query)
       .subscribe((res: PaginatedResponse<VehicleAssignment>) => {
         this.vehicleAssignment = res.content;
+        this.searchByNumberList = res.content;
         this.query = { page: res.pageable.pageNumber, size: res.size };
         this.totalRecords = res.totalElements;
+      }, error => {
+        this.errorHandleService.showError(error.error);
       });
   }
-
-  getSearchAssignmentByRegion() {
-    this.vehicleAssignmentService.searchAssignmentByRegion(this.searchTerm,'Active', this.query)
-      .subscribe((res: PaginatedResponse<VehicleAssignment>) => {
-        this.vehicleAssignment = res.content;
-        this.query = { page: res.pageable.pageNumber, size: res.size };
-        this.totalRecords = res.totalElements;
-      });
-  }
-  getSearchAssignmentByDepartment() {
-    this.vehicleAssignmentService.searchAssignmentByDepartment(this.searchTerm, 'Active', this.query)
-      .subscribe((res: PaginatedResponse<VehicleAssignment>) => {
-        this.vehicleAssignment = res.content;
-        this.query = { page: res.pageable.pageNumber, size: res.size };
-        this.totalRecords = res.totalElements;
-      });
-  }
-  getSearchAssignmentBySection() {
-    this.vehicleAssignmentService.searchAssignmentBySection(this.searchTerm, 'Active',this.query)
-      .subscribe((res: PaginatedResponse<VehicleAssignment>) => {
-        this.vehicleAssignment = res.content;
-        this.query = { page: res.pageable.pageNumber, size: res.size };
-        this.totalRecords = res.totalElements;
-      });
-  }
-
 
   replaceVehicle(id: Number) {
     this.replacementCheck = true;
@@ -202,9 +152,155 @@ export class AssignmentListComponent {
       }
     });
   }
+
   getVehicleById(id: Number) {
     this.vehicleService.getVehicleById(id).subscribe((res: Vehicle) => {
       this.vehicle = res;
     })
   }
+
+  private getRegionValues(productName: string) {
+    this.regionService.getRegion().subscribe(
+      (res: Region[]) => {
+        debugger
+        this.regionList = res.map((obj: Region) => ({
+          id: obj.id,
+          name: obj.name,
+          region: obj.name,
+          country: obj.country,
+          cities: obj.cities,
+          status: obj.status
+        }));;
+      },
+      (error) => {
+        this.errorHandleService.showError(error.error);
+      }
+    );
+  }
+
+  private getSectionValues(productName: string) {
+    this.productFieldService.getProductFieldByName(productName).subscribe(
+      (res: ProductField) => {
+        this.sectionList = res.productFieldValuesList.map((productFieldValue: ProductFieldValue) => ({
+          name: productFieldValue.name,
+          section: productFieldValue.name,
+          id: productFieldValue.id,
+          status: productFieldValue.status,
+        }));
+
+      }, error => {
+        this.errorHandleService.showError(error.error);
+      }
+    )
+  }
+
+  private getDepartmentValues(productName: string) {
+    this.productFieldService.getProductFieldByName(productName).subscribe(
+      (res: ProductField) => {
+        this.departmentList = res.productFieldValuesList.map((productFieldValue: ProductFieldValue) => ({
+          name: productFieldValue.name,
+          department: productFieldValue.name,
+          id: productFieldValue.id,
+          status: productFieldValue.status,
+        }));
+
+      }, error => {
+        this.errorHandleService.showError(error.error);
+      }
+    )
+  }
+
+  clear() {
+    window.location.reload();
+  }
+
+  getSearchAssignmentByAnyValue(searchTerm: string) {
+    this.criteriaSearch = true;
+    const transformSearch = (search: string, field: any) => {
+      return search?.hasOwnProperty(field) ? { [field]: search[field] } : null;
+    };
+
+    const transformObj: any = {
+      ...transformSearch(searchTerm, 'region'),
+      ...transformSearch(searchTerm, 'department'),
+      ...transformSearch(searchTerm, 'section'),
+    };
+
+    if (searchTerm) {
+      this.globalTransformObj.assignToEmpId = { ...this.globalTransformObj.assignToEmpId, ...transformObj };
+    }
+  }
+
+  searchCriteria() {
+    this.vehicleAssignmentService.searchAssignmentByAnyValue(this.query, this.globalTransformObj)
+      .subscribe((res: PaginatedResponse<VehicleAssignment>) => {
+        debugger
+        this.vehicleAssignment = res.content;
+        this.query = { page: res.pageable.pageNumber, size: res.size };
+        this.totalRecords = res.totalElements;
+      }, error => {
+        this.errorHandleService.showError(error.error);
+      });
+  }
+
 }
+
+// Previous Code
+
+
+// getSearchAssignmentByRegion() {
+//   this.vehicleAssignmentService.searchAssignmentByRegion(this.searchTerm, 'Active', this.query)
+//     .subscribe((res: PaginatedResponse<VehicleAssignment>) => {
+//       this.vehicleAssignment = res.content;
+//       this.query = { page: res.pageable.pageNumber, size: res.size };
+//       this.totalRecords = res.totalElements;
+//     });
+// }
+// getSearchAssignmentByDepartment() {
+//   this.vehicleAssignmentService.searchAssignmentByDepartment(this.searchTerm, 'Active', this.query)
+//     .subscribe((res: PaginatedResponse<VehicleAssignment>) => {
+//       this.vehicleAssignment = res.content;
+//       this.query = { page: res.pageable.pageNumber, size: res.size };
+//       this.totalRecords = res.totalElements;
+//     });
+// }
+// getSearchAssignmentBySection() {
+//   this.vehicleAssignmentService.searchAssignmentBySection(this.searchTerm, 'Active', this.query)
+//     .subscribe((res: PaginatedResponse<VehicleAssignment>) => {
+//       this.vehicleAssignment = res.content;
+//       this.query = { page: res.pageable.pageNumber, size: res.size };
+//       this.totalRecords = res.totalElements;
+//     });
+// }
+
+
+// onSearchTypeChange(event: { originalEvent: Event, value: SelectItem }) {
+//   this.placeHolder = event.value.value;
+//   this.selectedSearchType = event.value.value;
+// }
+
+// search() {
+//   if (this.searchTerm) {
+//     switch (this.selectedSearchType) {
+//       case 'Search Employee Number':
+//         this.getAllVehicleAssignmentByEmployeeNum();
+//         break;
+//       case 'Search Plate Number':
+//         this.getAllVehicleAssignmentByPlateNum();
+//         break;
+//       case 'Search Region':
+//         this.getSearchAssignmentByRegion();
+//         break;
+//       case 'Search Department':
+//         this.getSearchAssignmentByDepartment();
+//         break;
+//       case 'Search Section':
+//         this.getSearchAssignmentBySection();
+//         break;
+//       default:
+//         break;
+//     }
+//   } else {
+//     this.getAllVehicleAssignment();
+//   }
+// }

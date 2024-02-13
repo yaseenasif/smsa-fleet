@@ -34,7 +34,7 @@ export class ProjectVehicleComponent implements OnInit {
   
       for (let index = 0; index < this.projectVehicles.length; index++) {
         this.projectVehicles[index].projectVehicleValuesList.forEach((item: ProjectVehicleValues) => {
-          debugger;
+          
           if (item.type === "Leased") {
             if (this.countLease) {
               this.countLease.push((this.countLease[this.countLease.length - 1] || 0) + 1);

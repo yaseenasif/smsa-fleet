@@ -53,20 +53,20 @@ public class EmployeeService {
     StorageService storageService;
     @Autowired
     VehicleAssignmentRepository vehicleAssignmentRepository;
-    @Autowired
-    DriverRepository driverRepository;
+//    @Autowired
+//    DriverRepository driverRepository;
 
     public EmployeeDto deleteEmployeeById(Long id , EmployeeDto employeeDto) {
         Optional<Employee> employee = employeeRepository.findById(id);
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if(employee.isPresent()){
-            Optional<Driver> driver = driverRepository.findByEmpId(employee.get());
-            if (driver.isPresent()){
-                driver.get().setAssignedVehicle(null);
-                driver.get().setStatus(Boolean.FALSE);
-                driverRepository.save(driver.get());
-            }
+//            Optional<Driver> driver = driverRepository.findByEmpId(employee.get());
+//            if (driver.isPresent()){
+//                driver.get().setAssignedVehicle(null);
+//                driver.get().setStatus(Boolean.FALSE);
+//                driverRepository.save(driver.get());
+//            }
 
             if(principal instanceof UserDetails) {
                 String username = ((UserDetails) principal).getUsername();
@@ -137,7 +137,7 @@ public class EmployeeService {
             if(principal instanceof UserDetails) {
                 String username = ((UserDetails) principal).getUsername();
                 User user = userRepository.findByEmail(username);
-                Optional<Driver> driver = driverRepository.findByEmpId(employee.get());
+//                Optional<Driver> driver = driverRepository.findByEmpId(employee.get());
 
                 employee.get().setEmployeeNumber(employeeDto.getEmployeeNumber());
                 employee.get().setEmpName(employeeDto.getEmpName());
@@ -170,9 +170,9 @@ public class EmployeeService {
                 employee.get().setUpdatedAt(LocalDate.now());
                 employee.get().setUpdatedBy(user);
 
-                if (driver.isPresent()){
-                    driver.get().setEmpId(employee.get());
-                }
+//                if (driver.isPresent()){
+//                    driver.get().setEmpId(employee.get());
+//                }
 
                 return toDto(employeeRepository.save(employee.get()));
             }
@@ -523,9 +523,9 @@ public class EmployeeService {
         throw new RuntimeException(String.format("employee not found by id =>%d",empId));
     }
 
-    public List<EmployeeDto> getEmployeesNotDriver() {
-        return toDtoList(employeeRepository.getEmployeesNotDriver());
-    }
+//    public List<EmployeeDto> getEmployeesNotDriver() {
+//        return toDtoList(employeeRepository.getEmployeesNotDriver());
+//    }
 
     public Page<EmployeeDto> searchInactiveEmployee(EmployeeSearchCriteria employeeSearchCriteria, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);

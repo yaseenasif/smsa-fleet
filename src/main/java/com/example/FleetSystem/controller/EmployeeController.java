@@ -119,11 +119,11 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.checkAssignedEmployee(empId));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/get-employee-not-driver")
-    public ResponseEntity<List<EmployeeDto>> getEmployeesNotDriver(){
-        return ResponseEntity.ok(employeeService.getEmployeesNotDriver());
-    }
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @GetMapping("/get-employee-not-driver")
+//    public ResponseEntity<List<EmployeeDto>> getEmployeesNotDriver(){
+//        return ResponseEntity.ok(employeeService.getEmployeesNotDriver());
+//    }
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/search-employee-inactive")
     public ResponseEntity<Page<EmployeeDto>> searchInactiveEmployee(@RequestParam(value = "value",required = false) Long value,
