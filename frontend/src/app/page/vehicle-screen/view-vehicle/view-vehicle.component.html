@@ -91,11 +91,9 @@
 
                         </div>
                         <div class="flex align-items-center justify-content-end mt-4">
-                            <!-- <p-button label="Back" class="bg-o-color mr" routerLink="/vehicle"
-                                styleClass="p-button-outlined">
-                            </p-button> -->
+                            
                             <div class="flex align-items-center justify-content-end mt-4">
-                                <p-button type="button" styleClass="p-button-sucess" [routerLink]="['/vehicle']">Back</p-button>
+                                <p-button type="button" styleClass="p-button-sucess" (click)="navigateFromBack()">Back</p-button>
                               </div>
                         </div>
                     </div>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { Vehicle } from 'src/app/modal/vehicle';
 import { VehicleService } from '../service/vehicle.service';
@@ -17,24 +17,41 @@ export class ViewVehicleComponent {
   vehicle!: Vehicle;
   vehicleId: Number | undefined;
   vehicles!: Array<Vehicle>;
-  constructor(private vehicleService: VehicleService,private route: ActivatedRoute) { }
+  assignmentCheck!: boolean;
+  tooltipItems: MenuItem[] | undefined;
+
+  constructor(private vehicleService: VehicleService,private route: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit(){
     this.items = [{ label: 'Vehicle',routerLink:'/vehicle'},{ label: 'View Vehicle'}];
-    this.vehicleId = +this.route.snapshot.paramMap.get('id')!;
-    this.getVehicleById(this.vehicleId);
+    // this.vehicleId = +this.route.snapshot.paramMap.get('id')!;
+    this.route.queryParams.subscribe(params => {
+      this.assignmentCheck = params['assignmentCheck'] === 'true';
+      this.vehicleId = params['id'];
+    });
+
+    this.getVehicleById(this.vehicleId!);
     this.items2 = [
       {
+        tooltipOptions: {
+          tooltipLabel: 'Edit',
+          tooltipPosition: 'left'
+      },
         icon: 'bi bi-pen p-speeddial-action1',
         command: () => {
         },
         routerLink: ['/edit-vehicle', this.vehicleId],
-        pTooltip: 'Edit',
         severity: 'success',
-        style: { backgroundColor: 'blue', color: 'white' } // Set background color and text color
+        style: { backgroundColor: 'blue', color: 'white' } 
       },
       {
+        tooltipOptions: {
+          tooltipLabel: 'Attachment',
+          tooltipPosition: 'left'
+      },
         icon: 'bi bi-paperclip',
+        
         command: () => {
         },
         routerLink: ['/vehicle-attachment', this.vehicleId],
@@ -42,17 +59,23 @@ export class ViewVehicleComponent {
         severity: 'warning'
       },
       {
+        tooltipOptions: {
+          tooltipLabel: 'Download Attachment',
+          tooltipPosition: 'left'
+      },
         icon: 'bi bi-download',
         routerLink: [`/individual-file-list-component/:call-type/${this.vehicleId}`],
-        pTooltip: 'View Attachments',
         severity: 'success'
       },
       {
+        tooltipOptions: {
+          tooltipLabel: 'View History',
+          tooltipPosition: 'left'
+      },
         icon: 'bi bi-clock-history',
         command: () => {
         },
         routerLink: ['/vehicle-history', this.vehicleId],
-        pTooltip: 'View History',
         severity: 'success'
       },
     ];
@@ -62,5 +85,13 @@ export class ViewVehicleComponent {
     this.vehicleService.getVehicleById(id).subscribe((res: Vehicle) => {
       this.vehicle = res;
     })
+  }
+
+  navigateFromBack(){
+    if(this.assignmentCheck){
+      this.router.navigate(['/assignment'])
+    }else {
+      this.router.navigate(['/vehicle'])
+    }
   }
 }

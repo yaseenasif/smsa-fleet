@@ -52,6 +52,7 @@ public class VehicleReplacementService {
                         .replacedAt(LocalDateTime.now())
                         .replacedBy(user)
                         .reason(replacementRequest.getReplacement().getReason())
+                        .remarks(replacementRequest.getReplacement().getRemarks())
                         .build();
 
                 Vehicle replacingVehicle = replacementRequest.getReplacement().getVehicle();
@@ -72,7 +73,7 @@ public class VehicleReplacementService {
                     replacingVehicle.setInsuranceStatus(Boolean.FALSE);
                 }
                 
-                Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByVehicle(existingVehicle.get());
+                Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByVehicleAndStatusIsTrue(existingVehicle.get());
                 if(vehicleAssignment.isPresent()) {
                     replacingVehicle.setReplacementVehicleStatus("Assigned");
                     vehicleRepository.save(replacingVehicle);
@@ -92,6 +93,8 @@ public class VehicleReplacementService {
                         vehicleAssignment1.setAssignToEmpName(replacementRequest.getAssignment().getAssignToEmpName());
                     }
 
+                    vehicleAssignmentRepository.save(vehicleAssignment1);
+
                     vehicleAssignment.get().setStatus(Boolean.FALSE);
                     vehicleAssignment.get().setDeletedAt(LocalDate.now());
                     vehicleAssignment.get().setDeletedBy(user);
@@ -99,7 +102,6 @@ public class VehicleReplacementService {
                     vehicleAssignment.get().setAssignToEmpName(null);
 
                     vehicleAssignmentRepository.save(vehicleAssignment.get());
-                    vehicleAssignmentRepository.save(vehicleAssignment1);
 
                 }else replacingVehicle.setReplacementVehicleStatus("Unassigned");
 
@@ -118,7 +120,14 @@ public class VehicleReplacementService {
 
                 vehicleReplacementRepository.save(vehicleReplacement);
 
-                existingVehicle.get().setVehicleStatus("Under Maintenance");
+                if (replacementRequest.getReplacement().getReason().equalsIgnoreCase("Under Maintenance")) {
+                    existingVehicle.get().setVehicleStatus("Under Maintenance");
+                } else if (replacementRequest.getReplacement().getReason().equalsIgnoreCase("TBA")) {
+                    existingVehicle.get().setVehicleStatus("TBA");
+                }else if(replacementRequest.getReplacement().getReason().equalsIgnoreCase("Total Lost")){
+                    existingVehicle.get().setVehicleStatus("In-Active");
+                }
+
                 replacingVehicle.setVehicleStatus("Replacement");
                 replacingVehicle.setVehicleReplacement(vehicleReplacement);
 

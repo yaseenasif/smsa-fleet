@@ -15,52 +15,7 @@
         <span class="nav-text"> Employee </span>
       </span>
     </li>
-    <!-- <li class="child"  >
-                <span class="sidebar-list-hover" routerLink="/domestic-shipping" >
-                    <i class="bi bi-train-freight-front-fill"></i>
-                    <span class="nav-text">
-                        Domestic Shipment
-                    </span>
-                </span>
-            </li>
-            <li class="child"   >
-                <span class="sidebar-list-hover" routerLink="/international-tile" >
-                    <i class="bi bi-airplane-fill"></i>
-                    <span class="nav-text">
-                        International Shipment
-                    </span>
-                </span>
-            </li>
-            <li class="child"   >
-                <span class="sidebar-list-hover" routerLink="/domestic-summary" >
-                    <i class="bi bi-journal-text"></i>
-                    <span class="nav-text">
-                        Domestic Summary
-                    </span>
-                </span>
-            </li>
-            <li class="child"   >
-                <span class="sidebar-list-hover" routerLink="/international-summary-by-air" >
-                    <i class="bi bi-journal-text"></i>
-                    <span class="nav-text">
-                        International Summary By Air
-                    </span>
-                </span>
-            </li>
-            <li class="child"   >
-                <span class="sidebar-list-hover" routerLink="/international-summary-by-road" >
-                    <i class="bi bi-journal-text"></i>
-                    <span class="nav-text">
-                        International Summary By Road
-                    </span>
-                </span>
-            </li> -->
-    <li class="child" *ngIf="hasPermission('Driver')">
-      <span class="sidebar-list-hover" routerLink="/driver">
-        <i class="bi bi-car-front"></i>
-        <span class="nav-text"> Driver </span>
-      </span>
-    </li>
+    
     <li class="child" *ngIf="hasPermission('Vehicle')">
       <span class="sidebar-list-hover" routerLink="/vehicle">
         <i class="bi bi-truck"></i>
@@ -76,7 +31,7 @@
     <li class="child" *ngIf="hasPermission('Assignment')">
       <span class="sidebar-list-hover" routerLink="/assignment">
         <i class="bi bi-clipboard2-check"></i>
-        <span class="nav-text"> Assignment </span>
+        <span class="nav-text"> Fleet Management </span>
       </span>
     </li>
     <li class="child" *ngIf="hasPermission('User')">
@@ -103,38 +58,6 @@
         </span>
       </span>
     </li>
-    <!-- <li class="child"  *ngIf="configTurner" >
-                    <span class="sidebar-list-hover" routerLink="/location" >
-                        <i class="bi bi-geo-alt"></i>
-                        <span class="nav-text">
-                            Location
-                        </span>
-                    </span>
-                </li>
-                <li class="child"  *ngIf="configTurner" >
-                    <span class="sidebar-list-hover" routerLink="/location-port" >
-                        <i class="bi bi-box-seam"></i>
-                        <span class="nav-text">
-                            Location Port
-                        </span>
-                    </span>
-                </li>
-                <li class="child"  *ngIf="configTurner" >
-                    <span class="sidebar-list-hover" routerLink="/status" >
-                        <i class="bi bi-toggles2"></i>
-                        <span class="nav-text">
-                            Status
-                        </span>
-                    </span>
-                </li>
-                <li class="child"  *ngIf="configTurner" >
-                    <span class="sidebar-list-hover" routerLink="/vehicle-type" >
-                        <i class="bi bi-truck"></i>
-                        <span class="nav-text">
-                            Vehicle type
-                        </span>
-                    </span>
-                </li> -->
     <li class="child" *ngIf="configTurner && hasPermission('Vendor')">
       <span class="sidebar-list-hover" routerLink="/vendor">
         <i class="bi bi-person-plus"></i>

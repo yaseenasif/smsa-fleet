@@ -431,25 +431,53 @@
                 </div>
               </div>
               <div *ngIf="replacementCheck" class="col-12 md:col-12 lg:col-6">
-                <div class="flex flex-column gap-2">
+                <div class="flex flex-column gap-2 form-hook">
                   <label htmlFor="name">Reason For Replacement</label>
+                  <p-dropdown
+                    class="w-full"
+                    [(ngModel)]="replacementRequest.replacement!.reason"
+                    [options]="reasons"
+                    name="reason"
+                    #reason="ngModel"
+                    [required]="true"
+                    optionLabel="full"
+                    optionValue="short"
+                    [filter]="true"
+                    filterBy="name"
+                    [showClear]="true"
+                    placeholder="Select Reason
+                  "
+                  >
+                    <ng-template let-reasons pTemplate="item">
+                      <div class="flex align-items-center gap-2">
+                        <div>{{ reasons.full }}</div>
+                      </div>
+                    </ng-template>
+                  </p-dropdown>
+                </div>
+              </div>
+
+              <div *ngIf="replacementCheck" class="col-12 md:col-12 lg:col-6">
+                <div class="flex flex-column gap-2 form-hook">
+                  <label htmlFor="name">Remarks</label>
                   <input
                     pInputText
                     id="name"
                     aria-describedby="name-help"
-                    name="reason"
-                    [(ngModel)]="replacementRequest.replacement!.reason"
-                    #reason="ngModel"
+                    name="remarks"
+                    [(ngModel)]="replacementRequest.replacement!.remarks"
+                    #remarks="ngModel"
                     required
                   />
                   <small
                       id="name-help" class="p-dropdown-empty-message"
-                      *ngIf="reason.invalid && (reason.dirty || reason.touched)"
-                  > Reason is required
-                  </small>
+                      *ngIf="remarks.invalid && (remarks.dirty || remarks.touched)"
+                  > Remarks is required
+                  </small>       
+            
                 </div>
-              </div>
-              
+            </div>
+
               </div>
               <div class="flex align-items-center justify-content-end mt-4">
                 <p-button
@@ -459,9 +487,9 @@
                   styleClass="p-button-text"
                   >
                 </p-button>
-                <p-button *ngIf="!replacementCheck && !finalReturn" label="Save" type="submit" class="bg-b-color ml" [disabled]="vehicleForm.invalid || vehicleForm.invalid === null"> </p-button>
+                <p-button *ngIf="!replacementCheck && !finalReturn && !actionCheck" label="Save" type="submit" class="bg-b-color ml" [disabled]="vehicleForm.invalid || vehicleForm.invalid === null"> </p-button>
 
-                <p-button *ngIf="replacementCheck || finalReturn" label="Replace" (click)="replaceVehicle()" class="bg-b-color ml"> </p-button>
+                <p-button *ngIf="replacementCheck || finalReturn || actionCheck" label="Replace" (click)="replaceVehicle()" class="bg-b-color ml"> </p-button>
               </div>
              
             </form>
@@ -516,7 +544,7 @@
         </div>
       </div>
 
-      <div *ngIf="replacementCheck || finalReturn" class="col-12 md:col-12 lg:col-6">
+      <div *ngIf="replacementCheck || finalReturn || actionCheck" class="col-12 md:col-12 lg:col-6">
         <div class="flex flex-column gap-2">
           <label htmlFor="empName">Emp Name</label>
           <input

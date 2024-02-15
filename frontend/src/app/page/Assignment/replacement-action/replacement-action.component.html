@@ -1,0 +1,156 @@
+<div class="flex flex-row">
+    <app-sidebar></app-sidebar>
+    <div class="body-position">
+      <div class="body-holder">
+        <app-dashboard-head></app-dashboard-head>
+  
+        <div class="main">
+          <div class="card flex justify-content-center">
+            <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+          </div>
+          <div class="body-card">
+          <div class="card">
+            <h1 class="mb-4 h-color">Take Action</h1><br>
+            <div class="grid">
+                <div class="col-6">
+                    <h3 class="text-centre label-color">Replacement Vehicle</h3><br><br>
+                    <div class="grid">
+                    <div class="col-6 text-center">
+                        <p><strong class="label-color">Plate Number: </strong>{{replacementVehicle.plateNumber}}</p><br>
+                        <p><strong class="label-color">Design: </strong>{{replacementVehicle.design}}</p><br>
+                        <p><strong class="label-color">Model: </strong>{{replacementVehicle.model}}</p><br>
+                        <p><strong class="label-color">Make: </strong>{{replacementVehicle.make}}</p><br>
+                    </div>
+                    <div class="col-6 text-center">
+                        <p><strong class="label-color">Vendor : </strong>{{replacementVehicle.vendor.vendorName}} </p><br>
+                        <p><strong class="label-color">Replacement Date : </strong>{{replacementVehicle.replacementDate}} </p><br>
+                        <p><strong class="label-color">Insurance Expiry : </strong> {{replacementVehicle.insuranceExpiry}} </p><br>
+                        <p><strong class="label-color">Registration Expiry : </strong> {{replacementVehicle.registrationExpiry}} </p><br>
+                    </div>
+                </div>
+                </div>
+                <div class="col-6 ">
+                    <h3 class="text-centre h-color">Original Vehicle</h3><br><br>
+                    <div class="grid">
+                        <div class="col-6 text-center">
+                            <p><strong class="h-color">Plate Number: </strong>{{originalVehicle.plateNumber}}</p><br>
+                            <p><strong class="h-color">Design: </strong>{{originalVehicle.design}}</p><br>
+                            <p><strong class="h-color">Model: </strong>{{originalVehicle.model}}</p><br>
+                            <p><strong class="h-color">Make: </strong>{{originalVehicle.make}}</p><br>
+                            <p><strong class="h-color">Status: </strong>{{originalVehicle.vehicleStatus}}</p><br>
+                        </div>
+                        <div class="col-6 text-center">
+                            <p><strong class="h-color">Vendor : </strong>{{originalVehicle.vendor.vendorName}} </p><br>
+                            <p><strong class="h-color">Replacement Date : </strong>{{originalVehicle.replacementDate}} </p><br>
+                            <p><strong class="h-color">Insurance Expiry : </strong> {{originalVehicle.insuranceExpiry}} </p><br>
+                            <p><strong class="h-color">Registration Expiry : </strong> {{originalVehicle.registrationExpiry}} </p><br>
+                        </div>
+                    </div>
+                </div>
+           </div>
+   
+        <br>
+           <div style="display: flex; justify-content: center; align-items: center;">
+           <p-button  
+           *ngIf="originalVehicle.vehicleStatus === 'Under Maintenance'" 
+           label="Reassign original vehicle back"
+           class="bg-b-color mr"
+           (click)="showDialog()"> </p-button>
+           
+            <p-button
+            *ngIf="originalVehicle.vehicleStatus === 'In-Active'"
+            label="Replace with new permanent vehicle" 
+            class="bg-b-color ml"
+            (click)="navigateToAddVehicle()"> </p-button>
+            
+            <p-button
+            *ngIf="originalVehicle.vehicleStatus === 'In-Active'"
+            label="Make replacement vehicle permanent" 
+            class="bg-b-color ml"
+            (click)="showDialog()"> </p-button>
+        </div>
+    </div>
+</div>
+   
+   <p-dialog header="Take Action" class="label-color" [modal]="true"  [closable]="true" [(visible)]="visible" [breakpoints]="{ '960px': '75vw' }"  [draggable]="true" [resizable]="false">
+       
+    <div *ngIf="originalVehicle.vehicleStatus === 'Under Maintenance'">
+        <h3 class="h-color">Currently replacement vehicle is assigned under:</h3><br>
+        <p><strong class="h-color"> Emp Id: </strong> {{replacementAssignment.assignToEmpId.employeeNumber}}</p>
+        <p><strong class="h-color">Emp Name: </strong>{{replacementAssignment.assignToEmpName}}</p>
+
+        <h3 class="mb-2 mt-5">Do you want to change assignment?</h3>
+
+        <form #assignmentForm="ngForm">
+            <div class="p-fluid grid mb-4 mt-2">
+              <div class="col-12 md:col-12 lg:col-6">
+                <div class="flex flex-column gap-2 form-hook">
+                  <label htmlFor="name">Emp Id</label>
+                  <p-dropdown appendTo="body"
+                    class="w-full"
+                    [(ngModel)]="selectedUnassignedEmployee"
+                    [options]="unassignedEmployees"
+                    name="employee"
+                    #employee="ngModel"
+                    [required]="true"
+                    optionLabel="employeeNumber"
+                    [filter]="true"
+                    filterBy="name"
+                    [showClear]="true"
+                    placeholder="Select Emp Id"
+                    (onChange)="showEmpName()"
+                  >
+                  <ng-template pTemplate="selectedItem">
+                    <div
+                      class="flex align-items-center gap-2"
+                      *ngIf="selectedUnassignedEmployee"
+                    >
+                      <div>{{ selectedUnassignedEmployee.employeeNumber }}</div>
+                    </div>
+                  </ng-template>
+                  <ng-template let-unassignedEmployee pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                      <div>{{ unassignedEmployee.employeeNumber }}</div>
+                    </div>
+                  </ng-template>
+                  </p-dropdown>
+                </div>
+              </div>
+        
+              <div class="col-12 md:col-12 lg:col-6">
+                <div class="flex flex-column gap-2">
+                  <label htmlFor="empName">Emp Name</label>
+                  <input
+                    pInputText
+                    id="empName"
+                    [disabled] ="true"
+                    aria-describedby="name-help"
+                    name="empName"
+                    [(ngModel)]="empName"        
+                  />
+                </div>
+              </div>
+            </div>
+            </form>
+
+                <div style="display: flex; justify-content: flex-end; align-items: flex-end;">
+                <p-button label="Yes" (click)="takeAction('Reassign')" class="bg-b-color mr" [disabled]="assignmentForm.invalid || assignmentForm.invalid === null"></p-button>
+                <p-button label="No" (click)="takeActionWithoutChangedAssignment('Reassign')" class="bg-b-color mr"></p-button>
+                </div>
+        </div>
+
+        
+
+    <div *ngIf="originalVehicle.vehicleStatus === 'In-Active'">
+        <h3 class="h-color">Are you sure you want to make replacement vehicle permanent?</h3><br>
+        <div style="display: flex; justify-content: flex-end; align-items: flex-end;">
+        <p-button label="Yes" (click)="takeActionWithoutChangedAssignment('Permanent')" class="bg-b-color mr"></p-button>                
+        <p-button label="No" (click)="closeDialog()" class="bg-b-color mr"></p-button>
+        </div>
+    </div>
+
+</p-dialog>
+
+
+</div>
+</div>

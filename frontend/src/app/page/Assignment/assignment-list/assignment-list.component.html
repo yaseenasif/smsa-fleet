@@ -116,7 +116,7 @@
             </p-toolbar>
             <p-toolbar>
               <div class="p-toolbar-group-start">
-                <h2 class="h-color">Vehicle Assignments</h2>
+                <h2 class="h-color">Fleet Management</h2>
               </div>
             </p-toolbar>
           </div>
@@ -145,13 +145,13 @@
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-vehicleAssignment>
-                <tr>
+                <tr >
                   <td
+                    [classList]="vehicleAssignment.vehicle.vehicleStatus === 'Replacement'? 'text-center color-red': 'text-center bold-and-color'"
                     class="text-center bold-and-color"
-                    id="hoverPlateNumber"
-                    [routerLink]="
-                      '/view-vehicle/' + vehicleAssignment.vehicle.id
-                    "
+                    id="hoverPlateNumber" 
+                    
+                    (click)="navigateToViewVehicle(vehicleAssignment.vehicle.id)"
                   >
                     {{ vehicleAssignment.vehicle.plateNumber }}
                   </td>
@@ -159,7 +159,7 @@
                     {{ vehicleAssignment.assignToEmpId.employeeNumber }}
                   </td>
                   <td class="text-center">
-                    {{ vehicleAssignment.assignToEmpName }}
+                    {{ vehicleAssignment.assignToEmpName}}
                   </td>
                   <td class="text-center">
                     {{ vehicleAssignment.vehicle.design }}
@@ -189,7 +189,7 @@
                     {{ vehicleAssignment.vehicle.leaseCost }}
                   </td>
 
-                  <td class="text-center flex">
+                  <td class="text-center flex" style="padding-top: 40px; padding-bottom: 40px;">
                     <p-button
                       [routerLink]="['/view-assignment/', vehicleAssignment.id]"
                       pTooltip="View"
@@ -259,10 +259,11 @@
                       [outlined]="true"
                       [rounded]="true"
                       [raised]="true"
-                      severity="success"
+                      severity="secondary"
                     >
                     </p-button>
                     <p-button
+                      *ngIf="vehicleAssignment.vehicle.vehicleStatus !== 'Replacement'"
                       (click)="replaceVehicle(vehicleAssignment.vehicle.id)"
                       pTooltip="Replace Vehicle"
                       tooltipPosition="top"
@@ -273,6 +274,18 @@
                       [raised]="true"
                       severity="help"
                     ></p-button>
+                    <p-button
+                    *ngIf ="vehicleAssignment.vehicle.vehicleStatus === 'Replacement'"
+                    pTooltip="Take Action"
+                    tooltipPosition="top"
+                    icon="bi bi-pencil-square"
+                    class="ml mr"
+                    [outlined]="true"
+                    [rounded]="true"
+                    [raised]="true"
+                    severity="success"
+                    (click)="takeAction(vehicleAssignment.vehicle.id)"
+                  ></p-button>
                   </td>
                 </tr>
                 <p-dialog

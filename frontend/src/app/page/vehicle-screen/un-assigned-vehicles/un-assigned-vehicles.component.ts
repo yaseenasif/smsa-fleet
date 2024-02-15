@@ -26,6 +26,7 @@ export class UnAssignedVehiclesComponent {
   vehicleReplacement: VehicleReplacement = {
     id: null,
     reason: null,
+    remarks: null,
     vehicle: null
   }
   statusVisible!: boolean;
@@ -34,7 +35,7 @@ export class UnAssignedVehiclesComponent {
   vId!: number
   vehicleStatus: any;
   selectedStatus = { name: 'Active' };
-  size: number = 10240000; // Maximum file size (e.g., 10MB)
+  size: number = 10240000;
   uploadedFiles: any[] = [];
   items: MenuItem[] | undefined;
 
@@ -130,24 +131,6 @@ export class UnAssignedVehiclesComponent {
     })
 
   }
-
-  // inactiveVehicleById(id: Number, event: Event) {
-  //   event.stopPropagation();
-
-  //   this.vehicleService.inactiveVehicleById(id).subscribe((res) => {
-  //     this.getAllVehicles();
-
-  //   })
-  // }
-
-  // onSubmit() {
-  //   this.vehicleService.replaceVehicle(this.vId, this.vehicleReplacement).subscribe(res => {
-  //     this.messageService.add({ severity: 'success', summary: 'Vehicle Replaced', detail: 'Vehicle is successfully replaced' });
-  //     this.getAllVehicles();
-  //   }, error => {
-  //     this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
-  //   })
-  // }
 
   onPageChange(value?: string | null, event?: any) {
     this.query.page = event.page;

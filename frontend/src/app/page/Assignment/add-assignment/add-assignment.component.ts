@@ -103,7 +103,8 @@ export class AddAssignmentComponent {
       usageType: undefined,
       category: undefined,
       replacementDate: undefined,
-      replaceLeaseCost: undefined
+      replaceLeaseCost: undefined,
+      vehicleStatus: undefined
     }
   }
 

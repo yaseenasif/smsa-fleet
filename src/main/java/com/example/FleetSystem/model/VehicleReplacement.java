@@ -22,6 +22,7 @@ public class VehicleReplacement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String reason;
+    private String remarks;
     private LocalDateTime replacedAt;
 
     @OneToOne
