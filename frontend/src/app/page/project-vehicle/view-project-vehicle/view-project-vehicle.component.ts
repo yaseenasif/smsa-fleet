@@ -68,23 +68,23 @@ export class ViewProjectVehicleComponent implements OnInit {
     this.projectVehicle = obj
     console.log(obj);
     for (let index = 0; index < obj.projectVehicleValuesList.length; index++) {
-    this.updateDuration(index) 
+    this.updateDuration(index)
 
     }
-    
+
   }
   calculateDuration(startLease: Date | null | undefined, expiryLease: Date | null | undefined): number {
     if (startLease && expiryLease) {
       const startLeaseDate = new Date(startLease);
       const expiryLeaseDate = new Date(expiryLease);
-  
+
       if (!isNaN(startLeaseDate.getTime()) && !isNaN(expiryLeaseDate.getTime())) {
         const durationInMilliseconds = expiryLeaseDate.getTime() - startLeaseDate.getTime();
         const durationInDays = durationInMilliseconds / (1000 * 60 * 60 * 24);
         return durationInDays;
       }
     }
-  
+
     return -1; // Indicate an error or invalid date(s)
   }
   getAllVendors() {
@@ -98,20 +98,20 @@ export class ViewProjectVehicleComponent implements OnInit {
     } else {
         this.minDueDate = null;
     }
-    
-  
+
+
     if (this.projectVehicle.projectVehicleValuesList[i].startLease && this.projectVehicle.projectVehicleValuesList[i].expiryLease) {
-        
+
         const startLeaseTime = this.projectVehicle.projectVehicleValuesList[i].startLease!.getTime();
         const expiryLeaseTime = this.projectVehicle.projectVehicleValuesList[i].expiryLease!.getTime();
-  
+
         if (expiryLeaseTime < startLeaseTime) {
             this.duration[i] = Number(null); // Convert null to number type
             console.error('Expiry date is before start date.');
         } else {
             const timeDifference = expiryLeaseTime - startLeaseTime;
             const durationInDays = timeDifference / (1000 * 60 * 60 * 24);
-  
+
             this.duration[i] = durationInDays;
             console.log('Duration:', this.duration);
         }

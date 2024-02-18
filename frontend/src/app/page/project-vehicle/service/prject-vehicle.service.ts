@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ProjectVehicle } from 'src/app/modal/project-vehicle';
+import { ProjectVehicle, ProjectVehicleValues } from 'src/app/modal/project-vehicle';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -25,7 +25,7 @@ export class PrjectVehicleService {
     const updateUrl = `${this.url}/update-project-vehicle/${id}`;
     return this.http.patch<ProjectVehicle>(updateUrl, updateProjectVehicle);
   }
-  getProjectVehicleById(id : Number){
+  getProjectVehicleById(id: Number) {
     return this.http.get<ProjectVehicle>(`${this.url}/project-vehicle/${id}`);
   }
 }

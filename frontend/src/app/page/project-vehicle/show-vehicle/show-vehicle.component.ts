@@ -3,6 +3,7 @@ import { MenuItem, MessageService } from 'primeng/api';
 import { ProjectVehicle, ProjectVehicleValues } from 'src/app/modal/project-vehicle';
 import { PrjectVehicleService } from '../service/prject-vehicle.service';
 import { SelectItem } from 'primeng/api';
+import { ErrorService } from 'src/app/CommonServices/Error/error.service';
 
 @Component({
   selector: 'app-show-vehicle',
@@ -11,7 +12,8 @@ import { SelectItem } from 'primeng/api';
 })
 export class ShowVehicleComponent {
   constructor(private projectVehicleService: PrjectVehicleService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private errorHandleService: ErrorService,
   ) { }
   selectedVehicleType: string = '';
   showOriginDestination: boolean = true;
@@ -54,7 +56,6 @@ export class ShowVehicleComponent {
     this.projectVehicleService.getAllProjectVehicle().subscribe((projectVehicle: ProjectVehicle[]) => {
       this.projectVehicles = projectVehicle;
       if (!value) {
-
         for (let index = 0; index < projectVehicle.length; index++) {
           this.convertInDate(projectVehicle[index])
           for (let i = 0; i < projectVehicle[index].projectVehicleValuesList.length; i++) {
@@ -132,6 +133,4 @@ export class ShowVehicleComponent {
       }
     });
   }
-  searchByRentalDate(value: Date) { }
-  searchByLeaseDate(value: Date) { }
 }

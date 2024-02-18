@@ -37,7 +37,7 @@ public class VehicleSpecification {
             if (vehicleSearchCriteria == null || vehicleSearchCriteria.getValue() == null || vehicleSearchCriteria
                     .getValue().isEmpty()) {
                 query.orderBy(criteriaBuilder.desc(root.get("id")));
-                return  criteriaBuilder.and(
+                return criteriaBuilder.and(
                         criteriaBuilder.or(
                                 criteriaBuilder.isNull(vehicleAssignmentJoin.get("vehicle")),
                                 criteriaBuilder.isFalse(vehicleAssignmentJoin.get("status"))
@@ -52,7 +52,6 @@ public class VehicleSpecification {
                                     .getValue().toLowerCase() + "%"), criteriaBuilder.isTrue(root.get("status")));
         };
     }
-
 
 
     public static Specification<Vehicle> getInactiveSearchSpecification(VehicleSearchCriteria vehicleSearchCriteria) {

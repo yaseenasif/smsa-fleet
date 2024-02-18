@@ -71,9 +71,6 @@ public class VehicleAssignmentService {
     @Autowired
     VehicleAssignmentAuditService vehicleAssignmentAuditService;
 
-    @Autowired
-    EntityManager entityManager;
-
     public VehicleAssignmentDto save(VehicleAssignmentDto vehicleAssignmentDto) {
         Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principle instanceof UserDetails) {

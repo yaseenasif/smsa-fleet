@@ -1,11 +1,12 @@
 package com.example.FleetSystem.service;
 
-import com.example.FleetSystem.dto.ProjectVehicleDto;
+
 import com.example.FleetSystem.dto.ProjectVehicleValuesDto;
-import com.example.FleetSystem.model.ProjectVehicle;
 import com.example.FleetSystem.model.ProjectVehicleValues;
 import com.example.FleetSystem.repository.ProjectVehicleValuesRepository;
+import com.example.FleetSystem.specification.ProjectVehicleSpecification;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -23,18 +24,25 @@ public class ProjectVehicleValuesService {
         this.modelMapper = modelMapper;
     }
 
-    public List<ProjectVehicleValuesDto> getAllByRentalDate(String rentalDate) {
-        List<ProjectVehicleValues> projectVehicleValuesList = projectVehicleValuesRepository.findProjectVehicleValuesByRentalDateAndStatusIsTrue(rentalDate);
+    public List<ProjectVehicleValuesDto> getAllBySearchSpecification(Long id,ProjectVehicleValues projectVehicleValues) {
+        Specification<ProjectVehicleValues> projectVehicleValuesSpecification = ProjectVehicleSpecification.getSearchSpecificationByCriteria(id,projectVehicleValues);
+        List<ProjectVehicleValues> projectVehicleValuesList = projectVehicleValuesRepository.findAll(projectVehicleValuesSpecification);
 
         return projectVehicleValuesList.stream()
                 .map(this::toDto)
                 .collect(Collectors.toList());
     }
 
-    public List<ProjectVehicleValuesDto> getAllByLeaseDates(Date startLease, Date expiryLease) {
+    public List<ProjectVehicleValuesDto> getAllByLeaseDates(Long id, Date startLease, Date expiryLease) {
         List<ProjectVehicleValues> projectVehicleValuesList = projectVehicleValuesRepository
-                .findByStartLeaseBetween(startLease, expiryLease);
-        return projectVehicleValuesList.stream()
+                .findAllByProjectVehicleId(id);
+
+        List<ProjectVehicleValues> filteredList = projectVehicleValuesList.stream()
+                .filter(value -> value.getStartLease().compareTo(startLease) >= 0 &&
+                        value.getStartLease().compareTo(expiryLease) <= 0)
+                .collect(Collectors.toList());
+
+        return filteredList.stream()
                 .map(this::toDto)
                 .collect(Collectors.toList());
     }
