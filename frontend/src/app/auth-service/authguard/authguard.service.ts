@@ -16,8 +16,8 @@ export class AuthguardService {
     { permission: 'Employee', route: ['/employee', '/add-employee', '/edit-employee/:id', '/employee-attachment/:id', 'view-employee/:id'] },
     { permission: 'Driver', route: ['/driver', '/add-driver', '/edit-driver/:id', '/driver-attachment/:id', '/view-driver/:id'] },
     {
-      permission: 'Vehicle', route: ['/vehicle','/add-vehicle','/add-vehicle/:replacementCheck/:vId','/edit-vehicle/:id','/vehicle-history/:id','/vehicle-attachment/:id','/vehicle-detail/:id','/vehicle/:vehicletab','/view-vehicle/:id','/unassigned-vehicle']},
-    { permission: 'Assignment', route: ['/assignment', '/add-assignment', '/edit-assignment/:id', '/assignment-attachment/:id', '/view-assignment/:id', '/assignment-history/:id',] },
+      permission: 'Vehicle', route: ['/vehicle','/add-vehicle','/add-vehicle/:replacementCheck/:vId','/edit-vehicle/:id','/vehicle-history/:id','/vehicle-attachment/:id','/vehicle-detail/:id','/vehicle/:vehicletab','/view-vehicle/:id','/view-vehicle/assignmentCheck/:id','/unassigned-vehicle']},
+    { permission: 'Assignment', route: ['/assignment', '/add-assignment', '/edit-assignment/:id', '/assignment-attachment/:id', '/view-assignment/:id', '/assignment-history/:id','/replacement-action/:id'] },
     { permission: 'User', route: ['/user', '/add-user', '/edit-user/:id'] },
     { permission: 'Vendor', route: ['/vendor', '/add-vendor', '/edit-vendor/:id', '/vendor-attachment/:id',] },
     { permission: 'Permission', route: ['/permission', '/add-permission', '/edit-permission/:id'] },

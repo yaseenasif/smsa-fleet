@@ -162,7 +162,6 @@ export class AssignmentListComponent {
   private getRegionValues(productName: string) {
     this.regionService.getRegion().subscribe(
       (res: Region[]) => {
-        debugger
         this.regionList = res.map((obj: Region) => ({
           id: obj.id,
           name: obj.name,
@@ -234,7 +233,6 @@ export class AssignmentListComponent {
   searchCriteria() {
     this.vehicleAssignmentService.searchAssignmentByAnyValue(this.query, this.globalTransformObj)
       .subscribe((res: PaginatedResponse<VehicleAssignment>) => {
-        debugger
         this.vehicleAssignment = res.content;
         this.query = { page: res.pageable.pageNumber, size: res.size };
         this.totalRecords = res.totalElements;
@@ -243,64 +241,20 @@ export class AssignmentListComponent {
       });
   }
 
+
+  takeAction(vId: Number){
+    this.router.navigate(['/replacement-action/id'], {
+      queryParams: {
+         id: vId
+      } 
+     })
+  }
+
+  navigateToViewVehicle(id: Number){
+    this.router.navigate(['/view-vehicle/assignmentCheck/id'], {
+      queryParams: {
+        assignmentCheck: 'true', id: id
+      }
+    });
+  }
 }
-
-// Previous Code
-
-
-// getSearchAssignmentByRegion() {
-//   this.vehicleAssignmentService.searchAssignmentByRegion(this.searchTerm, 'Active', this.query)
-//     .subscribe((res: PaginatedResponse<VehicleAssignment>) => {
-//       this.vehicleAssignment = res.content;
-//       this.query = { page: res.pageable.pageNumber, size: res.size };
-//       this.totalRecords = res.totalElements;
-//     });
-// }
-// getSearchAssignmentByDepartment() {
-//   this.vehicleAssignmentService.searchAssignmentByDepartment(this.searchTerm, 'Active', this.query)
-//     .subscribe((res: PaginatedResponse<VehicleAssignment>) => {
-//       this.vehicleAssignment = res.content;
-//       this.query = { page: res.pageable.pageNumber, size: res.size };
-//       this.totalRecords = res.totalElements;
-//     });
-// }
-// getSearchAssignmentBySection() {
-//   this.vehicleAssignmentService.searchAssignmentBySection(this.searchTerm, 'Active', this.query)
-//     .subscribe((res: PaginatedResponse<VehicleAssignment>) => {
-//       this.vehicleAssignment = res.content;
-//       this.query = { page: res.pageable.pageNumber, size: res.size };
-//       this.totalRecords = res.totalElements;
-//     });
-// }
-
-
-// onSearchTypeChange(event: { originalEvent: Event, value: SelectItem }) {
-//   this.placeHolder = event.value.value;
-//   this.selectedSearchType = event.value.value;
-// }
-
-// search() {
-//   if (this.searchTerm) {
-//     switch (this.selectedSearchType) {
-//       case 'Search Employee Number':
-//         this.getAllVehicleAssignmentByEmployeeNum();
-//         break;
-//       case 'Search Plate Number':
-//         this.getAllVehicleAssignmentByPlateNum();
-//         break;
-//       case 'Search Region':
-//         this.getSearchAssignmentByRegion();
-//         break;
-//       case 'Search Department':
-//         this.getSearchAssignmentByDepartment();
-//         break;
-//       case 'Search Section':
-//         this.getSearchAssignmentBySection();
-//         break;
-//       default:
-//         break;
-//     }
-//   } else {
-//     this.getAllVehicleAssignment();
-//   }
-// }

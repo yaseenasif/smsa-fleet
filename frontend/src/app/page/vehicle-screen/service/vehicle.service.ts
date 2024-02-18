@@ -12,6 +12,7 @@ import * as XLSX from 'xlsx';
 import { VehicleAssignment } from 'src/app/modal/vehicle-assignment';
 import { ReplacementRequest } from 'src/app/modal/replacementRequest';
 import { FinalReturnRequest } from 'src/app/modal/finalReturnRequest';
+import { ReplacementActionRequest } from 'src/app/modal/replacement-action-request';
 
 @Injectable({
   providedIn: 'root'
@@ -126,5 +127,9 @@ export class VehicleService {
 
   findReplacementVehicle(id: Number): Observable<Vehicle>{
     return this.http.get<Vehicle>(`${this.url}/find-replacement-vehicle/${id}`);
+   }
+
+   replacementVehicleAction(id: Number, replacementActionRequest: ReplacementActionRequest): Observable<Vehicle>{
+     return this.http.patch<Vehicle>(`${this.url}/replacement-vehicle-action/${id}`,replacementActionRequest);
    }
 }

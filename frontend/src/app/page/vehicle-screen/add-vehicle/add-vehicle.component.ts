@@ -15,6 +15,7 @@ import { EmployeeService } from '../../employee-screen/service/employee.service'
 import { Employee } from 'src/app/modal/employee';
 import { ReplacementRequest } from 'src/app/modal/replacementRequest';
 import { FinalReturnRequest } from 'src/app/modal/finalReturnRequest';
+import { ReplacementActionRequest } from 'src/app/modal/replacement-action-request';
 
 
 @Component({
@@ -95,8 +96,8 @@ export class AddVehicleComponent implements OnInit{
           usageType: undefined,
           category: undefined,
           replacementDate: undefined,
-          replaceLeaseCost: undefined
-    
+          replaceLeaseCost: undefined,
+          vehicleStatus: undefined
     }
   }
 }
@@ -142,10 +143,20 @@ export class AddVehicleComponent implements OnInit{
   categories: ProductField | null | undefined;
   vId!: number;
 
+    // reasons: String[]=["Original Vehicle Under Maintenance","Original Vehicle Under TBA","Original Vehicle is Total lost"]
+    // shortenedReasons: string[] = ["Under Maintenance", "Under TBA", "Total lost"];
+
+    reasons: any[] = [
+      { full: "Original Vehicle Under Maintenance", short: "Under Maintenance" },
+      { full: "Original Vehicle Under TBA", short: "TBA" },
+      { full: "Original Vehicle is Total lost", short: "Total Lost" }
+    ];
+
   replacementRequest: ReplacementRequest = {
     replacement: {
           id:undefined,
           reason:undefined,
+          remarks: undefined,
           vehicle:undefined
       },
     assignment: {
@@ -208,7 +219,8 @@ export class AddVehicleComponent implements OnInit{
         usageType:  undefined,
         category:  undefined,
         replacementDate: undefined,
-        replaceLeaseCost: undefined
+        replaceLeaseCost: undefined,
+        vehicleStatus: undefined
     }
     }
   }
@@ -218,6 +230,13 @@ export class AddVehicleComponent implements OnInit{
   previousVehicle!: Vehicle;
   finalReturn!: boolean;
   temporaryReplacementVehicle!: Vehicle;
+  actionCheck!: boolean;
+  
+  replacementActionRequest: ReplacementActionRequest = {
+    changedAssignedEmployee:  undefined,
+    permanentVehicle:  undefined,
+    action: undefined
+  };
 
   constructor(
     private vehicleService: VehicleService,
@@ -244,7 +263,7 @@ export class AddVehicleComponent implements OnInit{
     this.getCategory();
     this.getRegion();
 
-
+debugger
     this.route.queryParams.subscribe(params => {
       this.replacementCheck = params['replacementCheck'] === 'true';
       this.vId = params['vId'];
@@ -254,6 +273,11 @@ export class AddVehicleComponent implements OnInit{
       this.finalReturn = params['finalReturn'] === 'true';
       this.vId = params['vId'];
     });
+
+    this.route.queryParams.subscribe(params =>{
+      this.actionCheck = params['actionCheck'] === 'true';
+      this.vId = params['vId'];
+    })
 
     if(this.vId){
       this.findReplacementVehicle(this.vId);
@@ -344,6 +368,7 @@ export class AddVehicleComponent implements OnInit{
   }
 
  replaceVehicle(){
+   debugger
    if(this.vehicleAssignment){
      this.showDialog();
    }else{
@@ -362,7 +387,6 @@ showEmpName() {
 }
 
  replaceVehicleWithAssignment(){
-   debugger
   if(this.replacementCheck){
    this.replacementRequest.assignment!.assignToEmpId = this.selectedUnassignedEmployee
    this.replacementRequest.assignment!.assignToEmpName = this.empName
@@ -387,11 +411,18 @@ showEmpName() {
   },error=>{
     this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
   })
+ }else if(this.actionCheck){
+   this.replacementActionRequest.action = 'Replace'
+   this.replacementActionRequest.changedAssignedEmployee = this.selectedUnassignedEmployee
+   this.replacementActionRequest.permanentVehicle = this.vehicle
+   this.vehicleService.replacementVehicleAction(this.vId,this.replacementActionRequest).subscribe((res)=>{
+    this.messageService.add({ severity: 'success', summary: 'Permanent Vehicle', detail: 'Permenant Vehicle has been added'});
+    this.router.navigate(['/assignment'])
+   })
  }
 }
 
  replaceVehicleWithoutAssignment(){
-   debugger
   if(this.replacementCheck){ 
   this.replacementRequest.assignment = null
    this.replacementRequest.replacement!.vehicle = this.vehicle 
@@ -412,6 +443,14 @@ showEmpName() {
   },error=>{    
     this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
   })
+ }else if (this.actionCheck){
+  this.replacementActionRequest.action = 'Replace'
+  this.replacementActionRequest.changedAssignedEmployee = null
+  this.replacementActionRequest.permanentVehicle = this.vehicle
+  this.vehicleService.replacementVehicleAction(this.vId,this.replacementActionRequest).subscribe((res)=>{
+    this.messageService.add({ severity: 'success', summary: 'Permanent Vehicle', detail: 'Permenant Vehicle has been added'});
+    this.router.navigate(['/assignment'])
+   })
  }
 }
 

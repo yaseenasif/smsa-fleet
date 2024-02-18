@@ -16,6 +16,7 @@ public class VehicleReplacementDto {
 
     private Long id;
     private String reason;
+    private String remarks;
     private Vehicle vehicle;
 
 }

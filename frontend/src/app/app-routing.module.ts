@@ -64,6 +64,7 @@ import { AddProjectVehicleComponent } from './page/project-vehicle/add-project-v
 import { EditProjectVehicleComponent } from './page/project-vehicle/edit-project-vehicle/edit-project-vehicle.component';
 import { ViewProjectVehicleComponent } from './page/project-vehicle/view-project-vehicle/view-project-vehicle.component';
 import { ShowVehicleComponent } from './page/project-vehicle/show-vehicle/show-vehicle.component';
+import { ReplacementActionComponent } from './page/Assignment/replacement-action/replacement-action.component';
 
 const routes: Routes = [
   {
@@ -379,6 +380,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'view-vehicle/assignmentCheck/:id',
+    component: ViewVehicleComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'view-employee/:id',
     component: ViewEmployeeComponent,
     canActivate: [AuthGuard]
@@ -397,6 +403,11 @@ const routes: Routes = [
     path: 'add-region/:id',
     component: AddRegionComponent,
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'replacement-action/:id',
+    component: ReplacementActionComponent,
+    canActivate: [AuthGuard]  
   }
 
 ];

@@ -59,7 +59,7 @@ export interface VehicleAssignment {
             category: String | null | undefined
             replacementDate: Date | null | undefined
             replaceLeaseCost: Number | null | undefined
-
+            vehicleStatus: String | null | undefined
     }
 
 }

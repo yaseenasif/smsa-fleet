@@ -6,15 +6,12 @@ import com.example.FleetSystem.dto.VehicleAssignmentDto;
 import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.exception.ExcelException;
 import com.example.FleetSystem.model.*;
-import com.example.FleetSystem.payload.ExcelErrorResponse;
-import com.example.FleetSystem.payload.FinalReturnRequest;
-import com.example.FleetSystem.payload.VehicleHistoryResponse;
+import com.example.FleetSystem.payload.*;
 import com.example.FleetSystem.repository.FileHistoryRepository;
 import com.example.FleetSystem.repository.UserRepository;
 import com.example.FleetSystem.repository.VehicleRepository;
 import com.example.FleetSystem.repository.VendorRepository;
 import com.example.FleetSystem.specification.VehicleSpecification;
-import com.example.FleetSystem.payload.ResponseMessage;
 import com.example.FleetSystem.repository.*;
 import org.apache.poi.ss.usermodel.*;
 import org.hibernate.envers.RevisionType;
@@ -797,5 +794,108 @@ public class VehicleService {
     }
 
 
+    public VehicleDto replacementVehicleAction(Long id, ReplacementActionRequest replacementActionRequest) {
+        Optional<Vehicle> replacementVehicle = vehicleRepository.findById(id);
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (replacementVehicle.isPresent()) {
+            Optional<VehicleAssignment> currentAssignment = vehicleAssignmentRepository.findByVehicle(replacementVehicle.get());
+            Optional<Vehicle> originalVehicle = vehicleRepository.findById(replacementVehicle.get().getVehicleReplacement().getVehicle().getId());
+
+            if (originalVehicle.isPresent()) {
+                if (principal instanceof UserDetails) {
+                    String username = ((UserDetails) principal).getUsername();
+                    User user = userRepository.findByEmail(username);
+                    Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByVehicle(originalVehicle.get());
+
+                    switch (replacementActionRequest.getAction()) {
+                        case "Reassign":
+                            if (vehicleAssignment.isPresent()) {
+                                vehicleAssignment.get().setStatus(Boolean.TRUE);
+                                vehicleAssignment.get().setUpdatedBy(user);
+                                vehicleAssignment.get().setUpdatedAt(LocalDate.now());
+                                if (replacementActionRequest.getChangedAssignedEmployee() != null) {
+                                    vehicleAssignment.get().setAssignToEmpId(replacementActionRequest.getChangedAssignedEmployee());
+                                    vehicleAssignment.get().setAssignToEmpName(replacementActionRequest.getChangedAssignedEmployee().getEmpName());
+                                } else {
+                                    vehicleAssignment.get().setAssignToEmpId(currentAssignment.get().getAssignToEmpId());
+                                    vehicleAssignment.get().setAssignToEmpName(currentAssignment.get().getAssignToEmpName());
+                                }
+                            }
+
+                            currentAssignment.get().setAssignToEmpId(null);
+                            currentAssignment.get().setAssignToEmpName(null);
+                            currentAssignment.get().setStatus(Boolean.FALSE);
+                            currentAssignment.get().setDeletedBy(user);
+
+                            currentAssignment.get().setDeletedAt(LocalDate.now());
+                            originalVehicle.get().setVehicleStatus("Active");
+                            replacementVehicle.get().setVehicleReplacement(null);
+                            replacementVehicle.get().setReplacementVehicleStatus("Returned Back");
+
+                            vehicleAssignmentRepository.save(currentAssignment.get());
+                            vehicleAssignmentRepository.save(vehicleAssignment.get());
+                            vehicleRepository.save(originalVehicle.get());
+                            break;
+
+                        case "Replace":
+                            Vehicle permanentVehicle = toEntity(replacementActionRequest.getPermanentVehicle());
+                            permanentVehicle.setCreatedAt(LocalDate.now());
+                            permanentVehicle.setCreatedBy(user);
+
+                            Date currentDate = Date.valueOf(LocalDate.now());
+
+                            if (currentDate.before(replacementActionRequest.getPermanentVehicle().getRegistrationExpiry()) || currentDate.equals(replacementActionRequest.getPermanentVehicle().getRegistrationExpiry())) {
+                                permanentVehicle.setRegistrationStatus(Boolean.TRUE);
+                            } else if (currentDate.after(replacementActionRequest.getPermanentVehicle().getRegistrationExpiry())) {
+                                permanentVehicle.setRegistrationStatus(Boolean.FALSE);
+                            }
+
+                            if (currentDate.before(replacementActionRequest.getPermanentVehicle().getInsuranceExpiry()) || currentDate.equals(replacementActionRequest.getPermanentVehicle().getInsuranceExpiry())) {
+                                permanentVehicle.setInsuranceStatus(Boolean.TRUE);
+                            } else if (currentDate.after(replacementActionRequest.getPermanentVehicle().getInsuranceExpiry())) {
+                                permanentVehicle.setInsuranceStatus(Boolean.FALSE);
+                            }
+
+                            permanentVehicle.setVehicleStatus("Active");
+                            vehicleRepository.save(permanentVehicle);
+                            VehicleAssignment newAssignment = VehicleAssignment.builder()
+                                    .vehicle(permanentVehicle)
+                                    .status(Boolean.TRUE)
+                                    .createdBy(user)
+                                    .createdAt(LocalDate.now())
+                                    .build();
+
+                            if (replacementActionRequest.getChangedAssignedEmployee() != null) {
+                                newAssignment.setAssignToEmpId(replacementActionRequest.getChangedAssignedEmployee());
+                                newAssignment.setAssignToEmpName(replacementActionRequest.getChangedAssignedEmployee().getEmpName());
+                            } else {
+                                newAssignment.setAssignToEmpId(currentAssignment.get().getAssignToEmpId());
+                                newAssignment.setAssignToEmpName(currentAssignment.get().getAssignToEmpName());
+                            }
+
+                            currentAssignment.get().setAssignToEmpId(null);
+                            currentAssignment.get().setAssignToEmpName(null);
+                            currentAssignment.get().setStatus(Boolean.FALSE);
+                            currentAssignment.get().setDeletedBy(user);
+
+                            replacementVehicle.get().setReplacementVehicleStatus("Returned Back");
+
+                            vehicleAssignmentRepository.save(newAssignment);
+                            vehicleAssignmentRepository.save(currentAssignment.get());
+                            break;
+
+                        case "Permanent":
+                            replacementVehicle.get().setReplacementVehicleStatus(null);
+                            replacementVehicle.get().setVehicleReplacement(null);
+                            replacementVehicle.get().setVehicleStatus("Active");
+                            break;
+
+                    }
+                }
+            }
+        }
+        return toDto(vehicleRepository.save(replacementVehicle.get()));
+    }
 }
 
