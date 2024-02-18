@@ -6,8 +6,6 @@ import { SelectItem } from 'primeng/api';
 import { ErrorService } from 'src/app/CommonServices/Error/error.service';
 import { ActivatedRoute } from '@angular/router';
 import { PageEvent } from 'src/app/modal/pageEvent';
-import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
-import { ErrorService } from 'src/app/CommonServices/Error/error.service';
 
 @Component({
   selector: 'app-show-vehicle',
@@ -15,140 +13,101 @@ import { ErrorService } from 'src/app/CommonServices/Error/error.service';
   styleUrls: ['./show-vehicle.component.scss']
 })
 export class ShowVehicleComponent {
-  constructor(private projectVehicleService: PrjectVehicleService,
-    private messageService: MessageService,
-    private errorHandleService: ErrorService,
-    private messageService: MessageService,
-    private route: ActivatedRoute,
-    private errorHandleService: ErrorService,
-
-  ) { }
-  selectedVehicleType: string = '';
-  showOriginDestination: boolean = true;
-  showLease: boolean = true;
+  projectVehicle: ProjectVehicle | undefined | null;
   vehicleTypes: SelectItem[] = [
     { label: 'Rental', value: 'Rental' },
     { label: 'Leased', value: 'Leased' },
     { label: 'All', value: 'All' },
   ];
-  query: PageEvent = {
-    page: 0,
-    size: 10,
-  };
-  projectRentalDate !: ProjectVehicle[]
-  searchByNumberList: ProjectVehicle[] = [];
-  totalRecords: number = 0;
-  rentalDate: boolean = false;
+  showOriginDestination: boolean = true;
+  selectedVehicleType: string = '';
+  showLease: boolean = true;
+  searchWithLease: boolean | undefined | null;
   searchDates: ProjectVehicleValues = {
-    id: undefined,
-    plateNumber: undefined,
-    leaseCost: undefined,
-    type: undefined,
-    origin: undefined,
-    destination: undefined,
-    rentalDate: undefined,
-    startLease: undefined,
-    expiryLease: undefined,
     vendor: {
-      id: undefined,
-      vendorName: undefined,
       officeLocation: undefined,
-      contactPersonList: [],
+      vendorName: undefined,
+      id: undefined,
+      contactPersonList: [{
+        phoneNumber: undefined,
+        email: undefined,
+        name: undefined,
+        id: undefined,
+      }],
       attachments: undefined,
     },
-    duration: undefined
+    plateNumber: undefined,
+    destination: undefined,
+    expiryLease: undefined,
+    rentalDate: undefined,
+    startLease: undefined,
+    leaseCost: undefined,
+    duration: undefined,
+    origin: undefined,
+    type: undefined,
+    id: undefined,
   };
-  projectVehicles: ProjectVehicle[] = [];
-  projectVehicle: ProjectVehicle | undefined | null;
-  projectVehicleValues: ProjectVehicleValues[] = [];
   projectVehicleId: number | undefined;
-  items: MenuItem[] | undefined;
-  // duration:number[]=[];
   minDueDate: Date | null | undefined;
+  items: MenuItem[] | undefined;
+  searchType: string | null | undefined;
+
+  constructor(
+    private projectVehicleService: PrjectVehicleService,
+    private errorHandleService: ErrorService,
+    private route: ActivatedRoute,
+  ) { }
+
   ngOnInit(): void {
     this.items = [{ label: 'Show Vehicle', routerLink: '/project-vehicle' }, { label: 'Show Project Vehicle' }];
-    // this.getAllProjectVehicle()
     this.projectVehicleId = +this.route.snapshot.paramMap.get('id')!;
     if (this.projectVehicleId) {
       this.getProjectVehicleById(this.projectVehicleId);
     }
   }
+
   getProjectVehicleById(id: number, value?: string, date?: Date) {
     this.projectVehicleService.getProjectVehicleById(id).subscribe((res: ProjectVehicle) => {
+      debugger
       this.projectVehicle = res;
       this.convertInDate(this.projectVehicle)
-      this.projectVehicle.projectVehicleValuesList.forEach((el: ProjectVehicleValues, index: number) => {
-        this.updateDuration(index)
-      })
       if (value) {
         this.onTypeChange(value)
       }
-      debugger
-      this.searchByRentalDate(date)
     })
   }
-  // getAllProjectVehicle(value? : string) {
-  //   this.projectVehicleService.getAllProjectVehicle().subscribe((projectVehicle: ProjectVehicle[]) => {
-  //     this.projectVehicles = projectVehicle;
 
-  //     for (let index = 0; index < projectVehicle.length; index++) {
-  //      this.convertInDate(projectVehicle[index])
-  //     for (let i = 0; i < projectVehicle[index].projectVehicleValuesList.length; i++) {
-  //     console.log(this.updateDuration);
-  //     this.updateDuration(i)
-  //     console.log(this.updateDuration);
-  //     }
-  // }
-
-  //  if(value){
-  //     this.onTypeChange(value);
-  //   }
-  //     console.log(projectVehicle);
-  //   })
-  // }
-
-  onTypeChange(value: string) {
+  private onTypeChange(value: string) {
     if (this.projectVehicle?.projectVehicleValuesList) {
-
       this.projectVehicle.projectVehicleValuesList =
         (this.projectVehicle?.projectVehicleValuesList ?? []).filter((item: ProjectVehicleValues | undefined) => item?.type?.toUpperCase() === value.toUpperCase());
     }
     if (value === 'Leased') {
+      this.searchType = "For" + value;
       this.showLease = true
       this.showOriginDestination = false;
+      this.searchDates.expiryLease = null;
+      this.searchDates.startLease = null;
+      this.searchDates.rentalDate = null;
+      this.searchWithLease = true;
     }
     else if (value == 'All') {
+      this.searchType = null;
+      this.searchDates.startLease = null;
+      this.searchDates.expiryLease = null;
+      this.searchDates.rentalDate = null;
+      this.searchWithLease = null;
       this.getProjectVehicleById(this.projectVehicleId!)
       this.showOriginDestination = true;
       this.showLease = true
     } else if (value === 'Rental') {
-      this.showLease = false
+      this.searchType = "For " + value;
       this.showOriginDestination = true;
-    }
-  }
-  updateDuration(i: number) {
-
-    if (this.projectVehicle?.projectVehicleValuesList[i].startLease) {
-      this.minDueDate = new Date(this.projectVehicle?.projectVehicleValuesList[i].startLease!);
-    } else {
-      this.minDueDate = null;
-    }
-    ;
-    if (this.projectVehicle?.projectVehicleValuesList[i].startLease && this.projectVehicle?.projectVehicleValuesList[i].expiryLease) {
-      ;
-      const startLeaseTime = this.projectVehicle?.projectVehicleValuesList[i].startLease!.getTime();
-      const expiryLeaseTime = this.projectVehicle?.projectVehicleValuesList[i].expiryLease!.getTime();
-
-      if (expiryLeaseTime < startLeaseTime) {
-        this.projectVehicle.projectVehicleValuesList[i].duration = Number(null);
-        console.error('Expiry date is before start date.');
-      } else {
-        const timeDifference = expiryLeaseTime - startLeaseTime;
-        const durationInDays = timeDifference / (1000 * 60 * 60 * 24);
-
-        this.projectVehicle.projectVehicleValuesList[i].duration = durationInDays;
-        console.log('Duration:', this.projectVehicle.projectVehicleValuesList[i].duration);
-      }
+      this.searchDates.startLease = null;
+      this.searchDates.expiryLease = null;
+      this.searchDates.rentalDate = null;
+      this.searchWithLease = false;
+      this.showLease = false
     }
   }
 
@@ -168,68 +127,105 @@ export class ShowVehicleComponent {
       }
     });
   }
-  private convertDateOfSearching(obj: ProjectVehicleValues[]) {
-    obj.forEach((value) => {
-      if (typeof value.rentalDate === 'string') {
-        value.rentalDate = new Date(value.rentalDate);
-      }
-      if (typeof value.startLease === 'string') {
-        value.startLease = new Date(value.startLease);
-      }
-      if (typeof value.expiryLease === 'string') {
-        value.expiryLease = new Date(value.expiryLease);
-      }
-    });
-  }
 
-  // searchByRentalDate(value: Date) { }
-
-  searchByRentalDate(value?: Date) {
-    debugger
-    if (value && this.projectVehicle && this.projectVehicle.projectVehicleValuesList) {
-      this.projectVehicle.projectVehicleValuesList = this.projectVehicle.projectVehicleValuesList.filter((item: ProjectVehicleValues) => {
-        // Assuming item.rentalDate is of type Date
-        return item.rentalDate?.getTime() === value.getTime(); // Compare the timestamps
-      });
-      this.showLease = false
-      this.showOriginDestination = true;
+  searchByRentalDate() {
+    this.searchWithLease = false;
+    if (this.searchDates.rentalDate instanceof Date) {
+      const isoString = this.searchDates.rentalDate.toISOString();
+      this.searchDates.rentalDate = isoString;
     }
-    // if (value) {
-    //   // const rentalDateString = this.formatDateForSearch(value); // Convert frontend date format to match backend format
-    //   this.projectVehicleService.getProjectVehicleByRentalDate(value)
-    //     .subscribe((res: ProjectVehicleValues[]) => {
-    //
-    //      this.projectVehicle = undefined
-    //       this.projectVehicleValues = res;
-    //       this.convertDateOfSearching(this.projectVehicleValues)
-    //       // this.searchByNumberList = res;
-    //     }, error => {
-    //       this.errorHandleService.showError(error.error);
-    //     });
-    // }
+    this.showOriginDestination = true;
+    this.selectedVehicleType = '';
+    this.showLease = false
+    this.projectVehicleService.getAllProjectVehicleValuesBySearchSpecification(this.projectVehicleId!, this.searchDates).subscribe(
+      (res: ProjectVehicleValues[]) => {
+        if (this.projectVehicle?.projectVehicleValuesList) {
+          this.projectVehicle.projectVehicleValuesList = res;
+        }
+        this.searchDates.rentalDate = new Date(this.searchDates.rentalDate!);
+      }, (error: any) => {
+        this.errorHandleService.showError(error.error.error);
+      });
   }
-  // formatDateForSearch(date: Date): string {
-  //   date.setHours(19, 0, 0, 0); // Set time to 19:00:00
-  //   const isoString = date.toISOString(); // Convert to ISO string
-  //   const formattedDate = isoString.substring(0, 10) + "T19:00:00.000Z"; // Set time to 19:00:00
-  //   return formattedDate;
-  // }
-  searchByLeaseDate(startLease?: Date, expiryLease?: Date) {
-    debugger;
-    if (startLease && expiryLease && this.projectVehicle && this.projectVehicle.projectVehicleValuesList) {
-        this.projectVehicle.projectVehicleValuesList = this.projectVehicle.projectVehicleValuesList.filter((item: ProjectVehicleValues) => {
-            if (item.startLease && item.expiryLease) {
-                debugger
-                return (
-                    item.startLease >= this.searchDates.startLease! && // Lease start date should be after or equal to startLease
-                    item.expiryLease <= this.searchDates.expiryLease! // Lease expiry date should be before or equal to expiryLease
-                );
-            }
-            return false; // If startLease or expiryLease is null for the item, exclude it
+
+  searchByLeaseDates() {
+    this.searchWithLease = true;
+    if (this.searchDates.startLease && this.searchDates.expiryLease) {
+      this.showOriginDestination = false;
+      this.selectedVehicleType = '';
+      this.showLease = true
+      this.projectVehicleService.getAllProjectVehicleValuesBySearchSpecification(this.projectVehicleId!, this.searchDates).subscribe(
+        (res: ProjectVehicleValues[]) => {
+          if (this.projectVehicle?.projectVehicleValuesList) {
+            this.projectVehicle.projectVehicleValuesList = res;
+          }
+        }, (error: any) => {
+          this.errorHandleService.showError(error.error.error);
         });
-    };
-    this.showLease = true;
-    this.showOriginDestination = false;
+    }
+  }
 }
 
-}
+// searchByRentalDate(value: Date) { }
+
+// searchByRentalDate(value?: Date) {
+//
+//   if (value && this.projectVehicle && this.projectVehicle.projectVehicleValuesList) {
+//     this.projectVehicle.projectVehicleValuesList = this.projectVehicle.projectVehicleValuesList.filter((item: ProjectVehicleValues) => {
+//       // Assuming item.rentalDate is of type Date
+//       return item.rentalDate?.getTime() === value.getTime(); // Compare the timestamps
+//     });
+//     this.showLease = false
+//     this.showOriginDestination = true;
+//   }
+// if (value) {
+//   // const rentalDateString = this.formatDateForSearch(value); // Convert frontend date format to match backend format
+//   this.projectVehicleService.getProjectVehicleByRentalDate(value)
+//     .subscribe((res: ProjectVehicleValues[]) => {
+//
+//      this.projectVehicle = undefined
+//       this.projectVehicleValues = res;
+//       this.convertDateOfSearching(this.projectVehicleValues)
+//       // this.searchByNumberList = res;
+//     }, error => {
+//       this.errorHandleService.showError(error.error);
+//     });
+// }
+
+//
+//   searchByLeaseDate(startLease?: Date, expiryLease?: Date) {
+//     ;
+//     if (startLease && expiryLease && this.projectVehicle && this.projectVehicle.projectVehicleValuesList) {
+//         this.projectVehicle.projectVehicleValuesList = this.projectVehicle.projectVehicleValuesList.filter((item: ProjectVehicleValues) => {
+//             if (item.startLease && item.expiryLease) {
+//
+//                 return (
+//                     item.startLease >= this.searchDates.startLease! && // Lease start date should be after or equal to startLease
+//                     item.expiryLease <= this.searchDates.expiryLease! // Lease expiry date should be before or equal to expiryLease
+//                 );
+//             }
+//             return false; // If startLease or expiryLease is null for the item, exclude it
+//         });
+//     };
+//     this.showLease = true;
+//     this.showOriginDestination = false;
+// }
+// getAllProjectVehicle(value? : string) {
+//   this.projectVehicleService.getAllProjectVehicle().subscribe((projectVehicle: ProjectVehicle[]) => {
+//     this.projectVehicles = projectVehicle;
+
+//     for (let index = 0; index < projectVehicle.length; index++) {
+//      this.convertInDate(projectVehicle[index])
+//     for (let i = 0; i < projectVehicle[index].projectVehicleValuesList.length; i++) {
+//     console.log(this.updateDuration);
+//     this.updateDuration(i)
+//     console.log(this.updateDuration);
+//     }
+// }
+
+//  if(value){
+//     this.onTypeChange(value);
+//   }
+//     console.log(projectVehicle);
+//   })
+// }

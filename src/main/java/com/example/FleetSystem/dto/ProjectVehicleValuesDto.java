@@ -15,18 +15,18 @@ import java.sql.Date;
 @ToString
 @Builder
 public class ProjectVehicleValuesDto {
-
     private Long id;
     private String plateNumber;
     private String type;
     private Integer leaseCost;
+    private Integer duration;
     private String origin;
     private String destination;
     private String rentalDate;
     private Date startLease;
     private Date expiryLease;
     private Boolean status;
-    private VendorDto vendorDto;
+    private VendorDto vendor;
     private ProjectVehicleDto projectVehicleDto;
 }
 

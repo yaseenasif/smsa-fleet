@@ -28,12 +28,20 @@ export class PrjectVehicleService {
   getProjectVehicleById(id: Number) {
     return this.http.get<ProjectVehicle>(`${this.url}/project-vehicle/${id}`);
   }
-  // getProjectVehicleByRentalDate(rentalDate: string): Observable<ProjectVehicleValues[]> {
-  //   const url = `${this.url}/get-all-project-vehicle-by-${rentalDate}`;
-  //   return this.http.get<ProjectVehicleValues[]>(url);
-  // }
-  getProjectVehicleByRentalDate(rentalDate: Date): Observable<ProjectVehicleValues[]> {
-    const url = `${this.url}/get-all-project-vehicle-by-${rentalDate}`;
-    return this.http.get<ProjectVehicleValues[]>(url);
+
+  getAllProjectVehicleValuesBySearchSpecification(projectVehicleId: number, projectVehicleValues: ProjectVehicleValues): Observable<ProjectVehicleValues[]> {
+    return this.http.post<ProjectVehicleValues[]>(`${this.url}/get-all-by-searchSpecification-with/${projectVehicleId}`, projectVehicleValues);
   }
+
 }
+
+// getAllProjectVehicleValuesByLeaseDates(projectVehicleId: number,startLease: Date, expiryLease: Date): Observable<ProjectVehicleValues[]> {
+//   const startLeaseMilliseconds = startLease.getTime();
+//   const expiryLeaseMilliseconds = expiryLease.getTime();
+
+//   let params = new HttpParams();
+//   params = params.set('startLease', startLeaseMilliseconds.toString());
+//   params = params.set('expiryLease', expiryLeaseMilliseconds.toString());
+
+//   return this.http.get<ProjectVehicleValues[]>(`${this.url}/get-all-project-vehicle-by-leaseDates-with/${projectVehicleId}`, { params: params });
+// }

@@ -58,26 +58,25 @@ public class ProjectVehicleController {
     @PostMapping("/get-all-by-searchSpecification-with/{projectVehicleId}")
     public ResponseEntity<List<ProjectVehicleValuesDto>> getAllProjectVehicleValuesBySearchSpecification(
             @PathVariable Long projectVehicleId,
-            @RequestBody ProjectVehicleValues projectVehicleValues
+            @RequestBody ProjectVehicleValuesDto projectVehicleValuesDto
     ) {
-        List<ProjectVehicleValuesDto> result = projectVehicleValuesService.getAllBySearchSpecification(projectVehicleId, projectVehicleValues);
+        List<ProjectVehicleValuesDto> result = projectVehicleValuesService.getAllBySearchSpecification(projectVehicleId, projectVehicleValuesDto);
         return ResponseEntity.ok(result);
     }
 
-
-
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/get-all-project-vehicle-by-leaseDates-with/{projectVehicleId}")
-    public ResponseEntity<List<ProjectVehicleValuesDto>> getAllProjectVehicleValuesByLeaseDates(
-            @PathVariable Long projectVehicleId,
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Long startLease,
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Long expiryLease
-    ) {
-        Date startLeaseDate = new Date(startLease);
-        Date expiryLeaseDate = new Date(expiryLease);
-
-        // Use startLeaseDate and expiryLeaseDate in your service method
-
-        return ResponseEntity.ok(projectVehicleValuesService.getAllByLeaseDates(projectVehicleId,startLeaseDate, expiryLeaseDate));
-    }
 }
+
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @GetMapping("/get-all-project-vehicle-by-leaseDates-with/{projectVehicleId}")
+//    public ResponseEntity<List<ProjectVehicleValuesDto>> getAllProjectVehicleValuesByLeaseDates(
+//            @PathVariable Long projectVehicleId,
+//            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Long startLease,
+//            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Long expiryLease
+//    ) {
+//        Date startLeaseDate = new Date(startLease);
+//        Date expiryLeaseDate = new Date(expiryLease);
+//
+//        // Use startLeaseDate and expiryLeaseDate in your service method
+//
+//        return ResponseEntity.ok(projectVehicleValuesService.getAllByLeaseDates(projectVehicleId,startLeaseDate, expiryLeaseDate));
+//    }

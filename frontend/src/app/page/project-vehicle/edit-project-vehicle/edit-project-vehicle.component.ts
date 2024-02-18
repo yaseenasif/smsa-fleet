@@ -38,7 +38,7 @@ export class EditProjectVehicleComponent implements OnInit {
       rentalDate: null,
       startLease: null,
       expiryLease: null,
-      duration:null,
+      duration: null,
       vendor: {
         id: null,
         vendorName: null,
@@ -74,7 +74,6 @@ export class EditProjectVehicleComponent implements OnInit {
     origin: null,
     destinition: null,
   };
-  duration:number[]=[];
   minDueDate: Date | null | undefined;
 
   getProjectVehicleById(id: number) {
@@ -87,12 +86,12 @@ export class EditProjectVehicleComponent implements OnInit {
 
   }
   patchProjectVehicle(obj: ProjectVehicle) {
-    
+    debugger
     obj.date = new Date
     this.convertInDate(obj)
     this.projectVehicle = obj
     for (let index = 0; index < obj.projectVehicleValuesList.length; index++) {
-    this.updateDuration(index)      
+      this.updateDuration(index)
     }
   }
   addMoreFieldValue() {
@@ -106,7 +105,7 @@ export class EditProjectVehicleComponent implements OnInit {
       rentalDate: null,
       startLease: null,
       expiryLease: null,
-      duration:null,
+      duration: null,
       vendor: {
         id: null,
         vendorName: null,
@@ -133,8 +132,9 @@ export class EditProjectVehicleComponent implements OnInit {
       this.vendors = res;
     });
   }
+
   onSubmit() {
-    // const singleProjectVehicleArray: ProjectVehicle[] = [this.projectVehicle];
+    debugger
     this.projectVehicleService.updateProjectVehicle(this.projectVehicleId!, this.projectVehicle).subscribe(
       (res: ProjectVehicle) => {
         this.messageService.add({
@@ -150,6 +150,7 @@ export class EditProjectVehicleComponent implements OnInit {
       }
     );
   }
+
   getProjectName() {
     this.productFieldService.getProductFieldByName('Project Name').subscribe((res: ProductField) => {
       this.projectNames = res;
@@ -159,6 +160,7 @@ export class EditProjectVehicleComponent implements OnInit {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
     })
   }
+
   onLeaseTypeChange() {
     if (this.projectVehicleField.leaseType !== 'rentalLease') {
       this.projectVehicle.projectVehicleValuesList.forEach(item => {
@@ -167,48 +169,48 @@ export class EditProjectVehicleComponent implements OnInit {
       });
     }
   }
+
   private convertInDate(obj: ProjectVehicle) {
     if (typeof obj.date === 'string') {
-        obj.date = new Date(obj.date);
+      obj.date = new Date(obj.date);
     }
     obj.projectVehicleValuesList.forEach((value) => {
-        if (typeof value.rentalDate === 'string') {
-            value.rentalDate = new Date(value.rentalDate);
-        }
-        if (typeof value.startLease === 'string') {
-            value.startLease = new Date(value.startLease);
-        }
-        if (typeof value.expiryLease === 'string') {
-            value.expiryLease = new Date(value.expiryLease);
-        }
+      if (typeof value.rentalDate === 'string') {
+        value.rentalDate = new Date(value.rentalDate);
+      }
+      if (typeof value.startLease === 'string') {
+        value.startLease = new Date(value.startLease);
+      }
+      if (typeof value.expiryLease === 'string') {
+        value.expiryLease = new Date(value.expiryLease);
+      }
     });
-}
-updateDuration(i: number) {
-  if (this.projectVehicle.projectVehicleValuesList[i].startLease) {
-      this.minDueDate = new Date(this.projectVehicle.projectVehicleValuesList[i].startLease!);
-  } else {
-      this.minDueDate = null;
   }
-  
 
-  if (this.projectVehicle.projectVehicleValuesList[i].startLease && this.projectVehicle.projectVehicleValuesList[i].expiryLease) {
-      
+  updateDuration(i: number) {
+    if (this.projectVehicle.projectVehicleValuesList[i].startLease) {
+      this.minDueDate = new Date(this.projectVehicle.projectVehicleValuesList[i].startLease!);
+    } else {
+      this.minDueDate = null;
+    }
+
+
+    if (this.projectVehicle.projectVehicleValuesList[i].startLease && this.projectVehicle.projectVehicleValuesList[i].expiryLease) {
+
       const startLeaseTime = this.projectVehicle.projectVehicleValuesList[i].startLease!.getTime();
       const expiryLeaseTime = this.projectVehicle.projectVehicleValuesList[i].expiryLease!.getTime();
 
       if (expiryLeaseTime < startLeaseTime) {
-          this.duration[i] = Number(null); // Convert null to number type
-          console.error('Expiry date is before start date.');
+        this.projectVehicle.projectVehicleValuesList[i].duration = null;
+        this.projectVehicle.projectVehicleValuesList[i].startLease = null;
       } else {
-          const timeDifference = expiryLeaseTime - startLeaseTime;
-          const durationInDays = timeDifference / (1000 * 60 * 60 * 24);
-          this.duration[i] = durationInDays;
-          console.log('Duration:', this.duration);
+        const timeDifference = expiryLeaseTime - startLeaseTime;
+        const durationInDays = timeDifference / (1000 * 60 * 60 * 24);
+        this.projectVehicle.projectVehicleValuesList[i].duration = durationInDays;
       }
-  } else {
-      this.duration[i] = 0;
-      console.error('Start date or expiry date is undefined.');
+    } else {
+      this.projectVehicle.projectVehicleValuesList[i].duration = null;
+    }
   }
-}
 
 }

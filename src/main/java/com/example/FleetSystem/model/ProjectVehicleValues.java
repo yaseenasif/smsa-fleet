@@ -21,6 +21,7 @@ public class ProjectVehicleValues {
     private String plateNumber;
     private String type;
     private Integer leaseCost;
+    private Integer duration;
     private String origin;
     private String destination;
     private String rentalDate;
