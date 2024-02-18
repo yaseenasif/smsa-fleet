@@ -71,10 +71,10 @@
 
 //   getAllInactiveDriver() {
 //     const stringValue = this.value !== null ? String(this.value) : null;
-//     debugger
+//     
 //     this.driverService.searchInactiveDriver(stringValue, this.query).subscribe((res:PaginatedResponse<Driver>) => {
 //         this.driver = res.content;
-//         debugger
+//         
 //         this.query = { page: typeof res.pageable.pageNumber === 'number' ? res.pageable.pageNumber : 0, size: typeof res.size === 'number' ? res.size : 10 };
 //         this.totalRecords = res.totalElements;
 //     });
@@ -89,7 +89,7 @@
 //     this.statusVisible = false;
 //   }
 //   activateDriver(id:number){
-//     debugger
+//     
 //     this.driverService.activateDriver(id).subscribe((res:Driver)=>{
 //       this.messageService.add({ severity: 'success', summary: 'Vehicle Activated'});
 //   //

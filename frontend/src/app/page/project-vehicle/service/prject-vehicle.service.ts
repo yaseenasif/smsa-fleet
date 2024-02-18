@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ProjectVehicle } from 'src/app/modal/project-vehicle';
+import { ProjectVehicle, ProjectVehicleValues } from 'src/app/modal/project-vehicle';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -27,5 +27,13 @@ export class PrjectVehicleService {
   }
   getProjectVehicleById(id : Number){
     return this.http.get<ProjectVehicle>(`${this.url}/project-vehicle/${id}`);
+  }
+  // getProjectVehicleByRentalDate(rentalDate: string): Observable<ProjectVehicleValues[]> {
+  //   const url = `${this.url}/get-all-project-vehicle-by-${rentalDate}`;
+  //   return this.http.get<ProjectVehicleValues[]>(url);
+  // }
+  getProjectVehicleByRentalDate(rentalDate: Date): Observable<ProjectVehicleValues[]> {
+    const url = `${this.url}/get-all-project-vehicle-by-${rentalDate}`;
+    return this.http.get<ProjectVehicleValues[]>(url);
   }
 }

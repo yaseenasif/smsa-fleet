@@ -113,9 +113,9 @@ export class UnAssignedVehiclesComponent {
   }
 
   getAllVehicles() {
-    debugger
+    
     this.vehicleService.searchUnAssignedVehicles(this.value, this.query).subscribe((res: PaginatedResponse<Vehicle>) => {
-      debugger
+      
       this.vehicles = res.content;
       this.query = { page: res.pageable.pageNumber, size: res.size }
       this.totalRecords = res.totalElements;
