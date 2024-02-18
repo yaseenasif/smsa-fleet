@@ -116,7 +116,7 @@ export class EmployeeListComponent implements OnInit {
     const stringValue = this.value !== null ? String(this.value) : null;
     this.employeeService.searchInactiveEmployee(stringValue, this.query).subscribe((res: PaginatedResponse<Employee>) => {
       this.employee = res.content;
-      debugger
+      
       this.query = { page: typeof res.pageable.pageNumber === 'number' ? res.pageable.pageNumber : 0, size: typeof res.size === 'number' ? res.size : 10 };
       this.totalRecords = res.totalElements;
     });

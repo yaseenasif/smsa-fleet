@@ -17,4 +17,5 @@ export interface ProjectVehicleValues {
   startLease:  Date | null | undefined
   expiryLease: Date | null | undefined
   vendor: Vendor
+  duration : number | null | undefined
 }

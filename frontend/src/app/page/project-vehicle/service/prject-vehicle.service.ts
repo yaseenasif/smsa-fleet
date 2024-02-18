@@ -28,4 +28,12 @@ export class PrjectVehicleService {
   getProjectVehicleById(id: Number) {
     return this.http.get<ProjectVehicle>(`${this.url}/project-vehicle/${id}`);
   }
+  // getProjectVehicleByRentalDate(rentalDate: string): Observable<ProjectVehicleValues[]> {
+  //   const url = `${this.url}/get-all-project-vehicle-by-${rentalDate}`;
+  //   return this.http.get<ProjectVehicleValues[]>(url);
+  // }
+  getProjectVehicleByRentalDate(rentalDate: Date): Observable<ProjectVehicleValues[]> {
+    const url = `${this.url}/get-all-project-vehicle-by-${rentalDate}`;
+    return this.http.get<ProjectVehicleValues[]>(url);
+  }
 }

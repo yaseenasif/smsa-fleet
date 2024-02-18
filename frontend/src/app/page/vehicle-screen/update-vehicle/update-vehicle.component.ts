@@ -157,7 +157,7 @@ export class UpdateVehicleComponent implements OnInit{
   }
 
   closeDialog() {
-    debugger
+    
     this.visible = false;
     if(this.assignment){
       this.assignmentDialogVisible = true;
@@ -208,7 +208,7 @@ export class UpdateVehicleComponent implements OnInit{
   } 
   
   finalReturnVehicle(){
-    debugger
+    
     this.finalReturnRequest.changedAssignment = null
     this.finalReturnRequest.replacementVehicle = null
     this.vehicleService.finalReturnVehicleById(this.vehicleId,this.finalReturnRequest).subscribe((res)=>{

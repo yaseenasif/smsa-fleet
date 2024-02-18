@@ -246,7 +246,7 @@ export class AssignmentListComponent {
     this.router.navigate(['/replacement-action/id'], {
       queryParams: {
          id: vId
-      } 
+      }
      })
   }
 

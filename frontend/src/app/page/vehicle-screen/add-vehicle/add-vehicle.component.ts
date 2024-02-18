@@ -231,7 +231,7 @@ export class AddVehicleComponent implements OnInit{
   finalReturn!: boolean;
   temporaryReplacementVehicle!: Vehicle;
   actionCheck!: boolean;
-  
+
   replacementActionRequest: ReplacementActionRequest = {
     changedAssignedEmployee:  undefined,
     permanentVehicle:  undefined,
@@ -263,7 +263,7 @@ export class AddVehicleComponent implements OnInit{
     this.getCategory();
     this.getRegion();
 
-debugger
+
     this.route.queryParams.subscribe(params => {
       this.replacementCheck = params['replacementCheck'] === 'true';
       this.vId = params['vId'];
@@ -285,15 +285,15 @@ debugger
       this.getAssignmentbyVehicleId(this.vId);
     }
 
-    this.getUnassignedEmployee();    
-    
+    this.getUnassignedEmployee();
+
   }
 
 
   onSubmit() {
 
     if(this.replacementCheck){
-      this.replacementRequest.replacement!.vehicle = this.vehicle 
+      this.replacementRequest.replacement!.vehicle = this.vehicle
      this.vehicleService.replaceVehicle(this.vId,this.replacementRequest).subscribe(res=>{
       this.messageService.add({ severity: 'success', summary: 'Vehicle Replaced', detail: 'Vehicle is successfully replaced'});
       this.router.navigate(['/vehicle'])
@@ -306,7 +306,7 @@ debugger
     this.finalReturnRequest.replacementVehicle = this.vehicle
     this.vehicleService.finalReturnVehicleById(this.vId,this.finalReturnRequest).subscribe((res)=>{
       this.messageService.add({ severity: 'success', summary: 'Final Returned', detail: 'Vehicle has been Final Returned'});
-      this.router.navigate(['/vehicle']) 
+      this.router.navigate(['/vehicle'])
     },error=>{
       this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
     })
@@ -368,14 +368,13 @@ debugger
   }
 
  replaceVehicle(){
-   debugger
    if(this.vehicleAssignment){
      this.showDialog();
    }else{
-    this.onSubmit() 
+    this.onSubmit()
    }
  }
-   
+
  getUnassignedEmployee(){
    this.employeeService.getAllUnAssignedEmployees().subscribe((res)=>{
      this.unassignedEmployees = res;
@@ -383,7 +382,7 @@ debugger
  }
 
 showEmpName() {
-  this.empName = this.selectedUnassignedEmployee.empName 
+  this.empName = this.selectedUnassignedEmployee.empName
 }
 
  replaceVehicleWithAssignment(){
@@ -391,7 +390,7 @@ showEmpName() {
    this.replacementRequest.assignment!.assignToEmpId = this.selectedUnassignedEmployee
    this.replacementRequest.assignment!.assignToEmpName = this.empName
    this.replacementRequest.assignment!.vehicle = this.vehicle
-   this.replacementRequest.replacement!.vehicle = this.vehicle 
+   this.replacementRequest.replacement!.vehicle = this.vehicle
 
    this.vehicleService.replaceVehicle(this.vId,this.replacementRequest).subscribe(res=>{
     this.messageService.add({ severity: 'success', summary: 'Vehicle Replaced', detail: 'Vehicle is successfully replaced'});
@@ -423,14 +422,15 @@ showEmpName() {
 }
 
  replaceVehicleWithoutAssignment(){
-  if(this.replacementCheck){ 
+
+  if(this.replacementCheck){
   this.replacementRequest.assignment = null
-   this.replacementRequest.replacement!.vehicle = this.vehicle 
+   this.replacementRequest.replacement!.vehicle = this.vehicle
 
    this.vehicleService.replaceVehicle(this.vId,this.replacementRequest).subscribe(res=>{
     this.messageService.add({ severity: 'success', summary: 'Vehicle Replaced', detail: 'Vehicle is successfully replaced'});
     this.router.navigate(['/vehicle'])
-  },error=>{    
+  },error=>{
     this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
   })
  }else if(this.finalReturn){
@@ -440,7 +440,7 @@ showEmpName() {
    this.vehicleService.finalReturnVehicleById(this.vId,this.finalReturnRequest).subscribe((res)=>{
     this.messageService.add({ severity: 'success', summary: 'Final Returned', detail: 'Vehicle has been final returned'});
     this.router.navigate(['/vehicle'])
-  },error=>{    
+  },error=>{
     this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
   })
  }else if (this.actionCheck){
@@ -456,16 +456,16 @@ showEmpName() {
 
  getVehicleById(id: Number){
    this.vehicleService.getVehicleById(id).subscribe((res)=>{
-    
+
      this.previousVehicle = res;
 
      if(this.replacementCheck){
       this.vehicle.vendor = this.previousVehicle.vendor;
-      this.vehicle.region = this.previousVehicle.region 
-      this.vehicle.usageType = this.previousVehicle.usageType 
+      this.vehicle.region = this.previousVehicle.region
+      this.vehicle.usageType = this.previousVehicle.usageType
     }
 
-   },error=>{    
+   },error=>{
     this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
   })
  }
