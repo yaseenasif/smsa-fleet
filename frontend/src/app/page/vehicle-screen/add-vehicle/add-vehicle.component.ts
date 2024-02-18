@@ -362,7 +362,7 @@ showEmpName() {
 }
 
  replaceVehicleWithAssignment(){
-   debugger
+   
   if(this.replacementCheck){
    this.replacementRequest.assignment!.assignToEmpId = this.selectedUnassignedEmployee
    this.replacementRequest.assignment!.assignToEmpName = this.empName
@@ -391,7 +391,7 @@ showEmpName() {
 }
 
  replaceVehicleWithoutAssignment(){
-   debugger
+   
   if(this.replacementCheck){ 
   this.replacementRequest.assignment = null
    this.replacementRequest.replacement!.vehicle = this.vehicle 

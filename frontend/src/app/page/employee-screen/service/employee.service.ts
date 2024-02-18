@@ -63,7 +63,7 @@ export class EmployeeService {
     });
   }
   searchInactiveEmployee(value?: string | null, query?: { page: number, size: number }): Observable<PaginatedResponse<Employee>> {
-    debugger
+    
     if (value) {
       query = { page: 0, size: 10 };
     }

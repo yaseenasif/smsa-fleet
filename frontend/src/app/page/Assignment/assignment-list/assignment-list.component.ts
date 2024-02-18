@@ -162,7 +162,7 @@ export class AssignmentListComponent {
   private getRegionValues(productName: string) {
     this.regionService.getRegion().subscribe(
       (res: Region[]) => {
-        debugger
+        
         this.regionList = res.map((obj: Region) => ({
           id: obj.id,
           name: obj.name,
@@ -234,7 +234,7 @@ export class AssignmentListComponent {
   searchCriteria() {
     this.vehicleAssignmentService.searchAssignmentByAnyValue(this.query, this.globalTransformObj)
       .subscribe((res: PaginatedResponse<VehicleAssignment>) => {
-        debugger
+        
         this.vehicleAssignment = res.content;
         this.query = { page: res.pageable.pageNumber, size: res.size };
         this.totalRecords = res.totalElements;

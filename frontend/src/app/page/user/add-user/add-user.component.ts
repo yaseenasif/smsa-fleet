@@ -48,7 +48,7 @@ export class AddUserComponent implements OnInit {
   }
 
   onSubmit() {
-    debugger
+    
     this.userService.addUser(this.user).subscribe(
       (res: User) => {
         this.showSuccess(res);

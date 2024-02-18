@@ -87,7 +87,7 @@ export class EditProjectVehicleComponent implements OnInit {
 
   }
   patchProjectVehicle(obj: ProjectVehicle) {
-    debugger
+    
     obj.date = new Date
     this.convertInDate(obj)
     this.projectVehicle = obj
