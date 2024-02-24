@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, SelectItem } from 'primeng/api';
 import { VehicleAssignmentService } from '../vehicle-assignment.service';
 import { VehicleAssignment } from 'src/app/modal/vehicle-assignment';
 import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
@@ -39,8 +39,8 @@ export class AssignmentListComponent {
     }
   };
 
-  plateNumber: string | null = null;
-  employeeNumber: string | null = null;
+  plateNumber: string | null | undefined;
+  employeeNumber: number | null | undefined;
   departmentNumber: string | null = null;
   sectionNumber: string | null = null;
   regionNumber: string | null = null;
@@ -48,18 +48,22 @@ export class AssignmentListComponent {
   visible!: boolean;
   vehicleAssignmentId!: Number;
   replacementCheck: boolean = false;
-  searchByNumberList: VehicleAssignment[] = [];
   selectedSearchType: any = "Search Plate Number";
   placeHolder: any = "Search Plate Number"
   searchTerm: string | null = null;
   plateNoSearch: boolean = false;
   empNoSearch: boolean = false;
+  vehicleAssignmentType: boolean = false;
   someObservable: any;
   regionList: Region[] = [];
   departmentList: ProductFieldValue[] = [];
   sectionList: ProductFieldValue[] = [];
   criteriaSearch: boolean = false;
-
+  vehicleAssignmentTypes: SelectItem[] = [
+    { label: "Replacement", value: "Replacement" },
+    { label: "Orignal", value: "Active" },
+  ];
+  slectedAssignmentType: String | undefined | null;
 
   constructor(
     private vehicleAssignmentService: VehicleAssignmentService,
@@ -121,14 +125,31 @@ export class AssignmentListComponent {
 
   getAllVehicleAssignmentByEmployeeNum(searchTerm?: string) {
     this.empNoSearch = searchTerm ? true : false;
-    this.vehicleAssignmentService.searchAssignmentByEmployeeNumber(searchTerm, this.query)
-      .subscribe((res: PaginatedResponse<VehicleAssignment>) => {
-        this.vehicleAssignment = res.content;
-        this.query = { page: res.pageable.pageNumber, size: res.size };
-        this.totalRecords = res.totalElements;
-      }, error => {
-        this.errorHandleService.showError(error.error);
-      });
+    if (searchTerm) {
+      this.vehicleAssignmentService.searchAssignmentByEmployeeNumber(searchTerm, this.query)
+        .subscribe((res: PaginatedResponse<VehicleAssignment>) => {
+          this.vehicleAssignment = res.content;
+          this.plateNumber = res.content[0].vehicle.plateNumber;
+          this.slectedAssignmentType = res.content[0].vehicle.vehicleStatus;
+          this.globalTransformObj.assignToEmpId = {
+            department: res.content[0].assignToEmpId?.department?.toUpperCase(),
+            region: res.content[0].assignToEmpId?.region?.toUpperCase(),
+            section: res.content[0].assignToEmpId?.section?.toUpperCase()
+          };
+          this.query = { page: res.pageable.pageNumber, size: res.size };
+          this.totalRecords = res.totalElements;
+        }, error => {
+          this.errorHandleService.showError(error.error);
+        });
+    } else {
+      this.slectedAssignmentType = undefined;
+      this.plateNumber = undefined;
+      this.globalTransformObj.assignToEmpId = {
+        department: undefined,
+        region: undefined,
+        section: undefined
+      };
+    }
   }
 
   getAllVehicleAssignmentByPlateNum(searchTerm?: string) {
@@ -136,7 +157,23 @@ export class AssignmentListComponent {
     this.vehicleAssignmentService.searchAssignmentByPlateNumber(searchTerm, this.query)
       .subscribe((res: PaginatedResponse<VehicleAssignment>) => {
         this.vehicleAssignment = res.content;
-        this.searchByNumberList = res.content;
+        if (searchTerm) {
+          this.employeeNumber = res.content[0].assignToEmpId.employeeNumber;
+          this.slectedAssignmentType = res.content[0].vehicle.vehicleStatus;
+          this.globalTransformObj.assignToEmpId = {
+            department: res.content[0].assignToEmpId?.department?.toUpperCase(),
+            region: res.content[0].assignToEmpId?.region?.toUpperCase(),
+            section: res.content[0].assignToEmpId?.section?.toUpperCase()
+          };
+        } else {
+          this.employeeNumber = undefined;
+          this.slectedAssignmentType = undefined;
+          this.globalTransformObj.assignToEmpId = {
+            department: undefined,
+            region: undefined,
+            section: undefined
+          };
+        }
         this.query = { page: res.pageable.pageNumber, size: res.size };
         this.totalRecords = res.totalElements;
       }, error => {
@@ -234,6 +271,7 @@ export class AssignmentListComponent {
     this.vehicleAssignmentService.searchAssignmentByAnyValue(this.query, this.globalTransformObj)
       .subscribe((res: PaginatedResponse<VehicleAssignment>) => {
         this.vehicleAssignment = res.content;
+        debugger
         this.query = { page: res.pageable.pageNumber, size: res.size };
         this.totalRecords = res.totalElements;
       }, error => {
@@ -242,19 +280,53 @@ export class AssignmentListComponent {
   }
 
 
-  takeAction(vId: Number){
+  takeAction(vId: Number) {
     this.router.navigate(['/replacement-action/id'], {
       queryParams: {
-         id: vId
+        id: vId
       }
-     })
+    })
   }
 
-  navigateToViewVehicle(id: Number){
+  navigateToViewVehicle(id: Number) {
     this.router.navigate(['/view-vehicle/assignmentCheck/id'], {
       queryParams: {
         assignmentCheck: 'true', id: id
       }
     });
+  }
+
+  clearFields() {
+    this.criteriaSearch = false;
+  }
+
+  searchByAssignmentType(searchTerm: string) {
+    this.vehicleAssignmentType = searchTerm ? true : false;
+    this.vehicleAssignmentService.searchAssignmentByPlateNumber(searchTerm, this.query)
+      .subscribe((res: PaginatedResponse<VehicleAssignment>) => {
+        debugger
+        this.vehicleAssignment = res.content;
+        if (searchTerm && res.content.length > 0) {
+          this.employeeNumber = res.content[0].assignToEmpId.employeeNumber;
+          this.plateNumber = res.content[0].vehicle.plateNumber;
+          this.globalTransformObj.assignToEmpId = {
+            department: res.content[0].assignToEmpId?.department?.toUpperCase(),
+            region: res.content[0].assignToEmpId?.region?.toUpperCase(),
+            section: res.content[0].assignToEmpId?.section?.toUpperCase()
+          };
+        } else {
+          this.plateNumber = undefined;
+          this.employeeNumber = undefined;
+          this.globalTransformObj.assignToEmpId = {
+            department: undefined,
+            region: undefined,
+            section: undefined
+          };
+        }
+        this.query = { page: res.pageable.pageNumber, size: res.size };
+        this.totalRecords = res.totalElements;
+      }, err => {
+        this.errorHandleService.showError(err.error)
+      });
   }
 }

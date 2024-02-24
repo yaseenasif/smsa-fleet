@@ -3,7 +3,7 @@ import { VehicleReplacement } from "./vehicleReplacement"
 export interface Vehicle {
     id: Number | null | undefined,
     processOrderNumber: Number | null | undefined
-    plateNumber: String | null | undefined
+    plateNumber: string | null | undefined;
     make: String | null | undefined
     year: String | null | undefined
     design: String | null | undefined

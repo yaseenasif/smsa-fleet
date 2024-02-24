@@ -30,26 +30,31 @@
                 </p-button>
               </div>
             </div>
-            <p-toolbar>
-              <div>
-                <h3 class="p-toolbar-group-start h-color">
-                  <strong> Search By :&nbsp; </strong>
+            <p-toolbar [style]="{ 'padding-top': '1.5rem' }">
+              <div class="p-toolbar-group-start h-color">
+                <strong> Search By :&nbsp; </strong>
+                <span class="p-float-label">
                   <p-dropdown
-                    [options]="searchByNumberList"
+                    [options]="vehicleAssignment"
                     (onChange)="getAllVehicleAssignmentByPlateNum($event.value)"
                     optionLabel="vehicle.plateNumber"
                     optionValue="vehicle.plateNumber"
                     placeholder="Plate No#"
+                    [(ngModel)]="plateNumber"
                     [filter]="true"
+                    dropdownicon="true"
+                    [showClear]="true"
+                    inputId="float-plateNumber"
                     filterBy="vehicle.plateNumber"
-                    [disabled]="empNoSearch || criteriaSearch"
+                    [disabled]="empNoSearch || criteriaSearch || vehicleAssignmentType"
                   ></p-dropdown>
-                </h3>
+                  <label for="float-plateNumber">Plate No#</label>
+                </span>
               </div>
-              <div>
-                <h3 class="p-toolbar-group-start h-color">
+              <div class="p-toolbar-group-start h-color">
+                <span class="p-float-label">
                   <p-dropdown
-                    [options]="searchByNumberList"
+                    [options]="vehicleAssignment"
                     (onChange)="
                       getAllVehicleAssignmentByEmployeeNum($event.value)
                     "
@@ -57,51 +62,173 @@
                     optionValue="assignToEmpId.employeeNumber"
                     placeholder="Employee No#"
                     [filter]="true"
+                    [(ngModel)]="employeeNumber"
+                    inputId="float-empNo"
+                    [showClear]="true"
                     filterBy="assignToEmpId.employeeNumber"
-                    [disabled]="plateNoSearch || criteriaSearch"
+                    [disabled]="plateNoSearch || criteriaSearch || vehicleAssignmentType"
                   ></p-dropdown>
-                </h3>
+                  <label for="float-empNo">Employee No#</label>
+                </span>
               </div>
-              <div>
-                <h3 class="p-toolbar-group-start h-color">
+
+              <div class="p-toolbar-group-start h-color">
+                <span class="p-float-label">
+                  <p-dropdown
+                    [options]="vehicleAssignmentTypes"
+                    [(ngModel)]="slectedAssignmentType"
+                    optionLabel="label"
+                    optionValue="value"
+                    (onChange)="searchByAssignmentType($event.value)"
+                    placeholder="Assignment Type"
+                    inputId="float-vehicleAssignmentStatusType"
+                    [showClear]="true"
+                    [disabled]="plateNoSearch || criteriaSearch || empNoSearch"
+                  ></p-dropdown>
+                  <label for="float-vehicleAssignmentStatusType"
+                    >Assignment Type</label
+                  >
+                </span>
+              </div>
+            </p-toolbar>
+            <p-toolbar [style]="{ 'padding-top': '1.5rem' }">
+              <div
+                class="p-toolbar-group-start h-color"
+                *ngIf="!plateNoSearch && !empNoSearch && !vehicleAssignmentType"
+              >
+                <strong> Search By :&nbsp; </strong>
+
+                <span class="p-float-label">
                   <p-dropdown
                     [options]="departmentList"
                     (onChange)="getSearchAssignmentByAnyValue($event.value)"
                     optionLabel="department"
                     placeholder="Department"
+
                     [filter]="true"
+                    (onClear)="clearFields()"
+                    inputId="float-department"
+                    [showClear]="true"
                     filterBy="department"
-                    [disabled]="plateNoSearch || empNoSearch"
-                  ></p-dropdown>
-                </h3>
+                    [disabled]="plateNoSearch || empNoSearch || vehicleAssignmentType"
+                  >
+                  </p-dropdown>
+                  <label for="float-department">Department</label>
+                </span>
               </div>
 
-              <div>
-                <h3 class="p-toolbar-group-start h-color">
+              <div
+                class="p-toolbar-group-start h-color"
+                *ngIf="plateNoSearch || empNoSearch || vehicleAssignmentType"
+              >
+                <span class="p-float-label">
+                  <p-dropdown
+                    [options]="departmentList"
+                    (onChange)="getSearchAssignmentByAnyValue($event.value)"
+                    optionLabel="department"
+                    optionValue="department"
+                    [(ngModel)]="globalTransformObj.assignToEmpId.department"
+                    placeholder="Department"
+                    [filter]="true"
+                    (onClear)="clearFields()"
+                    inputId="float-department"
+                    [showClear]="true"
+                    filterBy="department"
+                    [disabled]="plateNoSearch || empNoSearch || vehicleAssignmentType"
+                  >
+                  </p-dropdown>
+                  <label for="float-department">Department</label>
+                </span>
+              </div>
+
+              <div
+                class="p-toolbar-group-start h-color"
+                *ngIf="!plateNoSearch && !empNoSearch && !vehicleAssignmentType"
+              >
+                <span class="p-float-label">
                   <p-dropdown
                     [options]="sectionList"
                     (onChange)="getSearchAssignmentByAnyValue($event.value)"
                     optionLabel="section"
                     [filter]="true"
+                    inputId="float-section"
+                    [showClear]="true"
+                    (onClear)="clearFields()"
                     filterBy="section"
                     placeholder="Section"
-                    [disabled]="plateNoSearch || empNoSearch"
+                    [disabled]="plateNoSearch || empNoSearch || vehicleAssignmentType"
                   ></p-dropdown>
-                </h3>
+                  <label for="float-section">Section</label>
+                </span>
               </div>
-              <div>
-                <h3 class="p-toolbar-group-start h-color">
+
+              <div
+                class="p-toolbar-group-start h-color"
+                *ngIf="plateNoSearch || empNoSearch || vehicleAssignmentType"
+              >
+                <span class="p-float-label">
+                  <p-dropdown
+                    [options]="sectionList"
+                    (onChange)="getSearchAssignmentByAnyValue($event.value)"
+                    optionLabel="section"
+                    optionValue="section"
+                    [filter]="true"
+                    inputId="float-section"
+                    [(ngModel)]="globalTransformObj.assignToEmpId.section"
+                    [showClear]="true"
+                    (onClear)="clearFields()"
+                    filterBy="section"
+                    placeholder="Section"
+                    [disabled]="plateNoSearch || empNoSearch || vehicleAssignmentType"
+                  ></p-dropdown>
+                  <label for="float-section">Section</label>
+                </span>
+              </div>
+
+              <div
+                class="p-toolbar-group-start h-color"
+                *ngIf="!plateNoSearch && !empNoSearch && !vehicleAssignmentType"
+              >
+                <span class="p-float-label">
                   <p-dropdown
                     [options]="regionList"
                     (onChange)="getSearchAssignmentByAnyValue($event.value)"
                     optionLabel="region"
                     [filter]="true"
+                    inputId="float-region"
+                    (onClear)="clearFields()"
+                    [showClear]="true"
                     filterBy="region"
                     placeholder="Region"
-                    [disabled]="plateNoSearch || empNoSearch"
+                    [disabled]="plateNoSearch || empNoSearch || vehicleAssignmentType"
                   ></p-dropdown>
-                </h3>
+                  <label for="float-region">Region</label>
+                </span>
               </div>
+
+              <div
+                class="p-toolbar-group-start h-color"
+                *ngIf="plateNoSearch || empNoSearch || vehicleAssignmentType"
+              >
+                <span class="p-float-label">
+                  <p-dropdown
+                    [options]="regionList"
+                    (onChange)="getSearchAssignmentByAnyValue($event.value)"
+                    optionLabel="region"
+                    optionValue="region"
+                    [filter]="true"
+                    inputId="float-region"
+                    (onClear)="clearFields()"
+                    [showClear]="true"
+                    [(ngModel)]="globalTransformObj.assignToEmpId.region"
+                    filterBy="region"
+                    placeholder="Region"
+                    [disabled]="plateNoSearch || empNoSearch || vehicleAssignmentType"
+                  ></p-dropdown>
+                  <label for="float-region">Region</label>
+                </span>
+              </div>
+
               <div>
                 <h3 class="p-toolbar-group-start h-color">
                   <p-button
@@ -145,13 +272,18 @@
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-vehicleAssignment>
-                <tr >
+                <tr>
                   <td
-                    [classList]="vehicleAssignment.vehicle.vehicleStatus === 'Replacement'? 'text-center color-red': 'text-center bold-and-color'"
+                    [classList]="
+                      vehicleAssignment.vehicle.vehicleStatus === 'Replacement'
+                        ? 'text-center color-red'
+                        : 'text-center bold-and-color'
+                    "
                     class="text-center bold-and-color"
-                    id="hoverPlateNumber" 
-                    
-                    (click)="navigateToViewVehicle(vehicleAssignment.vehicle.id)"
+                    id="hoverPlateNumber"
+                    (click)="
+                      navigateToViewVehicle(vehicleAssignment.vehicle.id)
+                    "
                   >
                     {{ vehicleAssignment.vehicle.plateNumber }}
                   </td>
@@ -159,7 +291,7 @@
                     {{ vehicleAssignment.assignToEmpId.employeeNumber }}
                   </td>
                   <td class="text-center">
-                    {{ vehicleAssignment.assignToEmpName}}
+                    {{ vehicleAssignment.assignToEmpName }}
                   </td>
                   <td class="text-center">
                     {{ vehicleAssignment.vehicle.design }}
@@ -189,7 +321,10 @@
                     {{ vehicleAssignment.vehicle.leaseCost }}
                   </td>
 
-                  <td class="text-center flex" style="padding-top: 40px; padding-bottom: 40px;">
+                  <td
+                    class="text-center flex"
+                    style="padding-top: 40px; padding-bottom: 40px"
+                  >
                     <p-button
                       [routerLink]="['/view-assignment/', vehicleAssignment.id]"
                       pTooltip="View"
@@ -263,7 +398,10 @@
                     >
                     </p-button>
                     <p-button
-                      *ngIf="vehicleAssignment.vehicle.vehicleStatus !== 'Replacement'"
+                      *ngIf="
+                        vehicleAssignment.vehicle.vehicleStatus !==
+                        'Replacement'
+                      "
                       (click)="replaceVehicle(vehicleAssignment.vehicle.id)"
                       pTooltip="Replace Vehicle"
                       tooltipPosition="top"
@@ -275,17 +413,20 @@
                       severity="help"
                     ></p-button>
                     <p-button
-                    *ngIf ="vehicleAssignment.vehicle.vehicleStatus === 'Replacement'"
-                    pTooltip="Take Action"
-                    tooltipPosition="top"
-                    icon="bi bi-pencil-square"
-                    class="ml mr"
-                    [outlined]="true"
-                    [rounded]="true"
-                    [raised]="true"
-                    severity="success"
-                    (click)="takeAction(vehicleAssignment.vehicle.id)"
-                  ></p-button>
+                      *ngIf="
+                        vehicleAssignment.vehicle.vehicleStatus ===
+                        'Replacement'
+                      "
+                      pTooltip="Take Action"
+                      tooltipPosition="top"
+                      icon="bi bi-pencil-square"
+                      class="ml mr"
+                      [outlined]="true"
+                      [rounded]="true"
+                      [raised]="true"
+                      severity="success"
+                      (click)="takeAction(vehicleAssignment.vehicle.id)"
+                    ></p-button>
                   </td>
                 </tr>
                 <p-dialog
