@@ -65,6 +65,8 @@ import { EditProjectVehicleComponent } from './page/project-vehicle/edit-project
 import { ViewProjectVehicleComponent } from './page/project-vehicle/view-project-vehicle/view-project-vehicle.component';
 import { ShowVehicleComponent } from './page/project-vehicle/show-vehicle/show-vehicle.component';
 import { ReplacementActionComponent } from './page/Assignment/replacement-action/replacement-action.component';
+import { AddJobTitleComponent } from './page/job-title/add-job-title/add-job-title.component';
+import { JobTitleListComponent } from './page/job-title/job-title-list/job-title-list.component';
 
 const routes: Routes = [
   {
@@ -263,6 +265,21 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'add-job-title',
+    component: AddJobTitleComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'add-job-title/:id',
+    component: AddJobTitleComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'job-title-list',
+    component: JobTitleListComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'permission',
     component: PermissionListComponent,
     canActivate: [AuthGuard]
@@ -407,7 +424,7 @@ const routes: Routes = [
   {
     path: 'replacement-action/:id',
     component: ReplacementActionComponent,
-    canActivate: [AuthGuard]  
+    canActivate: [AuthGuard]
   }
 
 ];

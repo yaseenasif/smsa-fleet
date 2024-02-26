@@ -27,6 +27,8 @@ public class EmployeeDto {
     private String location;
     private String organization;
     private String division;
+    private String fleetClassification;
+    private String vehicleEligible;
     private Long deptCode;
     private String department;
     private String section;

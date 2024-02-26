@@ -11,6 +11,8 @@ export interface Employee {
         department: string | null | undefined;
         deptCode: string | null | undefined;
         division: string | null | undefined;
+        fleetClassification: string | null | undefined;
+        vehicleEligible: string | null | undefined;
         organization: string | null | undefined;
         section: string | null | undefined;
         gender: string | null | undefined;

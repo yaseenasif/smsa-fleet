@@ -1,0 +1,234 @@
+<div class="flex flex-row">
+  <app-sidebar></app-sidebar>
+  <div class="body-position">
+    <div class="body-holder">
+      <app-dashboard-head></app-dashboard-head>
+
+      <div class="main">
+        <p-toast></p-toast>
+        <div class="card flex justify-content-center">
+          <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+        </div>
+
+        <div class="body-card">
+          <div class="card">
+            <h1 class="mb-4 h-color">Add Job Title</h1>
+            <form #jobTitleForm="ngForm" (ngSubmit)="onSubmit()">
+              <div class="grid">
+                <div class="col-6 md:col-6 lg:col-6">
+                  <div class="flex flex-column gap-2 form-hook">
+                    <label htmlFor="name">Job Title</label>
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="jobTitles.jobTitle"
+                      [options]="jobTitle?.productFieldValuesList"
+                      name="jobTitle"
+                      #jobTitleModel="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                      placeholder="Select Job Title
+                  "
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="jobTitles"
+                        >
+                          <div>{{ jobTitles.jobTitle }}</div>
+                        </div>
+                      </ng-template>
+                      <ng-template let-title pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                          <div>{{ title.name }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div class="col-6 md:col-6 lg:col-6">
+                  <div class="flex flex-column gap-2 form-hook">
+                    <label htmlFor="name">Division</label>
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="jobTitles.division"
+                      [options]="division?.productFieldValuesList"
+                      name="division"
+                      #divisionModel="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                      placeholder="Select Job Title
+                  "
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="jobTitles"
+                        >
+                          <div>{{ jobTitles.division }}</div>
+                        </div>
+                      </ng-template>
+                      <ng-template let-title pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                          <div>{{ title.name }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div class="col-6 md:col-6 lg:col-6">
+                  <div class="flex flex-column gap-2 form-hook">
+                    <label htmlFor="name">Department</label>
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="jobTitles.department"
+                      [options]="department?.productFieldValuesList"
+                      name="department"
+                      #departmentModel="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                      placeholder="Select Job Title
+                  "
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="jobTitles"
+                        >
+                          <div>{{ jobTitles.department }}</div>
+                        </div>
+                      </ng-template>
+                      <ng-template let-title pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                          <div>{{ title.name }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div class="col-6 md:col-6 lg:col-6">
+                  <div class="flex flex-column gap-2 form-hook">
+                    <label htmlFor="name">Section</label>
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="jobTitles.section"
+                      [options]="section?.productFieldValuesList"
+                      name="section"
+                      #sectionModel="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                      placeholder="Select Job Title
+                  "
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="jobTitles"
+                        >
+                          <div>{{ jobTitles.section }}</div>
+                        </div>
+                      </ng-template>
+                      <ng-template let-title pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                          <div>{{ title.name }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div class="col-6 md:col-6 lg:col-6">
+                  <div class="flex flex-column gap-2 form-hook">
+                    <label htmlFor="name">Fleet Classification</label>
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="jobTitles.fleetClassification"
+                      [options]="fleetClassification?.productFieldValuesList"
+                      name="fleetClassification"
+                      #fleetClassificationModel="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                      placeholder="Select Job Title
+                  "
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="jobTitles"
+                        >
+                          <div>{{ jobTitles.fleetClassification }}</div>
+                        </div>
+                      </ng-template>
+                      <ng-template let-title pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                          <div>{{ title.name }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
+                  </div>
+                </div>
+                <div class="col-6 md:col-6 lg:col-6">
+                  <div class="flex flex-column gap-2 form-hook">
+                    <label htmlFor="name">Vehicle Eligible</label>
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="jobTitles.vehicleEligible"
+                      [options]="vehicleEligible?.productFieldValuesList"
+                      name="vehicleEligible"
+                      #vehicleEligibleModel="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                      placeholder="Select Job Title
+                  "
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="jobTitles"
+                        >
+                          <div>{{ jobTitles.vehicleEligible }}</div>
+                        </div>
+                      </ng-template>
+                      <ng-template let-title pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                          <div>{{ title.name }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex align-items-center justify-content-end mt-4">
+                <p-button label="Cancel" class="bg-o-color mr" routerLink="/job-title-list" styleClass="p-button-outlined"></p-button>
+                <p-button label="{{ isUpdateMode ? 'Update' : 'Save' }}" type="submit" [disabled]="jobTitleForm.invalid || jobTitleForm.invalid === null"  class="bg-b-color ml"></p-button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

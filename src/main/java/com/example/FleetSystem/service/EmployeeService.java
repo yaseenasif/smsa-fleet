@@ -166,6 +166,8 @@ public class EmployeeService {
                 employee.get().setLocation(employeeDto.getLocation());
                 employee.get().setOrganization(employeeDto.getOrganization());
                 employee.get().setDivision(employeeDto.getDivision());
+                employee.get().setFleetClassification(employeeDto.getFleetClassification());
+                employee.get().setVehicleEligible(employeeDto.getVehicleEligible());
                 employee.get().setDeptCode(employeeDto.getDeptCode());
                 employee.get().setUpdatedAt(LocalDate.now());
                 employee.get().setUpdatedBy(user);

@@ -65,6 +65,8 @@ export class UpdateEmployeeComponent {
     vehicleBudget: undefined,
     contactNumber: undefined,
     country: undefined,
+    fleetClassification: undefined,
+    vehicleEligible: undefined
   }
 
   country!: Region[];
@@ -239,7 +241,7 @@ export class UpdateEmployeeComponent {
 
   checkAssignedEmployee(id: Number){
     this.employeeService.checkAssignedEmployee(id).subscribe((res: any) => {
-      this.assignedEmployeeCheck = res.check;      
+      this.assignedEmployeeCheck = res.check;
     })
   }
 }
