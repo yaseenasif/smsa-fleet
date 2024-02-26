@@ -16,6 +16,21 @@
             <form #jobTitleForm="ngForm" (ngSubmit)="onSubmit()">
               <div class="grid">
                 <div class="col-6 md:col-6 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Job Title</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="jobTitle"
+                      [(ngModel)]="jobTitles.jobTitle"
+                      #jobTitleModel="ngModel"
+                      [required]="true"
+                      styleClass="w-full"
+                    />
+                  </div>
+                </div>
+                <!-- <div class="col-6 md:col-6 lg:col-6">
                   <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Job Title</label>
                     <p-dropdown
@@ -48,7 +63,7 @@
                       </ng-template>
                     </p-dropdown>
                   </div>
-                </div>
+                </div> -->
                 <div class="col-6 md:col-6 lg:col-6">
                   <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Division</label>
@@ -64,7 +79,7 @@
                       [filter]="true"
                       filterBy="name"
                       [showClear]="true"
-                      placeholder="Select Job Title
+                      placeholder="Select Division
                   "
                     >
                       <ng-template pTemplate="selectedItem">
@@ -98,7 +113,7 @@
                       [filter]="true"
                       filterBy="name"
                       [showClear]="true"
-                      placeholder="Select Job Title
+                      placeholder="Select Department
                   "
                     >
                       <ng-template pTemplate="selectedItem">
@@ -132,7 +147,7 @@
                       [filter]="true"
                       filterBy="name"
                       [showClear]="true"
-                      placeholder="Select Job Title
+                      placeholder="Select Section
                   "
                     >
                       <ng-template pTemplate="selectedItem">
@@ -166,7 +181,7 @@
                       [filter]="true"
                       filterBy="name"
                       [showClear]="true"
-                      placeholder="Select Job Title
+                      placeholder="Select Fleet Classification
                   "
                     >
                       <ng-template pTemplate="selectedItem">
@@ -200,7 +215,7 @@
                       [filter]="true"
                       filterBy="name"
                       [showClear]="true"
-                      placeholder="Select Job Title
+                      placeholder="Select Vehicle Eligible
                   "
                     >
                       <ng-template pTemplate="selectedItem">

@@ -76,12 +76,12 @@
                     <p-dropdown
                       class="w-full"
                       [(ngModel)]="employee.jobTitle"
-                      [options]="jobTitles?.productFieldValuesList"
+                      [options]="allJobTitle"
                       name="jobTitle"
                       #jobTitle="ngModel"
                       [required]="true"
-                      optionLabel="name"
-                      optionValue="name"
+                      optionLabel="jobTitle"
+                      optionValue="jobTitle"
                       [filter]="true"
                       filterBy="name"
                       [showClear]="true"
@@ -99,7 +99,7 @@
                       </ng-template>
                       <ng-template let-jobTitles pTemplate="item">
                         <div class="flex align-items-center gap-2">
-                          <div>{{ jobTitles.name }}</div>
+                          <div>{{ jobTitles.jobTitle }}</div>
                         </div>
                       </ng-template>
                     </p-dropdown>

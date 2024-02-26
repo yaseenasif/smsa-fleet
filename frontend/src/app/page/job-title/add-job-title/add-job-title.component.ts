@@ -56,7 +56,6 @@ export class AddJobTitleComponent implements OnInit{
 
   getAllSubscription() {
     const fieldNames = [
-      'Job Title',
       'Division',
       'Department',
       'Section',
@@ -67,12 +66,11 @@ export class AddJobTitleComponent implements OnInit{
 
     forkJoin(observables).subscribe(
       (responses: ProductField[]) => {
-        this.jobTitle = responses[0];
-        this.division = responses[1];
-        this.department = responses[2];
-        this.section = responses[3];
-        this.fleetClassification = responses[4];
-        this.vehicleEligible = responses[5];
+        this.division = responses[0];
+        this.department = responses[1];
+        this.section = responses[2];
+        this.fleetClassification = responses[3];
+        this.vehicleEligible = responses[4];
       }
     )
 
