@@ -2,6 +2,8 @@ package com.example.FleetSystem.service;
 
 import com.example.FleetSystem.criteria.EmployeeSearchCriteria;
 import com.example.FleetSystem.dto.EmployeeDto;
+import com.example.FleetSystem.dto.EmployeeExcelDto;
+import com.example.FleetSystem.dto.VehicleExcelDto;
 import com.example.FleetSystem.exception.ExcelException;
 import com.example.FleetSystem.model.*;
 import com.example.FleetSystem.payload.CheckAssignEmployee;
@@ -53,8 +55,8 @@ public class EmployeeService {
     StorageService storageService;
     @Autowired
     VehicleAssignmentRepository vehicleAssignmentRepository;
-//    @Autowired
-//    DriverRepository driverRepository;
+    @Autowired
+    ExcelExportService excelExportService;
 
     public EmployeeDto deleteEmployeeById(Long id , EmployeeDto employeeDto) {
         Optional<Employee> employee = employeeRepository.findById(id);
@@ -534,5 +536,17 @@ public class EmployeeService {
         Specification<Employee> employeeSpecification = EmployeeSpecification.getInactiveSearchSpecification(employeeSearchCriteria);
         Page<Employee> employeePage = employeeRepository.findAll(employeeSpecification, pageable);
         return employeePage.map(this::toDto);
+    }
+
+    private EmployeeExcelDto toEmployeeExcelDto(Employee employee){
+        return modelMapper.map(employee, EmployeeExcelDto.class);
+    }
+    private List<EmployeeExcelDto> toEmployeeExcelDtoList(List<Employee> employeeList){
+        return employeeList.stream().map(this::toEmployeeExcelDto).collect(Collectors.toList());
+    }
+    public byte[] downloadExcel(){
+        List<Employee> employees = employeeRepository.findByDeleteStatusTrue();
+        List<EmployeeExcelDto> employeeExcelDtoList = toEmployeeExcelDtoList(employees);
+        return excelExportService.exportToExcel(employeeExcelDtoList);
     }
 }

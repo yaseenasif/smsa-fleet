@@ -2,11 +2,7 @@ package com.example.FleetSystem.service;
 
 import com.example.FleetSystem.criteria.EmployeeSearchCriteria;
 import com.example.FleetSystem.criteria.VehicleSearchCriteria;
-import com.example.FleetSystem.dto.AuditDataWrapper;
-import com.example.FleetSystem.dto.Obj;
-import com.example.FleetSystem.dto.PaginationResponse;
-import com.example.FleetSystem.dto.VehicleAssignmentDto;
-import com.example.FleetSystem.dto.VehicleDto;
+import com.example.FleetSystem.dto.*;
 import com.example.FleetSystem.model.Employee;
 import com.example.FleetSystem.model.User;
 import com.example.FleetSystem.model.Vehicle;
@@ -66,10 +62,10 @@ public class VehicleAssignmentService {
 
     @Autowired
     StorageService storageService;
-//    @Autowired
-//    DriverRepository driverRepository;
     @Autowired
     VehicleAssignmentAuditService vehicleAssignmentAuditService;
+    @Autowired
+    ExcelExportService excelExportService;
 
     public VehicleAssignmentDto save(VehicleAssignmentDto vehicleAssignmentDto) {
         Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -378,5 +374,31 @@ public class VehicleAssignmentService {
             throw new RuntimeException("No Last Assignment Found");
         }
         throw new RuntimeException(String.format("Vehicle not found By id => %d",id));
+    }
+
+    private AssignmentExcelDto toAssignmentExcelDto(VehicleAssignment vehicleAssignment){
+        AssignmentExcelDto assignmentExcelDto = modelMapper.map(vehicleAssignment, AssignmentExcelDto.class);
+        assignmentExcelDto.setEmpNo(vehicleAssignment.getAssignToEmpId().getEmployeeNumber());
+        assignmentExcelDto.setEmpName(vehicleAssignment.getAssignToEmpName());
+        assignmentExcelDto.setPlateNumber(vehicleAssignment.getVehicle().getPlateNumber());
+        assignmentExcelDto.setDepartment(vehicleAssignment.getAssignToEmpId().getDepartment());
+        assignmentExcelDto.setSection(vehicleAssignment.getAssignToEmpId().getSection());
+        assignmentExcelDto.setRegion(vehicleAssignment.getAssignToEmpId().getRegion());
+        assignmentExcelDto.setDesign(vehicleAssignment.getVehicle().getDesign());
+        assignmentExcelDto.setModel(vehicleAssignment.getVehicle().getModel());
+        assignmentExcelDto.setMake(vehicleAssignment.getVehicle().getMake());
+        assignmentExcelDto.setYear(vehicleAssignment.getVehicle().getYear());
+        assignmentExcelDto.setLeaseCost(vehicleAssignment.getVehicle().getLeaseCost());
+        assignmentExcelDto.setLeaseExpiry(vehicleAssignment.getVehicle().getLeaseExpiryDate());
+        return assignmentExcelDto;
+    }
+    private List<AssignmentExcelDto> toAssignmentExcelDtoList(List<VehicleAssignment> vehicleAssignments){
+        return vehicleAssignments.stream().map(this::toAssignmentExcelDto).collect(Collectors.toList());
+    }
+
+    public byte[] downloadExcel() {
+        List<VehicleAssignment> vehicleAssignments = vehicleAssignmentRepository.getActiveVehicleAssignment();
+        List<AssignmentExcelDto> assignmentExcelDtoList = toAssignmentExcelDtoList(vehicleAssignments);
+        return excelExportService.exportToExcel(assignmentExcelDtoList);
     }
 }

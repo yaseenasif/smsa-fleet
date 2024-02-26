@@ -2,8 +2,8 @@ package com.example.FleetSystem.service;
 
 import com.example.FleetSystem.criteria.VehicleSearchCriteria;
 import com.example.FleetSystem.dto.AuditDataWrapper;
-import com.example.FleetSystem.dto.VehicleAssignmentDto;
 import com.example.FleetSystem.dto.VehicleDto;
+import com.example.FleetSystem.dto.VehicleExcelDto;
 import com.example.FleetSystem.exception.ExcelException;
 import com.example.FleetSystem.model.*;
 import com.example.FleetSystem.payload.*;
@@ -67,6 +67,8 @@ public class VehicleService {
     EmployeeRepository employeeRepository;
     @Autowired
     ProductFieldRepository productFieldRepository;
+    @Autowired
+    ExcelExportService excelExportService;
 
     @Transactional
     public VehicleDto finalReturnVehicleById(Long id, FinalReturnRequest finalReturnRequest) {
@@ -897,5 +899,35 @@ public class VehicleService {
         }
         return toDto(vehicleRepository.save(replacementVehicle.get()));
     }
+
+    public VehicleDto markVehicleTotalLost(Long id) {
+        Optional<Vehicle> vehicle = vehicleRepository.findById(id);
+        if (vehicle.isPresent()){
+            vehicle.get().setVehicleStatus("In-Active");
+            return toDto(vehicleRepository.save(vehicle.get()));
+        }
+        throw new RuntimeException(String.format("Vehicle not found by id => %d",id));
+    }
+
+    public List<VehicleDto> getAll(){
+        List<Vehicle> vehicles = vehicleRepository.findAll();
+        return toDtoList(vehicles);
+    }
+
+    private VehicleExcelDto toVehicleExcelDto(Vehicle vehicle){
+        VehicleExcelDto vehicleExcelDto = modelMapper.map(vehicle, VehicleExcelDto.class);
+        vehicleExcelDto.setVendor(vehicle.getVendor().getVendorName());
+        return vehicleExcelDto;
+    }
+    private List<VehicleExcelDto> toVehicleExcelDtoList(List<Vehicle> vehicleList){
+      return vehicleList.stream().map(this::toVehicleExcelDto).collect(Collectors.toList());
+    }
+
+    public byte[] downloadExcel(){
+        List<Vehicle> vehicles = vehicleRepository.findAll();
+        List<VehicleExcelDto> vehicleExcelDtoList = toVehicleExcelDtoList(vehicles);
+        return excelExportService.exportToExcel(vehicleExcelDtoList);
+    }
+
 }
 
