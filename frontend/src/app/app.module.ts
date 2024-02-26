@@ -118,6 +118,8 @@ import { ViewProjectVehicleComponent } from './page/project-vehicle/view-project
 import { SpeedDialModule } from 'primeng/speeddial';
 import { ShowVehicleComponent } from './page/project-vehicle/show-vehicle/show-vehicle.component';
 import { ReplacementActionComponent } from './page/Assignment/replacement-action/replacement-action.component';
+import { AddJobTitleComponent } from './page/job-title/add-job-title/add-job-title.component';
+import { JobTitleListComponent } from './page/job-title/job-title-list/job-title-list.component';
 
 @NgModule({
   declarations: [
@@ -190,6 +192,8 @@ import { ReplacementActionComponent } from './page/Assignment/replacement-action
     ViewProjectVehicleComponent,
     ShowVehicleComponent,
     ReplacementActionComponent,
+    AddJobTitleComponent,
+    JobTitleListComponent,
   ],
   imports: [
     ConfirmDialogModule,

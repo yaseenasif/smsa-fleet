@@ -15,7 +15,7 @@
         <span class="nav-text"> Employee </span>
       </span>
     </li>
-    
+
     <li class="child" *ngIf="hasPermission('Vehicle')">
       <span class="sidebar-list-hover" routerLink="/vehicle">
         <i class="bi bi-truck"></i>
@@ -100,6 +100,12 @@
       <span class="sidebar-list-hover" routerLink="/get-all-regions">
         <i class="bi bi-houses-fill"></i>
         <span class="nav-text"> Regions </span>
+      </span>
+    </li>
+    <li class="child" *ngIf="configTurner && hasPermission('JobTitle')">
+      <span class="sidebar-list-hover" routerLink="/job-title-list">
+        <i class="bi bi-houses-fill"></i>
+        <span class="nav-text"> Job Title </span>
       </span>
     </li>
   </ul>

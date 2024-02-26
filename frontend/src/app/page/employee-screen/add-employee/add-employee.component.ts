@@ -11,6 +11,8 @@ import { RegionService } from '../../region/service/region.service';
 import { Region } from 'src/app/modal/Region';
 import { ProductFieldServiceService } from '../../product-field/service/product-field-service.service';
 import { ProductField } from 'src/app/modal/ProductField';
+import { JobTitleService } from '../../job-title/job-title.service';
+import { JobTitle } from 'src/app/modal/job-title';
 
 @Component({
   selector: 'app-add-employee',
@@ -181,7 +183,9 @@ export class AddEmployeeComponent implements OnInit {
     grade: undefined,
     licenseNumber: undefined,
     vehicleBudget: undefined,
-    contactNumber: undefined
+    contactNumber: undefined,
+    fleetClassification: undefined,
+    vehicleEligible: undefined
   };
 
   nationalities: ProductField | null | undefined;
@@ -192,6 +196,8 @@ export class AddEmployeeComponent implements OnInit {
   gradesData!: Grade[];
 
   uploadedFiles!: Employee[];
+  allJobTitle !: JobTitle[]
+  temp !: JobTitle[];
 
 
 
@@ -202,7 +208,8 @@ export class AddEmployeeComponent implements OnInit {
     private messageService: MessageService,
     private gradeService: GradeService,
     private regionService: RegionService,
-    private productService: ProductFieldServiceService
+    private productService: ProductFieldServiceService,
+    private jobTitleService: JobTitleService
   ) { }
 
 
@@ -214,6 +221,7 @@ export class AddEmployeeComponent implements OnInit {
     this.getSections();
     this.getAllGrades();
     this.getCountry();
+    this.getAllJobTitle();
   }
 
   getCountry(): Region[] {
@@ -325,5 +333,21 @@ export class AddEmployeeComponent implements OnInit {
     }, error => {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
     })
+  }
+
+  getAllJobTitle() {
+    this.jobTitleService.getJobTitle().subscribe((res) => {
+      this.allJobTitle = res;
+    })
+  }
+
+  dataFilledbyField() {
+    this.temp = this.allJobTitle.filter(jobTitleObj => jobTitleObj.jobTitle === this.employee.jobTitle);
+    this.employee.department = this.temp[0].department
+    this.employee.section = this.temp[0].section;
+    this.employee.division = this.temp[0].division
+    this.employee.fleetClassification = this.temp[0].fleetClassification;
+    this.employee.vehicleEligible = this.temp[0].vehicleEligible
+
   }
 }

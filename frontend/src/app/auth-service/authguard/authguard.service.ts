@@ -27,6 +27,7 @@ export class AuthguardService {
     { permission: 'City', route: ['/city-list', '/add-city', '/edit-city/:id',] },
     { permission: 'ProductField', route: ['/productFields', '/add-ProductField', '/add-ProductField/:id',] },
     { permission: 'Region', route: ['/get-all-regions', '/add-region', '/add-region/:id'] },
+    { permission: 'JobTitle', route: ['/job-title-list', '/add-job-title', '/add-job-title/:id'] },
     { permission: 'Download Attachment', route: ['/individual-file-list-component/:call-type/:id'] }
   ];
 

@@ -30,6 +30,8 @@ public class Employee {
     private String department;
     private Long deptCode;
     private String division;
+    private String fleetClassification;
+    private String vehicleEligible;
     private String organization;
     private String section;
     private Character gender;
