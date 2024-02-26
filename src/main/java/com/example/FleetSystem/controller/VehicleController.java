@@ -1,25 +1,30 @@
 package com.example.FleetSystem.controller;
 
-import com.amazonaws.services.cloudformation.model.Replacement;
 import com.example.FleetSystem.criteria.VehicleSearchCriteria;
 import com.example.FleetSystem.dto.VehicleDto;
-import com.example.FleetSystem.model.Employee;
+import com.example.FleetSystem.model.Vehicle;
 import com.example.FleetSystem.payload.FinalReturnRequest;
 import com.example.FleetSystem.payload.ReplacementActionRequest;
 import com.example.FleetSystem.payload.ResponseMessage;
 import com.example.FleetSystem.payload.VehicleHistoryResponse;
+import com.example.FleetSystem.service.ExcelExportService;
 import com.example.FleetSystem.service.StorageService;
 import com.example.FleetSystem.service.VehicleService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itextpdf.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -32,6 +37,8 @@ public class VehicleController {
     @Autowired
     StorageService storageService;
 
+    @Autowired
+    ExcelExportService excelExportService;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/add-vehicle")
@@ -81,7 +88,7 @@ public class VehicleController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PatchMapping("/final-return-vehicle/{id}")
     public ResponseEntity<VehicleDto> finalReturnVehicleById(@PathVariable Long id, @RequestBody FinalReturnRequest finalReturnRequest) {
-        return ResponseEntity.ok(vehicleService.finalReturnVehicleById(id,finalReturnRequest));
+        return ResponseEntity.ok(vehicleService.finalReturnVehicleById(id, finalReturnRequest));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -146,30 +153,52 @@ public class VehicleController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/search-all-vehicle")
     public ResponseEntity<Page<VehicleDto>> searchAllVehicles(@RequestParam(value = "value", required = false) String value,
-                                                                   @RequestParam String vehicleStatus,
-                                                                   @RequestParam(defaultValue = "0") int page,
-                                                                   @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
+                                                              @RequestParam String vehicleStatus,
+                                                              @RequestParam(defaultValue = "0") int page,
+                                                              @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
         VehicleSearchCriteria vehicleSearchCriteria = new ObjectMapper().readValue(value, VehicleSearchCriteria.class);
-        return ResponseEntity.ok(vehicleService.searchVehicle(vehicleSearchCriteria,vehicleStatus, page, size));
+        return ResponseEntity.ok(vehicleService.searchVehicle(vehicleSearchCriteria, vehicleStatus, page, size));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PatchMapping("/delete-replacement-vehicle/{id}")
-    public ResponseEntity<VehicleDto> deleteReplacementVehicle(@PathVariable Long id){
+    public ResponseEntity<VehicleDto> deleteReplacementVehicle(@PathVariable Long id) {
         return ResponseEntity.ok(vehicleService.deleteReplacementVehicle(id));
     }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/find-replacement-vehicle/{id}")
-    public ResponseEntity<VehicleDto> findReplacementVehicleById(@PathVariable Long id){
+    public ResponseEntity<VehicleDto> findReplacementVehicleById(@PathVariable Long id) {
         return ResponseEntity.ok(vehicleService.findReplacementVehicleById(id));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PatchMapping("/replacement-vehicle-action/{id}")
     public ResponseEntity<VehicleDto> replacementVehicleAction(@PathVariable Long id,
-                                                               @RequestBody ReplacementActionRequest replacementActionRequest){
-        return ResponseEntity.ok(vehicleService.replacementVehicleAction(id,replacementActionRequest));
+                                                               @RequestBody ReplacementActionRequest replacementActionRequest) {
+        return ResponseEntity.ok(vehicleService.replacementVehicleAction(id, replacementActionRequest));
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PatchMapping("/mark-total-lost/{id}")
+    public ResponseEntity<VehicleDto> markVehicleTotalLost(@PathVariable Long id) {
+        return ResponseEntity.ok(vehicleService.markVehicleTotalLost(id));
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/download-vehicle-excel")
+    public ResponseEntity<byte[]> downloadVehicleExcel() {
+
+        byte[] excelBytes = vehicleService.downloadExcel();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", "vehicles.xlsx");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(excelBytes);
+
+    }
 
 }

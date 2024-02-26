@@ -204,7 +204,7 @@ searchAllVehicles(vehiclestatus: string){
 
 
  deleteReplacementVehicle(){
-   this.vehicleService.deleteReplacementVehicle(this.vId).subscribe((res)=>{
+    this.vehicleService.deleteReplacementVehicle(this.vId).subscribe((res)=>{
     this.messageService.add({ severity: 'success', summary: 'Vehicle Deleted'});
     this.closeDialog()
     this.searchAllVehicles(this.selectedStatus.name)
@@ -222,4 +222,14 @@ searchAllVehicles(vehiclestatus: string){
      this.lastAssignedEmployee = res;
    })
  }
+
+ markVehicleTotalLost(){
+    this.vehicleService.markVehicleTotalLost(this.vId).subscribe((res)=>{
+    this.messageService.add({ severity: 'success', summary: 'Vehicle Marked as total lost'});
+    this.closeDialog()
+    this.searchAllVehicles(this.selectedStatus.name)
+
+   })
+ }
+
 }

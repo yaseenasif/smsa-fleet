@@ -132,4 +132,9 @@ export class VehicleService {
    replacementVehicleAction(id: Number, replacementActionRequest: ReplacementActionRequest): Observable<Vehicle>{
      return this.http.patch<Vehicle>(`${this.url}/replacement-vehicle-action/${id}`,replacementActionRequest);
    }
+
+   markVehicleTotalLost(id: Number): Observable<Vehicle>{
+    return this.http.patch<Vehicle>(`${this.url}/mark-total-lost/${id}`,{});
+   }
+  
 }

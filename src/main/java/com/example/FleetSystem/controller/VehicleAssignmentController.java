@@ -18,6 +18,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -196,5 +198,19 @@ public class VehicleAssignmentController {
     @GetMapping("/get-last-assignment/{id}")
     public ResponseEntity<Employee> getLastAssignmentByVehicleId(@PathVariable Long id){
         return ResponseEntity.ok(vehicleAssignmentService.getLastAssignmentByVehicleId(id));
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/download-assignment-excel/{id}")
+    public ResponseEntity<byte []> downloadAssignmentExcel(){
+        byte[] excelBytes = vehicleAssignmentService.downloadExcel();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", "Assignments.xlsx");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(excelBytes);
     }
 }
