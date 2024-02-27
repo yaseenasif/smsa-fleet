@@ -24,7 +24,7 @@ public class ProjectVehicleValues {
     private Integer duration;
     private String origin;
     private String destination;
-    private String rentalDate;
+    private Date rentalDate;
     private Date startLease;
     private Date expiryLease;
     private Boolean status;

@@ -29,9 +29,8 @@ public class ProjectVehicleValuesService {
             Long id,
             ProjectVehicleValuesDto projectVehicleValuesDto
     ) {
-        ProjectVehicleValues projectVehicleValues = toEntity(projectVehicleValuesDto);
         Specification<ProjectVehicleValues> projectVehicleValuesSpecification =
-                ProjectVehicleSpecification.getSearchSpecificationByCriteria(id, projectVehicleValues);
+                ProjectVehicleSpecification.getSearchSpecificationByCriteria(id, projectVehicleValuesDto);
         List<ProjectVehicleValues> projectVehicleValuesList =
                 projectVehicleValuesRepository.findAll(projectVehicleValuesSpecification);
 

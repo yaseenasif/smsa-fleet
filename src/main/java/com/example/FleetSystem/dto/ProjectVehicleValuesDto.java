@@ -22,7 +22,8 @@ public class ProjectVehicleValuesDto {
     private Integer duration;
     private String origin;
     private String destination;
-    private String rentalDate;
+    private Date rentalDate;
+    private Date rentalDateTo;
     private Date startLease;
     private Date expiryLease;
     private Boolean status;

@@ -13,7 +13,8 @@ export interface ProjectVehicleValues {
   type: String | null | undefined
   origin: String | null | undefined
   destination: String | null | undefined
-  rentalDate: Date | null | undefined | string;
+  rentalDate: Date | null | undefined;
+  rentalDateTo: Date | null | undefined;
   startLease: Date | null | undefined
   expiryLease: Date | null | undefined
   vendor: Vendor

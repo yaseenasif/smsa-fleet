@@ -18,31 +18,15 @@
               class="flex mb-2 align-items-center gap-1"
               style="justify-content: flex-end; align-items: flex-end"
             ></div>
-            <p-toolbar>
-              <div class="p-toolbar-group-start">
-                <h2 class="h-color">Show Vehicle</h2>
-              </div>
-              <div class="p-toolbar-group-start">
-                <div class="">
-                  <p-calendar
-                    [showIcon]="true"
-                    [style]="{ width: '89%' }"
-                    placeholder="Search Rental Date"
-                    name="rentalDate"
-                    (onSelect)="searchByRentalDate()"
-                    [disabled]="searchWithLease === true"
-                    [(ngModel)]="searchDates.rentalDate"
-                    #rentalDate="ngModel"
-                  />
             <p-toolbar [style]="{ 'padding-top': '1.5rem' }">
               <div class="p-toolbar-group-start h-color">
-                <h2><strong> Search By :&nbsp; </strong></h2>
-                <div class="ml-7">
+                <h3><strong style="white-space: nowrap;"> Search By :&nbsp; </strong></h3>
+                <div class="ml-3">
                   <span class="p-float-label">
                     <p-calendar
                       [showIcon]="true"
                       [style]="{ width: '89%' }"
-                      placeholder="Search Rental Date"
+                      placeholder="Rental Date From"
                       name="rentalDate"
                       (onSelect)="searchByRentalDate()"
                       [disabled]="searchWithLease === true"
@@ -50,7 +34,23 @@
                       [(ngModel)]="searchDates.rentalDate"
                       #rentalDate="ngModel"
                     />
-                    <label for="float-rentalDate">Search Rental Date</label>
+                    <label for="float-rentalDate">Rental Date From</label>
+                  </span>
+                </div>
+                <div class="">
+                  <span class="p-float-label">
+                    <p-calendar
+                      [showIcon]="true"
+                      [style]="{ width: '89%' }"
+                      placeholder="Rental Date To"
+                      name="rentalDate"
+                      (onSelect)="searchByRentalDate()"
+                      [disabled]="searchWithLease === true"
+                      inputId="float-rentalDate"
+                      [(ngModel)]="searchDates.rentalDateTo"
+                      #rentalDate="ngModel"
+                    />
+                    <label for="float-rentalDate">Rental Date To</label>
                   </span>
                 </div>
                 <div class="">
@@ -59,14 +59,14 @@
                       [showIcon]="true"
                       [style]="{ width: '89%' }"
                       name="startLeaseDate"
-                      placeholder="Search Lease Start Date"
+                      placeholder="Lease Date From"
                       (onSelect)="searchByLeaseDates()"
                       inputId="float-startLeaseDate"
                       [disabled]="searchWithLease === false"
                       [(ngModel)]="searchDates.startLease"
                       #rentalDate="ngModel"
                     />
-                    <label for="float-startLeaseDate">Search Lease Start Date</label>
+                    <label for="float-startLeaseDate">Lease Date From</label>
                   </span>
                 </div>
                 <div class="">
@@ -75,28 +75,17 @@
                       [showIcon]="true"
                       [style]="{ width: '92%' }"
                       name="expiryLeaseDate"
-                      placeholder="Search Lease Expiry Date"
+                      placeholder="Lease Date To"
                       inputId="float-expiryLeaseDate"
                       (onSelect)="searchByLeaseDates()"
                       [disabled]="searchWithLease === false"
                       [(ngModel)]="searchDates.expiryLease"
                       #rentalDate="ngModel"
                     />
-                    <label for="float-expiryLeaseDate">Search Lease Expiry Date</label>
+                    <label for="float-expiryLeaseDate">Lease Date To</label>
                   </span>
                 </div>
                 <div class="">
-                  <p-dropdown
-                    id="vehicleType4"
-                    [(ngModel)]="selectedVehicleType"
-                    [options]="vehicleTypes"
-                    optionLabel="label"
-                    optionValue="value"
-                    placeholder="All"
-                    (onChange)="
-                      getProjectVehicleById(projectVehicleId!, $event.value)
-                    "
-                  ></p-dropdown>
                   <span class="p-float-label">
                     <p-dropdown
                       id="vehicleType4"
