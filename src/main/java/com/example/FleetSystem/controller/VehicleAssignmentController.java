@@ -108,6 +108,7 @@ public class VehicleAssignmentController {
         return ResponseEntity.ok(vehicleAssignmentService.searchAssignmentByPlateNumber(vehicleSearchCriteria, page, size));
     }
 
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/search-assignment-by-region")
     public ResponseEntity<Page<VehicleAssignmentDto>> searchAssignmentByRegion(@RequestParam(value = "value", required = false) String value,
@@ -196,7 +197,7 @@ public class VehicleAssignmentController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/get-last-assignment/{id}")
-    public ResponseEntity<Employee> getLastAssignmentByVehicleId(@PathVariable Long id){
+    public ResponseEntity<Employee> getLastAssignmentByVehicleId(@PathVariable Long id) {
         return ResponseEntity.ok(vehicleAssignmentService.getLastAssignmentByVehicleId(id));
     }
 

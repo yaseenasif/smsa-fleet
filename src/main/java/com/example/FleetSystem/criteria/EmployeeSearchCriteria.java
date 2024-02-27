@@ -10,6 +10,5 @@ import lombok.*;
 @ToString
 @Builder
 public class EmployeeSearchCriteria {
-
     private Long value;
 }

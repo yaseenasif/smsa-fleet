@@ -29,14 +29,19 @@ public class VehicleAssignmentSpecification {
                 query.orderBy(criteriaBuilder.desc(root.get("id")));
                 return criteriaBuilder.and(criteriaBuilder.isTrue(root.get("status")));
             }
-
             Join<VehicleAssignment, Vehicle> vehicleJoin = root.join("vehicle");
-
-            // Adjust the field name based on your entity
-            return criteriaBuilder.and
-                    (criteriaBuilder.like(criteriaBuilder.lower(vehicleJoin.get("plateNumber")),
-                            "%" + vehicleSearchCriteria
-                                    .getValue().toLowerCase() + "%"), criteriaBuilder.isTrue(root.get("status")));
+            if (!"Replacement".equals(vehicleSearchCriteria.getValue()) && !"Active".equals(vehicleSearchCriteria.getValue())) {
+                // Adjust the field name based on your entity
+                return criteriaBuilder.and
+                        (criteriaBuilder.like(criteriaBuilder.lower(vehicleJoin.get("plateNumber")),
+                                "%" + vehicleSearchCriteria
+                                        .getValue().toLowerCase() + "%"), criteriaBuilder.isTrue(root.get("status")));
+            } else {
+                return criteriaBuilder.and(
+                        criteriaBuilder.equal(criteriaBuilder.lower(vehicleJoin.get("vehicleStatus")),
+                                vehicleSearchCriteria.getValue().toLowerCase()),
+                        criteriaBuilder.isTrue(root.get("status")));
+            }
         };
     }
 

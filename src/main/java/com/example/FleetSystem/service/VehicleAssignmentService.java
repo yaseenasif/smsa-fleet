@@ -62,6 +62,8 @@ public class VehicleAssignmentService {
 
     @Autowired
     StorageService storageService;
+    //    @Autowired
+//    DriverRepository driverRepository;
     @Autowired
     VehicleAssignmentAuditService vehicleAssignmentAuditService;
     @Autowired
@@ -357,7 +359,7 @@ public class VehicleAssignmentService {
 //        return paginationResponse;
 //    }
 
-    public Employee getLastAssignmentByVehicleId(Long id){
+    public Employee getLastAssignmentByVehicleId(Long id) {
         Optional<Vehicle> vehicle = vehicleRepository.findById(id);
         if (vehicle.isPresent()) {
             List<AuditDataWrapper> assignmentList = vehicleAssignmentAuditService.retrieveAuditData(vehicle.get().getId());
@@ -373,7 +375,7 @@ public class VehicleAssignmentService {
             }
             throw new RuntimeException("No Last Assignment Found");
         }
-        throw new RuntimeException(String.format("Vehicle not found By id => %d",id));
+        throw new RuntimeException(String.format("Vehicle not found By id => %d", id));
     }
 
     private AssignmentExcelDto toAssignmentExcelDto(VehicleAssignment vehicleAssignment){
