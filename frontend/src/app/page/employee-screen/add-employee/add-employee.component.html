@@ -106,54 +106,6 @@
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
-                  <div class="flex flex-column gap-2 emp-form-date">
-                    <label htmlFor="name">Date Of Joining</label>
-                    <p-calendar
-                      #joinDate
-                      name="joinDate"
-                      [required]="true"
-                      [(ngModel)]="employee.joiningDate"
-                      [showIcon]="true"
-                      [style]="{ width: '100%' }"
-                    ></p-calendar>
-                  </div>
-                </div>
-                <!-- <div class="col-12 md:col-12 lg:col-6">
-                  <div class="flex flex-column gap-2 form-hook">
-                    <label htmlFor="name">Department</label>
-                    <p-dropdown
-                      class="w-full"
-                      [(ngModel)]="employee.department"
-                      [options]="departments?.productFieldValuesList"
-                      name="department"
-                      #department="ngModel"
-                      [required]="true"
-                      optionLabel="name"
-                      optionValue="name"
-                      [filter]="true"
-                      filterBy="name"
-                      [showClear]="true"
-                      [disabled]="true"
-                      placeholder="Select Department
-                  "
-                    >
-                      <ng-template pTemplate="selectedItem">
-                        <div
-                          class="flex align-items-center gap-2"
-                          *ngIf="employee"
-                        >
-                          <div>{{ employee.department }}</div>
-                        </div>
-                      </ng-template>
-                      <ng-template let-departments pTemplate="item">
-                        <div class="flex align-items-center gap-2">
-                          <div>{{ departments.name }}</div>
-                        </div>
-                      </ng-template>
-                    </p-dropdown>
-                  </div>
-                </div> -->
-                <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">Department</label>
                     <input
@@ -213,6 +165,144 @@
                   </small>
                 </div>
               </div>
+			  <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Division</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="division"
+                      [(ngModel)]="employee.division"
+                      #division="ngModel"
+                      required
+                      [disabled]="true"
+                      [ngClass]="{
+                        error:
+                          division.invalid &&
+                          (division.dirty || division.touched)
+                      }"
+                    />
+                    <small
+                      id="name-help"
+                      class="color-red error"
+                      *ngIf="
+                        division.invalid && (division.dirty || division.touched)
+                      "
+                    >
+                      division is required
+                    </small>
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Fleet Classification</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="fleetClassification"
+                      [(ngModel)]="employee.fleetClassification"
+                      #fleetClassification="ngModel"
+                      [disabled]="true"
+                      required
+                      [disabled]="true"
+                      [ngClass]="{
+                        error:
+                        fleetClassification.invalid &&
+                          (fleetClassification.dirty || fleetClassification.touched)
+                      }"
+                    />
+                    <small
+                      id="name-help"
+                      class="color-red error"
+                      *ngIf="
+                      fleetClassification.invalid && (fleetClassification.dirty || fleetClassification.touched)
+                      "
+                    >
+                    Fleet Classification is required
+                    </small>
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Vehicle Eligible</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="vehicleEligible"
+                      [(ngModel)]="employee.vehicleEligible"
+                      #vehicleEligible="ngModel"
+                      [disabled]="true"
+                      required
+                      [disabled]="true"
+                      [ngClass]="{
+                        error:
+                        vehicleEligible.invalid &&
+                          (vehicleEligible.dirty || vehicleEligible.touched)
+                      }"
+                    />
+                    <small
+                      id="name-help"
+                      class="color-red error"
+                      *ngIf="
+                      vehicleEligible.invalid && (vehicleEligible.dirty || vehicleEligible.touched)
+                      "
+                    >
+                    Vehicle Eligible is required
+                    </small>
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2 emp-form-date">
+                    <label htmlFor="name">Date Of Joining</label>
+                    <p-calendar
+                      #joinDate
+                      name="joinDate"
+                      [required]="true"
+                      [(ngModel)]="employee.joiningDate"
+                      [showIcon]="true"
+                      [style]="{ width: '100%' }"
+                    ></p-calendar>
+                  </div>
+                </div>
+                <!-- <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2 form-hook">
+                    <label htmlFor="name">Department</label>
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="employee.department"
+                      [options]="departments?.productFieldValuesList"
+                      name="department"
+                      #department="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                      [disabled]="true"
+                      placeholder="Select Department
+                  "
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="employee"
+                        >
+                          <div>{{ employee.department }}</div>
+                        </div>
+                      </ng-template>
+                      <ng-template let-departments pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                          <div>{{ departments.name }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
+                  </div>
+                </div> -->
+                
                 <!-- <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Section</label>
@@ -500,95 +590,7 @@
                     </small>
                   </div>
                 </div>
-                <div class="col-12 md:col-12 lg:col-6">
-                  <div class="flex flex-column gap-2">
-                    <label htmlFor="name">Division</label>
-                    <input
-                      pInputText
-                      id="name"
-                      aria-describedby="name-help"
-                      name="division"
-                      [(ngModel)]="employee.division"
-                      #division="ngModel"
-                      required
-                      [disabled]="true"
-                      [ngClass]="{
-                        error:
-                          division.invalid &&
-                          (division.dirty || division.touched)
-                      }"
-                    />
-                    <small
-                      id="name-help"
-                      class="color-red error"
-                      *ngIf="
-                        division.invalid && (division.dirty || division.touched)
-                      "
-                    >
-                      division is required
-                    </small>
-                  </div>
-                </div>
-                <div class="col-12 md:col-12 lg:col-6">
-                  <div class="flex flex-column gap-2">
-                    <label htmlFor="name">Fleet Classification</label>
-                    <input
-                      pInputText
-                      id="name"
-                      aria-describedby="name-help"
-                      name="fleetClassification"
-                      [(ngModel)]="employee.fleetClassification"
-                      #fleetClassification="ngModel"
-                      [disabled]="true"
-                      required
-                      [disabled]="true"
-                      [ngClass]="{
-                        error:
-                        fleetClassification.invalid &&
-                          (fleetClassification.dirty || fleetClassification.touched)
-                      }"
-                    />
-                    <small
-                      id="name-help"
-                      class="color-red error"
-                      *ngIf="
-                      fleetClassification.invalid && (fleetClassification.dirty || fleetClassification.touched)
-                      "
-                    >
-                    Fleet Classification is required
-                    </small>
-                  </div>
-                </div>
-                <div class="col-12 md:col-12 lg:col-6">
-                  <div class="flex flex-column gap-2">
-                    <label htmlFor="name">Vehicle Eligible</label>
-                    <input
-                      pInputText
-                      id="name"
-                      aria-describedby="name-help"
-                      name="vehicleEligible"
-                      [(ngModel)]="employee.vehicleEligible"
-                      #vehicleEligible="ngModel"
-                      [disabled]="true"
-                      required
-                      [disabled]="true"
-                      [ngClass]="{
-                        error:
-                        vehicleEligible.invalid &&
-                          (vehicleEligible.dirty || vehicleEligible.touched)
-                      }"
-                    />
-                    <small
-                      id="name-help"
-                      class="color-red error"
-                      *ngIf="
-                      vehicleEligible.invalid && (vehicleEligible.dirty || vehicleEligible.touched)
-                      "
-                    >
-                    Vehicle Eligible is required
-                    </small>
-                  </div>
-                </div>
+                
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">DeptCode</label>

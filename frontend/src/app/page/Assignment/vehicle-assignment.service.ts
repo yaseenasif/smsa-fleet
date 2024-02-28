@@ -126,4 +126,10 @@ export class VehicleAssignmentService {
     }
     return this.http.post<PaginatedResponse<VehicleAssignment>>(`${this.url}/search-assignment-by-any`, search ? search : {}, { params });
   }
+
+  downloadExcelData(): Observable<Blob>{
+    return this.http.get(`${this.url}/download-assignment-excel`, {
+      responseType: 'blob'
+    });
+   }
 }

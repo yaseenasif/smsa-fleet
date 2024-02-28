@@ -140,7 +140,7 @@ public class VehicleController {
     @GetMapping("/search-vehicle-inactive")
     public ResponseEntity<Page<VehicleDto>> searchInactiveVehicles(@RequestParam(value = "value", required = false) String value,
                                                                    @RequestParam(defaultValue = "0") int page,
-                                                                   @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
+                                                                   @RequestParam(defaultValue = "7") int size) throws JsonProcessingException {
         VehicleSearchCriteria vehicleSearchCriteria = new ObjectMapper().readValue(value, VehicleSearchCriteria.class);
         return ResponseEntity.ok(vehicleService.searchInactiveVehicles(vehicleSearchCriteria, page, size));
     }
@@ -155,7 +155,7 @@ public class VehicleController {
     public ResponseEntity<Page<VehicleDto>> searchAllVehicles(@RequestParam(value = "value", required = false) String value,
                                                               @RequestParam String vehicleStatus,
                                                               @RequestParam(defaultValue = "0") int page,
-                                                              @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
+                                                              @RequestParam(defaultValue = "7") int size) throws JsonProcessingException {
         VehicleSearchCriteria vehicleSearchCriteria = new ObjectMapper().readValue(value, VehicleSearchCriteria.class);
         return ResponseEntity.ok(vehicleService.searchVehicle(vehicleSearchCriteria, vehicleStatus, page, size));
     }

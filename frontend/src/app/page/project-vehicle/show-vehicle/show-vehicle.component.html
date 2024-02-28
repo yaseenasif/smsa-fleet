@@ -18,22 +18,6 @@
               class="flex mb-2 align-items-center gap-1"
               style="justify-content: flex-end; align-items: flex-end"
             ></div>
-            <p-toolbar>
-              <div class="p-toolbar-group-start">
-                <h2 class="h-color">Show Vehicle</h2>
-              </div>
-              <div class="p-toolbar-group-start">
-                <div class="">
-                  <p-calendar
-                    [showIcon]="true"
-                    [style]="{ width: '89%' }"
-                    placeholder="Search Rental Date"
-                    name="rentalDate"
-                    (onSelect)="searchByRentalDate()"
-                    [disabled]="searchWithLease === true"
-                    [(ngModel)]="searchDates.rentalDate"
-                    #rentalDate="ngModel"
-                  />
             <p-toolbar [style]="{ 'padding-top': '1.5rem' }">
               <div class="p-toolbar-group-start h-color">
                 <h2><strong> Search By :&nbsp; </strong></h2>
@@ -86,17 +70,6 @@
                   </span>
                 </div>
                 <div class="">
-                  <p-dropdown
-                    id="vehicleType4"
-                    [(ngModel)]="selectedVehicleType"
-                    [options]="vehicleTypes"
-                    optionLabel="label"
-                    optionValue="value"
-                    placeholder="All"
-                    (onChange)="
-                      getProjectVehicleById(projectVehicleId!, $event.value)
-                    "
-                  ></p-dropdown>
                   <span class="p-float-label">
                     <p-dropdown
                       id="vehicleType4"

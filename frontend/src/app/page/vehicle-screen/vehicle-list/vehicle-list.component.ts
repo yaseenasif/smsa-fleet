@@ -30,7 +30,7 @@ export class VehicleListComponent implements OnInit{
 
   query: PageEvent = {
     page: 0,
-    size: 10,
+    size: 7,
   };
 
     value: string | null = null;
@@ -232,4 +232,7 @@ searchAllVehicles(vehiclestatus: string){
    })
  }
 
+ downloadExcelData(){
+   this.vehicleService.downloadExcelData().subscribe(blob => saveAs(blob,"Vehicle Data.xlsx"))
+ }
 }

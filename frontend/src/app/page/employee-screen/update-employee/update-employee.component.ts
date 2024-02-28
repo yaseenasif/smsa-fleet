@@ -10,6 +10,8 @@ import { RegionService } from '../../region/service/region.service';
 import { Region } from 'src/app/modal/Region';
 import { GradeService } from '../../grade/grade.service';
 import { Grade } from 'src/app/modal/grade';
+import { JobTitleService } from '../../job-title/job-title.service';
+import { JobTitle } from 'src/app/modal/job-title';
 
 @Component({
   selector: 'app-update-employee',
@@ -81,6 +83,8 @@ export class UpdateEmployeeComponent {
   ]
 
   visible!: boolean;
+  allJobTitle !: JobTitle[];
+  temp !: JobTitle[];
 
   constructor(private employeeService: EmployeeService,
     private router: Router,
@@ -88,7 +92,8 @@ export class UpdateEmployeeComponent {
     private route: ActivatedRoute,
     private datePipe: DatePipe,
     private regionService: RegionService,
-    private gradeService: GradeService
+    private gradeService: GradeService,
+    private jobTitleService: JobTitleService
   ) { }
 
 
@@ -112,6 +117,7 @@ export class UpdateEmployeeComponent {
     this.employeeId = +this.route.snapshot.paramMap.get('id')!;
     this.getEmployeeById(this.employeeId)
     this.checkAssignedEmployee(this.employeeId);
+    this.getAllJobTitle();
   }
 
   getEmployeeById(id: Number) {
@@ -243,6 +249,24 @@ export class UpdateEmployeeComponent {
     this.employeeService.checkAssignedEmployee(id).subscribe((res: any) => {
       this.assignedEmployeeCheck = res.check;
     })
+  }
+
+  getAllJobTitle() {
+    this.jobTitleService.getJobTitle().subscribe((res) => {
+      this.allJobTitle = res;
+      console.log(this.allJobTitle);
+
+    })
+  }
+
+  dataFilledbyField() {
+    this.temp = this.allJobTitle.filter(jobTitleObj => jobTitleObj.jobTitle === this.employee.jobTitle);
+    this.employee.department = this.temp[0].department
+    this.employee.section = this.temp[0].section;
+    this.employee.division = this.temp[0].division
+    this.employee.fleetClassification = this.temp[0].fleetClassification;
+    this.employee.vehicleEligible = this.temp[0].vehicleEligible
+
   }
 }
 

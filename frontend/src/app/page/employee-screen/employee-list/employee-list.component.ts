@@ -30,7 +30,7 @@ export class EmployeeListComponent implements OnInit {
 
   query: PageEvent = {
     page: 0,
-    size: 10,
+    size: 7,
   };
   
   value: number | null = null;
@@ -158,5 +158,7 @@ export class EmployeeListComponent implements OnInit {
     })
   }
 
-
+  downloadExcelData(){
+    this.employeeService.downloadExcelData().subscribe(blob => saveAs(blob,"Employee Data.xlsx"))
+  }
 }

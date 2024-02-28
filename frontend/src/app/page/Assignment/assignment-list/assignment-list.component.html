@@ -8,6 +8,9 @@
         <p-toast></p-toast>
         <div class="card flex justify-content-center">
           <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+          <p-button class="bg-b-color adjust mt-2" (click)="downloadExcelData()">
+            <i class="bi bi-download"></i>&nbsp; Export data
+          </p-button>
         </div>
         <div class="body-card">
           <div class="table-head">
@@ -263,7 +266,7 @@
                   <th class="text-center">Model</th>
                   <th class="text-center">Year</th>
                   <th class="text-center">Region</th>
-                  <th class="text-center">Depatment</th>
+                  <th class="text-center">Department</th>
                   <th class="text-center">Section</th>
                   <th class="text-center">Lease Expiry</th>
                   <th class="text-center">Lease Cost</th>

@@ -137,4 +137,9 @@ export class VehicleService {
     return this.http.patch<Vehicle>(`${this.url}/mark-total-lost/${id}`,{});
    }
   
+   downloadExcelData(): Observable<Blob>{
+    return this.http.get(`${this.url}/download-vehicle-excel`, {
+      responseType: 'blob'
+    });
+   }
 }

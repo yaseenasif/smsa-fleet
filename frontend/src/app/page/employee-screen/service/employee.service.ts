@@ -76,4 +76,10 @@ export class EmployeeService {
   getLastAssignedEmployeeByVehicleId(id: Number): Observable<Employee> {
     return this.http.get<Employee>(`${this.url}/get-last-assignment/${id}`);
   }
+
+  downloadExcelData(): Observable<Blob>{
+    return this.http.get(`${this.url}/download-employee-excel`, {
+      responseType: 'blob'
+    });
+   }
 }

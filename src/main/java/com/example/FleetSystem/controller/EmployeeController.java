@@ -109,7 +109,7 @@ public class EmployeeController {
     @GetMapping("/search-employee")
     public ResponseEntity<Page<EmployeeDto>> searchEmployee(@RequestParam(value = "value",required = false) Long value,
                                                            @RequestParam(defaultValue = "0") int page,
-                                                           @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
+                                                           @RequestParam(defaultValue = "7") int size) throws JsonProcessingException {
         EmployeeSearchCriteria employeeSearchCriteria = new EmployeeSearchCriteria();
         employeeSearchCriteria.setValue(value);
         return ResponseEntity.ok(employeeService.searchEmployee(employeeSearchCriteria,page, size));
@@ -130,7 +130,7 @@ public class EmployeeController {
     @GetMapping("/search-employee-inactive")
     public ResponseEntity<Page<EmployeeDto>> searchInactiveEmployee(@RequestParam(value = "value",required = false) Long value,
                                                             @RequestParam(defaultValue = "0") int page,
-                                                            @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
+                                                            @RequestParam(defaultValue = "7") int size) throws JsonProcessingException {
         EmployeeSearchCriteria employeeSearchCriteria = new EmployeeSearchCriteria();
         employeeSearchCriteria.setValue(value);
         return ResponseEntity.ok(employeeService.searchInactiveEmployee(employeeSearchCriteria,page, size));

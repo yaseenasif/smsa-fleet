@@ -103,7 +103,7 @@ public class VehicleAssignmentController {
     @GetMapping("/search-assignment")
     public ResponseEntity<Page<VehicleAssignmentDto>> searchAssignmentByPlateNumber(@RequestParam(value = "value", required = false) String value,
                                                                                     @RequestParam(defaultValue = "0") int page,
-                                                                                    @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
+                                                                                    @RequestParam(defaultValue = "7") int size) throws JsonProcessingException {
         VehicleSearchCriteria vehicleSearchCriteria = new ObjectMapper().readValue(value, VehicleSearchCriteria.class);
         return ResponseEntity.ok(vehicleAssignmentService.searchAssignmentByPlateNumber(vehicleSearchCriteria, page, size));
     }
@@ -114,7 +114,7 @@ public class VehicleAssignmentController {
     public ResponseEntity<Page<VehicleAssignmentDto>> searchAssignmentByRegion(@RequestParam(value = "value", required = false) String value,
                                                                                @RequestParam String vehicleStatus,
                                                                                @RequestParam(defaultValue = "0") int page,
-                                                                               @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
+                                                                               @RequestParam(defaultValue = "7") int size) throws JsonProcessingException {
         VehicleSearchCriteria vehicleSearchCriteria = new ObjectMapper().readValue(value, VehicleSearchCriteria.class);
         return ResponseEntity.ok(vehicleAssignmentService.searchAssignmentByRegion(vehicleSearchCriteria, vehicleStatus, page, size));
     }
@@ -124,7 +124,7 @@ public class VehicleAssignmentController {
     public ResponseEntity<Page<VehicleAssignmentDto>> searchAssignmentByDepartment(@RequestParam(value = "value", required = false) String value,
                                                                                    @RequestParam String vehicleStatus,
                                                                                    @RequestParam(defaultValue = "0") int page,
-                                                                                   @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
+                                                                                   @RequestParam(defaultValue = "7") int size) throws JsonProcessingException {
         VehicleSearchCriteria vehicleSearchCriteria = new ObjectMapper().readValue(value, VehicleSearchCriteria.class);
         return ResponseEntity.ok(vehicleAssignmentService.searchAssignmentByDepartment(vehicleSearchCriteria, vehicleStatus, page, size));
     }
@@ -134,7 +134,7 @@ public class VehicleAssignmentController {
     public ResponseEntity<Page<VehicleAssignmentDto>> searchAssignmentBySection(@RequestParam(value = "value", required = false) String value,
                                                                                 @RequestParam String vehicleStatus,
                                                                                 @RequestParam(defaultValue = "0") int page,
-                                                                                @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
+                                                                                @RequestParam(defaultValue = "7") int size) throws JsonProcessingException {
         VehicleSearchCriteria vehicleSearchCriteria = new ObjectMapper().readValue(value, VehicleSearchCriteria.class);
         return ResponseEntity.ok(vehicleAssignmentService.searchAssignmentBySection(vehicleSearchCriteria, vehicleStatus, page, size));
     }
@@ -144,7 +144,7 @@ public class VehicleAssignmentController {
     @GetMapping("/search-assignment-inactive")
     public ResponseEntity<Page<VehicleAssignmentDto>> searchInactiveAssignmentByPlateNumber(@RequestParam(value = "value", required = false) String value,
                                                                                             @RequestParam(defaultValue = "0") int page,
-                                                                                            @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
+                                                                                            @RequestParam(defaultValue = "7") int size) throws JsonProcessingException {
         VehicleSearchCriteria vehicleSearchCriteria = new ObjectMapper().readValue(value, VehicleSearchCriteria.class);
         return ResponseEntity.ok(vehicleAssignmentService.searchInactiveAssignmentByPlateNumber(vehicleSearchCriteria, page, size));
     }
@@ -153,7 +153,7 @@ public class VehicleAssignmentController {
     @GetMapping("/search-assignment-empno")
     public ResponseEntity<Page<VehicleAssignmentDto>> searchAssignmentByEmployeeNumber(@RequestParam(value = "value", required = false) String value,
                                                                                        @RequestParam(defaultValue = "0") int page,
-                                                                                       @RequestParam(defaultValue = "10") int size) throws JsonProcessingException {
+                                                                                       @RequestParam(defaultValue = "7") int size) throws JsonProcessingException {
         EmployeeSearchCriteria employeeSearchCriteria = new ObjectMapper().readValue(value, EmployeeSearchCriteria.class);
 
         return ResponseEntity.ok(vehicleAssignmentService.searchAssignmentByEmployeeNumber(employeeSearchCriteria, page, size));
@@ -179,7 +179,7 @@ public class VehicleAssignmentController {
     @PostMapping("/search-assignment-by-any")
     public ResponseEntity<Page<VehicleAssignmentDto>> search(
             @RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
-            @RequestParam(value = "pageSize", defaultValue = "15", required = false) Integer pageSize,
+            @RequestParam(value = "pageSize", defaultValue = "7", required = false) Integer pageSize,
             @RequestBody VehicleAssignmentDto vehicleAssignmentDto) {
         Page<VehicleAssignmentDto> pageResult = vehicleAssignmentService.getVehicleAssignmentBySearchCriteria(pageNumber, pageSize, vehicleAssignmentDto);
         return ResponseEntity.ok(pageResult);
@@ -202,7 +202,7 @@ public class VehicleAssignmentController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/download-assignment-excel/{id}")
+    @GetMapping("/download-assignment-excel")
     public ResponseEntity<byte []> downloadAssignmentExcel(){
         byte[] excelBytes = vehicleAssignmentService.downloadExcel();
 

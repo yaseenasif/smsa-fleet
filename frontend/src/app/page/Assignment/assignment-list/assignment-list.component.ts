@@ -13,6 +13,7 @@ import { ErrorService } from 'src/app/CommonServices/Error/error.service';
 import { ConcateSearch } from 'src/app/modal/SearchCriteria';
 import { RegionService } from '../../region/service/region.service';
 import { Region } from 'src/app/modal/Region';
+import * as saveAs from 'file-saver';
 
 @Component({
   selector: 'app-assignment-list',
@@ -28,7 +29,7 @@ export class AssignmentListComponent {
 
   query: PageEvent = {
     page: 0,
-    size: 10,
+    size: 7,
   };
 
   globalTransformObj: ConcateSearch = {
@@ -328,5 +329,9 @@ export class AssignmentListComponent {
       }, err => {
         this.errorHandleService.showError(err.error)
       });
+  }
+
+  downloadExcelData(){
+    this.vehicleAssignmentService.downloadExcelData().subscribe(blob => saveAs(blob,"Assignment Data.xlsx"))
   }
 }

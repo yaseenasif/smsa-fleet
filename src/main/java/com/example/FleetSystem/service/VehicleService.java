@@ -81,6 +81,11 @@ public class VehicleService {
 
                 Vehicle replacingVehicle = null;
                 if(finalReturnRequest.getReplacementVehicle() != null) {
+                    Optional<Vehicle> optionalVehicle = vehicleRepository.findByPlateNumber(finalReturnRequest.getReplacementVehicle().getPlateNumber());
+                    if (optionalVehicle.isPresent()){
+                        throw new RuntimeException("Plate number Already exist : " + finalReturnRequest.getReplacementVehicle().getPlateNumber());
+                    }
+
                     replacingVehicle = toEntity(finalReturnRequest.getReplacementVehicle());
                     replacingVehicle.setCreatedAt(LocalDate.now());
                     replacingVehicle.setCreatedBy(user);
@@ -841,6 +846,11 @@ public class VehicleService {
                             break;
 
                         case "Replace":
+
+                            Optional<Vehicle> optionalVehicle = vehicleRepository.findByPlateNumber(replacementActionRequest.getPermanentVehicle().getPlateNumber());
+                            if(optionalVehicle.isPresent()){
+                                throw new RuntimeException("Plate number Already exist : " + replacementActionRequest.getPermanentVehicle().getPlateNumber());
+                            }
                             Vehicle permanentVehicle = toEntity(replacementActionRequest.getPermanentVehicle());
                             permanentVehicle.setCreatedAt(LocalDate.now());
                             permanentVehicle.setCreatedBy(user);

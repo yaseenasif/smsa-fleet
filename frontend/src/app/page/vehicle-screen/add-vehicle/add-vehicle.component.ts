@@ -313,10 +313,13 @@ export class AddVehicleComponent implements OnInit{
   }
   else if(!this.replacementCheck && !this.finalReturn){
       this.vehicleService.addVehicle(this.vehicle).subscribe((res) => {
-      this.messageService.add({ severity: 'Add Successfully', summary: 'Add Successfully', detail: 'Message Content' });
+      this.messageService.add({ severity: 'success', summary: 'Add Successfully', detail: 'Message Content' });
       this.router.navigate(['/vehicle'])
 
-  })
+  }, error=>{
+    this.messageService.add({severity: 'error', detail: error.error});
+    })
+  
  }
 }
 
@@ -417,7 +420,10 @@ showEmpName() {
    this.vehicleService.replacementVehicleAction(this.vId,this.replacementActionRequest).subscribe((res)=>{
     this.messageService.add({ severity: 'success', summary: 'Permanent Vehicle', detail: 'Permenant Vehicle has been added'});
     this.router.navigate(['/assignment'])
-   })
+   }, error=>{
+    this.messageService.add({ severity: 'error', detail: error.error });
+   });
+   
  }
 }
 

@@ -8,6 +8,9 @@
             <p-toast></p-toast>
           <div class="card flex justify-content-center">
               <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+              <p-button class="bg-b-color adjust mt-2" (click)="downloadExcelData()">
+                <i class="bi bi-download"></i>&nbsp; Export data
+              </p-button>
           </div>
           <div class="body-card">
               <div class="table-head">
