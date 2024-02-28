@@ -8,7 +8,7 @@
         <div class="card flex justify-content-center">
           <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
         </div>
-        <div class="body-card">
+        <div class="body-card py-2">
           <p-toast
             [showTransitionOptions]="'0ms'"
             [hideTransitionOptions]="'5000ms'"
@@ -16,11 +16,24 @@
           <div class="table-head">
             <div
               class="flex mb-2 align-items-center gap-1"
-              style="justify-content: flex-end; align-items: flex-end"
-            ></div>
+              style="justify-content: flex-start; align-items: flex-start"
+            >
+              <div class="flex align-items-center">
+                <p-button
+                  label="Clear"
+                  class="bg-b-color"
+                  (onClick)="clear()"
+                  icon="pi pi-filter-slash"
+                ></p-button>
+              </div>
+            </div>
             <p-toolbar [style]="{ 'padding-top': '1.5rem' }">
               <div class="p-toolbar-group-start h-color">
-                <h3><strong style="white-space: nowrap;"> Search By :&nbsp; </strong></h3>
+                <h3>
+                  <strong style="white-space: nowrap">
+                    Search By :&nbsp;
+                  </strong>
+                </h3>
                 <div class="ml-3">
                   <span class="p-float-label">
                     <p-calendar
@@ -45,7 +58,10 @@
                       placeholder="Rental Date To"
                       name="rentalDate"
                       (onSelect)="searchByRentalDate()"
-                      [disabled]="searchWithLease === true"
+                      [minDate]="searchDates.rentalDate!"
+                      [disabled]="
+                        searchWithLease === true || !searchDates.rentalDate
+                      "
                       inputId="float-rentalDate"
                       [(ngModel)]="searchDates.rentalDateTo"
                       #rentalDate="ngModel"
@@ -77,8 +93,11 @@
                       name="expiryLeaseDate"
                       placeholder="Lease Date To"
                       inputId="float-expiryLeaseDate"
+                      [minDate]="searchDates.startLease!"
                       (onSelect)="searchByLeaseDates()"
-                      [disabled]="searchWithLease === false"
+                      [disabled]="
+                        searchWithLease === false || !searchDates.startLease
+                      "
                       [(ngModel)]="searchDates.expiryLease"
                       #rentalDate="ngModel"
                     />
