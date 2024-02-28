@@ -10,7 +10,7 @@ import { ProductField, ProductFieldValue } from 'src/app/modal/ProductField';
 import { PageEvent } from 'src/app/modal/pageEvent';
 import { ProductFieldServiceService } from '../../product-field/service/product-field-service.service';
 import { ErrorService } from 'src/app/CommonServices/Error/error.service';
-import { ConcateSearch } from 'src/app/modal/SearchCriteria';
+import { ConcateSearch, SearchItems } from 'src/app/modal/SearchCriteria';
 import { RegionService } from '../../region/service/region.service';
 import { Region } from 'src/app/modal/Region';
 import * as saveAs from 'file-saver';
@@ -132,6 +132,7 @@ export class AssignmentListComponent {
           this.vehicleAssignment = res.content;
           this.plateNumber = res.content[0].vehicle.plateNumber;
           this.slectedAssignmentType = res.content[0].vehicle.vehicleStatus;
+          debugger
           this.globalTransformObj.assignToEmpId = {
             department: res.content[0].assignToEmpId?.department?.toUpperCase(),
             region: res.content[0].assignToEmpId?.region?.toUpperCase(),
@@ -161,6 +162,7 @@ export class AssignmentListComponent {
         if (searchTerm) {
           this.employeeNumber = res.content[0].assignToEmpId.employeeNumber;
           this.slectedAssignmentType = res.content[0].vehicle.vehicleStatus;
+          debugger
           this.globalTransformObj.assignToEmpId = {
             department: res.content[0].assignToEmpId?.department?.toUpperCase(),
             region: res.content[0].assignToEmpId?.region?.toUpperCase(),
@@ -251,9 +253,10 @@ export class AssignmentListComponent {
     window.location.reload();
   }
 
-  getSearchAssignmentByAnyValue(searchTerm: string) {
+  getSearchAssignmentByAnyValue(searchTerm: SearchItems) {
+    debugger
     this.criteriaSearch = true;
-    const transformSearch = (search: string, field: any) => {
+    const transformSearch = (search: SearchItems, field: keyof SearchItems) => {
       return search?.hasOwnProperty(field) ? { [field]: search[field] } : null;
     };
 
@@ -307,23 +310,6 @@ export class AssignmentListComponent {
       .subscribe((res: PaginatedResponse<VehicleAssignment>) => {
         debugger
         this.vehicleAssignment = res.content;
-        if (searchTerm && res.content.length > 0) {
-          this.employeeNumber = res.content[0].assignToEmpId.employeeNumber;
-          this.plateNumber = res.content[0].vehicle.plateNumber;
-          this.globalTransformObj.assignToEmpId = {
-            department: res.content[0].assignToEmpId?.department?.toUpperCase(),
-            region: res.content[0].assignToEmpId?.region?.toUpperCase(),
-            section: res.content[0].assignToEmpId?.section?.toUpperCase()
-          };
-        } else {
-          this.plateNumber = undefined;
-          this.employeeNumber = undefined;
-          this.globalTransformObj.assignToEmpId = {
-            department: undefined,
-            region: undefined,
-            section: undefined
-          };
-        }
         this.query = { page: res.pageable.pageNumber, size: res.size };
         this.totalRecords = res.totalElements;
       }, err => {

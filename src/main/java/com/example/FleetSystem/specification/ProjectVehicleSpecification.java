@@ -1,5 +1,6 @@
 package com.example.FleetSystem.specification;
 
+import com.example.FleetSystem.dto.ProjectVehicleValuesDto;
 import com.example.FleetSystem.model.*;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -7,7 +8,7 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 
 public class ProjectVehicleSpecification {
-    public static Specification<ProjectVehicleValues> getSearchSpecificationByCriteria(Long projectVehicleId, ProjectVehicleValues projectVehicleValues) {
+    public static Specification<ProjectVehicleValues> getSearchSpecificationByCriteria(Long projectVehicleId, ProjectVehicleValuesDto projectVehicleValuesDto) {
         return (root, query, criteriaBuilder) -> {
             Predicate predicate = criteriaBuilder.conjunction();
 
@@ -20,20 +21,21 @@ public class ProjectVehicleSpecification {
                 );
             }
 
-            if (projectVehicleValues.getRentalDate() != null) {
+            if (projectVehicleValuesDto.getRentalDate() != null) {
                 predicate = criteriaBuilder.and(
-                        predicate, criteriaBuilder.equal(
+                        predicate, criteriaBuilder.between(
                                 root.get("rentalDate"),
-                                projectVehicleValues.getRentalDate())
+                                projectVehicleValuesDto.getRentalDate(),
+                                projectVehicleValuesDto.getRentalDateTo())
                 );
             }
 
-            if (projectVehicleValues.getStartLease() != null && projectVehicleValues.getExpiryLease() != null) {
+            if (projectVehicleValuesDto.getStartLease() != null && projectVehicleValuesDto.getExpiryLease() != null) {
                 predicate = criteriaBuilder.and(
                         predicate, criteriaBuilder.between(
                                 root.get("startLease"),
-                                projectVehicleValues.getStartLease(),
-                                projectVehicleValues.getExpiryLease())
+                                projectVehicleValuesDto.getStartLease(),
+                                projectVehicleValuesDto.getExpiryLease())
                 );
             }
 
