@@ -165,6 +165,37 @@ export class ShowVehicleComponent {
         });
     }
   }
+  clear() {
+    this.searchWithLease = undefined;
+    this.searchDates = {
+      vendor: {
+        officeLocation: undefined,
+        vendorName: undefined,
+        id: undefined,
+        contactPersonList: [{
+          phoneNumber: undefined,
+          email: undefined,
+          name: undefined,
+          id: undefined,
+        }],
+        attachments: undefined,
+      },
+      rentalDateTo: undefined,
+      plateNumber: undefined,
+      destination: undefined,
+      expiryLease: undefined,
+      rentalDate: undefined,
+      startLease: undefined,
+      leaseCost: undefined,
+      duration: undefined,
+      origin: undefined,
+      type: undefined,
+      id: undefined,
+    };
+    this.selectedVehicleType = '';
+
+    this.getProjectVehicleById(this.projectVehicleId!);
+  }
 }
 
 

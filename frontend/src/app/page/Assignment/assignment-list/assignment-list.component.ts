@@ -205,7 +205,7 @@ export class AssignmentListComponent {
         this.regionList = res.map((obj: Region) => ({
           id: obj.id,
           name: obj.name,
-          region: obj.name,
+          region: obj.name?.toUpperCase(),
           country: obj.country,
           cities: obj.cities,
           status: obj.status
