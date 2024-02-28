@@ -166,6 +166,7 @@ export class ShowVehicleComponent {
     }
   }
   clear() {
+    this.searchWithLease = undefined;
     this.searchDates = {
       vendor: {
         officeLocation: undefined,
@@ -192,6 +193,7 @@ export class ShowVehicleComponent {
       id: undefined,
     };
     this.selectedVehicleType = '';
+
     this.getProjectVehicleById(this.projectVehicleId!);
   }
 }
