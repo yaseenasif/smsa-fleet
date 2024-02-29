@@ -28,7 +28,7 @@ public class Employee {
     private Date joiningDate;
     private Date dateOfBirth;
     private String department;
-    private Long deptCode;
+    private String deptCode;
     private String division;
     private String fleetClassification;
     private String vehicleEligible;

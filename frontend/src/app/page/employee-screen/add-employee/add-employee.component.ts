@@ -216,7 +216,7 @@ export class AddEmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.items = [{ label: 'Employee', routerLink: '/employee' }, { label: 'Add Employee' }];
     this.getNationality();
-    this.getJobTitle();
+    // this.getJobTitle();
     this.getDepartment();
     this.getSections();
     this.getAllGrades();
@@ -313,13 +313,13 @@ export class AddEmployeeComponent implements OnInit {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
     })
   }
-  getJobTitle() {
-    this.productService.getProductFieldByName('Job Title').subscribe((res: ProductField) => {
-      this.jobTitles = res;
-    }, error => {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
-    })
-  }
+  // getJobTitle() {
+  //   this.productService.getProductFieldByName('Job Title').subscribe((res: ProductField) => {
+  //     this.jobTitles = res;
+  //   }, error => {
+  //     this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
+  //   })
+  // }
   getDepartment() {
     this.productService.getProductFieldByName('Department').subscribe((res: ProductField) => {
       this.departments = res;

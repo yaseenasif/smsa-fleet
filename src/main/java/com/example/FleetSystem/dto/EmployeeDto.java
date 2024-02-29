@@ -29,7 +29,7 @@ public class EmployeeDto {
     private String division;
     private String fleetClassification;
     private String vehicleEligible;
-    private Long deptCode;
+    private String deptCode;
     private String department;
     private String section;
     private Long nationalIdNumber;
