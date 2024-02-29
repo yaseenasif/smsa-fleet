@@ -258,7 +258,7 @@ public class EmployeeService {
                             employee.setLocation(getStringValue(row.getCell(11)));
                             employee.setOrganization(getStringValue(row.getCell(12)));
                             employee.setDivision(getStringValue(row.getCell(13)));
-                            employee.setDeptCode(getLongValue(row.getCell(14)));
+                            employee.setDeptCode(getStringValue(row.getCell(14)));
                             employee.setDepartment(getStringValue(row.getCell(15)));
                             employee.setSection(getStringValue(row.getCell(16)));
                             employee.setNationalIdNumber(getLongValue(row.getCell(17)));
