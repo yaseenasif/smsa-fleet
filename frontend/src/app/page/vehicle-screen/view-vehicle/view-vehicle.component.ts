@@ -13,22 +13,25 @@ import { VehicleService } from '../service/vehicle.service';
 export class ViewVehicleComponent {
 
   items: MenuItem[] | undefined;
-  items2: MenuItem[] = []; 
+  items2: MenuItem[] = [];
   vehicle!: Vehicle;
   vehicleId: Number | undefined;
   vehicles!: Array<Vehicle>;
   assignmentCheck!: boolean;
   tooltipItems: MenuItem[] | undefined;
 
-  constructor(private vehicleService: VehicleService,private route: ActivatedRoute,
+  constructor(private vehicleService: VehicleService, private route: ActivatedRoute,
     private router: Router) { }
 
-  ngOnInit(){
-    this.items = [{ label: 'Vehicle',routerLink:'/vehicle'},{ label: 'View Vehicle'}];
-    // this.vehicleId = +this.route.snapshot.paramMap.get('id')!;
+  ngOnInit() {
+    this.items = [{ label: 'Vehicle', routerLink: '/vehicle' }, { label: 'View Vehicle' }];
+    debugger
+    this.vehicleId = +this.route.snapshot.paramMap.get('id')!;
     this.route.queryParams.subscribe(params => {
       this.assignmentCheck = params['assignmentCheck'] === 'true';
-      this.vehicleId = params['id'];
+      if (!this.vehicleId) {
+        this.vehicleId = params['id'];
+      }
     });
 
     this.getVehicleById(this.vehicleId!);
@@ -37,21 +40,21 @@ export class ViewVehicleComponent {
         tooltipOptions: {
           tooltipLabel: 'Edit',
           tooltipPosition: 'left'
-      },
+        },
         icon: 'bi bi-pen p-speeddial-action1',
         command: () => {
         },
         routerLink: ['/edit-vehicle', this.vehicleId],
         severity: 'success',
-        style: { backgroundColor: 'blue', color: 'white' } 
+        style: { backgroundColor: 'blue', color: 'white' }
       },
       {
         tooltipOptions: {
           tooltipLabel: 'Attachment',
           tooltipPosition: 'left'
-      },
+        },
         icon: 'bi bi-paperclip',
-        
+
         command: () => {
         },
         routerLink: ['/vehicle-attachment', this.vehicleId],
@@ -62,7 +65,7 @@ export class ViewVehicleComponent {
         tooltipOptions: {
           tooltipLabel: 'Download Attachment',
           tooltipPosition: 'left'
-      },
+        },
         icon: 'bi bi-download',
         routerLink: [`/individual-file-list-component/:call-type/${this.vehicleId}`],
         severity: 'success'
@@ -71,7 +74,7 @@ export class ViewVehicleComponent {
         tooltipOptions: {
           tooltipLabel: 'View History',
           tooltipPosition: 'left'
-      },
+        },
         icon: 'bi bi-clock-history',
         command: () => {
         },
@@ -82,15 +85,16 @@ export class ViewVehicleComponent {
   }
 
   getVehicleById(id: Number) {
+    debugger
     this.vehicleService.getVehicleById(id).subscribe((res: Vehicle) => {
       this.vehicle = res;
     })
   }
 
-  navigateFromBack(){
-    if(this.assignmentCheck){
+  navigateFromBack() {
+    if (this.assignmentCheck) {
       this.router.navigate(['/assignment'])
-    }else {
+    } else {
       this.router.navigate(['/vehicle'])
     }
   }

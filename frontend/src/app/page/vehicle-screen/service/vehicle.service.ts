@@ -123,7 +123,7 @@ export class VehicleService {
 
   deleteReplacementVehicle(id: Number): Observable<Vehicle>{
     return this.http.patch<Vehicle>(`${this.url}/delete-replacement-vehicle/${id}`,{});
-  }  
+  }
 
   findReplacementVehicle(id: Number): Observable<Vehicle>{
     return this.http.get<Vehicle>(`${this.url}/find-replacement-vehicle/${id}`);
@@ -136,7 +136,7 @@ export class VehicleService {
    markVehicleTotalLost(id: Number): Observable<Vehicle>{
     return this.http.patch<Vehicle>(`${this.url}/mark-total-lost/${id}`,{});
    }
-  
+
    downloadExcelData(): Observable<Blob>{
     return this.http.get(`${this.url}/download-vehicle-excel`, {
       responseType: 'blob'

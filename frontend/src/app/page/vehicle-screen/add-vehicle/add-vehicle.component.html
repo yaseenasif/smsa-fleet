@@ -74,9 +74,9 @@
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
-                  <div class="flex flex-column gap-2">
+                  <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Make</label>
-                    <input
+                    <!-- <input
                       pInputText
                       id="name"
                       aria-describedby="name-help"
@@ -84,7 +84,31 @@
                       [(ngModel)]="vehicle.make"
                       #make="ngModel"
                       required
-                    />
+                    /> -->
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="vehicle.make"
+                      [options]="vehicleMake?.productFieldValuesList"
+                      name="make"
+                      #make="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                      placeholder="Select Make"
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="vehicle.make"
+                        >
+                          <div>{{ vehicle.make }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
+
                     <small
                       id="name-help"
                       class="p-dropdown-empty-message"
@@ -97,7 +121,7 @@
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Year</label>
-                    <input
+                    <!-- <input
                       pInputText
                       id="name"
                       aria-describedby="name-help"
@@ -105,13 +129,44 @@
                       [(ngModel)]="vehicle.year"
                       #year="ngModel"
                       required
-                    />
+                    /> -->
+
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="vehicle.year"
+                      [options]="vehicleYear?.productFieldValuesList"
+                      name="year"
+                      #year="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                      placeholder="Select Year"
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="vehicle.year"
+                        >
+                          <div>{{ vehicle.year }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
+                    <small
+                      id="name-help"
+                      class="p-dropdown-empty-message"
+                      *ngIf="year.invalid && (year.dirty || year.touched)"
+                    >
+                      Year is required
+                    </small>
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
-                  <div class="flex flex-column gap-2">
+                  <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Design</label>
-                    <input
+                    <!-- <input
                       pInputText
                       id="name"
                       aria-describedby="name-help"
@@ -119,7 +174,31 @@
                       [(ngModel)]="vehicle.design"
                       #design="ngModel"
                       required
-                    />
+                    /> -->
+
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="vehicle.design"
+                      [options]="vehicleDesign?.productFieldValuesList"
+                      name="design"
+                      #design="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                      placeholder="Select Design"
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="vehicle.design"
+                        >
+                          <div>{{ vehicle.design }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
                     <small
                       id="name-help"
                       class="p-dropdown-empty-message"
@@ -130,9 +209,9 @@
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
-                  <div class="flex flex-column gap-2">
+                  <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Model</label>
-                    <input
+                    <!-- <input
                       pInputText
                       id="name"
                       aria-describedby="name-help"
@@ -140,7 +219,31 @@
                       [(ngModel)]="vehicle.model"
                       #model="ngModel"
                       required
-                    />
+                    /> -->
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="vehicle.model"
+                      [options]="vehicleModel?.productFieldValuesList"
+                      name="model"
+                      #model="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                      placeholder="Select Model"
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="vehicle.model"
+                        >
+                          <div>{{ vehicle.model }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
+
                     <small
                       id="name-help"
                       class="p-dropdown-empty-message"
@@ -151,9 +254,9 @@
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
-                  <div class="flex flex-column gap-2">
+                  <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Type</label>
-                    <input
+                    <!-- <input
                       pInputText
                       id="name"
                       aria-describedby="name-help"
@@ -161,20 +264,44 @@
                       [(ngModel)]="vehicle.type"
                       #type="ngModel"
                       required
-                    />
+                    /> -->
+
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="vehicle.type"
+                      [options]="vehicleType?.productFieldValuesList"
+                      name="type"
+                      #type="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                      placeholder="Select Type"
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="vehicle.type"
+                        >
+                          <div>{{ vehicle.type }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
                     <small
                       id="name-help"
                       class="p-dropdown-empty-message"
                       *ngIf="type.invalid && (type.dirty || type.touched)"
                     >
-                      Model is required
+                      Type is required
                     </small>
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
-                  <div class="flex flex-column gap-2">
+                  <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Capacity</label>
-                    <input
+                    <!-- <input
                       pInputText
                       id="name"
                       aria-describedby="name-help"
@@ -182,7 +309,31 @@
                       [(ngModel)]="vehicle.capacity"
                       #capacity="ngModel"
                       required
-                    />
+                    /> -->
+
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="vehicle.capacity"
+                      [options]="vehicleCapicity?.productFieldValuesList"
+                      name="capacity"
+                      #capacity="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                      placeholder="Select Capacity"
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="vehicle.capacity"
+                        >
+                          <div>{{ vehicle.capacity }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
                     <small
                       id="name-help"
                       class="p-dropdown-empty-message"
@@ -195,9 +346,9 @@
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
-                  <div class="flex flex-column gap-2">
+                  <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Power</label>
-                    <input
+                    <!-- <input
                       pInputText
                       id="name"
                       aria-describedby="name-help"
@@ -205,7 +356,31 @@
                       [(ngModel)]="vehicle.power"
                       #power="ngModel"
                       required
-                    />
+                    /> -->
+
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="vehicle.power"
+                      [options]="vehiclePower?.productFieldValuesList"
+                      name="power"
+                      #power="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                      placeholder="Select Power"
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="vehicle.power"
+                        >
+                          <div>{{ vehicle.power }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
                     <small
                       id="name-help"
                       class="p-dropdown-empty-message"
@@ -273,9 +448,9 @@
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
-                  <div class="flex flex-column gap-2">
+                  <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Fuel Type</label>
-                    <input
+                    <!-- <input
                       pInputText
                       id="name"
                       aria-describedby="name-help"
@@ -283,7 +458,31 @@
                       [(ngModel)]="vehicle.fuelType"
                       #fuelType="ngModel"
                       required
-                    />
+                    /> -->
+
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="vehicle.fuelType"
+                      [options]="vehicleFuelType?.productFieldValuesList"
+                      name="fuelType"
+                      #fuelType="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                      placeholder="Select Fuel Type"
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="vehicle.fuelType"
+                        >
+                          <div>{{ vehicle.fuelType }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
                     <small
                       id="name-help"
                       class="p-dropdown-empty-message"
@@ -562,7 +761,13 @@
                 <p-button
                   label="Cancel"
                   class="bg-o-color mr"
-                  [routerLink]="screenType === 'assignment' ? '/assignment' : (finalReturn ? ['/edit-vehicle/', vId] : '/vehicle')"
+                  [routerLink]="
+                    screenType === 'assignment'
+                      ? '/assignment'
+                      : finalReturn
+                      ? ['/edit-vehicle/', vId]
+                      : '/vehicle'
+                  "
                   styleClass="p-button-text"
                 >
                 </p-button>

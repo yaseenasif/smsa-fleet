@@ -16,6 +16,8 @@ import { Employee } from 'src/app/modal/employee';
 import { ReplacementRequest } from 'src/app/modal/replacementRequest';
 import { FinalReturnRequest } from 'src/app/modal/finalReturnRequest';
 import { ReplacementActionRequest } from 'src/app/modal/replacement-action-request';
+import { ErrorService } from 'src/app/CommonServices/Error/error.service';
+import { BackenCommonErrorThrow } from 'src/app/modal/BackendCommonErrorThrow';
 
 
 @Component({
@@ -240,6 +242,15 @@ export class AddVehicleComponent implements OnInit {
   plateNumberValidate: boolean = false;
   screenType: string | undefined | null;
 
+  vehicleMake: ProductField | null | undefined;
+  vehicleModel: ProductField | null | undefined;
+  vehicleYear: ProductField | null | undefined;
+  vehicleDesign: ProductField | null | undefined;
+  vehicleType: ProductField | null | undefined;
+  vehicleCapicity: ProductField | null | undefined;
+  vehiclePower: ProductField | null | undefined;
+  vehicleFuelType: ProductField | null | undefined;
+
   constructor(
     private vehicleService: VehicleService,
     private messageService: MessageService,
@@ -248,7 +259,8 @@ export class AddVehicleComponent implements OnInit {
     private regionService: RegionService,
     private route: ActivatedRoute,
     private vehicleAssignmentService: VehicleAssignmentService,
-    private employeeService: EmployeeService
+    private employeeService: EmployeeService,
+    private errorHandleService: ErrorService
   ) { }
 
   name!: string;
@@ -264,7 +276,14 @@ export class AddVehicleComponent implements OnInit {
     this.getUsageType();
     this.getCategory();
     this.getRegion();
-
+    this.getMakeList("Vehicle Make");
+    this.getModelList("Vehicle Model");
+    this.getYearList("Vehicle Year");
+    this.getDesignList("Vehicle Design");
+    this.getTypeList("Vehicle Type");
+    this.getCapicityList("Vehicle Capicity");
+    this.getPowerList("Vehicle Power");
+    this.getFuelTypeList("Vehicle Fuel Type");
 
     this.route.queryParams.subscribe(params => {
       this.replacementCheck = params['replacementCheck'] === 'true';
@@ -512,5 +531,76 @@ export class AddVehicleComponent implements OnInit {
     }
   }
 
+  private getMakeList(fieldName: string) {
+    this.productFieldService.getProductFieldByName(fieldName).subscribe(
+      (res: ProductField) => {
+        this.vehicleMake = res;
+      }, (err: BackenCommonErrorThrow) => {
+        this.errorHandleService.showError(err.error!);
+      });
+  }
+
+  private getModelList(fieldName: string) {
+    this.productFieldService.getProductFieldByName(fieldName).subscribe(
+      (res: ProductField) => {
+        this.vehicleModel = res;
+      }, (err: BackenCommonErrorThrow) => {
+        this.errorHandleService.showError(err.error!);
+      });
+  }
+
+  private getYearList(fieldName: string) {
+    this.productFieldService.getProductFieldByName(fieldName).subscribe(
+      (res: ProductField) => {
+        this.vehicleYear = res;
+      }, (err: BackenCommonErrorThrow) => {
+        this.errorHandleService.showError(err.error!);
+      });
+  }
+
+  private getDesignList(fieldName: string) {
+    this.productFieldService.getProductFieldByName(fieldName).subscribe(
+      (res: ProductField) => {
+        this.vehicleDesign = res;
+      }, (err: BackenCommonErrorThrow) => {
+        this.errorHandleService.showError(err.error!);
+      });
+  }
+
+  private getTypeList(fieldName: string) {
+    this.productFieldService.getProductFieldByName(fieldName).subscribe(
+      (res: ProductField) => {
+        this.vehicleType = res;
+      }, (err: BackenCommonErrorThrow) => {
+        this.errorHandleService.showError(err.error!);
+      });
+  }
+
+  private getCapicityList(fieldName: string) {
+    this.productFieldService.getProductFieldByName(fieldName).subscribe(
+      (res: ProductField) => {
+        this.vehicleCapicity = res;
+      }, (err: BackenCommonErrorThrow) => {
+        this.errorHandleService.showError(err.error!);
+      });
+  }
+
+  private getPowerList(fieldName: string) {
+    this.productFieldService.getProductFieldByName(fieldName).subscribe(
+      (res: ProductField) => {
+        this.vehiclePower = res;
+      }, (err: BackenCommonErrorThrow) => {
+        this.errorHandleService.showError(err.error!);
+      });
+  }
+
+  private getFuelTypeList(fieldName: string) {
+    this.productFieldService.getProductFieldByName(fieldName).subscribe(
+      (res: ProductField) => {
+        this.vehicleFuelType = res;
+      }, (err: BackenCommonErrorThrow) => {
+        this.errorHandleService.showError(err.error!);
+      });
+  }
 
 }
