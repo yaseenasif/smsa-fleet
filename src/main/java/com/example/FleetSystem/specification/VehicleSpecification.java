@@ -74,10 +74,14 @@ public class VehicleSpecification {
     public static Specification<Vehicle> getVehicleSearchSpecification(VehicleSearchCriteria vehicleSearchCriteria, String vehicleStatus) {
 
         return (root, query, criteriaBuilder) -> {
-            if (vehicleSearchCriteria == null || vehicleSearchCriteria.getValue() == null || vehicleSearchCriteria
-                    .getValue().isEmpty()) {
+            if ((vehicleSearchCriteria == null || vehicleSearchCriteria.getValue() == null || vehicleSearchCriteria
+                    .getValue().isEmpty()) &&
+                    !"All".equals(vehicleStatus)) {
                 query.orderBy(criteriaBuilder.desc(root.get("id")));
                 return criteriaBuilder.and(criteriaBuilder.equal(root.get("vehicleStatus"), vehicleStatus));
+            } else if ("All".equalsIgnoreCase(vehicleStatus)) {
+                query.orderBy(criteriaBuilder.desc(root.get("id")));
+                return null;
             }
 
             // Adjust the field name based on your entity

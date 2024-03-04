@@ -1,20 +1,23 @@
 <div class="flex flex-row">
-    <app-sidebar></app-sidebar>
-    <div class="body-position">
-      <div class="body-holder">
-        <app-dashboard-head></app-dashboard-head>
+  <app-sidebar></app-sidebar>
+  <div class="body-position">
+    <div class="body-holder">
+      <app-dashboard-head></app-dashboard-head>
 
-        <div class="main">
-          <div class="card flex justify-content-center">
-            <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
-          </div>
-          <div class="body-card">
-            <p-toast></p-toast>
-            <div class="card">
-              <h1 class="mb-4 h-color">Add Vehicle</h1>
-              <form #vehicleForm="ngForm" (ngSubmit)="onSubmit()">
+      <div class="main">
+        <div class="card flex justify-content-center">
+          <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+        </div>
+        <div class="body-card">
+          <p-toast></p-toast>
+          <div class="card">
+            <h1 class="mb-4 h-color">Add Vehicle</h1>
+            <form #vehicleForm="ngForm" (ngSubmit)="onSubmit()">
               <div class="grid">
-                <div *ngIf="!replacementCheck" class="col-12 md:col-12 lg:col-6">
+                <div
+                  *ngIf="!replacementCheck"
+                  class="col-12 md:col-12 lg:col-6"
+                >
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">PO Number</label>
                     <input
@@ -27,9 +30,14 @@
                       required
                     />
                     <small
-                        id="name-help" class="p-dropdown-empty-message"
-                        *ngIf="processOrderNumber.invalid && (processOrderNumber.dirty || processOrderNumber.touched)"
-                    > Process OrderNumber Name is required
+                      id="name-help"
+                      class="p-dropdown-empty-message"
+                      *ngIf="
+                        processOrderNumber.invalid &&
+                        (processOrderNumber.dirty || processOrderNumber.touched)
+                      "
+                    >
+                      Process OrderNumber Name is required
                     </small>
                   </div>
                 </div>
@@ -37,26 +45,38 @@
                   <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Plate Number</label>
                     <input
-                    pInputText
-                    id="name"
-                    aria-describedby="name-help"
-                    name="plateNumber"
-                    [(ngModel)]="vehicle.plateNumber"
-                    #plateNumber="ngModel"
-                    required
-                  />
-                  <small
-                      id="name-help" class="p-dropdown-empty-message"
-                      *ngIf="plateNumber.invalid && (plateNumber.dirty || plateNumber.touched)"
-                  > Plate Number is required
-                  </small>
-
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      (input)="plateNoFormat(plateNumber.value)"
+                      name="plateNumber"
+                      [(ngModel)]="vehicle.plateNumber"
+                      #plateNumber="ngModel"
+                      required
+                    />
+                    <small
+                      id="name-help"
+                      class="p-dropdown-empty-message"
+                      *ngIf="!plateNumberValidate && plateNumber.touched"
+                    >
+                      The Format Should Be like 1234 Abc
+                    </small>
+                    <small
+                      id="name-help"
+                      class="p-dropdown-empty-message"
+                      *ngIf="
+                        plateNumber.invalid &&
+                        (plateNumber.dirty || plateNumber.touched)
+                      "
+                    >
+                      Plate Number is required
+                    </small>
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
-                  <div class="flex flex-column gap-2">
+                  <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Make</label>
-                    <input
+                    <!-- <input
                       pInputText
                       id="name"
                       aria-describedby="name-help"
@@ -64,18 +84,44 @@
                       [(ngModel)]="vehicle.make"
                       #make="ngModel"
                       required
-                    />
+                    /> -->
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="vehicle.make"
+                      [options]="vehicleMake?.productFieldValuesList"
+                      name="make"
+                      #make="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                      placeholder="Select Make"
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="vehicle.make"
+                        >
+                          <div>{{ vehicle.make }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
+
                     <small
-                        id="name-help" class="p-dropdown-empty-message"
-                        *ngIf="make.invalid && (make.dirty || make.touched)"
-                    > Make is required
+                      id="name-help"
+                      class="p-dropdown-empty-message"
+                      *ngIf="make.invalid && (make.dirty || make.touched)"
+                    >
+                      Make is required
                     </small>
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Year</label>
-                    <input
+                    <!-- <input
                       pInputText
                       id="name"
                       aria-describedby="name-help"
@@ -83,13 +129,44 @@
                       [(ngModel)]="vehicle.year"
                       #year="ngModel"
                       required
-                    />
+                    /> -->
+
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="vehicle.year"
+                      [options]="vehicleYear?.productFieldValuesList"
+                      name="year"
+                      #year="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                      placeholder="Select Year"
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="vehicle.year"
+                        >
+                          <div>{{ vehicle.year }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
+                    <small
+                      id="name-help"
+                      class="p-dropdown-empty-message"
+                      *ngIf="year.invalid && (year.dirty || year.touched)"
+                    >
+                      Year is required
+                    </small>
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
-                  <div class="flex flex-column gap-2">
+                  <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Design</label>
-                    <input
+                    <!-- <input
                       pInputText
                       id="name"
                       aria-describedby="name-help"
@@ -97,18 +174,44 @@
                       [(ngModel)]="vehicle.design"
                       #design="ngModel"
                       required
-                    />
+                    /> -->
+
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="vehicle.design"
+                      [options]="vehicleDesign?.productFieldValuesList"
+                      name="design"
+                      #design="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                      placeholder="Select Design"
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="vehicle.design"
+                        >
+                          <div>{{ vehicle.design }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
                     <small
-                        id="name-help" class="p-dropdown-empty-message"
-                        *ngIf="design.invalid && (design.dirty || design.touched)"
-                    > Design is required
+                      id="name-help"
+                      class="p-dropdown-empty-message"
+                      *ngIf="design.invalid && (design.dirty || design.touched)"
+                    >
+                      Design is required
                     </small>
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
-                  <div class="flex flex-column gap-2">
+                  <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Model</label>
-                    <input
+                    <!-- <input
                       pInputText
                       id="name"
                       aria-describedby="name-help"
@@ -116,18 +219,44 @@
                       [(ngModel)]="vehicle.model"
                       #model="ngModel"
                       required
-                    />
+                    /> -->
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="vehicle.model"
+                      [options]="vehicleModel?.productFieldValuesList"
+                      name="model"
+                      #model="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                      placeholder="Select Model"
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="vehicle.model"
+                        >
+                          <div>{{ vehicle.model }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
+
                     <small
-                        id="name-help" class="p-dropdown-empty-message"
-                        *ngIf="model.invalid && (model.dirty || model.touched)"
-                    > Model is required
+                      id="name-help"
+                      class="p-dropdown-empty-message"
+                      *ngIf="model.invalid && (model.dirty || model.touched)"
+                    >
+                      Model is required
                     </small>
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
-                  <div class="flex flex-column gap-2">
+                  <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Type</label>
-                    <input
+                    <!-- <input
                       pInputText
                       id="name"
                       aria-describedby="name-help"
@@ -135,18 +264,44 @@
                       [(ngModel)]="vehicle.type"
                       #type="ngModel"
                       required
-                    />
+                    /> -->
+
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="vehicle.type"
+                      [options]="vehicleType?.productFieldValuesList"
+                      name="type"
+                      #type="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                      placeholder="Select Type"
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="vehicle.type"
+                        >
+                          <div>{{ vehicle.type }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
                     <small
-                        id="name-help" class="p-dropdown-empty-message"
-                        *ngIf="type.invalid && (type.dirty || type.touched)"
-                    > Model is required
+                      id="name-help"
+                      class="p-dropdown-empty-message"
+                      *ngIf="type.invalid && (type.dirty || type.touched)"
+                    >
+                      Type is required
                     </small>
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
-                  <div class="flex flex-column gap-2">
+                  <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Capacity</label>
-                    <input
+                    <!-- <input
                       pInputText
                       id="name"
                       aria-describedby="name-help"
@@ -154,18 +309,46 @@
                       [(ngModel)]="vehicle.capacity"
                       #capacity="ngModel"
                       required
-                    />
+                    /> -->
+
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="vehicle.capacity"
+                      [options]="vehicleCapicity?.productFieldValuesList"
+                      name="capacity"
+                      #capacity="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                      placeholder="Select Capacity"
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="vehicle.capacity"
+                        >
+                          <div>{{ vehicle.capacity }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
                     <small
-                        id="name-help" class="p-dropdown-empty-message"
-                        *ngIf="capacity.invalid && (capacity.dirty || capacity.touched)"
-                    > Capacity is required
+                      id="name-help"
+                      class="p-dropdown-empty-message"
+                      *ngIf="
+                        capacity.invalid && (capacity.dirty || capacity.touched)
+                      "
+                    >
+                      Capacity is required
                     </small>
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
-                  <div class="flex flex-column gap-2">
+                  <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Power</label>
-                    <input
+                    <!-- <input
                       pInputText
                       id="name"
                       aria-describedby="name-help"
@@ -173,11 +356,37 @@
                       [(ngModel)]="vehicle.power"
                       #power="ngModel"
                       required
-                    />
+                    /> -->
+
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="vehicle.power"
+                      [options]="vehiclePower?.productFieldValuesList"
+                      name="power"
+                      #power="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                      placeholder="Select Power"
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="vehicle.power"
+                        >
+                          <div>{{ vehicle.power }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
                     <small
-                        id="name-help" class="p-dropdown-empty-message"
-                        *ngIf="power.invalid && (power.dirty || power.touched)"
-                    > Power is required
+                      id="name-help"
+                      class="p-dropdown-empty-message"
+                      *ngIf="power.invalid && (power.dirty || power.touched)"
+                    >
+                      Power is required
                     </small>
                   </div>
                 </div>
@@ -196,11 +405,14 @@
                       [filter]="true"
                       filterBy="regionName"
                       [showClear]="true"
-                      [disabled]="replacementCheck ? true : false "
+                      [disabled]="replacementCheck ? true : false"
                       [placeholder]="replacementCheck ? '' : 'Select Region'"
                     >
                       <ng-template pTemplate="selectedItem">
-                        <div class="flex align-items-center gap-2" *ngIf="vehicle.region">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="vehicle.region"
+                        >
                           <div>{{ vehicle.region }}</div>
                         </div>
                       </ng-template>
@@ -213,26 +425,32 @@
                     <small
                       id="name-help"
                       class="p-dropdown-empty-message"
-                      *ngIf="regionModel.invalid && (regionModel.dirty || regionModel.touched)"
-                    > Region is required
+                      *ngIf="
+                        regionModel.invalid &&
+                        (regionModel.dirty || regionModel.touched)
+                      "
+                    >
+                      Region is required
                     </small>
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">Registration Expiry</label>
-                    <p-calendar #registrationExpiry
-                    name="registrationExpiry"
-                    [required]="true"
-                    [(ngModel)]="vehicle.registrationExpiry" [showIcon]="true"
-                    [style]="{'width': '100%'}"
+                    <p-calendar
+                      #registrationExpiry
+                      name="registrationExpiry"
+                      [required]="true"
+                      [(ngModel)]="vehicle.registrationExpiry"
+                      [showIcon]="true"
+                      [style]="{ width: '100%' }"
                     ></p-calendar>
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
-                  <div class="flex flex-column gap-2">
+                  <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Fuel Type</label>
-                    <input
+                    <!-- <input
                       pInputText
                       id="name"
                       aria-describedby="name-help"
@@ -240,11 +458,39 @@
                       [(ngModel)]="vehicle.fuelType"
                       #fuelType="ngModel"
                       required
-                    />
+                    /> -->
+
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="vehicle.fuelType"
+                      [options]="vehicleFuelType?.productFieldValuesList"
+                      name="fuelType"
+                      #fuelType="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                      placeholder="Select Fuel Type"
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="vehicle.fuelType"
+                        >
+                          <div>{{ vehicle.fuelType }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
                     <small
-                        id="name-help" class="p-dropdown-empty-message"
-                        *ngIf="fuelType.invalid && (fuelType.dirty || fuelType.touched)"
-                    > Fuel Type Expiry is required
+                      id="name-help"
+                      class="p-dropdown-empty-message"
+                      *ngIf="
+                        fuelType.invalid && (fuelType.dirty || fuelType.touched)
+                      "
+                    >
+                      Fuel Type Expiry is required
                     </small>
                   </div>
                 </div>
@@ -262,8 +508,8 @@
                       [filter]="true"
                       filterBy="vendorName"
                       [showClear]="true"
-                      [disabled]="replacementCheck ? true : false "
-                      [placeholder]= "replacementCheck ? '' : 'Select Vendor' "
+                      [disabled]="replacementCheck ? true : false"
+                      [placeholder]="replacementCheck ? '' : 'Select Vendor'"
                     >
                       <ng-template pTemplate="selectedItem">
                         <div
@@ -280,20 +526,24 @@
                       </ng-template>
                     </p-dropdown>
                     <small
-                        id="name-help" class="p-dropdown-empty-message"
-                        *ngIf="vendor.invalid && (vendor.dirty || vendor.touched)"
-                    > Vendor is required
+                      id="name-help"
+                      class="p-dropdown-empty-message"
+                      *ngIf="vendor.invalid && (vendor.dirty || vendor.touched)"
+                    >
+                      Vendor is required
                     </small>
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">Insurance Expiry</label>
-                    <p-calendar #insuranceExpiry
-                    name="insuranceExpiry"
-                    [required]="true"
-                    [(ngModel)]="vehicle.insuranceExpiry" [showIcon]="true"
-                    [style]="{'width': '100%'}"
+                    <p-calendar
+                      #insuranceExpiry
+                      name="insuranceExpiry"
+                      [required]="true"
+                      [(ngModel)]="vehicle.insuranceExpiry"
+                      [showIcon]="true"
+                      [style]="{ width: '100%' }"
                     ></p-calendar>
                   </div>
                 </div>
@@ -310,31 +560,46 @@
                       required
                     />
                     <small
-                        id="name-help" class="p-dropdown-empty-message"
-                        *ngIf="leaseCost.invalid && (leaseCost.dirty || leaseCost.touched)"
-                    > Lease Cost is required
+                      id="name-help"
+                      class="p-dropdown-empty-message"
+                      *ngIf="
+                        leaseCost.invalid &&
+                        (leaseCost.dirty || leaseCost.touched)
+                      "
+                    >
+                      Lease Cost is required
                     </small>
                   </div>
                 </div>
-                <div *ngIf="!replacementCheck" class="col-12 md:col-12 lg:col-6">
+                <div
+                  *ngIf="!replacementCheck"
+                  class="col-12 md:col-12 lg:col-6"
+                >
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">Lease Start Date</label>
-                    <p-calendar #leaseStartDate
-                    name="leaseStartDate"
-                    [required]="true"
-                    [(ngModel)]="vehicle.leaseStartDate" [showIcon]="true"
-                    [style]="{'width': '100%'}"
+                    <p-calendar
+                      #leaseStartDate
+                      name="leaseStartDate"
+                      [required]="true"
+                      [(ngModel)]="vehicle.leaseStartDate"
+                      [showIcon]="true"
+                      [style]="{ width: '100%' }"
                     ></p-calendar>
                   </div>
                 </div>
-                <div *ngIf="!replacementCheck" class="col-12 md:col-12 lg:col-6">
+                <div
+                  *ngIf="!replacementCheck"
+                  class="col-12 md:col-12 lg:col-6"
+                >
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">Lease Expiry Date</label>
-                    <p-calendar #leaseExpiryDate
-                    name="leaseExpiryDate"
-                    [required]="true"
-                    [(ngModel)]="vehicle.leaseExpiryDate" [showIcon]="true"
-                    [style]="{'width': '100%'}"
+                    <p-calendar
+                      #leaseExpiryDate
+                      name="leaseExpiryDate"
+                      [required]="true"
+                      [(ngModel)]="vehicle.leaseExpiryDate"
+                      [showIcon]="true"
+                      [style]="{ width: '100%' }"
                     ></p-calendar>
                   </div>
                 </div>
@@ -354,7 +619,7 @@
                       [filter]="true"
                       filterBy="name"
                       [showClear]="true"
-                      [disabled]="replacementCheck ? true : false "
+                      [disabled]="replacementCheck ? true : false"
                       placeholder="Select Usage type
                     "
                     >
@@ -373,147 +638,195 @@
                       </ng-template>
                     </p-dropdown>
                     <small
-                        id="name-help" class="p-dropdown-empty-message"
-                        *ngIf="usageType.invalid && (usageType.dirty || usageType.touched)"
-                    > Usage Type is required
+                      id="name-help"
+                      class="p-dropdown-empty-message"
+                      *ngIf="
+                        usageType.invalid &&
+                        (usageType.dirty || usageType.touched)
+                      "
+                    >
+                      Usage Type is required
                     </small>
                   </div>
                 </div>
 
-              <div class="col-12 md:col-12 lg:col-6">
-                <div class="flex flex-column gap-2 form-hook">
-                  <label htmlFor="name">Category</label>
-                  <p-dropdown
-                    class="w-full"
-                    [(ngModel)]="vehicle.category"
-                    [options]="categories?.productFieldValuesList"
-                    name="category"
-                    #category="ngModel"
-                    [required]="true"
-                    optionLabel="name"
-                    optionValue="name"
-                    [filter]="true"
-                    filterBy="name"
-                    [showClear]="true"
-                    placeholder="Select Category
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2 form-hook">
+                    <label htmlFor="name">Category</label>
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="vehicle.category"
+                      [options]="categories?.productFieldValuesList"
+                      name="category"
+                      #category="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                      placeholder="Select Category
                   "
-                  >
-                    <ng-template pTemplate="selectedItem">
-                      <div
-                        class="flex align-items-center gap-2"
-                        *ngIf="vehicle"
-                      >
-                        <div>{{ vehicle.category }}</div>
-                      </div>
-                    </ng-template>
-                    <ng-template let-categories pTemplate="item">
-                      <div class="flex align-items-center gap-2">
-                        <div>{{ categories.name }}</div>
-                      </div>
-                    </ng-template>
-                  </p-dropdown>
-                  <small
-                      id="name-help" class="p-dropdown-empty-message"
-                      *ngIf="category.invalid && (category.dirty || category.touched)"
-                  > Category is required
-                  </small>
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="vehicle"
+                        >
+                          <div>{{ vehicle.category }}</div>
+                        </div>
+                      </ng-template>
+                      <ng-template let-categories pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                          <div>{{ categories.name }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
+                    <small
+                      id="name-help"
+                      class="p-dropdown-empty-message"
+                      *ngIf="
+                        category.invalid && (category.dirty || category.touched)
+                      "
+                    >
+                      Category is required
+                    </small>
+                  </div>
                 </div>
-              </div>
-              <div *ngIf="replacementCheck" class="col-12 md:col-12 lg:col-6">
-                <div class="flex flex-column gap-2">
-                  <label htmlFor="name">Replacement Date</label>
-                  <p-calendar #replacementDate
-                  name="replacementDate"
-                  [required]="true"
-                  [(ngModel)]="vehicle.replacementDate" [showIcon]="true"
-                  [style]="{'width': '100%'}"
-                  ></p-calendar>
+                <div *ngIf="replacementCheck" class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Replacement Date</label>
+                    <p-calendar
+                      #replacementDate
+                      name="replacementDate"
+                      [required]="true"
+                      [(ngModel)]="vehicle.replacementDate"
+                      [showIcon]="true"
+                      [style]="{ width: '100%' }"
+                    ></p-calendar>
+                  </div>
                 </div>
-              </div>
-              <div *ngIf="replacementCheck" class="col-12 md:col-12 lg:col-6">
-                <div class="flex flex-column gap-2 form-hook">
-                  <label htmlFor="name">Reason For Replacement</label>
-                  <p-dropdown
-                    class="w-full"
-                    [(ngModel)]="replacementRequest.replacement!.reason"
-                    [options]="reasons"
-                    name="reason"
-                    #reason="ngModel"
-                    [required]="true"
-                    optionLabel="full"
-                    optionValue="short"
-                    [filter]="true"
-                    filterBy="name"
-                    [showClear]="true"
-                    placeholder="Select Reason
+                <div *ngIf="replacementCheck" class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2 form-hook">
+                    <label htmlFor="name">Reason For Replacement</label>
+                    <p-dropdown
+                      class="w-full"
+                      [(ngModel)]="replacementRequest.replacement!.reason"
+                      [options]="reasons"
+                      name="reason"
+                      #reason="ngModel"
+                      [required]="true"
+                      optionLabel="full"
+                      optionValue="short"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                      placeholder="Select Reason
                   "
-                  >
-                    <ng-template let-reasons pTemplate="item">
-                      <div class="flex align-items-center gap-2">
-                        <div>{{ reasons.full }}</div>
-                      </div>
-                    </ng-template>
-                  </p-dropdown>
+                    >
+                      <ng-template let-reasons pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                          <div>{{ reasons.full }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
+                  </div>
                 </div>
-              </div>
 
-              <div *ngIf="replacementCheck" class="col-12 md:col-12 lg:col-6">
-                <div class="flex flex-column gap-2 form-hook">
-                  <label htmlFor="name">Remarks</label>
-                  <input
-                    pInputText
-                    id="name"
-                    aria-describedby="name-help"
-                    name="remarks"
-                    [(ngModel)]="replacementRequest.replacement!.remarks"
-                    #remarks="ngModel"
-                    required
-                  />
-                  <small
-                      id="name-help" class="p-dropdown-empty-message"
-                      *ngIf="remarks.invalid && (remarks.dirty || remarks.touched)"
-                  > Remarks is required
-                  </small>       
-            
+                <div *ngIf="replacementCheck" class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2 form-hook">
+                    <label htmlFor="name">Remarks</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="remarks"
+                      [(ngModel)]="replacementRequest.replacement!.remarks"
+                      #remarks="ngModel"
+                      required
+                    />
+                    <small
+                      id="name-help"
+                      class="p-dropdown-empty-message"
+                      *ngIf="
+                        remarks.invalid && (remarks.dirty || remarks.touched)
+                      "
+                    >
+                      Remarks is required
+                    </small>
+                  </div>
                 </div>
-            </div>
-
               </div>
               <div class="flex align-items-center justify-content-end mt-4">
                 <p-button
                   label="Cancel"
                   class="bg-o-color mr"
-                  routerLink="/vehicle"
+                  [routerLink]="
+                    screenType === 'assignment'
+                      ? '/assignment'
+                      : finalReturn
+                      ? ['/edit-vehicle/', vId]
+                      : '/vehicle'
+                  "
                   styleClass="p-button-text"
-                  >
+                >
                 </p-button>
-                <p-button *ngIf="!replacementCheck && !finalReturn && !actionCheck" label="Save" type="submit" class="bg-b-color ml" [disabled]="vehicleForm.invalid || vehicleForm.invalid === null"> </p-button>
+                <p-button
+                  *ngIf="!replacementCheck && !finalReturn && !actionCheck"
+                  label="Save"
+                  type="submit"
+                  class="bg-b-color ml"
+                  [disabled]="vehicleForm.invalid || !plateNumberValidate"
+                >
+                </p-button>
 
-                <p-button *ngIf="replacementCheck || finalReturn || actionCheck" label="Replace" (click)="replaceVehicle()" class="bg-b-color ml"> </p-button>
+                <p-button
+                  *ngIf="replacementCheck || finalReturn || actionCheck"
+                  label="Replace"
+                  (click)="replaceVehicle()"
+                  class="bg-b-color ml"
+                >
+                </p-button>
               </div>
-             
             </form>
-            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <p-dialog header="The Vehicle is Assigned Under:" [modal]="true"  [closable]="true" [(visible)]="visible" [breakpoints]="{ '960px': '75vw' }" [style]="{ width: '70vw',height:'70vh' }" [draggable]="false" [resizable]="false">
-                
-    <div *ngIf="vehicleAssignment" >
-      <p class="mb-2"><strong> Plate Number:</strong> {{vehicleAssignment.vehicle.plateNumber}}</p>
-      <p class="mb-2"><strong>Emp Id:</strong> {{vehicleAssignment.assignToEmpId.employeeNumber}}</p>
-      <p class="mb-2"><strong>Emp name:</strong> {{vehicleAssignment.assignToEmpName}}</p>
-    </div>
-    <h3 class="mb-2 mt-5">Do you want to change assignment?</h3>
-    <form #assignmentForm="ngForm">
-    <div class="p-fluid grid mb-4 mt-2" style="height: auto;">
+<p-dialog
+  header="The Vehicle is Assigned Under:"
+  [modal]="true"
+  [closable]="true"
+  [(visible)]="visible"
+  [breakpoints]="{ '960px': '75vw' }"
+  [style]="{ width: '70vw', height: '70vh' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div *ngIf="vehicleAssignment">
+    <p class="mb-2">
+      <strong> Plate Number:</strong>
+      {{ vehicleAssignment.vehicle.plateNumber }}
+    </p>
+    <p class="mb-2">
+      <strong>Emp Id:</strong>
+      {{ vehicleAssignment.assignToEmpId.employeeNumber }}
+    </p>
+    <p class="mb-2">
+      <strong>Emp name:</strong> {{ vehicleAssignment.assignToEmpName }}
+    </p>
+  </div>
+  <h3 class="mb-2 mt-5">Do you want to change assignment?</h3>
+  <form #assignmentForm="ngForm">
+    <div class="p-fluid grid mb-4 mt-2" style="height: auto">
       <div class="col-12 md:col-12 lg:col-6">
         <div class="flex flex-column gap-2 form-hook">
           <label htmlFor="name">Emp Id</label>
-          <p-dropdown appendTo="body"
+          <p-dropdown
+            appendTo="body"
             class="w-full"
             [(ngModel)]="selectedUnassignedEmployee"
             [options]="unassignedEmployees"
@@ -527,48 +840,61 @@
             placeholder="Select Emp Id"
             (onChange)="showEmpName()"
           >
-          <ng-template pTemplate="selectedItem">
-            <div
-              class="flex align-items-center gap-2"
-              *ngIf="selectedUnassignedEmployee"
-            >
-              <div>{{ selectedUnassignedEmployee.employeeNumber }}</div>
-            </div>
-          </ng-template>
-          <ng-template let-unassignedEmployee pTemplate="item">
-            <div class="flex align-items-center gap-2">
-              <div>{{ unassignedEmployee.employeeNumber }}</div>
-            </div>
-          </ng-template>
+            <ng-template pTemplate="selectedItem">
+              <div
+                class="flex align-items-center gap-2"
+                *ngIf="selectedUnassignedEmployee"
+              >
+                <div>{{ selectedUnassignedEmployee.employeeNumber }}</div>
+              </div>
+            </ng-template>
+            <ng-template let-unassignedEmployee pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <div>{{ unassignedEmployee.employeeNumber }}</div>
+              </div>
+            </ng-template>
           </p-dropdown>
         </div>
       </div>
 
-      <div *ngIf="replacementCheck || finalReturn || actionCheck" class="col-12 md:col-12 lg:col-6">
+      <div
+        *ngIf="replacementCheck || finalReturn || actionCheck"
+        class="col-12 md:col-12 lg:col-6"
+      >
         <div class="flex flex-column gap-2">
           <label htmlFor="empName">Emp Name</label>
           <input
             pInputText
             id="empName"
-            [disabled] ="true"
+            [disabled]="true"
             aria-describedby="name-help"
             name="empName"
-            [(ngModel)]="empName"        
+            [(ngModel)]="empName"
           />
         </div>
       </div>
     </div>
-    </form>
+  </form>
 
-    <ng-template pTemplate="footer">
-    <div style="display: flex; justify-content: flex-end; align-items: flex-end; ">
+  <ng-template pTemplate="footer">
+    <div
+      style="display: flex; justify-content: flex-end; align-items: flex-end"
+    >
       <div>
-        <p-button (click)="replaceVehicleWithoutAssignment()" label="No" styleClass="p-button-danger p-button-text p-button-raised"></p-button>
+        <p-button
+          (click)="replaceVehicleWithoutAssignment()"
+          label="No"
+          styleClass="p-button-danger p-button-text p-button-raised"
+        ></p-button>
       </div>
       <div>
-        <p-button label="Change Assignment" (onClick)="replaceVehicleWithAssignment()" class="bg-b-color ml" [disabled]="assignmentForm.invalid || assignmentForm.invalid === null"></p-button>
+        <p-button
+          label="Change Assignment"
+          (onClick)="replaceVehicleWithAssignment()"
+          class="bg-b-color ml"
+          [disabled]="assignmentForm.invalid || assignmentForm.invalid === null"
+        ></p-button>
       </div>
     </div>
   </ng-template>
-  </p-dialog>
-
+</p-dialog>

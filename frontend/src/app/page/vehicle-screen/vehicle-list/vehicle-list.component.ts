@@ -21,7 +21,7 @@ import { Employee } from 'src/app/modal/employee';
   styleUrls: ['./vehicle-list.component.scss'],
   providers: [MessageService]
 })
-export class VehicleListComponent implements OnInit{
+export class VehicleListComponent implements OnInit {
   @ViewChild('fileUpload', { static: false })
   fileUpload!: FileUpload;
 
@@ -33,7 +33,7 @@ export class VehicleListComponent implements OnInit{
     size: 7,
   };
 
-    value: string | null = null;
+  value: string | null = null;
   totalRecords: number = 0;
 
   // vehicleReplacement: VehicleReplacement ={
@@ -56,51 +56,54 @@ export class VehicleListComponent implements OnInit{
     private regionService: RegionService,
     private route: ActivatedRoute,
     private employeeService: EmployeeService
-    ) { }
+  ) { }
 
   vehicles!: Array<Vehicle>;
   vId!: Number
   region !: Region[];
-  vehicleStatus : any;
-  selectedStatus = {name:'TBA'};
+  vehicleStatus: any;
+  selectedStatus = { name: 'TBA' };
 
   size: number = 10240000;
 
   uploadedFiles: any[] = [];
-  fileName : string = 'vehicleSample.xlsx'
+  fileName: string = 'vehicleSample.xlsx'
   replacementCheck: boolean = false;
 
 
 
   items: MenuItem[] | undefined;
   ngOnInit() {
-      this.items = [{ label: 'Vehicle'}];
-      this.vehicleStatus = [
-        {
-          name: 'TBA'
-        },
-        {
-          name: 'Active'
-        },
-        {
-          name: 'In-Active'
-        },
-        {
-          name: 'Under Maintenance'
-        },
-        {
-          name: 'Replacement'
-        }
-      ]
-      this.searchAllVehicles('TBA');
+    this.items = [{ label: 'Vehicle' }];
+    this.vehicleStatus = [
+      {
+        name: 'TBA'
+      },
+      {
+        name: 'Active'
+      },
+      {
+        name: 'In-Active'
+      },
+      {
+        name: 'Under Maintenance'
+      },
+      {
+        name: 'Replacement'
+      },
+      {
+        name: 'All'
+      }
+    ]
+    this.searchAllVehicles('TBA');
 
-      this.route.queryParams.subscribe(params => {
-        this.vehicletab = params['vehicletab'] === 'true';
-        this.unAssignedVehicleTab = params['unAssignVehicleTab'] === 'true';
+    this.route.queryParams.subscribe(params => {
+      this.vehicletab = params['vehicletab'] === 'true';
+      this.unAssignedVehicleTab = params['unAssignVehicleTab'] === 'true';
 
-      });
+    });
 
-}
+  }
 
 
   onFileSelect() {
@@ -155,13 +158,13 @@ export class VehicleListComponent implements OnInit{
   }
 
 
-  flag='TBA'
-  OnSelectChange(){
-    if(this.selectedStatus.name!=this.flag){
-     this.query.page=0
-     this.flag=this.selectedStatus.name
+  flag = 'TBA'
+  OnSelectChange() {
+    if (this.selectedStatus.name != this.flag) {
+      this.query.page = 0
+      this.flag = this.selectedStatus.name
     }
-  this.searchAllVehicles(this.selectedStatus.name)
+    this.searchAllVehicles(this.selectedStatus.name)
   }
 
   closeDialog() {
@@ -173,66 +176,69 @@ export class VehicleListComponent implements OnInit{
     this.vId = id;
     this.statusVisible = true;
     this.getLastAssignmentByVehicleId(id)
-}
+  }
 
- activateVehicle(){
-  this.vehicleService.activateVehicle(this.vId).subscribe((res:Vehicle)=>{
-    this.messageService.add({ severity: 'success', summary: 'Vehicle Activated'});
+  activateVehicle() {
+    this.vehicleService.activateVehicle(this.vId).subscribe((res: Vehicle) => {
+      this.messageService.add({ severity: 'success', summary: 'Vehicle Activated' });
 
-    this.closeDialog()
-    this.searchAllVehicles(this.selectedStatus.name)
-  })
- }
+      this.closeDialog()
+      this.searchAllVehicles(this.selectedStatus.name)
+    })
+  }
 
-downloadAttachment(fileName:string){
-  this.vehicleService.downloadAttachments(fileName).subscribe(blob => saveAs(blob,fileName));
-}
+  downloadAttachment(fileName: string) {
+    this.vehicleService.downloadAttachments(fileName).subscribe(blob => saveAs(blob, fileName));
+  }
 
-searchAllVehicles(vehiclestatus: string){
-  this.vehicleService.searchAllVehicles(this.value,vehiclestatus, this.query).subscribe((res: PaginatedResponse<Vehicle>)=>{
-    this.vehicles = res.content
-    this.query = { page: res.pageable.pageNumber, size: res.size }
-    this.totalRecords = res.totalElements;
-  })
-}
+  searchAllVehicles(vehiclestatus: string) {
+    this.vehicleService.searchAllVehicles(this.value, vehiclestatus, this.query).subscribe((res: PaginatedResponse<Vehicle>) => {
+      this.vehicles = res.content
+      this.query = { page: res.pageable.pageNumber, size: res.size }
+      this.totalRecords = res.totalElements;
+    })
+  }
 
- replaceVehicle(id: Number){
-   this.replacementCheck = true;
-  this.router.navigate(['/add-vehicle/replacementCheck/vId'], { queryParams: {
-    replacementCheck: this.replacementCheck, vId: id} });
- }
+  replaceVehicle(id: Number) {
+    this.replacementCheck = true;
+    this.router.navigate(['/add-vehicle/replacementCheck/vId'], {
+      queryParams: {
+        replacementCheck: this.replacementCheck, vId: id
+      }
+    });
+  }
 
 
- deleteReplacementVehicle(){
-    this.vehicleService.deleteReplacementVehicle(this.vId).subscribe((res)=>{
-    this.messageService.add({ severity: 'success', summary: 'Vehicle Deleted'});
-    this.closeDialog()
-    this.searchAllVehicles(this.selectedStatus.name)
+  deleteReplacementVehicle() {
+    this.vehicleService.deleteReplacementVehicle(this.vId).subscribe((res) => {
+      this.messageService.add({ severity: 'success', summary: 'Vehicle Deleted' });
+      this.closeDialog()
+      this.searchAllVehicles(this.selectedStatus.name)
 
-   })
- }
+    })
+  }
 
- showReplacementDialog(id: number){
-   this.vId = id;
-   this.replacementVisible = true;
- }
+  showReplacementDialog(id: number) {
+    this.vId = id;
+    this.replacementVisible = true;
+  }
 
- getLastAssignmentByVehicleId(id: Number){
-   this.employeeService.getLastAssignedEmployeeByVehicleId(id).subscribe((res)=>{
-     this.lastAssignedEmployee = res;
-   })
- }
+  getLastAssignmentByVehicleId(id: Number) {
+    this.employeeService.getLastAssignedEmployeeByVehicleId(id).subscribe((res) => {
+      this.lastAssignedEmployee = res;
+    })
+  }
 
- markVehicleTotalLost(){
-    this.vehicleService.markVehicleTotalLost(this.vId).subscribe((res)=>{
-    this.messageService.add({ severity: 'success', summary: 'Vehicle Marked as total lost'});
-    this.closeDialog()
-    this.searchAllVehicles(this.selectedStatus.name)
+  markVehicleTotalLost() {
+    this.vehicleService.markVehicleTotalLost(this.vId).subscribe((res) => {
+      this.messageService.add({ severity: 'success', summary: 'Vehicle Marked as total lost' });
+      this.closeDialog()
+      this.searchAllVehicles(this.selectedStatus.name)
 
-   })
- }
+    })
+  }
 
- downloadExcelData(){
-   this.vehicleService.downloadExcelData().subscribe(blob => saveAs(blob,"Vehicle Data.xlsx"))
- }
+  downloadExcelData() {
+    this.vehicleService.downloadExcelData().subscribe(blob => saveAs(blob, "Vehicle Data.xlsx"))
+  }
 }
