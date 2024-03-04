@@ -36,7 +36,7 @@ public class EmployeeDto {
     private Long svEmployeeNumber;
     private String svEmployeeName;
     private String city;
-    private Integer age;
+//    private Integer age;
     private String costCentre;
     private String nationality;
     private String companyEmailAddress;
@@ -44,7 +44,6 @@ public class EmployeeDto {
     private String licenseNumber;
     private Integer vehicleBudget;
     private String contactNumber;
-    private String attachments;
     private String uuid;
     private boolean deleteStatus;
 

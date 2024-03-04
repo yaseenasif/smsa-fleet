@@ -148,7 +148,7 @@ public class EmployeeService {
                 employee.get().setJobTitle(employeeDto.getJobTitle());
                 employee.get().setJoiningDate(employeeDto.getJoiningDate());
                 employee.get().setDateOfBirth(employeeDto.getDateOfBirth());
-                employee.get().setAge(employeeDto.getAge());
+//                employee.get().setAge(employeeDto.getAge());
                 employee.get().setBudgetRef(employeeDto.getBudgetRef());
                 employee.get().setGender(employeeDto.getGender());
                 employee.get().setMaritalStatus(employeeDto.getMaritalStatus());
@@ -265,7 +265,7 @@ public class EmployeeService {
                             employee.setSvEmployeeNumber(getLongValue(row.getCell(18)));
                             employee.setSvEmployeeName(getStringValue(row.getCell(19)));
                             employee.setCity(getStringValue(row.getCell(20)));
-                            employee.setAge((int) row.getCell(21).getNumericCellValue());
+//                            employee.setAge((int) row.getCell(21).getNumericCellValue());
                             employee.setCostCentre(getStringValue(row.getCell(22)));
                             employee.setNationality(getStringValue(row.getCell(23)));
                             employee.setCompanyEmailAddress(getStringValue(row.getCell(24)));

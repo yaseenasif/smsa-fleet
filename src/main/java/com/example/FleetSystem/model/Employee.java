@@ -43,7 +43,7 @@ public class Employee {
     private String nationality;
     private String contactNumber;
     private String companyEmailAddress;
-    private Integer age;
+//    private Integer age;
     private Integer grade;
     private String licenseNumber;
     private Integer vehicleBudget;
