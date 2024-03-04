@@ -516,10 +516,9 @@ export class AddVehicleComponent implements OnInit {
   }
 
   plateNoFormat(value: string): void {
-    debugger;
     this.plateNumberValidate = false;
     // Format: 1234 Abc
-    const regex = /^\d{4}\s[A-Za-z]{3}$/;
+    const regex = /^\d{4}\s[A-Z]{3}$/;
     if (!/^\d/.test(value)) {
       this.plateNumberValidate = false;
     } else if (value.length > 4) {
