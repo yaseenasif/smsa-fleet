@@ -1,189 +1,272 @@
 <div class="flex flex-row">
-    <app-sidebar></app-sidebar>
-    <div class="body-position">
-      <div class="body-holder">
-        <app-dashboard-head></app-dashboard-head>
+  <app-sidebar></app-sidebar>
+  <div class="body-position">
+    <div class="body-holder">
+      <app-dashboard-head></app-dashboard-head>
 
-        <div class="main">
-            <p-toast></p-toast>
-          <div class="card flex justify-content-center">
-              <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
-              <p-button class="bg-b-color adjust mt-2" (click)="downloadExcelData()">
-                <i class="bi bi-download"></i>&nbsp; Export data
+      <div class="main">
+        <p-toast></p-toast>
+        <div class="card flex justify-content-center">
+          <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+          <p-button
+            class="bg-b-color adjust mt-2"
+            (click)="downloadExcelData()"
+          >
+            <i class="bi bi-download"></i>&nbsp; Export data
+          </p-button>
+        </div>
+        <div class="body-card">
+          <div class="table-head">
+            <div
+              class="flex mb-2 align-items-center gap-1"
+              style="justify-content: flex-end; align-items: flex-end"
+            >
+              <p-button class="bg-b-color" routerLink="/add-employee">
+                <i
+                  class="bi bi-plus-lg"
+                  style="font-size: 20px; font-weight: bold"
+                ></i
+                >&nbsp;Add Employee
               </p-button>
+              <div class="flex flex-column gap-2 ml-5">
+                <p-fileUpload
+                  #fileUpload
+                  icon="pi pi-download"
+                  iconPos="left"
+                  styleClass="p-button-outlined p-button-sm"
+                  mode="basic"
+                  chooseLabel="Upload"
+                  name="myfile[]"
+                  [customUpload]="true"
+                  (uploadHandler)="onUpload($event)"
+                  (onSelect)="onFileSelect()"
+                >
+                </p-fileUpload>
+                <ng-container *ngIf="fileSelected">
+                  <button
+                    class="p-button p-button-outlined p-button-sm"
+                    (click)="onCancel()"
+                  >
+                    Cancel
+                  </button>
+                </ng-container>
+              </div>
+              <div class="flex flex-column gap-2 ml-5">
+                <p-button
+                  label="Download Sample"
+                  (click)="downloadAttachment(fileName)"
+                  icon="bi bi-download"
+                ></p-button>
+              </div>
+            </div>
+            <p-toolbar>
+              <div class="p-toolbar-group-start">
+                <h2 class="h-color">Employee</h2>
+              </div>
+              <div class="form-hook">
+                <p-dropdown
+                  class="w-full"
+                  [(ngModel)]="selectedStatus"
+                  [options]="employeeStatus"
+                  name="selectedStatus1"
+                  #selectedStatus1="ngModel"
+                  [required]="true"
+                  optionLabel="name"
+                  [filter]="true"
+                  filterBy="name"
+                  [showClear]="true"
+                  (onChange)="OnSelectChange()"
+                >
+                  <ng-template pTemplate="selectedItem">
+                    <div
+                      class="flex align-items-center gap-2"
+                      *ngIf="selectedStatus"
+                    >
+                      <div>{{ selectedStatus.name }}</div>
+                    </div>
+                  </ng-template>
+                  <ng-template let-employeeStatus pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                      <div>{{ employeeStatus.name }}</div>
+                    </div>
+                  </ng-template>
+                </p-dropdown>
+              </div>
+              <div class="card flex flex-wrap justify-content-center gap-3">
+                <span class="p-input-icon-left">
+                  <i class="my-relative bi bi-search"></i>
+                  <input
+                    type="text"
+                    pInputText
+                    [(ngModel)]="value"
+                    (input)="OnSelectChange()"
+                    placeholder="Search Employee Number"
+                  />
+                </span>
+              </div>
+            </p-toolbar>
           </div>
-          <div class="body-card">
-              <div class="table-head">
-                <div class="flex mb-2 align-items-center gap-1" style="justify-content: flex-end; align-items: flex-end;">
-                    <p-button class="bg-b-color" routerLink="/add-employee">
-                      <i class="bi bi-plus-lg" style="font-size: 20px;font-weight: bold;"></i>&nbsp;Add Employee
-                    </p-button>
-                    <div class="flex flex-column gap-2 ml-5">
-                      <p-fileUpload
-                      #fileUpload
-                      icon="pi pi-download" iconPos="left" styleClass="p-button-outlined p-button-sm"
-                      mode="basic" chooseLabel="Upload" name="myfile[]"
-                      [customUpload]="true" (uploadHandler)="onUpload($event)"
-                      (onSelect)="onFileSelect()"
+
+          <div class="card">
+            <p-table [value]="employee" [tableStyle]="{ 'min-width': '50rem' }">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th class="text-center">ID</th>
+                  <th class="text-center">Employee Number</th>
+                  <th class="text-center">Budget Ref</th>
+                  <th class="text-center">Employee Name</th>
+                  <th class="text-center">Gender</th>
+                  <th class="text-center">Marital Status</th>
+                  <th class="text-center">DOB</th>
+                  <th class="text-center">DOJ</th>
+                  <th class="text-center">Job Title</th>
+                  <th class="text-center">Status</th>
+                  <th class="text-center">Country</th>
+                  <th class="text-center">Region</th>
+                  <th class="text-center">City</th>
+                  <th class="text-center">Location</th>
+                  <th class="text-center">Organization</th>
+                  <th class="text-center">Division</th>
+                  <th class="text-center">Dept Code</th>
+                  <th class="text-center">Department</th>
+                  <th class="text-center">Section</th>
+                  <th class="text-center">National Id Number</th>
+                  <th class="text-center">SV Emp No.</th>
+                  <th class="text-center">SV Emp Name</th>
+                  <th class="text-center">Age</th>
+                  <th class="text-center">Cost Centre</th>
+                  <th class="text-center">Nationality</th>
+                  <th class="text-center">Email</th>
+                  <th class="text-center">Mobile No</th>
+                  <th class="text-center">Grade</th>
+                  <th class="text-center">License Number</th>
+                  <th class="text-center">Vehicle Budget</th>
+
+                  <th class="text-center">Actions</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-employee>
+                <tr>
+                  <td class="text-center">{{ employee.id }}</td>
+                  <td class="text-center">{{ employee.employeeNumber }}</td>
+                  <td class="text-center">{{ employee.budgetRef }}</td>
+                  <td class="text-center">{{ employee.empName }}</td>
+                  <td class="text-center">{{ employee.gender }}</td>
+                  <td class="text-center">{{ employee.maritalStatus }}</td>
+                  <td class="text-center">{{ employee.dateOfBirth }}</td>
+                  <td class="text-center">{{ employee.joiningDate }}</td>
+                  <td class="text-center">{{ employee.jobTitle }}</td>
+                  <td class="text-center">{{ employee.status }}</td>
+                  <td class="text-center">{{ employee.country }}</td>
+                  <td class="text-center">{{ employee.region }}</td>
+                  <td class="text-center">{{ employee.city }}</td>
+                  <td class="text-center">{{ employee.location }}</td>
+                  <td class="text-center">{{ employee.organization }}</td>
+                  <td class="text-center">{{ employee.division }}</td>
+                  <td class="text-center">{{ employee.deptCode }}</td>
+                  <td class="text-center">{{ employee.department }}</td>
+                  <td class="text-center">{{ employee.section }}</td>
+                  <td class="text-center">{{ employee.nationalIdNumber }}</td>
+                  <td class="text-center">{{ employee.svEmployeeNumber }}</td>
+                  <td class="text-center">{{ employee.svEmployeeName }}</td>
+                  <td class="text-center">{{ employee.age }}</td>
+                  <td class="text-center">{{ employee.costCentre }}</td>
+                  <td class="text-center">{{ employee.nationality }}</td>
+                  <td class="text-center">
+                    {{ employee.companyEmailAddress }}
+                  </td>
+                  <td class="text-center">{{ employee.contactNumber }}</td>
+                  <td class="text-center">{{ employee.grade }}</td>
+                  <td class="text-center">{{ employee.licenseNumber }}</td>
+                  <td class="text-center">{{ employee.vehicleBudget }}</td>
+
+                  <td>
+                    <div class="w-full flex">
+                      <p-button
+                        [routerLink]="['/view-employee/', employee.id]"
+                        pTooltip="View"
+                        tooltipPosition="top"
+                        icon="bi bi-eye"
+                        class="ml mr"
+                        [outlined]="true"
+                        [rounded]="true"
+                        [raised]="true"
                       >
-                    </p-fileUpload>
-                    <ng-container *ngIf="fileSelected">
-                      <button class="p-button p-button-outlined p-button-sm" (click)="onCancel()">Cancel</button>
-                    </ng-container>
+                      </p-button>
+                      <p-button
+                        *ngIf="selectedStatus.name !== 'Active'"
+                        class="bg-color"
+                        (click)="activateEmployee(employee.id)"
+                        [rounded]="true"
+                        pTooltip="Activate"
+                        tooltipPosition="top"
+                        icon="bi bi-check2"
+                        class="ml mr"
+                        [outlined]="true"
+                        [raised]="true"
+                      ></p-button>
+                      <p-button
+                        [routerLink]="['/edit-employee/', employee.id]"
+                        pTooltip="Edit"
+                        tooltipPosition="top"
+                        icon="bi bi-pen"
+                        class="mr"
+                        [outlined]="true"
+                        [rounded]="true"
+                        [raised]="true"
+                        severity="success"
+                      >
+                      </p-button>
+
+                      <p-button
+                        [routerLink]="['/employee-attachment', employee.id]"
+                        pTooltip="Add Attachments"
+                        tooltipPosition="top"
+                        icon="bi bi-paperclip"
+                        class="ml mr"
+                        [outlined]="true"
+                        [rounded]="true"
+                        [raised]="true"
+                        severity="warning"
+                      >
+                      </p-button>
+                      <p-button
+                        [routerLink]="[
+                          '/individual-file-list-component/',
+                          'employee',
+                          employee.id
+                        ]"
+                        pTooltip="Download Attachments"
+                        tooltipPosition="top"
+                        icon="bi bi-download"
+                        class="ml mr"
+                        [outlined]="true"
+                        [rounded]="true"
+                        [raised]="true"
+                        severity="success"
+                      >
+                      </p-button>
+                      <!-- <p-button *ngIf="selectedStatus.name === 'Active'" (click)="showDialog(employee.id, $event)" pTooltip="Replace Vehicle" tooltipPosition="top" icon="bi bi-arrow-repeat" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="help"></p-button> -->
                     </div>
-                    <div class="flex flex-column gap-2 ml-5">
-                      <p-button label="Download Sample" (click)="downloadAttachment(fileName)" icon="bi bi-download"></p-button>
-                    </div>
-                </div>
-                    <p-toolbar>
-                        <div class="p-toolbar-group-start">
-                          <h2 class="h-color">Employee</h2>
-                        </div>
-                        <div class="form-hook">
-                          <p-dropdown
-                                  class="w-full"
-                                  [(ngModel)]="selectedStatus"
-                                  [options]="employeeStatus"
-                                  name="selectedStatus1"
-                                  #selectedStatus1="ngModel"
-                                  [required]="true"
-                                  optionLabel="name"
-                                  [filter]="true"
-                                  filterBy="name"
-                                  [showClear]="true"
-                                  (onChange) = "OnSelectChange()"
-                                >
-                                <ng-template pTemplate="selectedItem">
-                                  <div
-                                    class="flex align-items-center gap-2"
-                                    *ngIf="selectedStatus"
-                                  >
-                                    <div>{{ selectedStatus.name }}</div>
-                                  </div>
-                                </ng-template>
-                                <ng-template let-employeeStatus pTemplate="item">
-                                  <div class="flex align-items-center gap-2">
-                                    <div>{{ employeeStatus.name }}</div>
-                                  </div>
-                                </ng-template>
-                              </p-dropdown>
-                            </div>
-                        <div class="card flex flex-wrap justify-content-center gap-3">
-                          <span class="p-input-icon-left">
-                            <i class="my-relative bi bi-search"></i>
-                            <input type="text" pInputText [(ngModel)]="value" (input)="OnSelectChange()"
-                              placeholder="Search Employee Number" />
-                          </span>
-                        </div>
-
-                    </p-toolbar>
-              </div>
-
-
-            <div class="card">
-              <p-table [value]="employee" [tableStyle]="{ 'min-width': '50rem' }">
-                <ng-template pTemplate="header">
-                  <tr>
-                    <th class="text-center">ID</th>
-                    <th class="text-center">Employee Number</th>
-                    <th class="text-center">Budget Ref</th>
-                    <th class="text-center">Employee Name</th>
-                    <th class="text-center">Gender</th>
-                    <th class="text-center">Marital Status</th>
-                    <th class="text-center">DOB</th>
-                    <th class="text-center">DOJ</th>
-                    <th class="text-center">Job Title</th>
-                    <th class="text-center">Status</th>
-                    <th class="text-center">Country</th>
-                    <th class="text-center">Region</th>
-                    <th class="text-center">City</th>
-                    <th class="text-center">Location</th>
-                    <th class="text-center">Organization</th>
-                    <th class="text-center">Division</th>
-                    <th class="text-center">Dept Code</th>
-                    <th class="text-center">Department</th>
-                    <th class="text-center">Section</th>
-                    <th class="text-center">National Id Number</th>
-                    <th class="text-center">SV Emp No.</th>
-                    <th class="text-center">SV Emp Name</th>
-                    <th class="text-center">Age</th>
-                    <th class="text-center">Cost Centre</th>
-                    <th class="text-center">Nationality</th>
-                    <th class="text-center">Email</th>
-                    <th class="text-center">Mobile No</th>
-                    <th class="text-center">Grade</th>
-                    <th class="text-center">License Number</th>
-                    <th class="text-center">Vehicle Budget</th>
-
-
-
-                    <th class="text-center">Actions</th>
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-employee>
-                  <tr>
-                    <td class="text-center">{{ employee.id }}</td>
-                    <td class="text-center">{{ employee.employeeNumber }}</td>
-                    <td class="text-center">{{ employee.budgetRef }}</td>
-                    <td class="text-center">{{ employee.empName }}</td>
-                    <td class="text-center">{{ employee.gender }}</td>
-                    <td class="text-center">{{ employee.maritalStatus }}</td>
-                    <td class="text-center">{{ employee.dateOfBirth }}</td>
-                    <td class="text-center">{{ employee.joiningDate }}</td>
-                    <td class="text-center">{{ employee.jobTitle }}</td>
-                    <td class="text-center">{{ employee.status }}</td>
-                    <td class="text-center">{{ employee.country }}</td>
-                    <td class="text-center">{{ employee.region }}</td>
-                    <td class="text-center">{{ employee.city }}</td>
-                    <td class="text-center">{{ employee.location }}</td>
-                    <td class="text-center">{{ employee.organization }}</td>
-                    <td class="text-center">{{ employee.division }}</td>
-                    <td class="text-center">{{ employee.deptCode }}</td>
-                    <td class="text-center">{{ employee.department }}</td>
-                    <td class="text-center">{{ employee.section }}</td>
-                    <td class="text-center">{{ employee.nationalIdNumber }}</td>
-                    <td class="text-center">{{ employee.svEmployeeNumber }}</td>
-                    <td class="text-center">{{ employee.svEmployeeName }}</td>
-                    <td class="text-center">{{ employee.age }}</td>
-                    <td class="text-center">{{ employee.costCentre }}</td>
-                    <td class="text-center">{{ employee.nationality }}</td>
-                    <td class="text-center">{{ employee.companyEmailAddress }}</td>
-                    <td class="text-center">{{ employee.contactNumber }}</td>
-                    <td class="text-center">{{ employee.grade }}</td>
-                    <td class="text-center">{{ employee.licenseNumber }}</td>
-                    <td class="text-center">{{ employee.vehicleBudget }}</td>
-
-
-                    <td >
-                      <div class="w-full flex">
-                        <p-button [routerLink]="['/view-employee/', employee.id]" pTooltip="View" tooltipPosition="top" icon="bi bi-eye" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true">
-                        </p-button>
-                        <p-button *ngIf="selectedStatus.name !== 'Active'" class="bg-color" (click)="activateEmployee(employee.id)" [rounded]="true" pTooltip="Activate" tooltipPosition="top" icon="bi bi-check2" class='ml mr' [outlined]="true" [raised]="true" ></p-button>
-                        <p-button [routerLink]="['/edit-employee/', employee.id]" pTooltip="Edit" tooltipPosition="top" icon="bi bi-pen" class='mr' [outlined]="true" [rounded]="true" [raised]="true" severity="success">
-
-                         </p-button>
-
-                          <p-button [routerLink]="['/employee-attachment',employee.id]" pTooltip="Add Attachments" tooltipPosition="top" icon="bi bi-paperclip" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="warning">
-                          </p-button>
-                          <p-button [routerLink]="['/individual-file-list-component/','employee',employee.id]" pTooltip="Download Attachments" tooltipPosition="top" icon="bi bi-download" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="success">
-                          </p-button>
-                          <!-- <p-button *ngIf="selectedStatus.name === 'Active'" (click)="showDialog(employee.id, $event)" pTooltip="Replace Vehicle" tooltipPosition="top" icon="bi bi-arrow-repeat" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="help"></p-button> -->
-                      </div>
-                    </td>
-                  </tr>
-                </ng-template>
-              </p-table>
-              <div class="card flex justify-content-center">
-
-                <p-paginator [rows]="query.size" [first]="query.page * query.size" [totalRecords]="totalRecords"
-                  (onPageChange)="onPageChange($event)" [alwaysShow]="false" [pageLinkSize]="4"
-                  [showCurrentPageReport]="true">
-                </p-paginator>
-
-              </div>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+            <div class="card flex justify-content-center">
+              <p-paginator
+                [rows]="query.size"
+                [first]="query.page * query.size"
+                [totalRecords]="totalRecords"
+                (onPageChange)="onPageChange($event)"
+                [alwaysShow]="false"
+                [pageLinkSize]="4"
+                [showCurrentPageReport]="true"
+              >
+              </p-paginator>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>

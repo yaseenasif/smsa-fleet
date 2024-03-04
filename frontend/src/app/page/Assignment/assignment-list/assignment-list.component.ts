@@ -188,7 +188,9 @@ export class AssignmentListComponent {
     this.replacementCheck = true;
     this.router.navigate(['/add-vehicle/replacementCheck/vId'], {
       queryParams: {
-        replacementCheck: this.replacementCheck, vId: id
+        replacementCheck: this.replacementCheck,
+        vId: id,
+        screenType:'assignment'
       }
     });
   }
@@ -317,7 +319,7 @@ export class AssignmentListComponent {
       });
   }
 
-  downloadExcelData(){
-    this.vehicleAssignmentService.downloadExcelData().subscribe(blob => saveAs(blob,"Assignment Data.xlsx"))
+  downloadExcelData() {
+    this.vehicleAssignmentService.downloadExcelData().subscribe(blob => saveAs(blob, "Assignment Data.xlsx"))
   }
 }
