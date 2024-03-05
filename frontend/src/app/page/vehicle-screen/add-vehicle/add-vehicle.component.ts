@@ -280,8 +280,8 @@ export class AddVehicleComponent implements OnInit {
     this.getModelList("Model");
     this.getYearList("Year");
     this.getDesignList("Design");
-    this.getTypeList("Type");
-    this.getCapicityList("Capicity");
+    this.getTypeList("Vehicle Type");
+    this.getCapicityList("Capacity");
     this.getPowerList("Power");
     this.getFuelTypeList("Fuel Type");
 
