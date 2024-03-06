@@ -24,7 +24,7 @@ export interface VehicleAssignment {
         svEmployeeNumber: string | null | undefined;
         svEmployeeName: string | null | undefined;
         city: string | null | undefined;
-        age: number | null | undefined;
+        // age: number | null | undefined;
         nationality: string | null | undefined;
         companyEmailAddress: string | null | undefined;
         grade: string | null | undefined;

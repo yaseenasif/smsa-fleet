@@ -4,41 +4,41 @@
   </div>
   <ul>
     <li *ngIf="hasPermission('Dashboard')">
-      <span class="sidebar-list-hover" routerLink="/home">
+      <a class="sidebar-list-hover text-white" routerLink="/home">
         <i class="bi bi-bar-chart-line-fill"></i>
         <span class="nav-text"> Dashboard </span>
-      </span>
+      </a>
     </li>
     <li class="child" *ngIf="hasPermission('Employee')">
-      <span class="sidebar-list-hover" routerLink="/employee">
+      <a class="sidebar-list-hover text-white" routerLink="/employee">
         <i class="bi bi-person-circle"></i>
         <span class="nav-text"> Employee </span>
-      </span>
+      </a>
     </li>
 
     <li class="child" *ngIf="hasPermission('Vehicle')">
-      <span class="sidebar-list-hover" routerLink="/vehicle">
+      <a class="sidebar-list-hover text-white" routerLink="/vehicle">
         <i class="bi bi-truck"></i>
         <span class="nav-text"> Vehicle </span>
-      </span>
+      </a>
     </li>
     <li class="child" *ngIf="hasPermission('ProjectVehicle')">
-      <span class="sidebar-list-hover" routerLink="/project-vehicle">
+      <a class="sidebar-list-hover text-white" routerLink="/project-vehicle">
         <i class="bi bi-truck"></i>
         <span class="nav-text"> Project Vehicle </span>
-      </span>
+      </a>
     </li>
     <li class="child" *ngIf="hasPermission('Assignment')">
-      <span class="sidebar-list-hover" routerLink="/assignment">
+      <a class="sidebar-list-hover text-white" routerLink="/assignment">
         <i class="bi bi-clipboard2-check"></i>
         <span class="nav-text"> Fleet Management </span>
-      </span>
+      </a>
     </li>
     <li class="child" *ngIf="hasPermission('User')">
-      <span class="sidebar-list-hover" routerLink="/user">
+      <a class="sidebar-list-hover text-white" routerLink="/user">
         <i class="bi bi-people-fill"></i>
         <span class="nav-text"> User </span>
-      </span>
+      </a>
     </li>
     <li (click)="turner()">
       <span class="sidebar-list-hover">
@@ -59,54 +59,54 @@
       </span>
     </li>
     <li class="child" *ngIf="configTurner && hasPermission('Vendor')">
-      <span class="sidebar-list-hover" routerLink="/vendor">
+      <a class="sidebar-list-hover text-white" routerLink="/vendor">
         <i class="bi bi-person-plus"></i>
         <span class="nav-text"> Vendor </span>
-      </span>
+      </a>
     </li>
     <li class="child" *ngIf="configTurner && hasPermission('Permission')">
-      <span class="sidebar-list-hover" routerLink="/permission">
+      <a class="sidebar-list-hover text-white" routerLink="/permission">
         <i class="bi bi-key"></i>
         <span class="nav-text"> Permission </span>
-      </span>
+      </a>
     </li>
     <li class="child" *ngIf="configTurner && hasPermission('Role')">
-      <span class="sidebar-list-hover" routerLink="/role">
+      <a class="sidebar-list-hover text-white" routerLink="/role">
         <i class="bi bi-person-gear"></i>
         <span class="nav-text"> Role </span>
-      </span>
+      </a>
     </li>
     <li class="child" *ngIf="configTurner && hasPermission('Grade')">
-      <span class="sidebar-list-hover" routerLink="/grade-list">
+      <a class="sidebar-list-hover text-white" routerLink="/grade-list">
         <i class="bi bi-google"></i>
         <span class="nav-text"> Grade </span>
-      </span>
+      </a>
     </li>
 
     <li class="child" *ngIf="configTurner && hasPermission('City')">
-      <span class="sidebar-list-hover" routerLink="/city-list">
+      <a class="sidebar-list-hover text-white" routerLink="/city-list">
         <i class="bi bi-r-circle"></i>
         <span class="nav-text"> City </span>
-      </span>
+      </a>
     </li>
     <li class="child" *ngIf="configTurner && hasPermission('ProductField')">
-      <span class="sidebar-list-hover" routerLink="/productFields">
+      <a class="sidebar-list-hover text-white" routerLink="/productFields">
         <i class="bi bi-bookmark-plus"></i>
         <span class="nav-text"> Product Field </span>
-      </span>
+      </a>
     </li>
 
     <li class="child" *ngIf="configTurner && hasPermission('Region')">
-      <span class="sidebar-list-hover" routerLink="/get-all-regions">
+      <a class="sidebar-list-hover text-white" routerLink="/get-all-regions">
         <i class="bi bi-houses-fill"></i>
         <span class="nav-text"> Regions </span>
-      </span>
+      </a>
     </li>
     <li class="child" *ngIf="configTurner && hasPermission('JobTitle')">
-      <span class="sidebar-list-hover" routerLink="/job-title-list">
+      <a class="sidebar-list-hover text-white" routerLink="/job-title-list">
         <i class="bi bi-houses-fill"></i>
         <span class="nav-text"> Job Title </span>
-      </span>
+      </a>
     </li>
     <li class="child" *ngIf="configTurner && hasPermission('ReportManagment')">
       <span class="sidebar-list-hover" routerLink="/report-managment-list">

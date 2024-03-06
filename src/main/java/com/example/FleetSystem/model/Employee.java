@@ -28,7 +28,7 @@ public class Employee {
     private Date joiningDate;
     private Date dateOfBirth;
     private String department;
-    private Long deptCode;
+    private String deptCode;
     private String division;
     private String fleetClassification;
     private String vehicleEligible;
@@ -43,7 +43,7 @@ public class Employee {
     private String nationality;
     private String contactNumber;
     private String companyEmailAddress;
-    private Integer age;
+//    private Integer age;
     private Integer grade;
     private String licenseNumber;
     private Integer vehicleBudget;

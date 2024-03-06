@@ -68,7 +68,7 @@ export class AddAssignmentComponent {
       svEmployeeNumber:  undefined,
       svEmployeeName:  undefined,
       city:  undefined,
-      age:  undefined,
+      // age:  undefined,
       nationality:  undefined,
       companyEmailAddress:  undefined,
       grade:  undefined,

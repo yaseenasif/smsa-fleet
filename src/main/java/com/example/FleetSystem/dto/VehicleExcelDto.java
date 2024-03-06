@@ -34,5 +34,8 @@ public class VehicleExcelDto {
     private String region;
     private String category;
     private String vehicleStatus;
-
+    private Long assignToEmployeeNo;
+    private String assignToEmployeeName;
+    private String replacementVehicle;
+    private String replacementVehicleStatus;
 }

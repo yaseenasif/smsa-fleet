@@ -925,8 +925,16 @@ public class VehicleService {
     }
 
     private VehicleExcelDto toVehicleExcelDto(Vehicle vehicle){
+        Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByVehicleAndStatusIsTrue(vehicle);
         VehicleExcelDto vehicleExcelDto = modelMapper.map(vehicle, VehicleExcelDto.class);
         vehicleExcelDto.setVendor(vehicle.getVendor().getVendorName());
+        if(vehicleAssignment.isPresent()){
+            vehicleExcelDto.setAssignToEmployeeNo(vehicleAssignment.get().getAssignToEmpId().getEmployeeNumber());
+            vehicleExcelDto.setAssignToEmployeeName(vehicleAssignment.get().getAssignToEmpName());
+        }
+        if(vehicle.getVehicleReplacement() != null){
+            vehicleExcelDto.setReplacementVehicle(vehicle.getVehicleReplacement().getVehicle().getPlateNumber());
+        }
         return vehicleExcelDto;
     }
     private List<VehicleExcelDto> toVehicleExcelDtoList(List<Vehicle> vehicleList){
