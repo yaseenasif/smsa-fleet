@@ -939,5 +939,33 @@ public class VehicleService {
         return excelExportService.exportToExcel(vehicleExcelDtoList);
     }
 
+    public Page<VehicleDto> searchVehicleByVendor(VehicleSearchCriteria vehicleSearchCriteria, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<Vehicle> vehicleSpecification = VehicleSpecification.getVehicleSearchSpecificationByVendor(vehicleSearchCriteria);
+        Page<Vehicle> vehiclePage = vehicleRepository.findAll(vehicleSpecification, pageable);
+        return vehiclePage.map(this::toDto);
+    }
+
+    public Page<VehicleDto> searchVehicleByRegion(VehicleSearchCriteria vehicleSearchCriteria, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<Vehicle> vehicleSpecification = VehicleSpecification.getVehicleSearchSpecificationByRegion(vehicleSearchCriteria);
+        Page<Vehicle> vehiclePage = vehicleRepository.findAll(vehicleSpecification, pageable);
+        return vehiclePage.map(this::toDto);
+    }
+
+    public Page<VehicleDto> searchVehicleByUsageType(VehicleSearchCriteria vehicleSearchCriteria, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<Vehicle> vehicleSpecification = VehicleSpecification.getVehicleSearchSpecificationByUsageType(vehicleSearchCriteria);
+        Page<Vehicle> vehiclePage = vehicleRepository.findAll(vehicleSpecification, pageable);
+        return vehiclePage.map(this::toDto);
+    }
+
+    public Page<VehicleDto> searchVehicleByLeaseExpiry(VehicleSearchCriteria vehicleSearchCriteria,
+                                                        Date leaseStartDate, Date leaseExpiryDate, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<Vehicle> vehicleSpecification = VehicleSpecification.getVehicleSearchSpecificationByLeaseExpiry(vehicleSearchCriteria, leaseStartDate, leaseExpiryDate);
+        Page<Vehicle> vehiclePage = vehicleRepository.findAll(vehicleSpecification, pageable);
+        return vehiclePage.map(this::toDto);
+    }
 }
 

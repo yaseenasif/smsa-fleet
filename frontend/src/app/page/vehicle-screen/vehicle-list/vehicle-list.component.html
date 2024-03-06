@@ -7,7 +7,7 @@
       <div class="main">
         <div class="card flex justify-content-center">
           <p-breadcrumb class="max-w-full" [model]="items">
-          </p-breadcrumb>          
+          </p-breadcrumb>
           <p-button class="bg-b-color adjust mt-2" (click)="downloadExcelData()">
             <i class="bi bi-download"></i>&nbsp; Export data
           </p-button>
@@ -161,7 +161,7 @@
 
                     <p-button *ngIf="!vehicletab && !unAssignedVehicleTab && (selectedStatus.name === 'TBA' || selectedStatus.name === 'Active')" (click)="replaceVehicle(vehicles.id)" pTooltip="Replace Vehicle" tooltipPosition="top" icon="bi bi-arrow-repeat" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="help">
                     </p-button>
-                    
+
                     <p-button *ngIf="!vehicletab && !unAssignedVehicleTab && (selectedStatus.name === 'Under Maintenance')" (click)="showReplacementDialog(vehicles.id)" pTooltip="Mark total lost" tooltipPosition="top" icon="bi bi-exclamation-lg" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="help">
                     </p-button>
                   </td>
@@ -184,7 +184,7 @@
 </div>
 
 <p-dialog header="Are you sure you want to activate this vehicle?" [closable]="true" [(visible)]="statusVisible" [breakpoints]="{ '960px': '75vw' }" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
- 
+
   <div *ngIf="lastAssignedEmployee">
     <h3>This Vehicle was last assigned to an employee</h3><br>
     <div class="grid">
@@ -203,9 +203,9 @@
   </div>
   </p-dialog>
 
-  <p-dialog [header]="selectedStatus.name === 'Under Maintenance' ? 'Are you sure you want to mark this vehicle total lost?' : 'Are you sure you want to delete this vehicle?'" 
+  <p-dialog [header]="selectedStatus.name === 'Under Maintenance' ? 'Are you sure you want to mark this vehicle total lost?' : 'Are you sure you want to delete this vehicle?'"
   [closable]="false" [(visible)]="replacementVisible" [breakpoints]="{ '960px': '75vw' }" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
-   
+
   <div style="display: flex; justify-content: flex-end; align-items: flex-end; height: 100%;">
     <div>
       <p-button (click)="closeDialog()" label="No" styleClass="p-button-danger p-button-text p-button-raised"></p-button>

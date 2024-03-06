@@ -4,11 +4,14 @@ import com.example.FleetSystem.criteria.VehicleSearchCriteria;
 import com.example.FleetSystem.model.Employee;
 import com.example.FleetSystem.model.Vehicle;
 import com.example.FleetSystem.model.VehicleAssignment;
+import com.example.FleetSystem.model.Vendor;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.*;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class VehicleSpecification {
@@ -89,4 +92,84 @@ public class VehicleSpecification {
     }
 
 
+    public static Specification<Vehicle> getVehicleSearchSpecificationByVendor(VehicleSearchCriteria vehicleSearchCriteria) {
+        return (root, query, criteriaBuilder) -> {
+            if (vehicleSearchCriteria == null || vehicleSearchCriteria.getValue() == null || vehicleSearchCriteria
+                    .getValue().isEmpty()) {
+                query.orderBy(criteriaBuilder.desc(root.get("id")));
+                return criteriaBuilder.conjunction();
+            }
+            Join<Vehicle, Vendor> vendorJoin = root.join("vendor");
+            // Adjust the field name based on your entity
+            return criteriaBuilder.and
+                    (criteriaBuilder.like(criteriaBuilder.lower(vendorJoin.get("vendorName")),
+                            "%" + vehicleSearchCriteria
+                                    .getValue().toLowerCase() + "%"));
+        };
+    }
+
+    public static Specification<Vehicle> getVehicleSearchSpecificationByRegion(VehicleSearchCriteria vehicleSearchCriteria) {
+        return (root, query, criteriaBuilder) -> {
+            if (vehicleSearchCriteria == null || vehicleSearchCriteria.getValue() == null || vehicleSearchCriteria
+                    .getValue().isEmpty()) {
+                query.orderBy(criteriaBuilder.desc(root.get("id")));
+                return criteriaBuilder.conjunction();
+            }
+            // Adjust the field name based on your entity
+            return criteriaBuilder.and
+                    (criteriaBuilder.like(criteriaBuilder.lower(root.get("region")),
+                            "%" + vehicleSearchCriteria
+                                    .getValue().toLowerCase() + "%"));
+        };
+    }
+
+    public static Specification<Vehicle> getVehicleSearchSpecificationByUsageType(VehicleSearchCriteria vehicleSearchCriteria) {
+        return (root, query, criteriaBuilder) -> {
+            if (vehicleSearchCriteria == null || vehicleSearchCriteria.getValue() == null || vehicleSearchCriteria
+                    .getValue().isEmpty()) {
+                query.orderBy(criteriaBuilder.desc(root.get("id")));
+                return criteriaBuilder.conjunction();
+            }
+            // Adjust the field name based on your entity
+            return criteriaBuilder.and
+                    (criteriaBuilder.like(criteriaBuilder.lower(root.get("usageType")),
+                            "%" + vehicleSearchCriteria
+                                    .getValue().toLowerCase() + "%"));
+        };
+    }
+
+    public static Specification<Vehicle> getVehicleSearchSpecificationByLeaseExpiry(
+            VehicleSearchCriteria vehicleSearchCriteria, Date leaseStartDate, Date leaseExpiryDate
+    ) {
+        return (root, query, criteriaBuilder) -> {
+            if (vehicleSearchCriteria == null || vehicleSearchCriteria.getValue() == null || vehicleSearchCriteria
+                    .getValue().isEmpty()) {
+                query.orderBy(criteriaBuilder.desc(root.get("id")));
+                return criteriaBuilder.conjunction();
+            }
+
+            if(Objects.nonNull(leaseStartDate) && Objects.nonNull(leaseExpiryDate)) {
+                return criteriaBuilder.and(
+                        criteriaBuilder.between(root.get("leaseStartDate"), leaseStartDate, leaseExpiryDate)
+                );
+            }
+
+            if (Objects.nonNull(leaseStartDate)) {
+                return criteriaBuilder.and(
+                        criteriaBuilder.greaterThanOrEqualTo(root.get("leaseStartDate"), leaseStartDate)
+                );
+            }
+
+            if (Objects.nonNull(leaseExpiryDate)) {
+                return criteriaBuilder.and(
+                        criteriaBuilder.lessThanOrEqualTo(root.get("leaseExpiryDate"), leaseExpiryDate)
+                );
+            }
+            // Adjust the field name based on your entity
+            return criteriaBuilder.and
+                    (criteriaBuilder.like(criteriaBuilder.lower(root.get("leaseExpiry")),
+                            "%" + vehicleSearchCriteria
+                                    .getValue().toLowerCase() + "%"));
+        };
+    }
 }

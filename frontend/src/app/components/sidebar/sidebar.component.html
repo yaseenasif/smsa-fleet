@@ -108,5 +108,11 @@
         <span class="nav-text"> Job Title </span>
       </span>
     </li>
+    <li class="child" *ngIf="configTurner && hasPermission('ReportManagment')">
+      <span class="sidebar-list-hover" routerLink="/report-managment-list">
+        <i class="bi bi-houses-fill"></i>
+        <span class="nav-text"> Report Managment </span>
+      </span>
+    </li>
   </ul>
 </nav>
