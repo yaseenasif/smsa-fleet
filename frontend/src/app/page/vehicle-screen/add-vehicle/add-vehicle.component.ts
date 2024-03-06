@@ -276,14 +276,14 @@ export class AddVehicleComponent implements OnInit {
     this.getUsageType();
     this.getCategory();
     this.getRegion();
-    this.getMakeList("Vehicle Make");
-    this.getModelList("Vehicle Model");
-    this.getYearList("Vehicle Year");
-    this.getDesignList("Vehicle Design");
-    this.getTypeList("Vehicle Type");
-    this.getCapicityList("Vehicle Capicity");
-    this.getPowerList("Vehicle Power");
-    this.getFuelTypeList("Vehicle Fuel Type");
+    this.getMakeList("Make");
+    this.getModelList("Model");
+    this.getYearList("Year");
+    this.getDesignList("Design");
+    this.getTypeList("Type");
+    this.getCapicityList("Capicity");
+    this.getPowerList("Power");
+    this.getFuelTypeList("Fuel Type");
 
     this.route.queryParams.subscribe(params => {
       this.replacementCheck = params['replacementCheck'] === 'true';

@@ -110,7 +110,7 @@
           <div class="card">
             <p-table [value]="employee" [tableStyle]="{ 'min-width': '50rem' }">
               <ng-template pTemplate="header">
-                <tr>
+                <!-- <tr>
                   <th class="text-center">ID</th>
                   <th class="text-center">Employee Number</th>
                   <th class="text-center">Budget Ref</th>
@@ -142,6 +142,104 @@
                   <th class="text-center">License Number</th>
                   <th class="text-center">Vehicle Budget</th>
 
+                  <th class="text-center">Actions</th>
+                </tr> -->
+                <tr>
+                  <th pSortableColumn="id" class="text-center">
+                    ID <p-sortIcon field="id"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="employeeNumber" class="text-center">
+                    Employee Number
+                    <p-sortIcon field="employeeNumber"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="budgetRef" class="text-center">
+                    Budget Ref <p-sortIcon field="budgetRef"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="employeeName" class="text-center">
+                    Employee Name <p-sortIcon field="employeeName"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="gender" class="text-center">
+                    Gender <p-sortIcon field="gender"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="maritalStatus" class="text-center">
+                    Marital Status
+                    <p-sortIcon field="maritalStatus"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="dob" class="text-center">
+                    DOB <p-sortIcon field="dob"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="doj" class="text-center">
+                    DOJ <p-sortIcon field="doj"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="jobTitle" class="text-center">
+                    Job Title <p-sortIcon field="jobTitle"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="status" class="text-center">
+                    Status <p-sortIcon field="status"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="country" class="text-center">
+                    Country <p-sortIcon field="country"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="region" class="text-center">
+                    Region <p-sortIcon field="region"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="city" class="text-center">
+                    City <p-sortIcon field="city"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="location" class="text-center">
+                    Location <p-sortIcon field="location"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="organization" class="text-center">
+                    Organization <p-sortIcon field="organization"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="division" class="text-center">
+                    Division <p-sortIcon field="division"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="deptCode" class="text-center">
+                    Dept Code <p-sortIcon field="deptCode"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="department" class="text-center">
+                    Department <p-sortIcon field="department"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="section" class="text-center">
+                    Section <p-sortIcon field="section"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="nationalIdNumber" class="text-center">
+                    National Id Number
+                    <p-sortIcon field="nationalIdNumber"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="svEmpNo" class="text-center">
+                    SV Emp No. <p-sortIcon field="svEmpNo"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="svEmpName" class="text-center">
+                    SV Emp Name <p-sortIcon field="svEmpName"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="age" class="text-center">
+                    Age <p-sortIcon field="age"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="costCentre" class="text-center">
+                    Cost Centre <p-sortIcon field="costCentre"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="nationality" class="text-center">
+                    Nationality <p-sortIcon field="nationality"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="email" class="text-center">
+                    Email <p-sortIcon field="email"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="mobileNo" class="text-center">
+                    Mobile No <p-sortIcon field="mobileNo"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="grade" class="text-center">
+                    Grade <p-sortIcon field="grade"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="licenseNumber" class="text-center">
+                    License Number
+                    <p-sortIcon field="licenseNumber"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="vehicleBudget" class="text-center">
+                    Vehicle Budget
+                    <p-sortIcon field="vehicleBudget"></p-sortIcon>
+                  </th>
                   <th class="text-center">Actions</th>
                 </tr>
               </ng-template>
@@ -258,9 +356,14 @@
                 [first]="query.page * query.size"
                 [totalRecords]="totalRecords"
                 (onPageChange)="onPageChange($event)"
-                [alwaysShow]="false"
+                [alwaysShow]="true"
                 [pageLinkSize]="4"
                 [showCurrentPageReport]="true"
+                currentPageReportTemplate="Showing {{
+                  query.page * query.size + 1
+                }} to {{ (query.page + 1) * query.size }} of total {{
+                  totalRecords
+                }} entries"
               >
               </p-paginator>
             </div>

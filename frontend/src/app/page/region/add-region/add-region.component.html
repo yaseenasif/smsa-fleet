@@ -47,7 +47,12 @@
                   <div class="flex flex-column gap-2 form-hook">
                     <label class="add-order-label">City</label>
                     <div class="card p-fluid">
-                      <p-chips [(ngModel)]="region.cities" name="cities" #addCities="ngModel"></p-chips>
+                      <p-chips
+                        [(ngModel)]="region.cities"
+                        name="cities"
+                        #addCities="ngModel"
+                        [required]="true"
+                      ></p-chips>
                     </div>
                   </div>
                 </div>

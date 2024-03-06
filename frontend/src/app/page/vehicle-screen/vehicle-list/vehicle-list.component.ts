@@ -3,15 +3,12 @@ import { MenuItem, MessageService } from 'primeng/api';
 import { VehicleService } from '../service/vehicle.service';
 import { Vehicle } from 'src/app/modal/vehicle'
 import { FileUpload } from 'primeng/fileupload';
-import { VehicleReplacement } from 'src/app/modal/vehicleReplacement';
 import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
 import { PageEvent } from 'src/app/modal/pageEvent';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as saveAs from 'file-saver';
 import { Region } from 'src/app/modal/Region';
 import { RegionService } from '../../region/service/region.service';
-import { VehicleAssignmentService } from '../../Assignment/vehicle-assignment.service';
-import { VehicleAssignment } from 'src/app/modal/vehicle-assignment';
 import { EmployeeService } from '../../employee-screen/service/employee.service';
 import { Employee } from 'src/app/modal/employee';
 
@@ -26,7 +23,6 @@ export class VehicleListComponent implements OnInit {
   fileUpload!: FileUpload;
 
   fileSelected: boolean = false;
-  // visible: boolean = false;
 
   query: PageEvent = {
     page: 0,
@@ -77,25 +73,25 @@ export class VehicleListComponent implements OnInit {
     this.items = [{ label: 'Vehicle' }];
     this.vehicleStatus = [
       {
-        name: 'TBA'
+        name: 'All'
       },
       {
         name: 'Active'
       },
       {
-        name: 'In-Active'
+        name: 'Replacement'
       },
       {
         name: 'Under Maintenance'
       },
       {
-        name: 'Replacement'
+        name: 'In-Active'
       },
       {
-        name: 'All'
-      }
+        name: 'TBA'
+      },
     ]
-    this.searchAllVehicles('TBA');
+    this.setSelectedStatusAndGetAllVehicles();
 
     this.route.queryParams.subscribe(params => {
       this.vehicletab = params['vehicletab'] === 'true';
@@ -126,26 +122,19 @@ export class VehicleListComponent implements OnInit {
         (response) => {
 
           if (Array.isArray(response.message)) {
-
             response.message.forEach((message: any) => {
               this.messageService.add({ severity: 'success', summary: 'Upload Successful', detail: message });
             });
 
           } else if (response.message) {
-            // If response.message is a single message, display it
             this.messageService.add({ severity: 'success', summary: 'Upload Successful', detail: response.message });
           } else {
-            // Display a generic success message if no message is provided
             this.messageService.add({ severity: 'success', summary: 'Upload Successful', detail: 'File uploaded successfully.' });
           }
-
           this.searchAllVehicles(this.selectedStatus.name);
         },
         (error) => {
-          console.error('Error while saving the file:', error);
-
           this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
-          // Handle error
         }
       );
     }
@@ -159,12 +148,22 @@ export class VehicleListComponent implements OnInit {
 
 
   flag = 'TBA'
+  // OnSelectChange() {
+
+  //   if (this.selectedStatus.name != this.flag) {
+  //     this.query.page = 0
+  //     this.flag = this.selectedStatus.name
+  //   }
+  //   this.searchAllVehicles(this.selectedStatus.name)
+  // }
+
   OnSelectChange() {
-    if (this.selectedStatus.name != this.flag) {
-      this.query.page = 0
-      this.flag = this.selectedStatus.name
+    if (this.selectedStatus.name !== this.flag) {
+      this.query.page = 0;
+      this.flag = this.selectedStatus.name;
+      sessionStorage.setItem('selectedStatus', this.selectedStatus.name);
     }
-    this.searchAllVehicles(this.selectedStatus.name)
+    this.searchAllVehicles(this.selectedStatus.name);
   }
 
   closeDialog() {
@@ -240,5 +239,11 @@ export class VehicleListComponent implements OnInit {
 
   downloadExcelData() {
     this.vehicleService.downloadExcelData().subscribe(blob => saveAs(blob, "Vehicle Data.xlsx"))
+  }
+
+  setSelectedStatusAndGetAllVehicles() {
+    const status = sessionStorage.getItem('selectedStatus');
+    this.selectedStatus.name = status ? status : "TBA";
+    this.searchAllVehicles(this.selectedStatus.name);
   }
 }

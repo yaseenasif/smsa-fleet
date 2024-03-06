@@ -177,6 +177,7 @@ export class AssignmentListComponent {
             section: undefined
           };
         }
+        debugger
         this.query = { page: res.pageable.pageNumber, size: res.size };
         this.totalRecords = res.totalElements;
       }, error => {

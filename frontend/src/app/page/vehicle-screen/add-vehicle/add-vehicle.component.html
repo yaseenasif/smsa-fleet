@@ -76,15 +76,6 @@
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Make</label>
-                    <!-- <input
-                      pInputText
-                      id="name"
-                      aria-describedby="name-help"
-                      name="make"
-                      [(ngModel)]="vehicle.make"
-                      #make="ngModel"
-                      required
-                    /> -->
                     <p-dropdown
                       class="w-full"
                       [(ngModel)]="vehicle.make"
@@ -121,16 +112,6 @@
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Year</label>
-                    <!-- <input
-                      pInputText
-                      id="name"
-                      aria-describedby="name-help"
-                      name="year"
-                      [(ngModel)]="vehicle.year"
-                      #year="ngModel"
-                      required
-                    /> -->
-
                     <p-dropdown
                       class="w-full"
                       [(ngModel)]="vehicle.year"
@@ -166,16 +147,6 @@
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Design</label>
-                    <!-- <input
-                      pInputText
-                      id="name"
-                      aria-describedby="name-help"
-                      name="design"
-                      [(ngModel)]="vehicle.design"
-                      #design="ngModel"
-                      required
-                    /> -->
-
                     <p-dropdown
                       class="w-full"
                       [(ngModel)]="vehicle.design"
@@ -211,15 +182,6 @@
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Model</label>
-                    <!-- <input
-                      pInputText
-                      id="name"
-                      aria-describedby="name-help"
-                      name="model"
-                      [(ngModel)]="vehicle.model"
-                      #model="ngModel"
-                      required
-                    /> -->
                     <p-dropdown
                       class="w-full"
                       [(ngModel)]="vehicle.model"
@@ -256,16 +218,6 @@
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Type</label>
-                    <!-- <input
-                      pInputText
-                      id="name"
-                      aria-describedby="name-help"
-                      name="type"
-                      [(ngModel)]="vehicle.type"
-                      #type="ngModel"
-                      required
-                    /> -->
-
                     <p-dropdown
                       class="w-full"
                       [(ngModel)]="vehicle.type"
@@ -301,16 +253,6 @@
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Capacity</label>
-                    <!-- <input
-                      pInputText
-                      id="name"
-                      aria-describedby="name-help"
-                      name="capacity"
-                      [(ngModel)]="vehicle.capacity"
-                      #capacity="ngModel"
-                      required
-                    /> -->
-
                     <p-dropdown
                       class="w-full"
                       [(ngModel)]="vehicle.capacity"
@@ -348,16 +290,6 @@
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Power</label>
-                    <!-- <input
-                      pInputText
-                      id="name"
-                      aria-describedby="name-help"
-                      name="power"
-                      [(ngModel)]="vehicle.power"
-                      #power="ngModel"
-                      required
-                    /> -->
-
                     <p-dropdown
                       class="w-full"
                       [(ngModel)]="vehicle.power"
@@ -450,16 +382,6 @@
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Fuel Type</label>
-                    <!-- <input
-                      pInputText
-                      id="name"
-                      aria-describedby="name-help"
-                      name="fuelType"
-                      [(ngModel)]="vehicle.fuelType"
-                      #fuelType="ngModel"
-                      required
-                    /> -->
-
                     <p-dropdown
                       class="w-full"
                       [(ngModel)]="vehicle.fuelType"
@@ -578,7 +500,7 @@
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">Lease Start Date</label>
                     <p-calendar
-                      #leaseStartDate
+                      #leaseStartDate="ngModel"
                       name="leaseStartDate"
                       [required]="true"
                       [(ngModel)]="vehicle.leaseStartDate"

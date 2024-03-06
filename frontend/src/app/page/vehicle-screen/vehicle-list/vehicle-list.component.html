@@ -117,7 +117,7 @@
           <div class="card">
             <p-table [value]="vehicles" [tableStyle]="{ 'min-width': '50rem' }">
               <ng-template pTemplate="header">
-                <tr>
+                <!-- <tr>
                   <th class="text-center">ID</th>
                   <th
                     *ngIf="selectedStatus.name === 'Replacement'"
@@ -135,11 +135,9 @@
                   <th class="text-center">Capacity</th>
                   <th class="text-center">Power</th>
                   <th class="text-center">Registration Expiry</th>
-                  <!-- <th class="text-center">Registration Status</th> -->
                   <th class="text-center">Fuel Type</th>
                   <th class="text-center">Vendor</th>
                   <th class="text-center">Insurance Expiry</th>
-                  <!-- <th class="text-center">Insurance Status</th> -->
                   <th class="text-center">Lease Cost</th>
                   <th class="text-center">Replace Lease Cost</th>
                   <th class="text-center">Lease Start Date</th>
@@ -148,7 +146,87 @@
                   <th class="text-center">Region</th>
                   <th class="text-center">Category</th>
                   <th class="text-center">Replace Vehicle</th>
-
+                  <th class="text-center">Actions</th>
+                </tr> -->
+                <tr>
+                  <th pSortableColumn="id" class="text-center">
+                    ID <p-sortIcon field="id"></p-sortIcon>
+                  </th>
+                  <th
+                    *ngIf="selectedStatus.name === 'Replacement'"
+                    class="text-center"
+                  >
+                    Status
+                  </th>
+                  <th pSortableColumn="poNumber">
+                    PO Number <p-sortIcon field="poNumber"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="plateNumber" class="text-center">
+                    Plate Number <p-sortIcon field="plateNumber"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="make" class="text-center">
+                    Make <p-sortIcon field="make"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="year" class="text-center">
+                    Year <p-sortIcon field="year"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="design" class="text-center">
+                    Design <p-sortIcon field="design"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="model" class="text-center">
+                    Model <p-sortIcon field="model"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="type" class="text-center">
+                    Type <p-sortIcon field="type"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="capacity" class="text-center">
+                    Capacity <p-sortIcon field="capacity"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="power" class="text-center">
+                    Power <p-sortIcon field="power"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="registrationExpiry" class="text-center">
+                    Registration Expiry
+                    <p-sortIcon field="registrationExpiry"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="fuelType" class="text-center">
+                    Fuel Type <p-sortIcon field="fuelType"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="vendor" class="text-center">
+                    Vendor <p-sortIcon field="vendor"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="insuranceExpiry" class="text-center">
+                    Insurance Expiry
+                    <p-sortIcon field="insuranceExpiry"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="leaseCost" class="text-center">
+                    Lease Cost <p-sortIcon field="leaseCost"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="replaceLeaseCost" class="text-center">
+                    Replace Lease Cost
+                    <p-sortIcon field="replaceLeaseCost"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="leaseStartDate" class="text-center">
+                    Lease Start Date
+                    <p-sortIcon field="leaseStartDate"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="leaseExpiryDate" class="text-center">
+                    Lease Expiry Date
+                    <p-sortIcon field="leaseExpiryDate"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="usageType" class="text-center">
+                    Usage Type <p-sortIcon field="usageType"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="region" class="text-center">
+                    Region <p-sortIcon field="region"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="category" class="text-center">
+                    Category <p-sortIcon field="category"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="replaceVehicle" class="text-center">
+                    Replace Vehicle
+                    <p-sortIcon field="replaceVehicle"></p-sortIcon>
+                  </th>
                   <th class="text-center">Actions</th>
                 </tr>
               </ng-template>
@@ -490,7 +568,7 @@
                 [first]="query.page * query.size"
                 [totalRecords]="totalRecords"
                 (onPageChange)="onPageChange(value, $event)"
-                [alwaysShow]="false"
+                [alwaysShow]="true"
                 [pageLinkSize]="4"
                 [showCurrentPageReport]="true"
                 currentPageReportTemplate="Showing {{

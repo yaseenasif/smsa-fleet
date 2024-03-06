@@ -8,7 +8,10 @@
         <p-toast></p-toast>
         <div class="card flex justify-content-center">
           <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
-          <p-button class="bg-b-color adjust mt-2" (click)="downloadExcelData()">
+          <p-button
+            class="bg-b-color adjust mt-2"
+            (click)="downloadExcelData()"
+          >
             <i class="bi bi-download"></i>&nbsp; Export data
           </p-button>
         </div>
@@ -136,7 +139,11 @@
                 <span class="p-float-label">
                   <p-dropdown
                     [options]="sectionList"
-                    (onChange)="getSearchAssignmentByAnyValue(globalTransformObj.assignToEmpId)"
+                    (onChange)="
+                      getSearchAssignmentByAnyValue(
+                        globalTransformObj.assignToEmpId
+                      )
+                    "
                     optionLabel="section"
                     [filter]="true"
                     optionValue="section"
@@ -183,7 +190,11 @@
                 <span class="p-float-label">
                   <p-dropdown
                     [options]="regionList"
-                    (onChange)="getSearchAssignmentByAnyValue(globalTransformObj.assignToEmpId)"
+                    (onChange)="
+                      getSearchAssignmentByAnyValue(
+                        globalTransformObj.assignToEmpId
+                      )
+                    "
                     optionLabel="region"
                     optionValue="region"
                     [filter]="true"
@@ -269,7 +280,7 @@
               [tableStyle]="{ 'min-width': '50rem' }"
             >
               <ng-template pTemplate="header">
-                <tr>
+                <!-- <tr>
                   <th class="text-center">Plate Number</th>
                   <th class="text-center">Assigned (Emp NO)</th>
                   <th class="text-center">Assigned (Emp Name)</th>
@@ -283,6 +294,21 @@
                   <th class="text-center">Lease Expiry</th>
                   <th class="text-center">Lease Cost</th>
 
+                  <th class="text-center">Actions</th>
+                </tr> -->
+                <tr>
+                  <th pSortableColumn="plateNumber" class="text-center">Plate Number <p-sortIcon field="plateNumber"></p-sortIcon></th>
+                  <th pSortableColumn="assignedEmpNo" class="text-center">Assigned (Emp NO) <p-sortIcon field="assignedEmpNo"></p-sortIcon></th>
+                  <th pSortableColumn="assignedEmpName" class="text-center">Assigned (Emp Name) <p-sortIcon field="assignedEmpName"></p-sortIcon></th>
+                  <th pSortableColumn="design" class="text-center">Design <p-sortIcon field="design"></p-sortIcon></th>
+                  <th pSortableColumn="make" class="text-center">Make <p-sortIcon field="make"></p-sortIcon></th>
+                  <th pSortableColumn="model" class="text-center">Model <p-sortIcon field="model"></p-sortIcon></th>
+                  <th pSortableColumn="year" class="text-center">Year <p-sortIcon field="year"></p-sortIcon></th>
+                  <th pSortableColumn="region" class="text-center">Region <p-sortIcon field="region"></p-sortIcon></th>
+                  <th pSortableColumn="department" class="text-center">Department <p-sortIcon field="department"></p-sortIcon></th>
+                  <th pSortableColumn="section" class="text-center">Section <p-sortIcon field="section"></p-sortIcon></th>
+                  <th pSortableColumn="leaseExpiry" class="text-center">Lease Expiry <p-sortIcon field="leaseExpiry"></p-sortIcon></th>
+                  <th pSortableColumn="leaseCost" class="text-center">Lease Cost <p-sortIcon field="leaseCost"></p-sortIcon></th>
                   <th class="text-center">Actions</th>
                 </tr>
               </ng-template>
@@ -469,16 +495,20 @@
                 </p-dialog>
               </ng-template>
             </p-table>
-
             <div class="card flex justify-content-center">
               <p-paginator
                 [rows]="query.size"
                 [first]="query.page * query.size"
                 [totalRecords]="totalRecords"
                 (onPageChange)="onPageChange($event)"
-                [alwaysShow]="false"
+                [alwaysShow]="true"
                 [pageLinkSize]="4"
                 [showCurrentPageReport]="true"
+                currentPageReportTemplate="Showing {{
+                  query.page * query.size + 1
+                }} to {{ (query.page + 1) * query.size }} of total {{
+                  totalRecords
+                }} entries"
               >
               </p-paginator>
             </div>

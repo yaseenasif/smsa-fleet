@@ -11,6 +11,8 @@ import { RegionService } from '../../region/service/region.service';
 import { VehicleAssignmentService } from '../../Assignment/vehicle-assignment.service';
 import { VehicleAssignment } from 'src/app/modal/vehicle-assignment';
 import { FinalReturnRequest } from 'src/app/modal/finalReturnRequest';
+import { BackenCommonErrorThrow } from 'src/app/modal/BackendCommonErrorThrow';
+import { ErrorService } from 'src/app/CommonServices/Error/error.service';
 
 @Component({
   selector: 'app-update-vehicle',
@@ -18,13 +20,13 @@ import { FinalReturnRequest } from 'src/app/modal/finalReturnRequest';
   styleUrls: ['./update-vehicle.component.scss'],
   providers: [MessageService]
 })
-export class UpdateVehicleComponent implements OnInit{
+export class UpdateVehicleComponent implements OnInit {
   items: MenuItem[] | undefined;
   cities: any[] = [];
   assignment!: VehicleAssignment;
 
   region !: Region[];
-  vehicle : Vehicle = {
+  vehicle: Vehicle = {
     id: undefined,
     processOrderNumber: undefined,
     plateNumber: undefined,
@@ -60,8 +62,8 @@ export class UpdateVehicleComponent implements OnInit{
   };
 
   dummyData: any = [
-    { id: 1, locationName: 2015},
-    { id: 1, locationName: 2016},
+    { id: 1, locationName: 2015 },
+    { id: 1, locationName: 2016 },
     { id: 2, locationName: 2017 },
     { id: 3, locationName: 2018 },
     { id: 3, locationName: 2019 }
@@ -73,7 +75,7 @@ export class UpdateVehicleComponent implements OnInit{
   assignmentDialogVisible!: boolean;
   usageTypes: ProductField | null | undefined;
   categories: ProductField | null | undefined;
-  replacementVehicle!: Vehicle 
+  replacementVehicle!: Vehicle
 
   finalReturnRequest: FinalReturnRequest = {
     replacementVehicle: undefined,
@@ -83,33 +85,42 @@ export class UpdateVehicleComponent implements OnInit{
   replacementCheck: boolean = false;
   finalReturn: boolean = false;
 
+  vehicleMake: ProductField | null | undefined;
+  vehicleModel: ProductField | null | undefined;
+  vehicleYear: ProductField | null | undefined;
+  vehicleDesign: ProductField | null | undefined;
+  vehicleType: ProductField | null | undefined;
+  vehicleCapicity: ProductField | null | undefined;
+  vehiclePower: ProductField | null | undefined;
+  vehicleFuelType: ProductField | null | undefined;
+
   constructor(private vehicleService: VehicleService,
-              private route: ActivatedRoute,
-              private router: Router,
-              private messageService: MessageService,
-              private regionService:RegionService,
-              private productFieldService: ProductFieldServiceService,
-              private vehicleAssignmentService: VehicleAssignmentService
+    private route: ActivatedRoute,
+    private router: Router,
+    private messageService: MessageService,
+    private regionService: RegionService,
+    private productFieldService: ProductFieldServiceService,
+    private vehicleAssignmentService: VehicleAssignmentService,
+    private errorHandleService: ErrorService,
+  ) { }
 
-    ) { }
 
-
-  name!:string;
-  size=100000
+  name!: string;
+  size = 100000
   uploadedFiles: any[] = [];
 
   onUpload(event: any) {
 
   }
 
-   onUpload1(event:any) {
-    for(let file of event.files) {
-        this.uploadedFiles.push(file);
+  onUpload1(event: any) {
+    for (let file of event.files) {
+      this.uploadedFiles.push(file);
     }
   }
 
   ngOnInit(): void {
-    this.items = [{ label: 'Vehicle',routerLink:'/vehicle'},{ label: 'Edit Vehicle'}];
+    this.items = [{ label: 'Vehicle', routerLink: '/vehicle' }, { label: 'Edit Vehicle' }];
     this.vehicleId = +this.route.snapshot.paramMap.get('id')!;
     this.getVehicleById(this.vehicleId)
     this.getAllVendor();
@@ -119,23 +130,51 @@ export class UpdateVehicleComponent implements OnInit{
 
     this.findReplacementVehicle();
     this.findAssignmentByVehicleId();
+
+    this.getMakeList("Make");
+    this.getModelList("Model");
+    this.getYearList("Year");
+    this.getDesignList("Design");
+    this.getTypeList("Type");
+    this.getCapicityList("Capicity");
+    this.getPowerList("Power");
+    this.getFuelTypeList("Fuel Type");
   }
 
   getVehicleById(id: Number) {
     this.vehicleService.getVehicleById(id).subscribe((res: Vehicle) => {
       this.vehicle = res;
-    })
+      this.convertStringToDate(this.vehicle);
+    });
   }
+
+  private convertStringToDate(vehicle: Vehicle) {
+    if (typeof vehicle.leaseStartDate === 'string') {
+      vehicle.leaseStartDate = new Date(vehicle.leaseStartDate);
+    }
+    if (typeof vehicle.leaseExpiryDate === 'string') {
+      vehicle.leaseExpiryDate = new Date(vehicle.leaseExpiryDate);
+    }
+    if (typeof vehicle.insuranceExpiry === 'string') {
+      vehicle.insuranceExpiry = new Date(vehicle.insuranceExpiry);
+    }
+    if (typeof vehicle.registrationExpiry === 'string') {
+      vehicle.registrationExpiry = new Date(vehicle.registrationExpiry);
+    }
+  }
+
+
+
 
   updateVehicle(vehicle: Vehicle) {
 
     this.vehicleService.updateVehicle(this.vehicleId!, vehicle).subscribe((res) => {
-      this.vehicle=res;
+      this.vehicle = res;
       this.messageService.add({ severity: 'success', summary: 'Update Successfully', detail: 'Message Content' });
 
       setTimeout(() => {
         this.router.navigate(['/vehicle'])
-      },1000)
+      }, 1000)
 
     })
 
@@ -146,9 +185,9 @@ export class UpdateVehicleComponent implements OnInit{
     this.updateVehicle(this.vehicle);
   }
 
-  getAllVendor(){
-    this.vehicleService.getAllVendor().subscribe((res:Vendor[])=>{
-      this.vendors=res;
+  getAllVendor() {
+    this.vehicleService.getAllVendor().subscribe((res: Vendor[]) => {
+      this.vendors = res;
     })
   }
 
@@ -157,17 +196,17 @@ export class UpdateVehicleComponent implements OnInit{
   }
 
   closeDialog() {
-    
+
     this.visible = false;
-    if(this.assignment){
+    if (this.assignment) {
       this.assignmentDialogVisible = true;
-    }else{
+    } else {
       this.finalReturnVehicle();
     }
   }
 
-  closeAssignmentDialog(){
-    this.assignmentDialogVisible =false;
+  closeAssignmentDialog() {
+    this.assignmentDialogVisible = false;
   }
 
   getUsageType() {
@@ -195,33 +234,108 @@ export class UpdateVehicleComponent implements OnInit{
     });
   }
 
-  findReplacementVehicle(){
-    this.vehicleService.findReplacementVehicle(this.vehicleId).subscribe((res)=>{
+  findReplacementVehicle() {
+    this.vehicleService.findReplacementVehicle(this.vehicleId).subscribe((res) => {
       this.replacementVehicle = res;
     })
   }
 
-  findAssignmentByVehicleId(){
-    this.vehicleAssignmentService.getAssignmentByVehicleId(this.vehicleId).subscribe((res)=>{
+  findAssignmentByVehicleId() {
+    this.vehicleAssignmentService.getAssignmentByVehicleId(this.vehicleId).subscribe((res) => {
       this.assignment = res;
     })
-  } 
-  
-  finalReturnVehicle(){
-    
+  }
+
+  finalReturnVehicle() {
+
     this.finalReturnRequest.changedAssignment = null
     this.finalReturnRequest.replacementVehicle = null
-    this.vehicleService.finalReturnVehicleById(this.vehicleId,this.finalReturnRequest).subscribe((res)=>{
+    this.vehicleService.finalReturnVehicleById(this.vehicleId, this.finalReturnRequest).subscribe((res) => {
       this.messageService.add({ severity: 'Success', summary: 'Final Returned', detail: 'Vehicle Final Returned Successfully' });
-          setTimeout(() => {
-            this.router.navigate(['/vehicle'])
+      setTimeout(() => {
+        this.router.navigate(['/vehicle'])
+      })
     })
-  })
- }
+  }
 
- navigateToAddVehicle(){
-   this.finalReturn = true
-  this.router.navigate(['/add-vehicle/finalReturn/vId'], { queryParams: {
-    finalReturn: this.finalReturn, vId: this.vehicleId} });
- }
+  navigateToAddVehicle() {
+    this.finalReturn = true
+    this.router.navigate(['/add-vehicle/finalReturn/vId'], {
+      queryParams: {
+        finalReturn: this.finalReturn, vId: this.vehicleId
+      }
+    });
+  }
+
+  private getMakeList(fieldName: string) {
+    this.productFieldService.getProductFieldByName(fieldName).subscribe(
+      (res: ProductField) => {
+        this.vehicleMake = res;
+      }, (err: BackenCommonErrorThrow) => {
+        this.errorHandleService.showError(err.error!);
+      });
+  }
+
+  private getModelList(fieldName: string) {
+    this.productFieldService.getProductFieldByName(fieldName).subscribe(
+      (res: ProductField) => {
+        this.vehicleModel = res;
+      }, (err: BackenCommonErrorThrow) => {
+        this.errorHandleService.showError(err.error!);
+      });
+  }
+
+  private getYearList(fieldName: string) {
+    this.productFieldService.getProductFieldByName(fieldName).subscribe(
+      (res: ProductField) => {
+        this.vehicleYear = res;
+      }, (err: BackenCommonErrorThrow) => {
+        this.errorHandleService.showError(err.error!);
+      });
+  }
+
+  private getDesignList(fieldName: string) {
+    this.productFieldService.getProductFieldByName(fieldName).subscribe(
+      (res: ProductField) => {
+        this.vehicleDesign = res;
+      }, (err: BackenCommonErrorThrow) => {
+        this.errorHandleService.showError(err.error!);
+      });
+  }
+
+  private getTypeList(fieldName: string) {
+    this.productFieldService.getProductFieldByName(fieldName).subscribe(
+      (res: ProductField) => {
+        this.vehicleType = res;
+      }, (err: BackenCommonErrorThrow) => {
+        this.errorHandleService.showError(err.error!);
+      });
+  }
+
+  private getCapicityList(fieldName: string) {
+    this.productFieldService.getProductFieldByName(fieldName).subscribe(
+      (res: ProductField) => {
+        this.vehicleCapicity = res;
+      }, (err: BackenCommonErrorThrow) => {
+        this.errorHandleService.showError(err.error!);
+      });
+  }
+
+  private getPowerList(fieldName: string) {
+    this.productFieldService.getProductFieldByName(fieldName).subscribe(
+      (res: ProductField) => {
+        this.vehiclePower = res;
+      }, (err: BackenCommonErrorThrow) => {
+        this.errorHandleService.showError(err.error!);
+      });
+  }
+
+  private getFuelTypeList(fieldName: string) {
+    this.productFieldService.getProductFieldByName(fieldName).subscribe(
+      (res: ProductField) => {
+        this.vehicleFuelType = res;
+      }, (err: BackenCommonErrorThrow) => {
+        this.errorHandleService.showError(err.error!);
+      });
+  }
 }

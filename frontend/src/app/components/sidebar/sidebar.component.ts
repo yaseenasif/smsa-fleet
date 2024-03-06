@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthguardService } from 'src/app/auth-service/authguard/authguard.service';
 
 
@@ -10,7 +11,8 @@ import { AuthguardService } from 'src/app/auth-service/authguard/authguard.servi
 export class SidebarComponent implements OnInit {
 
   constructor(
-    private authguardService: AuthguardService
+    private authguardService: AuthguardService,
+    private router: Router
   ) { }
 
   configTurner: boolean = false;
@@ -23,5 +25,11 @@ export class SidebarComponent implements OnInit {
   }
   hasPermission(permission: string): boolean {
     return this.authguardService.hasPermission(permission)
+  }
+  goToVehicle() {
+    if (sessionStorage.getItem("selectedStatus")) {
+      sessionStorage.removeItem("selectedStatus");
+    }
+    this.router.navigate(['/vehicle']);
   }
 }
