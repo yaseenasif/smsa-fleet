@@ -968,9 +968,9 @@ public class VehicleService {
         return vehiclePage.map(this::toDto);
     }
 
-    public Page<VehicleDto> searchVehicleByLeaseExpiry(VehicleSearchCriteria vehicleSearchCriteria,
-                                                        Date leaseStartDate, Date leaseExpiryDate, int page, int size) {
+    public Page<VehicleDto> searchVehicleByLeaseExpiry(Date leaseStartDate, Date leaseExpiryDate, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
+        VehicleSearchCriteria vehicleSearchCriteria =  new VehicleSearchCriteria();
         Specification<Vehicle> vehicleSpecification = VehicleSpecification.getVehicleSearchSpecificationByLeaseExpiry(vehicleSearchCriteria, leaseStartDate, leaseExpiryDate);
         Page<Vehicle> vehiclePage = vehicleRepository.findAll(vehicleSpecification, pageable);
         return vehiclePage.map(this::toDto);

@@ -14,6 +14,5 @@ import java.util.List;
 @Builder
 public class VehicleSearchCriteria {
     private String value;
-    private Date leaseStartDate;
-    private Date leaseExpiryDate;
+
 }

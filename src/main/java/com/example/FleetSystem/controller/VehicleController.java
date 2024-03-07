@@ -195,11 +195,8 @@ public class VehicleController {
                                                                            @RequestParam(required = false) Date leaseExpiryDate,
                                                                            @RequestParam(defaultValue = "0") int page,
                                                                            @RequestParam(defaultValue = "7") int size) throws JsonProcessingException {
-        VehicleSearchCriteria vehicleSearchCriteria = VehicleSearchCriteria.builder()
-                .leaseStartDate(leaseStartDate)
-                .leaseExpiryDate(leaseExpiryDate)
-                .build();
-        return ResponseEntity.ok(vehicleService.searchVehicleByLeaseExpiry(vehicleSearchCriteria, leaseStartDate, leaseExpiryDate, page, size));
+
+        return ResponseEntity.ok(vehicleService.searchVehicleByLeaseExpiry(leaseStartDate, leaseExpiryDate, page, size));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
