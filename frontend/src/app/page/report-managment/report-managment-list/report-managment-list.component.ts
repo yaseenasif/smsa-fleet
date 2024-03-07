@@ -24,15 +24,15 @@ export class ReportManagmentListComponent implements OnInit {
   searchOption: any;
   selectedSearchOption = { name: 'All' };
   vendor: Vendor[] = [];
-  selectedVendor !: Vendor
+  selectedVendor: Vendor | undefined
   region: Region[] = [];
-  selectedRegion !: Region;
+  selectedRegion: Region | undefined;
   selectedUsageType: { name: string | undefined; } | undefined
   usageType: any;
   vehicleStatus: any;
   selectedStatus: { name: string | undefined; } | undefined;
-  leaseStartDate !: Date;
-  leaseExpiryDate !: Date;
+  leaseStartDate: Date | undefined;
+  leaseExpiryDate: Date | undefined;
 
   query: PageEvent = {
     page: 0,
@@ -199,6 +199,7 @@ export class ReportManagmentListComponent implements OnInit {
   checkBothSelected() {
     debugger
     this.vehicle.leaseStartDate = this.leaseStartDate;
+    this.vehicle.leaseExpiryDate = this.leaseExpiryDate;
     if (this.vehicle.leaseStartDate && !this.vehicle.leaseExpiryDate) {
       this.oneIsSelected = true;
     } else if (!this.vehicle.leaseStartDate && this.vehicle.leaseExpiryDate) {
@@ -236,4 +237,14 @@ export class ReportManagmentListComponent implements OnInit {
       });
   }
 
+  clear() {
+    this.leaseStartDate = undefined;
+    this.leaseExpiryDate = undefined;
+    this.oneIsSelected = false;
+    this.selectedUsageType = undefined;
+    this.selectedRegion = undefined;
+    this.selectedStatus = undefined;
+    this.selectedVendor = undefined;
+    this.getAllVehicles();
+  }
 }

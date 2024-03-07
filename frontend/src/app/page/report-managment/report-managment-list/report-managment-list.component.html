@@ -13,12 +13,19 @@
         <div class="body-card">
           <div class="table-head">
             <p-toolbar>
+              <div class="flex align-items-start">
+                <p-button
+                  label="Clear"
+                  class="bg-b-color"
+                  (onClick)="clear()"
+                  icon="pi pi-filter-slash"
+                ></p-button>
+              </div>
               <div
                 style="
                   display: flex;
                   justify-content: flex-end;
                   margin-bottom: 10px;
-                  width: 100%;
                 "
               >
                 <p-button
@@ -50,10 +57,10 @@
                     #registrationExpiry
                     name="registrationExpiry"
                     [required]="true"
-                    [(ngModel)]="vehicle.leaseExpiryDate"
+                    [(ngModel)]="leaseExpiryDate"
                     [showIcon]="true"
-                    [minDate]="leaseStartDate"
-                    [disabled]="!vehicle.leaseStartDate"
+                    [minDate]="leaseStartDate!"
+                    [disabled]="!leaseStartDate"
                     placeholder="Lease Expiry Date"
                     (onSelect)="checkBothSelected()"
                     [style]="{ width: '100%' }"
