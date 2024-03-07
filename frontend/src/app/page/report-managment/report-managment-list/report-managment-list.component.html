@@ -6,264 +6,235 @@
       <app-dashboard-head></app-dashboard-head>
 
       <div class="main">
-
         <div class="card flex justify-content-center">
-          <p-breadcrumb class="max-w-full" [model]="items">
-          </p-breadcrumb>
+          <p-breadcrumb class="max-w-full" [model]="items"> </p-breadcrumb>
         </div>
 
         <div class="body-card">
           <div class="table-head">
             <p-toolbar>
-            <div class="form-hook">
-              <p-dropdown
-                      class="w-full"
-                      [(ngModel)]="selectedSearchOption"
-                      [options]="searchOption"
-                      name="selectedStatus1"
-                      #selectedStatus1="ngModel"
-                      [required]="true"
-                      optionLabel="name"
-                      [filter]="true"
-                      filterBy="name"
-                      [showClear]="true"
-                    >
+              <div
+                style="
+                  display: flex;
+                  justify-content: flex-end;
+                  margin-bottom: 10px;
+                  width: 100%;
+                "
+              >
+                <p-button
+                  label="Search"
+                  (click)="dynamicSearch()"
+                  class="bg-b-color"
+                  [disabled]="oneIsSelected === true"
+                ></p-button>
+              </div>
 
-                    <ng-template pTemplate="selectedItem">
-                      <div
-                        class="flex align-items-center gap-2"
-                        *ngIf="selectedSearchOption"
-                      >
-                        <div>{{ selectedSearchOption.name }}</div>
-                      </div>
-                    </ng-template>
-                    <ng-template let-searchOption pTemplate="item">
-                      <div class="flex align-items-center gap-2">
-                        <div>{{ searchOption.name }}</div>
-                      </div>
-                    </ng-template>
-                  </p-dropdown>
-                </div>
-
-                <div *ngIf="selectedSearchOption && selectedSearchOption.name === 'Search By Lease Expiry'" class="flex flex-row gap-2">
-                  <div class="flex flex-column">
-                    <p-calendar #registrationExpiry
+              <div style="display: flex; flex-wrap: wrap; gap: 20px">
+                <div style="flex: 1.1">
+                  <label class="mb-1">Lease Expiry From:</label>
+                  <p-calendar
+                    #registrationExpiry
                     name="registrationExpiry"
                     [required]="true"
-                    [(ngModel)]="leaseStartDate" [showIcon]="true"
-                    [style]="{'width': '100%'}"
+                    [(ngModel)]="leaseStartDate"
+                    [showIcon]="true"
+                    (onSelect)="checkBothSelected()"
                     placeholder="Lease Start Date"
-                    ></p-calendar>
-                  </div>
-                  <div class="flex flex-column">
-                    <p-calendar #registrationExpiry
+                    [style]="{ width: '100%' }"
+                  ></p-calendar>
+                </div>
+
+                <div style="flex: 1.1">
+                  <label class="mb-1">Lease Expiry To:</label>
+                  <p-calendar
+                    #registrationExpiry
                     name="registrationExpiry"
                     [required]="true"
-                    [(ngModel)]="leaseExpiryDate" [showIcon]="true"
-                    [style]="{'width': '100%'}"
+                    [(ngModel)]="vehicle.leaseExpiryDate"
+                    [showIcon]="true"
+                    [minDate]="leaseStartDate"
+                    [disabled]="!vehicle.leaseStartDate"
                     placeholder="Lease Expiry Date"
-                    ></p-calendar>
-                  </div>
-                  <p-button label="Search" (onClick)="searchVehiclesByLeaseExpiry()" class="bg-b-color ml"></p-button>
+                    (onSelect)="checkBothSelected()"
+                    [style]="{ width: '100%' }"
+                  ></p-calendar>
                 </div>
 
-                <div *ngIf="selectedSearchOption && selectedSearchOption.name === 'Search By Vendor'">
-                  <div class="form-hook">
-                    <p-dropdown
-                            class="w-full"
-                            [(ngModel)]="selectedVendor"
-                            [options]="vendor"
-                            name="vendorName"
-                            #vendorModal="ngModel"
-                            [required]="true"
-                            optionLabel="vendorName"
-                            [filter]="true"
-                            filterBy="vendorName"
-                            [showClear]="true"
-                            placeholder="Select Vendor"
-                            (onChange)="searchVehiclesByVendor()"
-                          >
-
-                          <ng-template pTemplate="selectedItem">
-                            <div
-                              class="flex align-items-center gap-2"
-                              *ngIf="selectedVendor"
-                            >
-                              <div>{{ selectedVendor.vendorName }}</div>
-                            </div>
-                          </ng-template>
-                          <ng-template let-searchOption pTemplate="item">
-                            <div class="flex align-items-center gap-2">
-                              <div>{{ searchOption.vendorName }}</div>
-                            </div>
-                          </ng-template>
-                        </p-dropdown>
+                <div style="flex: 1">
+                  <label class="mb-1">Vendor:</label>
+                  <p-multiSelect
+                    class="w-full"
+                    [(ngModel)]="selectedVendor"
+                    [options]="vendor"
+                    name="vendorNames"
+                    [required]="true"
+                    optionLabel="vendorName"
+                    optionValue="vendorName"
+                    [filter]="true"
+                    filterBy="vendorName"
+                    [showClear]="true"
+                    placeholder="Select Vendors"
+                    (onChange)="onSelectVendors($event.value)"
+                  >
+                    <ng-template let-vendor pTemplate="item">
+                      <div class="flex align-items-center gap-2">
+                        <div>{{ vendor.vendorName }}</div>
                       </div>
+                    </ng-template>
+                  </p-multiSelect>
                 </div>
 
-                <div *ngIf="selectedSearchOption && selectedSearchOption.name === 'Search By Usage Type'">
-                  <div class="form-hook">
-                    <p-dropdown
-                            class="w-full"
-                            [(ngModel)]="selectedUsageType"
-                            [options]="usageType"
-                            name="usageType1"
-                            #usageType1="ngModel"
-                            [required]="true"
-                            optionLabel="name"
-                            [filter]="true"
-                            filterBy="name"
-                            [showClear]="true"
-                            (onChange)="searchVehiclesByUsageType()"
-                          >
-
-                          <ng-template pTemplate="selectedItem">
-                            <div
-                              class="flex align-items-center gap-2"
-                              *ngIf="selectedUsageType"
-                            >
-                              <div>{{ selectedUsageType.name }}</div>
-                            </div>
-                          </ng-template>
-                          <ng-template let-searchOption pTemplate="item">
-                            <div class="flex align-items-center gap-2">
-                              <div>{{ searchOption.name }}</div>
-                            </div>
-                          </ng-template>
-                        </p-dropdown>
+                <div style="flex: 1">
+                  <label class="mb-1">Usage Type:</label>
+                  <p-multiSelect
+                    class="w-full"
+                    [(ngModel)]="selectedUsageType"
+                    [options]="usageType"
+                    name="usageTypes"
+                    [required]="true"
+                    optionLabel="name"
+                    optionValue="name"
+                    [filter]="true"
+                    filterBy="name"
+                    placeholder="Select Usage Types"
+                    (onChange)="onSelectUsageType($event.value)"
+                  >
+                    <ng-template let-usageType pTemplate="item">
+                      <div class="flex align-items-center gap-2">
+                        <div>{{ usageType.name }}</div>
                       </div>
+                    </ng-template>
+                  </p-multiSelect>
                 </div>
 
-                <div *ngIf="selectedSearchOption && selectedSearchOption.name === 'Search By Region'">
-                  <div class="form-hook">
-                    <p-dropdown
-                            class="w-full"
-                            [(ngModel)]="selectedRegion"
-                            [options]="region"
-                            name="name"
-                            #regionModal="ngModel"
-                            [required]="true"
-                            optionLabel="name"
-                            [filter]="true"
-                            filterBy="name"
-                            [showClear]="true"
-                            placeholder="Select Region"
-                            (onChange)="searchVehiclesByRegion()"
-                          >
-
-                          <ng-template pTemplate="selectedItem">
-                            <div
-                              class="flex align-items-center gap-2"
-                              *ngIf="selectedRegion"
-                            >
-                              <div>{{ selectedRegion.name }}</div>
-                            </div>
-                          </ng-template>
-                          <ng-template let-searchOption pTemplate="item">
-                            <div class="flex align-items-center gap-2">
-                              <div>{{ searchOption.name }}</div>
-                            </div>
-                          </ng-template>
-                        </p-dropdown>
+                <div style="flex: 1">
+                  <label class="mb-1">Region:</label>
+                  <p-multiSelect
+                    class="w-full"
+                    [(ngModel)]="selectedRegion"
+                    [options]="region"
+                    name="regions"
+                    [required]="true"
+                    optionLabel="name"
+                    optionValue="name"
+                    [filter]="true"
+                    filterBy="name"
+                    [showClear]="true"
+                    placeholder="Select Regions"
+                    (onChange)="onSelectRegion($event.value)"
+                  >
+                    <ng-template let-region pTemplate="item">
+                      <div class="flex align-items-center gap-2">
+                        <div>{{ region.name }}</div>
                       </div>
+                    </ng-template>
+                  </p-multiSelect>
                 </div>
 
-                <div *ngIf="selectedSearchOption && selectedSearchOption.name === 'Search By Vehicle Status'">
-                  <div class="form-hook">
-                    <p-dropdown
-                            class="w-full"
-                            [(ngModel)]="selectedStatus"
-                            [options]="vehicleStatus"
-                            name="selectedStatus1"
-                            #selectedStatus1="ngModel"
-                            [required]="true"
-                            optionLabel="name"
-                            [filter]="true"
-                            filterBy="name"
-                            [showClear]="true"
-                          >
-
-                          <ng-template pTemplate="selectedItem">
-                            <div
-                              class="flex align-items-center gap-2"
-                              *ngIf="selectedStatus"
-                            >
-                              <div>{{ selectedStatus.name }}</div>
-                            </div>
-                          </ng-template>
-                          <ng-template let-searchOption pTemplate="item">
-                            <div class="flex align-items-center gap-2">
-                              <div>{{ searchOption.name }}</div>
-                            </div>
-                          </ng-template>
-                        </p-dropdown>
+                <div style="flex: 1">
+                  <label class="mb-1">Vehicle Status:</label>
+                  <p-multiSelect
+                    class="w-full"
+                    [(ngModel)]="selectedStatus"
+                    [options]="vehicleStatus"
+                    placeholder="Select Status"
+                    name="selectedStatuses"
+                    [required]="true"
+                    optionLabel="name"
+                    optionValue="name"
+                    [filter]="true"
+                    filterBy="name"
+                    (onChange)="onSelectVehicleStatus($event.value)"
+                  >
+                    <ng-template let-status pTemplate="item">
+                      <div class="flex align-items-center gap-2">
+                        <div>{{ status.name }}</div>
                       </div>
+                    </ng-template>
+                  </p-multiSelect>
                 </div>
+              </div>
             </p-toolbar>
 
-          <div class="card">
-            <p-table [value]="vehicles" [tableStyle]="{ 'min-width': '50rem' }">
-              <ng-template pTemplate="header">
-                <tr>
-
-                  <th class="text-center">ID</th>
-                  <th class="text-center">Status</th>
-                  <th class="text-center">PO Number</th>
-                  <th class="text-center">Plate Number</th>
-                  <th class="text-center">Make</th>
-                  <th class="text-center">Year</th>
-                  <th class="text-center">Design</th>
-                  <th class="text-center">Model</th>
-                  <th class="text-center">Type</th>
-                  <th class="text-center">Capacity</th>
-                  <th class="text-center">Power</th>
-                  <th class="text-center">Registration Expiry</th>
-                  <!-- <th class="text-center">Registration Status</th> -->
-                  <th class="text-center">Fuel Type</th>
-                  <th class="text-center">Vendor</th>
-                  <th class="text-center">Insurance Expiry</th>
-                  <!-- <th class="text-center">Insurance Status</th> -->
-                  <th class="text-center">Lease Cost</th>
-                  <th class="text-center">Replace Lease Cost</th>
-                  <th class="text-center">Lease Start Date</th>
-                  <th class="text-center">Lease Expiry Date</th>
-                  <th class="text-center">Usage Type</th>
-                  <th class="text-center">Region</th>
-                  <th class="text-center">Category</th>
-                  <th class="text-center">Replace Vehicle</th>
-                </tr>
-              </ng-template>
-              <ng-template pTemplate="body" let-vehicles let-region>
-                <tr>
-                  <td  class="text-center">{{ vehicles.id }}</td>
-                  <td  class="text-center">{{ vehicles.replacementVehicleStatus }}</td>
-                  <td  class="text-center">{{ vehicles.processOrderNumber }}</td>
-                  <td  class="text-center">{{ vehicles.plateNumber }}</td>
-                  <td  class="text-center">{{ vehicles.make }}</td>
-                  <td  class="text-center">{{ vehicles.year }}</td>
-                  <td  class="text-center">{{ vehicles.design }}</td>
-                  <td  class="text-center">{{ vehicles.model }}</td>
-                  <td  class="text-center">{{ vehicles.type }}</td>
-                  <td  class="text-center">{{ vehicles.capacity }}</td>
-                  <td  class="text-center">{{ vehicles.power }}</td>
-                  <td  class="text-center">{{ vehicles.registrationExpiry }}</td>
-                  <!-- <td  class="text-center">{{ vehicles.registrationStatus }}</td> -->
-                  <td  class="text-center">{{ vehicles.fuelType }}</td>
-                  <td  class="text-center">{{ vehicles.vendor.vendorName }}</td>
-                  <td  class="text-center">{{ vehicles.insuranceExpiry }}</td>
-                  <!-- <td  class="text-center" >{{ vehicles.insuranceStatus }}</td> -->
-                  <td  class="text-center">{{ vehicles.leaseCost }}</td>
-                  <td  class="text-center">{{ vehicles.replaceLeaseCost }}</td>
-                  <td  class="text-center">{{ vehicles.leaseStartDate }}</td>
-                  <td  class="text-center">{{ vehicles.leaseExpiryDate }}</td>
-                  <td  class="text-center">{{ vehicles.usageType }}</td>
-                  <td  class="text-center">{{ vehicles.region }}</td>
-                  <td  class="text-center">{{ vehicles.category }}</td>
-                  <td  class="text-center">{{ vehicles.vehicleReplacement?vehicles.vehicleReplacement.vehicle.plateNumber:'-----'}}</td>
-                </tr>
-              </ng-template>
-            </p-table>
-          </div>
+            <div class="card">
+              <p-table
+                [value]="vehicles"
+                [tableStyle]="{ 'min-width': '50rem' }"
+              >
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center">PO Number</th>
+                    <th class="text-center">Plate Number</th>
+                    <th class="text-center">Make</th>
+                    <th class="text-center">Year</th>
+                    <th class="text-center">Design</th>
+                    <th class="text-center">Model</th>
+                    <th class="text-center">Type</th>
+                    <th class="text-center">Capacity</th>
+                    <th class="text-center">Power</th>
+                    <th class="text-center">Registration Expiry</th>
+                    <!-- <th class="text-center">Registration Status</th> -->
+                    <th class="text-center">Fuel Type</th>
+                    <th class="text-center">Vendor</th>
+                    <th class="text-center">Insurance Expiry</th>
+                    <!-- <th class="text-center">Insurance Status</th> -->
+                    <th class="text-center">Lease Cost</th>
+                    <th class="text-center">Replace Lease Cost</th>
+                    <th class="text-center">Lease Start Date</th>
+                    <th class="text-center">Lease Expiry Date</th>
+                    <th class="text-center">Usage Type</th>
+                    <th class="text-center">Region</th>
+                    <th class="text-center">Category</th>
+                    <th class="text-center">Replace Vehicle</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-vehicles let-region>
+                  <tr>
+                    <td class="text-center">{{ vehicles.id }}</td>
+                    <td class="text-center">
+                      {{ vehicles.replacementVehicleStatus }}
+                    </td>
+                    <td class="text-center">
+                      {{ vehicles.processOrderNumber }}
+                    </td>
+                    <td class="text-center">{{ vehicles.plateNumber }}</td>
+                    <td class="text-center">{{ vehicles.make }}</td>
+                    <td class="text-center">{{ vehicles.year }}</td>
+                    <td class="text-center">{{ vehicles.design }}</td>
+                    <td class="text-center">{{ vehicles.model }}</td>
+                    <td class="text-center">{{ vehicles.type }}</td>
+                    <td class="text-center">{{ vehicles.capacity }}</td>
+                    <td class="text-center">{{ vehicles.power }}</td>
+                    <td class="text-center">
+                      {{ vehicles.registrationExpiry }}
+                    </td>
+                    <!-- <td  class="text-center">{{ vehicles.registrationStatus }}</td> -->
+                    <td class="text-center">{{ vehicles.fuelType }}</td>
+                    <td class="text-center">
+                      {{ vehicles.vendor.vendorName }}
+                    </td>
+                    <td class="text-center">{{ vehicles.insuranceExpiry }}</td>
+                    <!-- <td  class="text-center" >{{ vehicles.insuranceStatus }}</td> -->
+                    <td class="text-center">{{ vehicles.leaseCost }}</td>
+                    <td class="text-center">{{ vehicles.replaceLeaseCost }}</td>
+                    <td class="text-center">{{ vehicles.leaseStartDate }}</td>
+                    <td class="text-center">{{ vehicles.leaseExpiryDate }}</td>
+                    <td class="text-center">{{ vehicles.usageType }}</td>
+                    <td class="text-center">{{ vehicles.region }}</td>
+                    <td class="text-center">{{ vehicles.category }}</td>
+                    <td class="text-center">
+                      {{
+                        vehicles.vehicleReplacement
+                          ? vehicles.vehicleReplacement.vehicle.plateNumber
+                          : "-----"
+                      }}
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
           </div>
         </div>
       </div>

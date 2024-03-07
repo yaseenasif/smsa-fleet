@@ -9,6 +9,8 @@ import { VehicleService } from '../../vehicle-screen/service/vehicle.service';
 import { ReportManagmentService } from './service/report-managment.service';
 import { PageEvent } from 'src/app/modal/pageEvent';
 import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
+import { ErrorService } from 'src/app/CommonServices/Error/error.service';
+import { BackenCommonErrorThrow } from 'src/app/modal/BackendCommonErrorThrow';
 
 @Component({
   selector: 'app-report-managment-list',
@@ -20,15 +22,15 @@ export class ReportManagmentListComponent implements OnInit {
   items: MenuItem[] | undefined;
   vehicles !: Array<Vehicle>
   searchOption: any;
-  selectedSearchOption = {name:'All'};
-  vendor : Vendor[] = [];
+  selectedSearchOption = { name: 'All' };
+  vendor: Vendor[] = [];
   selectedVendor !: Vendor
   region: Region[] = [];
   selectedRegion !: Region;
-  selectedUsageType = {name:'All'}
+  selectedUsageType: { name: string | undefined; } | undefined
   usageType: any;
   vehicleStatus: any;
-  selectedStatus = {name:'TBA'};
+  selectedStatus: { name: string | undefined; } | undefined;
   leaseStartDate !: Date;
   leaseExpiryDate !: Date;
 
@@ -37,12 +39,49 @@ export class ReportManagmentListComponent implements OnInit {
     size: 7,
   };
 
+  vehicle: Vehicle = {
+    id: undefined,
+    processOrderNumber: undefined,
+    plateNumber: undefined,
+    make: undefined,
+    year: undefined,
+    design: undefined,
+    model: undefined,
+    type: undefined,
+    capacity: undefined,
+    power: undefined,
+    registrationExpiry: undefined,
+    fuelType: undefined,
+    vendor: {
+      id: undefined,
+      vendorName: undefined,
+      officeLocation: undefined,
+      attachments: undefined,
+    },
+    insuranceExpiry: undefined,
+    leaseCost: undefined,
+    leaseStartDate: undefined,
+    leaseExpiryDate: undefined,
+    usageType: undefined,
+    category: undefined,
+    replacementDate: undefined,
+    replaceLeaseCost: undefined,
+    vehicleStatus: undefined,
+    region: undefined,
+    vehicleReplacement: undefined,
+    replacementVehicleStatus: undefined,
+    registrationStatus: undefined,
+    insuranceStatus: undefined
+  }
+  oneIsSelected: boolean | undefined;
+
   constructor(
+    private errorService: ErrorService,
     private vendorService: VendorService,
     private regionService: RegionService,
     private vehicleService: VehicleService,
     private reportManagmentService: ReportManagmentService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
 
@@ -72,10 +111,10 @@ export class ReportManagmentListComponent implements OnInit {
         name: 'All'
       },
       {
-        name: 'Optional'
+        name: 'Operational'
       },
       {
-        name: 'Non-Optional'
+        name: 'Non-Operational'
       }
     ];
 
@@ -122,39 +161,79 @@ export class ReportManagmentListComponent implements OnInit {
     })
   }
 
-  searchVehiclesByRegion() {
-    if(this.selectedRegion) {
-      this.reportManagmentService.searchVehiclesByRegion(this.selectedRegion.name, this.query)
-      .subscribe(( res: PaginatedResponse<Vehicle>) => {
-        this.vehicles = res.content;
-      })
+  // searchVehiclesByRegion() {
+  //   if (this.selectedRegion) {
+  //     this.reportManagmentService.searchVehiclesByRegion(this.selectedRegion.name, this.query)
+  //       .subscribe((res: PaginatedResponse<Vehicle>) => {
+  //         this.vehicles = res.content;
+  //       })
+  //   }
+  // }
+
+  // searchVehiclesByVendor() {
+  //   if (this.selectedVendor) {
+  //     this.reportManagmentService.searchVehiclesByVendor(this.selectedVendor.vendorName, this.query).subscribe((res: PaginatedResponse<Vehicle>) => {
+  //       this.vehicles = res.content;
+  //     })
+  //   }
+  // }
+
+  // searchVehiclesByUsageType() {
+  //   if (this.selectedUsageType) {
+  //     this.reportManagmentService.searchVehiclesByUsageType(this.selectedUsageType.name, this.query)
+  //       .subscribe((res: PaginatedResponse<Vehicle>) => {
+  //         this.vehicles = res.content;
+  //       })
+  //   }
+  // }
+
+  // searchVehiclesByLeaseExpiry() {
+  //   if(this.leaseStartDate && this.leaseExpiryDate) {
+  //     this.reportManagmentService.searchVehiclesByLeaseExpiry(this.leaseStartDate, this.leaseExpiryDate, this.query)
+  //     .subscribe(( res: PaginatedResponse<Vehicle>) => {
+  //       this.vehicles = res.content;
+  //     })
+  //   }
+  // }
+
+  checkBothSelected() {
+    debugger
+    this.vehicle.leaseStartDate = this.leaseStartDate;
+    if (this.vehicle.leaseStartDate && !this.vehicle.leaseExpiryDate) {
+      this.oneIsSelected = true;
+    } else if (!this.vehicle.leaseStartDate && this.vehicle.leaseExpiryDate) {
+      this.oneIsSelected = true;
+    } else {
+      this.oneIsSelected = false;
     }
   }
 
-  searchVehiclesByVendor() {
-    if(this.selectedVendor) {
-      this.reportManagmentService.searchVehiclesByVendor(this.selectedVendor.vendorName, this.query).subscribe(( res: PaginatedResponse<Vehicle> ) => {
-        this.vehicles = res.content;
-      })
-    }
+  onSelectVendors(event: string[]) {
+    debugger
+    this.vehicle.vendor.vendorName = JSON.stringify(event);
+  }
+  onSelectUsageType(event: string[]) {
+    debugger
+    this.vehicle.usageType = JSON.stringify(event);
+  }
+  onSelectRegion(event: string[]) {
+    debugger
+    this.vehicle.region = JSON.stringify(event);
+  }
+  onSelectVehicleStatus(event: string[]) {
+    debugger
+    this.vehicle.vehicleStatus = JSON.stringify(event);
   }
 
-  searchVehiclesByUsageType() {
-    if(this.selectedUsageType) {
-      this.reportManagmentService.searchVehiclesByUsageType(this.selectedUsageType.name, this.query)
-      .subscribe(( res: PaginatedResponse<Vehicle>) => {
-        this.vehicles = res.content;
-      })
-    }
-  }
-
-  searchVehiclesByLeaseExpiry() {
-    if(this.leaseStartDate && this.leaseExpiryDate) {
-      this.reportManagmentService.searchVehiclesByLeaseExpiry(this.leaseStartDate, this.leaseExpiryDate, this.query)
-      .subscribe(( res: PaginatedResponse<Vehicle>) => {
-        this.vehicles = res.content;
-      })
-    }
+  dynamicSearch() {
+    debugger
+    this.reportManagmentService.searchVehiclesWithDynamicValues(this.vehicle).subscribe(
+      (res: Vehicle[]) => {
+        this.vehicles = res;
+      },
+      (error: BackenCommonErrorThrow) => {
+        this.errorService.showError(error.error!);
+      });
   }
 
 }

@@ -1,6 +1,7 @@
 package com.example.FleetSystem.controller;
 
 import com.example.FleetSystem.criteria.VehicleSearchCriteria;
+import com.example.FleetSystem.dto.VehicleAssignmentDto;
 import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.model.Vehicle;
 import com.example.FleetSystem.payload.FinalReturnRequest;
@@ -165,8 +166,8 @@ public class VehicleController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/search-vehicles-by-vendor")
     public ResponseEntity<Page<VehicleDto>> searchAllVehiclesByVendor(@RequestParam(value = "value", required = false) String value,
-                                                              @RequestParam(defaultValue = "0") int page,
-                                                              @RequestParam(defaultValue = "7") int size) throws JsonProcessingException {
+                                                                      @RequestParam(defaultValue = "0") int page,
+                                                                      @RequestParam(defaultValue = "7") int size) throws JsonProcessingException {
         VehicleSearchCriteria vehicleSearchCriteria = new ObjectMapper().readValue(value, VehicleSearchCriteria.class);
         return ResponseEntity.ok(vehicleService.searchVehicleByVendor(vehicleSearchCriteria, page, size));
     }
@@ -183,8 +184,8 @@ public class VehicleController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/search-vehicles-by-usage-type")
     public ResponseEntity<Page<VehicleDto>> searchAllVehiclesByUsageType(@RequestParam(value = "value", required = false) String value,
-                                                                      @RequestParam(defaultValue = "0") int page,
-                                                                      @RequestParam(defaultValue = "7") int size) throws JsonProcessingException {
+                                                                         @RequestParam(defaultValue = "0") int page,
+                                                                         @RequestParam(defaultValue = "7") int size) throws JsonProcessingException {
         VehicleSearchCriteria vehicleSearchCriteria = new ObjectMapper().readValue(value, VehicleSearchCriteria.class);
         return ResponseEntity.ok(vehicleService.searchVehicleByUsageType(vehicleSearchCriteria, page, size));
     }
@@ -240,4 +241,9 @@ public class VehicleController {
 
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/dynamic-search")
+    public ResponseEntity<List<Vehicle>> search(@RequestBody VehicleDto vehicleDto) {
+        return ResponseEntity.ok(vehicleService.getVehicleBySearch(vehicleDto));
+    }
 }

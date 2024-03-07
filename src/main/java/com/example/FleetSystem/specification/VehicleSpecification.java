@@ -5,13 +5,20 @@ import com.example.FleetSystem.model.Employee;
 import com.example.FleetSystem.model.Vehicle;
 import com.example.FleetSystem.model.VehicleAssignment;
 import com.example.FleetSystem.model.Vendor;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.*;
+import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class VehicleSpecification {
@@ -152,7 +159,7 @@ public class VehicleSpecification {
                 return criteriaBuilder.conjunction();
             }
 
-            if(Objects.nonNull(leaseStartDate) && Objects.nonNull(leaseExpiryDate)) {
+            if (Objects.nonNull(leaseStartDate) && Objects.nonNull(leaseExpiryDate)) {
                 return criteriaBuilder.and(
                         criteriaBuilder.between(root.get("leaseStartDate"), leaseStartDate, leaseExpiryDate)
                 );
@@ -176,4 +183,58 @@ public class VehicleSpecification {
                                     .getValue().toLowerCase() + "%"));
         };
     }
+
+    public static Specification<Vehicle> getWithDynamicSearchSpecification(Vehicle vehicle) {
+        return (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            addBetweenPredicateIfNotNull(predicates, criteriaBuilder, root.get("leaseExpiryDate"), vehicle.getLeaseStartDate(), vehicle.getLeaseExpiryDate());
+            addLikePredicateIfNotNull(predicates, criteriaBuilder, root.join("vendor").get("vendorName"), vehicle.getVendor().getVendorName());
+            addLikePredicateIfNotNull(predicates, criteriaBuilder, root.get("usageType"), vehicle.getUsageType());
+            addLikePredicateIfNotNull(predicates, criteriaBuilder, root.get("region"), vehicle.getRegion());
+            addLikePredicateIfNotNull(predicates, criteriaBuilder, root.get("vehicleStatus"), vehicle.getVehicleStatus());
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        };
+    }
+
+    private static void addBetweenPredicateIfNotNull(List<Predicate> predicates, CriteriaBuilder criteriaBuilder, Path<Date> path, Date startDate, Date endDate) {
+        if (startDate != null && endDate != null) {
+            predicates.add(criteriaBuilder.between(path, startDate, endDate));
+        }
+    }
+
+    private static void addLikePredicateIfNotNull(List<Predicate> predicates, CriteriaBuilder criteriaBuilder, Path<String> path, String valueJson) {
+        if (valueJson != null) {
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                List<String> values = objectMapper.readValue(valueJson, new TypeReference<List<String>>() {});
+
+                // Create a list to store individual like predicates
+                List<Predicate> likePredicates = new ArrayList<>();
+
+                for (String value : values) {
+                    if (value != null) {
+                        // Convert both the column value and the search value to lowercase
+                        Expression<String> columnValueLower = criteriaBuilder.lower(path);
+                        String searchValueLower = value.toLowerCase();
+
+                        // Create a like predicate for the lowercase values and add it to the list
+                        Predicate likePredicate = criteriaBuilder.like(columnValueLower, "%" + searchValueLower + "%");
+                        likePredicates.add(likePredicate);
+                    }
+                }
+
+                // Combine all the like predicates using 'or' instead of 'and'
+                Predicate combinedPredicate = criteriaBuilder.or(likePredicates.toArray(new Predicate[0]));
+
+                // Add the combined predicate to the list of predicates
+                predicates.add(combinedPredicate);
+            } catch (IOException e) {
+                // Handle exception gracefully
+                Logger.getLogger(Vehicle.class.getName()).log(Level.SEVERE, "Error parsing JSON: " + valueJson, e);
+            }
+        }
+    }
+
 }

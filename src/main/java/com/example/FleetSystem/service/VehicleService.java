@@ -11,6 +11,7 @@ import com.example.FleetSystem.repository.FileHistoryRepository;
 import com.example.FleetSystem.repository.UserRepository;
 import com.example.FleetSystem.repository.VehicleRepository;
 import com.example.FleetSystem.repository.VendorRepository;
+import com.example.FleetSystem.specification.VehicleAssignmentSpecification;
 import com.example.FleetSystem.specification.VehicleSpecification;
 import com.example.FleetSystem.repository.*;
 import org.apache.poi.ss.usermodel.*;
@@ -974,6 +975,13 @@ public class VehicleService {
         Specification<Vehicle> vehicleSpecification = VehicleSpecification.getVehicleSearchSpecificationByLeaseExpiry(vehicleSearchCriteria, leaseStartDate, leaseExpiryDate);
         Page<Vehicle> vehiclePage = vehicleRepository.findAll(vehicleSpecification, pageable);
         return vehiclePage.map(this::toDto);
+    }
+
+
+    public List<Vehicle> getVehicleBySearch(VehicleDto vehicleDto) {
+        Vehicle vehicle = toEntity(vehicleDto);
+        Specification<Vehicle> vehicleSpecification = VehicleSpecification.getWithDynamicSearchSpecification(vehicle);
+        return vehicleRepository.findAll(vehicleSpecification);
     }
 }
 
