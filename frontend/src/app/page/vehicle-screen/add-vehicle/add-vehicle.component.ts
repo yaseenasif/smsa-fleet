@@ -42,36 +42,36 @@ export class AddVehicleComponent implements OnInit {
       id: undefined,
       assignToEmpName: undefined,
       assignToEmpId: {
-        id: undefined,
-        empName: undefined,
-        employeeNumber: undefined,
-        budgetRef: undefined,
-        gender: undefined,
-        maritalStatus: undefined,
-        dateOfBirth: undefined,
-        joiningDate: undefined,
-        jobTitle: undefined,
-        status: undefined,
-        region: undefined,
-        location: undefined,
-        organization: undefined,
-        division: undefined,
-        deptCode: undefined,
-        department: undefined,
-        contactNumber: undefined,
-        section: undefined,
-        nationalIdNumber: undefined,
-        svEmployeeNumber: undefined,
-        svEmployeeName: undefined,
-        city: undefined,
-        age: undefined,
-        nationality: undefined,
-        companyEmailAddress: undefined,
-        grade: undefined,
-        licenseNumber: undefined,
-        vehicleBudget: undefined,
-        costCentre: undefined,
-      },
+          id: undefined,
+      empName: undefined,
+      employeeNumber: undefined,
+      budgetRef: undefined,
+      gender: undefined,
+      maritalStatus: undefined,
+      dateOfBirth: undefined,
+      joiningDate: undefined,
+      jobTitle: undefined,
+      status: undefined,
+      region: undefined,
+      location: undefined,
+      organization: undefined,
+      division: undefined,
+      deptCode: undefined,
+      department: undefined,
+      contactNumber: undefined,
+      section: undefined,
+      nationalIdNumber: undefined,
+      svEmployeeNumber: undefined,
+      svEmployeeName: undefined,
+      city: undefined,
+      // age: undefined,
+      nationality: undefined,
+      companyEmailAddress: undefined,
+      grade: undefined,
+      licenseNumber: undefined,
+      vehicleBudget: undefined,
+      costCentre: undefined,
+                  },
       vehicle: {
         id: undefined,
         processOrderNumber: undefined,
@@ -163,39 +163,39 @@ export class AddVehicleComponent implements OnInit {
     },
     assignment: {
       id: undefined,
-      assignToEmpName: undefined,
-      assignToEmpId: {
-        id: undefined,
-        empName: undefined,
-        employeeNumber: undefined,
-        budgetRef: undefined,
-        gender: undefined,
-        maritalStatus: undefined,
-        dateOfBirth: undefined,
-        joiningDate: undefined,
-        jobTitle: undefined,
-        status: undefined,
-        region: undefined,
-        location: undefined,
-        organization: undefined,
-        division: undefined,
-        deptCode: undefined,
-        department: undefined,
-        contactNumber: undefined,
-        section: undefined,
-        nationalIdNumber: undefined,
-        svEmployeeNumber: undefined,
-        svEmployeeName: undefined,
-        city: undefined,
-        age: undefined,
-        nationality: undefined,
-        companyEmailAddress: undefined,
-        grade: undefined,
-        licenseNumber: undefined,
-        vehicleBudget: undefined,
-        costCentre: undefined,
-      },
-      vehicle: {
+    assignToEmpName:  undefined,
+    assignToEmpId: {
+        id:undefined,
+    empName: undefined,
+    employeeNumber:undefined,
+    budgetRef: undefined,
+    gender: undefined,
+    maritalStatus: undefined,
+    dateOfBirth:undefined,
+    joiningDate:undefined,
+    jobTitle: undefined,
+    status: undefined,
+    region: undefined,
+    location: undefined,
+    organization: undefined,
+    division: undefined,
+    deptCode: undefined,
+    department: undefined,
+    contactNumber: undefined,
+    section: undefined,
+    nationalIdNumber:undefined,
+    svEmployeeNumber: undefined,
+    svEmployeeName: undefined,
+    city: undefined,
+    // age:undefined,
+    nationality: undefined,
+    companyEmailAddress: undefined,
+    grade: undefined,
+    licenseNumber:  undefined,
+    vehicleBudget: undefined,
+    costCentre: undefined,
+                },
+    vehicle: {
         id: undefined,
         processOrderNumber: undefined,
         plateNumber: undefined,
@@ -280,8 +280,8 @@ export class AddVehicleComponent implements OnInit {
     this.getModelList("Model");
     this.getYearList("Year");
     this.getDesignList("Design");
-    this.getTypeList("Type");
-    this.getCapicityList("Capicity");
+    this.getTypeList("Vehicle Type");
+    this.getCapicityList("Capacity");
     this.getPowerList("Power");
     this.getFuelTypeList("Fuel Type");
 
@@ -516,10 +516,9 @@ export class AddVehicleComponent implements OnInit {
   }
 
   plateNoFormat(value: string): void {
-    debugger;
     this.plateNumberValidate = false;
     // Format: 1234 Abc
-    const regex = /^\d{4}\s[A-Za-z]{3}$/;
+    const regex = /^\d{4}\s[A-Z]{3}$/;
     if (!/^\d/.test(value)) {
       this.plateNumberValidate = false;
     } else if (value.length > 4) {

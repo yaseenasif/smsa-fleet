@@ -191,6 +191,7 @@ export class VehicleListComponent implements OnInit {
   }
 
   searchAllVehicles(vehiclestatus: string) {
+    debugger
     this.vehicleService.searchAllVehicles(this.value, vehiclestatus, this.query).subscribe((res: PaginatedResponse<Vehicle>) => {
       this.vehicles = res.content
       this.query = { page: res.pageable.pageNumber, size: res.size }

@@ -16,6 +16,7 @@ import com.itextpdf.text.DocumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.List;
 
 @RestController
@@ -158,6 +160,43 @@ public class VehicleController {
                                                               @RequestParam(defaultValue = "7") int size) throws JsonProcessingException {
         VehicleSearchCriteria vehicleSearchCriteria = new ObjectMapper().readValue(value, VehicleSearchCriteria.class);
         return ResponseEntity.ok(vehicleService.searchVehicle(vehicleSearchCriteria, vehicleStatus, page, size));
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/search-vehicles-by-vendor")
+    public ResponseEntity<Page<VehicleDto>> searchAllVehiclesByVendor(@RequestParam(value = "value", required = false) String value,
+                                                              @RequestParam(defaultValue = "0") int page,
+                                                              @RequestParam(defaultValue = "7") int size) throws JsonProcessingException {
+        VehicleSearchCriteria vehicleSearchCriteria = new ObjectMapper().readValue(value, VehicleSearchCriteria.class);
+        return ResponseEntity.ok(vehicleService.searchVehicleByVendor(vehicleSearchCriteria, page, size));
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/search-vehicles-by-region")
+    public ResponseEntity<Page<VehicleDto>> searchAllVehiclesByRegion(@RequestParam(value = "value", required = false) String value,
+                                                                      @RequestParam(defaultValue = "0") int page,
+                                                                      @RequestParam(defaultValue = "7") int size) throws JsonProcessingException {
+        VehicleSearchCriteria vehicleSearchCriteria = new ObjectMapper().readValue(value, VehicleSearchCriteria.class);
+        return ResponseEntity.ok(vehicleService.searchVehicleByRegion(vehicleSearchCriteria, page, size));
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/search-vehicles-by-usage-type")
+    public ResponseEntity<Page<VehicleDto>> searchAllVehiclesByUsageType(@RequestParam(value = "value", required = false) String value,
+                                                                      @RequestParam(defaultValue = "0") int page,
+                                                                      @RequestParam(defaultValue = "7") int size) throws JsonProcessingException {
+        VehicleSearchCriteria vehicleSearchCriteria = new ObjectMapper().readValue(value, VehicleSearchCriteria.class);
+        return ResponseEntity.ok(vehicleService.searchVehicleByUsageType(vehicleSearchCriteria, page, size));
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/search-vehicles-by-lease-expiry")
+    public ResponseEntity<Page<VehicleDto>> searchAllVehiclesByLeaseExpiry(@RequestParam(required = false) Date leaseStartDate,
+                                                                           @RequestParam(required = false) Date leaseExpiryDate,
+                                                                           @RequestParam(defaultValue = "0") int page,
+                                                                           @RequestParam(defaultValue = "7") int size) throws JsonProcessingException {
+
+        return ResponseEntity.ok(vehicleService.searchVehicleByLeaseExpiry(leaseStartDate, leaseExpiryDate, page, size));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

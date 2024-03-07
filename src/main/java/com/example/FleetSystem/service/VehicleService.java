@@ -925,8 +925,16 @@ public class VehicleService {
     }
 
     private VehicleExcelDto toVehicleExcelDto(Vehicle vehicle){
+        Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByVehicleAndStatusIsTrue(vehicle);
         VehicleExcelDto vehicleExcelDto = modelMapper.map(vehicle, VehicleExcelDto.class);
         vehicleExcelDto.setVendor(vehicle.getVendor().getVendorName());
+        if(vehicleAssignment.isPresent()){
+            vehicleExcelDto.setAssignToEmployeeNo(vehicleAssignment.get().getAssignToEmpId().getEmployeeNumber());
+            vehicleExcelDto.setAssignToEmployeeName(vehicleAssignment.get().getAssignToEmpName());
+        }
+        if(vehicle.getVehicleReplacement() != null){
+            vehicleExcelDto.setReplacementVehicle(vehicle.getVehicleReplacement().getVehicle().getPlateNumber());
+        }
         return vehicleExcelDto;
     }
     private List<VehicleExcelDto> toVehicleExcelDtoList(List<Vehicle> vehicleList){
@@ -939,5 +947,33 @@ public class VehicleService {
         return excelExportService.exportToExcel(vehicleExcelDtoList);
     }
 
+    public Page<VehicleDto> searchVehicleByVendor(VehicleSearchCriteria vehicleSearchCriteria, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<Vehicle> vehicleSpecification = VehicleSpecification.getVehicleSearchSpecificationByVendor(vehicleSearchCriteria);
+        Page<Vehicle> vehiclePage = vehicleRepository.findAll(vehicleSpecification, pageable);
+        return vehiclePage.map(this::toDto);
+    }
+
+    public Page<VehicleDto> searchVehicleByRegion(VehicleSearchCriteria vehicleSearchCriteria, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<Vehicle> vehicleSpecification = VehicleSpecification.getVehicleSearchSpecificationByRegion(vehicleSearchCriteria);
+        Page<Vehicle> vehiclePage = vehicleRepository.findAll(vehicleSpecification, pageable);
+        return vehiclePage.map(this::toDto);
+    }
+
+    public Page<VehicleDto> searchVehicleByUsageType(VehicleSearchCriteria vehicleSearchCriteria, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<Vehicle> vehicleSpecification = VehicleSpecification.getVehicleSearchSpecificationByUsageType(vehicleSearchCriteria);
+        Page<Vehicle> vehiclePage = vehicleRepository.findAll(vehicleSpecification, pageable);
+        return vehiclePage.map(this::toDto);
+    }
+
+    public Page<VehicleDto> searchVehicleByLeaseExpiry(Date leaseStartDate, Date leaseExpiryDate, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        VehicleSearchCriteria vehicleSearchCriteria =  new VehicleSearchCriteria();
+        Specification<Vehicle> vehicleSpecification = VehicleSpecification.getVehicleSearchSpecificationByLeaseExpiry(vehicleSearchCriteria, leaseStartDate, leaseExpiryDate);
+        Page<Vehicle> vehiclePage = vehicleRepository.findAll(vehicleSpecification, pageable);
+        return vehiclePage.map(this::toDto);
+    }
 }
 

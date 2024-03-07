@@ -29,14 +29,14 @@ public class EmployeeDto {
     private String division;
     private String fleetClassification;
     private String vehicleEligible;
-    private Long deptCode;
+    private String deptCode;
     private String department;
     private String section;
     private Long nationalIdNumber;
     private Long svEmployeeNumber;
     private String svEmployeeName;
     private String city;
-    private Integer age;
+//    private Integer age;
     private String costCentre;
     private String nationality;
     private String companyEmailAddress;
@@ -44,7 +44,6 @@ public class EmployeeDto {
     private String licenseNumber;
     private Integer vehicleBudget;
     private String contactNumber;
-    private String attachments;
     private String uuid;
     private boolean deleteStatus;
 

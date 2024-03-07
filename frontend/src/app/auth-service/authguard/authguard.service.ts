@@ -28,6 +28,7 @@ export class AuthguardService {
     { permission: 'ProductField', route: ['/productFields', '/add-ProductField', '/add-ProductField/:id',] },
     { permission: 'Region', route: ['/get-all-regions', '/add-region', '/add-region/:id'] },
     { permission: 'JobTitle', route: ['/job-title-list', '/add-job-title', '/add-job-title/:id'] },
+    { permission: 'ReportManagement', route: ['/report-managment-list'] },
     { permission: 'Download Attachment', route: ['/individual-file-list-component/:call-type/:id'] }
   ];
 

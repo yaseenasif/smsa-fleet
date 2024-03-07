@@ -24,7 +24,7 @@ export interface Employee {
         nationality: string | null | undefined;
         contactNumber: string | null | undefined;
         companyEmailAddress: string | null | undefined;
-        age: number | null | undefined;
+        // age: number | null | undefined;
         grade: string | null | undefined;
         licenseNumber: String | null | undefined
         vehicleBudget: Number | null | undefined
