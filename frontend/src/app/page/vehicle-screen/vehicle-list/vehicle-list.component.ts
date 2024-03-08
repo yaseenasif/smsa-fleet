@@ -239,7 +239,7 @@ export class VehicleListComponent implements OnInit {
   }
 
   downloadExcelData() {
-    this.vehicleService.downloadExcelData().subscribe(blob => saveAs(blob, "Vehicle Data.xlsx"))
+    this.vehicleService.downloadExcelData([]).subscribe(blob => saveAs(blob, "Vehicle Data.xlsx"))
   }
 
   setSelectedStatusAndGetAllVehicles() {

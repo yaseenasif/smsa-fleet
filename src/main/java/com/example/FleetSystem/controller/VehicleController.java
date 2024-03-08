@@ -225,12 +225,26 @@ public class VehicleController {
         return ResponseEntity.ok(vehicleService.markVehicleTotalLost(id));
     }
 
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @GetMapping("/download-vehicle-excel")
+//    public ResponseEntity<byte[]> downloadVehicleExcel() {
+//
+//        byte[] excelBytes = vehicleService.downloadExcel();
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+//        headers.setContentDispositionFormData("attachment", "vehicles.xlsx");
+//
+//        return ResponseEntity.ok()
+//                .headers(headers)
+//                .body(excelBytes);
+//
+//    }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/download-vehicle-excel")
-    public ResponseEntity<byte[]> downloadVehicleExcel() {
-
-        byte[] excelBytes = vehicleService.downloadExcel();
-
+    @PostMapping("/download-vehicle-excel")
+    public ResponseEntity<byte[]> downloadVehicleExcel(@RequestBody List<VehicleDto> vehicleDtoList) {
+        byte[] excelBytes = vehicleService.downloadExcel(vehicleDtoList);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         headers.setContentDispositionFormData("attachment", "vehicles.xlsx");
@@ -238,7 +252,6 @@ public class VehicleController {
         return ResponseEntity.ok()
                 .headers(headers)
                 .body(excelBytes);
-
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

@@ -208,7 +208,11 @@ public class VehicleSpecification {
         if (valueJson != null) {
             try {
                 ObjectMapper objectMapper = new ObjectMapper();
-                List<String> values = objectMapper.readValue(valueJson, new TypeReference<List<String>>() {});
+                List<String> values = objectMapper.readValue(
+                        valueJson,
+                        new TypeReference<List<String>>() {
+                        }
+                );
 
                 // Create a list to store individual like predicates
                 List<Predicate> likePredicates = new ArrayList<>();
@@ -220,7 +224,7 @@ public class VehicleSpecification {
                         String searchValueLower = value.toLowerCase();
 
                         // Create a like predicate for the lowercase values and add it to the list
-                        Predicate likePredicate = criteriaBuilder.like(columnValueLower, "%" + searchValueLower + "%");
+                        Predicate likePredicate = criteriaBuilder.equal(columnValueLower, searchValueLower);
                         likePredicates.add(likePredicate);
                     }
                 }

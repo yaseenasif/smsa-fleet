@@ -11,6 +11,7 @@ import { PageEvent } from 'src/app/modal/pageEvent';
 import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
 import { ErrorService } from 'src/app/CommonServices/Error/error.service';
 import { BackenCommonErrorThrow } from 'src/app/modal/BackendCommonErrorThrow';
+import * as saveAs from 'file-saver';
 
 @Component({
   selector: 'app-report-managment-list',
@@ -84,7 +85,7 @@ export class ReportManagmentListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
+    this.items = [{ label: 'Report Management' }];
     this.searchOption = [
       {
         name: 'All'
@@ -246,5 +247,10 @@ export class ReportManagmentListComponent implements OnInit {
     this.selectedStatus = undefined;
     this.selectedVendor = undefined;
     this.getAllVehicles();
+  }
+
+  downloadExcelData() {
+    this.vehicleService.downloadExcelData(this.vehicles)
+      .subscribe(blob => saveAs(blob, "Report Data.xlsx"));
   }
 }

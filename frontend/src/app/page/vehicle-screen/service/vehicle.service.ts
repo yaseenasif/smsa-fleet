@@ -59,8 +59,8 @@ export class VehicleService {
     return this.http.patch<Vehicle>(`${this.url}/update-vehicle/${id}`, updatedVehicle);
   }
 
-  finalReturnVehicleById(id: Number,finalReturnRequest: FinalReturnRequest) {
-    return this.http.patch<any>(`${this.url}/final-return-vehicle/${id}`,finalReturnRequest)
+  finalReturnVehicleById(id: Number, finalReturnRequest: FinalReturnRequest) {
+    return this.http.patch<any>(`${this.url}/final-return-vehicle/${id}`, finalReturnRequest)
   }
 
   saveFile(file: File): Observable<any> {
@@ -99,47 +99,47 @@ export class VehicleService {
     return this.http.patch<Vehicle>(`${this.url}/activate-vehicle/${id}`, {})
   }
   getAllNotAssignedVehicles(): Observable<Vehicle[]> {
-      return this.http.get<Vehicle[]>(this.url.concat('/not-assigned-vehicle'));
-    }
-  getVehicleBudget(vehicleBudget : Number):Observable<Vehicle[]>{
-        return this.http.get<Vehicle[]>(`${this.url}/vehicles-under-driver-budget/${vehicleBudget}`);
-      }
+    return this.http.get<Vehicle[]>(this.url.concat('/not-assigned-vehicle'));
+  }
+  getVehicleBudget(vehicleBudget: Number): Observable<Vehicle[]> {
+    return this.http.get<Vehicle[]>(`${this.url}/vehicles-under-driver-budget/${vehicleBudget}`);
+  }
 
-  downloadAttachments(fileName:string):Observable<Blob>{
-        return this.http.get(`${this.url}/download/${fileName}`,{
-          responseType: 'blob'
-        });
-        }
+  downloadAttachments(fileName: string): Observable<Blob> {
+    return this.http.get(`${this.url}/download/${fileName}`, {
+      responseType: 'blob'
+    });
+  }
 
-  searchAllVehicles(value?: string | null, vehicleStatus?: string | null, query?: { page: number, size: number }): Observable<PaginatedResponse<Vehicle>>{
+  searchAllVehicles(value?: string | null, vehicleStatus?: string | null, query?: { page: number, size: number }): Observable<PaginatedResponse<Vehicle>> {
     if (value) {
       query = { page: 0, size: 10 };
     }
     return this.http.get<PaginatedResponse<Vehicle>>(`${this.url}/search-all-vehicle?value=${JSON.stringify(value ? value : '')}&vehicleStatus=${vehicleStatus ? vehicleStatus : ''}&page=${query?.page ? query.page : ''}&size=${query?.size ? query.size : ''}`);
-    }
-    getRegion(): Observable<Region[]> {
-      return this.http.get<Region[]>(`${this.url}/get-active-region`);
-    }
-
-  deleteReplacementVehicle(id: Number): Observable<Vehicle>{
-    return this.http.patch<Vehicle>(`${this.url}/delete-replacement-vehicle/${id}`,{});
+  }
+  getRegion(): Observable<Region[]> {
+    return this.http.get<Region[]>(`${this.url}/get-active-region`);
   }
 
-  findReplacementVehicle(id: Number): Observable<Vehicle>{
+  deleteReplacementVehicle(id: Number): Observable<Vehicle> {
+    return this.http.patch<Vehicle>(`${this.url}/delete-replacement-vehicle/${id}`, {});
+  }
+
+  findReplacementVehicle(id: Number): Observable<Vehicle> {
     return this.http.get<Vehicle>(`${this.url}/find-replacement-vehicle/${id}`);
-   }
+  }
 
-   replacementVehicleAction(id: Number, replacementActionRequest: ReplacementActionRequest): Observable<Vehicle>{
-     return this.http.patch<Vehicle>(`${this.url}/replacement-vehicle-action/${id}`,replacementActionRequest);
-   }
+  replacementVehicleAction(id: Number, replacementActionRequest: ReplacementActionRequest): Observable<Vehicle> {
+    return this.http.patch<Vehicle>(`${this.url}/replacement-vehicle-action/${id}`, replacementActionRequest);
+  }
 
-   markVehicleTotalLost(id: Number): Observable<Vehicle>{
-    return this.http.patch<Vehicle>(`${this.url}/mark-total-lost/${id}`,{});
-   }
+  markVehicleTotalLost(id: Number): Observable<Vehicle> {
+    return this.http.patch<Vehicle>(`${this.url}/mark-total-lost/${id}`, {});
+  }
 
-   downloadExcelData(): Observable<Blob>{
-    return this.http.get(`${this.url}/download-vehicle-excel`, {
+  downloadExcelData(vehicleList: Vehicle[]): Observable<Blob> {
+    return this.http.post(`${this.url}/download-vehicle-excel`, vehicleList, {
       responseType: 'blob'
     });
-   }
+  }
 }

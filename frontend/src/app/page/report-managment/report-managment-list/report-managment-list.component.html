@@ -8,6 +8,12 @@
       <div class="main">
         <div class="card flex justify-content-center">
           <p-breadcrumb class="max-w-full" [model]="items"> </p-breadcrumb>
+          <p-button
+            class="bg-b-color adjust mt-2"
+            (click)="downloadExcelData()"
+          >
+            <i class="bi bi-download"></i>&nbsp; Export data
+          </p-button>
         </div>
 
         <div class="body-card">
@@ -194,6 +200,7 @@
                     <th class="text-center">Usage Type</th>
                     <th class="text-center">Region</th>
                     <th class="text-center">Category</th>
+                    <th class="text-center">Vehicle Status</th>
                     <th class="text-center">Replace Vehicle</th>
                   </tr>
                 </ng-template>
@@ -231,6 +238,7 @@
                     <td class="text-center">{{ vehicles.usageType }}</td>
                     <td class="text-center">{{ vehicles.region }}</td>
                     <td class="text-center">{{ vehicles.category }}</td>
+                    <td class="text-center">{{ vehicles.vehicleStatus }}</td>
                     <td class="text-center">
                       {{
                         vehicles.vehicleReplacement
