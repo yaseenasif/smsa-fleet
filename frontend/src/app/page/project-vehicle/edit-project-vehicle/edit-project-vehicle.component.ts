@@ -87,7 +87,7 @@ export class EditProjectVehicleComponent implements OnInit {
 
   }
   patchProjectVehicle(obj: ProjectVehicle) {
-    debugger
+    
     obj.date = new Date
     this.convertInDate(obj)
     this.projectVehicle = obj
@@ -136,7 +136,7 @@ export class EditProjectVehicleComponent implements OnInit {
   }
 
   onSubmit() {
-    debugger
+    
     this.projectVehicleService.updateProjectVehicle(this.projectVehicleId!, this.projectVehicle).subscribe(
       (res: ProjectVehicle) => {
         this.messageService.add({

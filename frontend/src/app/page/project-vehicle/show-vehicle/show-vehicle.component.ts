@@ -69,7 +69,7 @@ export class ShowVehicleComponent {
 
   getProjectVehicleById(id: number, value?: string, date?: Date) {
     this.projectVehicleService.getProjectVehicleById(id).subscribe((res: ProjectVehicle) => {
-      debugger
+      
       this.projectVehicle = res;
       this.convertInDate(this.projectVehicle)
       if (value) {

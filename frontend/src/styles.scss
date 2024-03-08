@@ -79,9 +79,10 @@ body {
   margin-bottom: 15px;
 }
 
-.p-breadcrumb  {
+.p-breadcrumb {
   height: 60px;
 }
+
 .p-menuitem-text {
   margin-top: 8px;
 }
@@ -186,8 +187,13 @@ p-fileupload>.p-fileupload>.p-fileupload-content>.p-fileupload-files>.ng-star-in
 .p-float-label label {
   line-height: 0.1 !important;
 }
+
 //  For Clear Icon
 
-.p-dropdown-clear-icon{
+.p-dropdown-clear-icon {
   top: 32%;
+}
+
+.p-multiselect-clear-icon {
+  top: 33%;
 }

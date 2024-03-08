@@ -25,7 +25,7 @@ export class ViewVehicleComponent {
 
   ngOnInit() {
     this.items = [{ label: 'Vehicle', routerLink: '/vehicle' }, { label: 'View Vehicle' }];
-    debugger
+    
     this.vehicleId = +this.route.snapshot.paramMap.get('id')!;
     this.route.queryParams.subscribe(params => {
       this.assignmentCheck = params['assignmentCheck'] === 'true';
@@ -85,7 +85,7 @@ export class ViewVehicleComponent {
   }
 
   getVehicleById(id: Number) {
-    debugger
+    
     this.vehicleService.getVehicleById(id).subscribe((res: Vehicle) => {
       this.vehicle = res;
     })

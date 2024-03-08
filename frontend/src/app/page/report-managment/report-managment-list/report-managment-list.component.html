@@ -75,26 +75,42 @@
 
                 <div style="flex: 1">
                   <label class="mb-1">Vendor:</label>
-                  <p-multiSelect
-                    class="w-full"
+                  <!-- <p-multiSelect
+
                     [(ngModel)]="selectedVendor"
                     [options]="vendor"
-                    name="vendorNames"
-                    [required]="true"
+
+
+
                     optionLabel="vendorName"
                     optionValue="vendorName"
-                    [filter]="true"
-                    filterBy="vendorName"
+
                     [showClear]="true"
                     placeholder="Select Vendors"
-                    (onChange)="onSelectVendors($event.value)"
+
                   >
                     <ng-template let-vendor pTemplate="item">
                       <div class="flex align-items-center gap-2">
                         <div>{{ vendor.vendorName }}</div>
                       </div>
                     </ng-template>
-                  </p-multiSelect>
+                  </p-multiSelect> -->
+                  <p-multiSelect
+                    [options]="vendor"
+                    class="w-full"
+                    name="vendorNames"
+                    [(ngModel)]="selectedVendor"
+                    [required]="true"
+                    placeholder="Select Vendor"
+                    optionLabel="vendorName"
+                    optionValue="vendorName"
+                    (onClear)="vehicle.vendor.vendorName = null"
+                    display="chip"
+                    [filter]="true"
+                    (ngModelChange)="onSelectVendors($event)"
+                    filterBy="vendorName"
+                    [showClear]="true"
+                  ></p-multiSelect>
                 </div>
 
                 <div style="flex: 1">
@@ -107,17 +123,14 @@
                     [required]="true"
                     optionLabel="name"
                     optionValue="name"
+                    (onClear)="vehicle.usageType = null"
+                    [showClear]="true"
                     [filter]="true"
                     filterBy="name"
                     placeholder="Select Usage Types"
-                    (onChange)="onSelectUsageType($event.value)"
-                  >
-                    <ng-template let-usageType pTemplate="item">
-                      <div class="flex align-items-center gap-2">
-                        <div>{{ usageType.name }}</div>
-                      </div>
-                    </ng-template>
-                  </p-multiSelect>
+                    (ngModelChange)="onSelectUsageType($event)"
+                    display="chip"
+                  ></p-multiSelect>
                 </div>
 
                 <div style="flex: 1">
@@ -130,17 +143,14 @@
                     [required]="true"
                     optionLabel="name"
                     optionValue="name"
+                    (onClear)="vehicle.region = null"
                     [filter]="true"
                     filterBy="name"
+                    display="chip"
                     [showClear]="true"
                     placeholder="Select Regions"
-                    (onChange)="onSelectRegion($event.value)"
+                    (ngModelChange)="onSelectRegion($event)"
                   >
-                    <ng-template let-region pTemplate="item">
-                      <div class="flex align-items-center gap-2">
-                        <div>{{ region.name }}</div>
-                      </div>
-                    </ng-template>
                   </p-multiSelect>
                 </div>
 
@@ -152,18 +162,16 @@
                     [options]="vehicleStatus"
                     placeholder="Select Status"
                     name="selectedStatuses"
+                    (onClear)="vehicle.vehicleStatus = null"
                     [required]="true"
                     optionLabel="name"
+                    [showClear]="true"
+                    display="chip"
                     optionValue="name"
                     [filter]="true"
                     filterBy="name"
-                    (onChange)="onSelectVehicleStatus($event.value)"
+                    (ngModelChange)="onSelectVehicleStatus($event)"
                   >
-                    <ng-template let-status pTemplate="item">
-                      <div class="flex align-items-center gap-2">
-                        <div>{{ status.name }}</div>
-                      </div>
-                    </ng-template>
                   </p-multiSelect>
                 </div>
               </div>

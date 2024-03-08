@@ -132,7 +132,7 @@ export class AssignmentListComponent {
           this.vehicleAssignment = res.content;
           this.plateNumber = res.content[0].vehicle.plateNumber;
           this.slectedAssignmentType = res.content[0].vehicle.vehicleStatus;
-          debugger
+          
           this.globalTransformObj.assignToEmpId = {
             department: res.content[0].assignToEmpId?.department?.toUpperCase(),
             region: res.content[0].assignToEmpId?.region?.toUpperCase(),
@@ -162,7 +162,7 @@ export class AssignmentListComponent {
         if (searchTerm) {
           this.employeeNumber = res.content[0].assignToEmpId.employeeNumber;
           this.slectedAssignmentType = res.content[0].vehicle.vehicleStatus;
-          debugger
+          
           this.globalTransformObj.assignToEmpId = {
             department: res.content[0].assignToEmpId?.department?.toUpperCase(),
             region: res.content[0].assignToEmpId?.region?.toUpperCase(),
@@ -177,7 +177,7 @@ export class AssignmentListComponent {
             section: undefined
           };
         }
-        debugger
+        
         this.query = { page: res.pageable.pageNumber, size: res.size };
         this.totalRecords = res.totalElements;
       }, error => {
@@ -257,7 +257,7 @@ export class AssignmentListComponent {
   }
 
   getSearchAssignmentByAnyValue(searchTerm: SearchItems) {
-    debugger
+    
     this.criteriaSearch = true;
     const transformSearch = (search: SearchItems, field: keyof SearchItems) => {
       return search?.hasOwnProperty(field) ? { [field]: search[field] } : null;
@@ -278,7 +278,7 @@ export class AssignmentListComponent {
     this.vehicleAssignmentService.searchAssignmentByAnyValue(this.query, this.globalTransformObj)
       .subscribe((res: PaginatedResponse<VehicleAssignment>) => {
         this.vehicleAssignment = res.content;
-        debugger
+        
         this.query = { page: res.pageable.pageNumber, size: res.size };
         this.totalRecords = res.totalElements;
       }, error => {
@@ -311,7 +311,7 @@ export class AssignmentListComponent {
     this.vehicleAssignmentType = searchTerm ? true : false;
     this.vehicleAssignmentService.searchAssignmentByPlateNumber(searchTerm, this.query)
       .subscribe((res: PaginatedResponse<VehicleAssignment>) => {
-        debugger
+        
         this.vehicleAssignment = res.content;
         this.query = { page: res.pageable.pageNumber, size: res.size };
         this.totalRecords = res.totalElements;

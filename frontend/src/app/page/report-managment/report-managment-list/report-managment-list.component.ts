@@ -198,7 +198,7 @@ export class ReportManagmentListComponent implements OnInit {
   // }
 
   checkBothSelected() {
-    debugger
+
     this.vehicle.leaseStartDate = this.leaseStartDate;
     this.vehicle.leaseExpiryDate = this.leaseExpiryDate;
     if (this.vehicle.leaseStartDate && !this.vehicle.leaseExpiryDate) {
@@ -210,25 +210,20 @@ export class ReportManagmentListComponent implements OnInit {
     }
   }
 
-  onSelectVendors(event: string[]) {
-    debugger
-    this.vehicle.vendor.vendorName = JSON.stringify(event);
+  onSelectVendors(slectedValues: string[]) {
+    this.vehicle.vendor.vendorName = JSON.stringify(slectedValues);
   }
-  onSelectUsageType(event: string[]) {
-    debugger
-    this.vehicle.usageType = JSON.stringify(event);
+  onSelectUsageType(slectedValues: string[]) {
+    this.vehicle.usageType = JSON.stringify(slectedValues);
   }
-  onSelectRegion(event: string[]) {
-    debugger
-    this.vehicle.region = JSON.stringify(event);
+  onSelectRegion(slectedValues: string[]) {
+    this.vehicle.region = JSON.stringify(slectedValues);
   }
-  onSelectVehicleStatus(event: string[]) {
-    debugger
-    this.vehicle.vehicleStatus = JSON.stringify(event);
+  onSelectVehicleStatus(slectedValues: string[]) {
+    this.vehicle.vehicleStatus = JSON.stringify(slectedValues);
   }
 
   dynamicSearch() {
-    debugger
     this.reportManagmentService.searchVehiclesWithDynamicValues(this.vehicle).subscribe(
       (res: Vehicle[]) => {
         this.vehicles = res;
@@ -246,6 +241,40 @@ export class ReportManagmentListComponent implements OnInit {
     this.selectedRegion = undefined;
     this.selectedStatus = undefined;
     this.selectedVendor = undefined;
+    this.vehicle = {
+      id: undefined,
+      processOrderNumber: undefined,
+      plateNumber: undefined,
+      make: undefined,
+      year: undefined,
+      design: undefined,
+      model: undefined,
+      type: undefined,
+      capacity: undefined,
+      power: undefined,
+      registrationExpiry: undefined,
+      fuelType: undefined,
+      vendor: {
+        id: undefined,
+        vendorName: undefined,
+        officeLocation: undefined,
+        attachments: undefined,
+      },
+      insuranceExpiry: undefined,
+      leaseCost: undefined,
+      leaseStartDate: undefined,
+      leaseExpiryDate: undefined,
+      usageType: undefined,
+      category: undefined,
+      replacementDate: undefined,
+      replaceLeaseCost: undefined,
+      vehicleStatus: undefined,
+      region: undefined,
+      vehicleReplacement: undefined,
+      replacementVehicleStatus: undefined,
+      registrationStatus: undefined,
+      insuranceStatus: undefined
+    }
     this.getAllVehicles();
   }
 
@@ -253,4 +282,5 @@ export class ReportManagmentListComponent implements OnInit {
     this.vehicleService.downloadExcelData(this.vehicles)
       .subscribe(blob => saveAs(blob, "Report Data.xlsx"));
   }
+
 }
