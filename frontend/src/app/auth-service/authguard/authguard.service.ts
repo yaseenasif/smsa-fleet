@@ -16,20 +16,22 @@ export class AuthguardService {
     { permission: 'Employee', route: ['/employee', '/add-employee', '/edit-employee/:id', '/employee-attachment/:id', 'view-employee/:id'] },
     { permission: 'Driver', route: ['/driver', '/add-driver', '/edit-driver/:id', '/driver-attachment/:id', '/view-driver/:id'] },
     {
-      permission: 'Vehicle', route: ['/vehicle','/add-vehicle','/add-vehicle/:replacementCheck/:vId','/edit-vehicle/:id','/vehicle-history/:id','/vehicle-attachment/:id','/vehicle-detail/:id','/vehicle/:vehicletab','/view-vehicle/:id','/view-vehicle/assignmentCheck/:id','/unassigned-vehicle']},
-    { permission: 'Assignment', route: ['/assignment', '/add-assignment', '/edit-assignment/:id', '/assignment-attachment/:id', '/view-assignment/:id', '/assignment-history/:id','/replacement-action/:id'] },
+      permission: 'Vehicle', route: ['/vehicle', '/add-vehicle', '/add-vehicle/:replacementCheck/:vId', '/edit-vehicle/:id', '/vehicle-history/:id', '/vehicle-attachment/:id', '/vehicle-detail/:id', '/vehicle/:vehicletab', '/view-vehicle/:id', '/view-vehicle/assignmentCheck/:id', '/unassigned-vehicle']
+    },
+    { permission: 'Assignment', route: ['/assignment', '/add-assignment', '/edit-assignment/:id', '/assignment-attachment/:id', '/view-assignment/:id', '/assignment-history/:id', '/replacement-action/:id'] },
     { permission: 'User', route: ['/user', '/add-user', '/edit-user/:id'] },
     { permission: 'Vendor', route: ['/vendor', '/add-vendor', '/edit-vendor/:id', '/vendor-attachment/:id',] },
     { permission: 'Permission', route: ['/permission', '/add-permission', '/edit-permission/:id'] },
     { permission: 'Role', route: ['/role', '/add-role', '/edit-role/:id',] },
-    { permission: 'ProjectVehicle', route: ['/project-vehicle', '/add-project-vehicle', '/edit-project-vehicle/:id', '/view-project-vehicle/:id','/show-vehicle/:id'] },
+    { permission: 'ProjectVehicle', route: ['/project-vehicle', '/add-project-vehicle', '/edit-project-vehicle/:id', '/view-project-vehicle/:id', '/show-vehicle/:id'] },
     { permission: 'Grade', route: ['/grade-list', '/add-grade', '/edit-grade/:id',] },
     { permission: 'City', route: ['/city-list', '/add-city', '/edit-city/:id',] },
     { permission: 'ProductField', route: ['/productFields', '/add-ProductField', '/add-ProductField/:id',] },
     { permission: 'Region', route: ['/get-all-regions', '/add-region', '/add-region/:id'] },
     { permission: 'JobTitle', route: ['/job-title-list', '/add-job-title', '/add-job-title/:id'] },
     { permission: 'ReportManagement', route: ['/report-managment-list'] },
-    { permission: 'Download Attachment', route: ['/individual-file-list-component/:call-type/:id'] }
+    { permission: 'Download Attachment', route: ['/individual-file-list-component/:call-type/:id'] },
+    { permission: 'DeletedVehicles', route: ['/deleted-vehicles'] }
   ];
 
   constructor(private router: Router) { }

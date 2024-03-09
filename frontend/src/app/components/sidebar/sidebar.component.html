@@ -40,6 +40,12 @@
         <span class="nav-text"> Report Management </span>
       </span>
     </li>
+    <li class="child" *ngIf="hasPermission('DeletedVehicles')">
+      <a class="sidebar-list-hover" routerLink="/deleted-vehicles">
+        <i class="bi bi-truck"></i>
+        <span class="nav-text"> Deleted Vehicles</span>
+      </a>
+    </li>
     <li class="child" *ngIf="hasPermission('User')">
       <a class="sidebar-list-hover text-white" routerLink="/user">
         <i class="bi bi-people-fill"></i>

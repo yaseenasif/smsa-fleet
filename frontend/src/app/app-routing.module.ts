@@ -68,6 +68,7 @@ import { ReplacementActionComponent } from './page/Assignment/replacement-action
 import { AddJobTitleComponent } from './page/job-title/add-job-title/add-job-title.component';
 import { JobTitleListComponent } from './page/job-title/job-title-list/job-title-list.component';
 import { ReportManagmentListComponent } from './page/report-managment/report-managment-list/report-managment-list.component';
+import { DeletedVehiclesComponent } from './page/vehicle-screen/deleted-vehicles/deleted-vehicles.component';
 
 const routes: Routes = [
   {
@@ -430,6 +431,11 @@ const routes: Routes = [
   {
     path: 'replacement-action/:id',
     component: ReplacementActionComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'deleted-vehicles',
+    component: DeletedVehiclesComponent,
     canActivate: [AuthGuard]
   }
 

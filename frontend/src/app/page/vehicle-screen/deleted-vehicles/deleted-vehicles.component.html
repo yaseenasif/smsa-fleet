@@ -1,0 +1,99 @@
+<div class="flex flex-row">
+  <app-sidebar></app-sidebar>
+
+  <div class="body-position">
+    <div class="body-holder">
+      <app-dashboard-head></app-dashboard-head>
+
+      <div class="main">
+        <div class="card flex justify-content-center">
+          <p-breadcrumb class="max-w-full" [model]="items"> </p-breadcrumb>
+        </div>
+
+        <div class="body-card">
+          <div class="table-head">
+            <p-toolbar> </p-toolbar>
+
+            <div class="card">
+              <p-table
+                [value]="vehicleList"
+                [tableStyle]="{ 'min-width': '50rem' }"
+              >
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center">PO Number</th>
+                    <th class="text-center">Plate Number</th>
+                    <th class="text-center">Make</th>
+                    <th class="text-center">Year</th>
+                    <th class="text-center">Design</th>
+                    <th class="text-center">Model</th>
+                    <th class="text-center">Type</th>
+                    <th class="text-center">Capacity</th>
+                    <th class="text-center">Power</th>
+                    <th class="text-center">Registration Expiry</th>
+                    <th class="text-center">Fuel Type</th>
+                    <th class="text-center">Vendor</th>
+                    <th class="text-center">Insurance Expiry</th>
+                    <th class="text-center">Lease Cost</th>
+                    <th class="text-center">Replace Lease Cost</th>
+                    <th class="text-center">Lease Start Date</th>
+                    <th class="text-center">Lease Expiry Date</th>
+                    <th class="text-center">Usage Type</th>
+                    <th class="text-center">Region</th>
+                    <th class="text-center">Category</th>
+                    <th class="text-center">Vehicle Status</th>
+                    <th class="text-center">Replace Vehicle</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-vehicle>
+                  <tr>
+                    <td class="text-center">{{ vehicle.id }}</td>
+                    <td class="text-center">
+                      {{ vehicle.replacementVehicleStatus }}
+                    </td>
+                    <td class="text-center">
+                      {{ vehicle.processOrderNumber }}
+                    </td>
+                    <td class="text-center">{{ vehicle.plateNumber }}</td>
+                    <td class="text-center">{{ vehicle.make }}</td>
+                    <td class="text-center">{{ vehicle.year }}</td>
+                    <td class="text-center">{{ vehicle.design }}</td>
+                    <td class="text-center">{{ vehicle.model }}</td>
+                    <td class="text-center">{{ vehicle.type }}</td>
+                    <td class="text-center">{{ vehicle.capacity }}</td>
+                    <td class="text-center">{{ vehicle.power }}</td>
+                    <td class="text-center">
+                      {{ vehicle.registrationExpiry }}
+                    </td>
+                    <td class="text-center">{{ vehicle.fuelType }}</td>
+                    <td class="text-center">
+                      {{ vehicle.vendor.vendorName }}
+                    </td>
+                    <td class="text-center">{{ vehicle.insuranceExpiry }}</td>
+                    <td class="text-center">{{ vehicle.leaseCost }}</td>
+                    <td class="text-center">{{ vehicle.replaceLeaseCost }}</td>
+                    <td class="text-center">{{ vehicle.leaseStartDate }}</td>
+                    <td class="text-center">{{ vehicle.leaseExpiryDate }}</td>
+                    <td class="text-center">{{ vehicle.usageType }}</td>
+                    <td class="text-center">{{ vehicle.region }}</td>
+                    <td class="text-center">{{ vehicle.category }}</td>
+                    <td class="text-center">{{ vehicle.vehicleStatus }}</td>
+                    <td class="text-center">
+                      {{
+                        vehicle.vehicleReplacement
+                          ? vehicle.vehicleReplacement.vehicle.plateNumber
+                          : "-----"
+                      }}
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -959,7 +959,7 @@ public class VehicleService {
             List<Vehicle> vehicles = vehicleRepository.findAll();
             vehicleExcelDtoList = toVehicleExcelDtoList(vehicles);
         }
-        return excelExportService.exportToExcel(vehicleExcelDtoList);
+            return excelExportService.exportToExcel(vehicleExcelDtoList);
     }
 
 

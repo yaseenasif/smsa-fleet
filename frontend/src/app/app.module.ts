@@ -121,6 +121,7 @@ import { ReplacementActionComponent } from './page/Assignment/replacement-action
 import { AddJobTitleComponent } from './page/job-title/add-job-title/add-job-title.component';
 import { JobTitleListComponent } from './page/job-title/job-title-list/job-title-list.component';
 import { ReportManagmentListComponent } from './page/report-managment/report-managment-list/report-managment-list.component';
+import { DeletedVehiclesComponent } from './page/vehicle-screen/deleted-vehicles/deleted-vehicles.component';
 
 @NgModule({
   declarations: [
@@ -196,6 +197,7 @@ import { ReportManagmentListComponent } from './page/report-managment/report-man
     AddJobTitleComponent,
     JobTitleListComponent,
     ReportManagmentListComponent,
+    DeletedVehiclesComponent,
   ],
   imports: [
     ConfirmDialogModule,
