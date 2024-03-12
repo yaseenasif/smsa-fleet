@@ -12,6 +12,10 @@ import { GradeService } from '../../grade/grade.service';
 import { Grade } from 'src/app/modal/grade';
 import { JobTitleService } from '../../job-title/job-title.service';
 import { JobTitle } from 'src/app/modal/job-title';
+import { ProductFieldServiceService } from '../../product-field/service/product-field-service.service';
+import { BackenCommonErrorThrow } from 'src/app/modal/BackendCommonErrorThrow';
+import { ProductField } from 'src/app/modal/ProductField';
+import { ErrorService } from 'src/app/CommonServices/Error/error.service';
 
 @Component({
   selector: 'app-update-employee',
@@ -85,6 +89,9 @@ export class UpdateEmployeeComponent {
   visible!: boolean;
   allJobTitle !: JobTitle[];
   temp !: JobTitle[];
+  location: ProductField | null | undefined;
+  organization: ProductField | null | undefined;
+  deptCode: ProductField | null | undefined;
 
   constructor(private employeeService: EmployeeService,
     private router: Router,
@@ -93,7 +100,10 @@ export class UpdateEmployeeComponent {
     private datePipe: DatePipe,
     private regionService: RegionService,
     private gradeService: GradeService,
-    private jobTitleService: JobTitleService
+    private jobTitleService: JobTitleService,
+    private productFieldService: ProductFieldServiceService,
+    private errorHandleService: ErrorService
+
   ) { }
 
 
@@ -118,6 +128,9 @@ export class UpdateEmployeeComponent {
     this.getEmployeeById(this.employeeId)
     this.checkAssignedEmployee(this.employeeId);
     this.getAllJobTitle();
+    this.getLocationList("Location");
+    this.getOrganizationList("Organization");
+    this.getDeptcodeList("Dept Code");
   }
 
   getEmployeeById(id: Number) {
@@ -267,6 +280,32 @@ export class UpdateEmployeeComponent {
     this.employee.fleetClassification = this.temp[0].fleetClassification;
     this.employee.vehicleEligible = this.temp[0].vehicleEligible
 
+  }
+
+  private getLocationList(fieldName: string) {
+    this.productFieldService.getProductFieldByName(fieldName).subscribe(
+      (res: ProductField) => {
+        this.location = res;
+      }, (err: BackenCommonErrorThrow) => {
+        this.errorHandleService.showError(err.error!);
+      });
+  }
+
+  private getOrganizationList(fieldName: string) {
+    this.productFieldService.getProductFieldByName(fieldName).subscribe(
+      (res: ProductField) => {
+        this.organization = res;
+      }, (err: BackenCommonErrorThrow) => {
+        this.errorHandleService.showError(err.error!);
+      });
+  }
+  private getDeptcodeList(fieldName: string) {
+    this.productFieldService.getProductFieldByName(fieldName).subscribe(
+      (res: ProductField) => {
+        this.deptCode = res;
+      }, (err: BackenCommonErrorThrow) => {
+        this.errorHandleService.showError(err.error!);
+      });
   }
 }
 

@@ -57,6 +57,14 @@ public class EmployeeService {
     VehicleAssignmentRepository vehicleAssignmentRepository;
     @Autowired
     ExcelExportService excelExportService;
+    @Autowired
+    ProductFieldRepository productFieldRepository;
+    @Autowired
+    JobTitleRepository jobTitleRepository;
+    @Autowired
+    GradeRepository gradeRepository;
+    @Autowired
+    RegionRepository regionRepository;
 
     public EmployeeDto deleteEmployeeById(Long id , EmployeeDto employeeDto) {
         Optional<Employee> employee = employeeRepository.findById(id);
@@ -206,86 +214,105 @@ public class EmployeeService {
             Sheet sheet = workbook.getSheetAt(0);
             String fileName = file.getOriginalFilename();
             String uuid = UUID.randomUUID().toString();
-            ExcelErrorResponse checkFile = validateExcelFile(file);
+            ExcelErrorResponse checkFile = validateExcelFile(fileName,sheet);
 
             if(checkFile.isStatus()) {
                 for (int rowNum = 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
                     Row row = sheet.getRow(rowNum);
-                    Employee employee = new Employee();
+                    if (row != null && row.getPhysicalNumberOfCells() > 0) {
 
-                    SimpleDateFormat inputDateFormat = new SimpleDateFormat("d-MMM-yy");
-                    SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        Employee employee = new Employee();
 
-                    String dateOfBirthValue = String.valueOf(row.getCell(6));
-                    String joiningDateValue = String.valueOf(row.getCell(7));
+                        SimpleDateFormat inputDateFormat = new SimpleDateFormat("d-MMM-yy");
+                        SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
+                        String dateOfBirthValue = String.valueOf(row.getCell(5));
+                        String joiningDateValue = String.valueOf(row.getCell(6));
 
-                    try {
-                        if (!dateOfBirthValue.isEmpty()) {
-                            java.util.Date birthDateUtil = inputDateFormat.parse(dateOfBirthValue);
-                            String birthDateSqlDateStr = outputDateFormat.format(birthDateUtil);
-                            Date birthDateSql = Date.valueOf(birthDateSqlDateStr);
-                            employee.setDateOfBirth(birthDateSql);
+                        try {
+                            if (!dateOfBirthValue.isEmpty()) {
+                                java.util.Date birthDateUtil = inputDateFormat.parse(dateOfBirthValue);
+                                String birthDateSqlDateStr = outputDateFormat.format(birthDateUtil);
+                                Date birthDateSql = Date.valueOf(birthDateSqlDateStr);
+                                employee.setDateOfBirth(birthDateSql);
+                            }
+
+                            if (!joiningDateValue.isEmpty()) {
+                                java.util.Date joiningDateUtil = inputDateFormat.parse(joiningDateValue);
+                                String joiningDateSqlDateStr = outputDateFormat.format(joiningDateUtil);
+                                Date joiningDateSql = Date.valueOf(joiningDateSqlDateStr);
+                                employee.setJoiningDate(joiningDateSql);
+                            }
+
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                            throw new RuntimeException("Error processing the Date: " + e.getMessage());
                         }
 
-                        if (!joiningDateValue.isEmpty()) {
-                            java.util.Date joiningDateUtil = inputDateFormat.parse(joiningDateValue);
-                            String joiningDateSqlDateStr = outputDateFormat.format(joiningDateUtil);
-                            Date joiningDateSql = Date.valueOf(joiningDateSqlDateStr);
-                            employee.setJoiningDate(joiningDateSql);
+                        try {
+                            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                            if (principal instanceof UserDetails) {
+                                String username = ((UserDetails) principal).getUsername();
+                                User user = userRepository.findByEmail(username);
+                                DataFormatter dataFormatter = new DataFormatter();
+
+                                Optional<JobTitle> jobTitle = jobTitleRepository.findByJobTitleAndStatusIsTrue(getStringValue(row.getCell(7)));
+                                Optional<Grade> grade = gradeRepository.findByNameAndStatusIsTrue(getIntegerValue(row.getCell(20)));
+
+                                employee.setEmployeeNumber(getLongValue(row.getCell(0)));
+                                employee.setBudgetRef(getStringValue(row.getCell(1)));
+                                employee.setEmpName(getStringValue(row.getCell(2)));
+                                employee.setGender(row.getCell(3).getStringCellValue().charAt(0));
+                                employee.setMaritalStatus(row.getCell(4).getStringCellValue().charAt(0));
+                                employee.setRegion(getStringValue(row.getCell(8)));
+                                employee.setCountry(getStringValue(row.getCell(9)));
+                                employee.setCity(getStringValue(row.getCell(10)));
+                                employee.setLocation(Objects.requireNonNull(getStringValue(row.getCell(11))).toUpperCase());
+                                employee.setOrganization(Objects.requireNonNull(getStringValue(row.getCell(13))).toUpperCase());
+                                employee.setNationalIdNumber(getLongValue(row.getCell(14)));
+                                employee.setSvEmployeeNumber(getLongValue(row.getCell(15)));
+                                employee.setSvEmployeeName(getStringValue(row.getCell(16)));
+                                employee.setCostCentre(getStringValue(row.getCell(17)));
+                                employee.setNationality(Objects.requireNonNull(getStringValue(row.getCell(18))).toUpperCase());
+                                employee.setCompanyEmailAddress(getStringValue(row.getCell(19)));
+                                employee.setLicenseNumber(getStringValue(row.getCell(21)));
+                                employee.setContactNumber(dataFormatter.formatCellValue(row.getCell(22)));
+                                employee.setStatus('A');
+                                employee.setCreatedBy(user);
+                                employee.setCreatedAt(LocalDate.now());
+                                employee.setDeleteStatus(Boolean.TRUE);
+                                employee.setUuid(uuid);
+
+                                if (row.getCell(12).getCellType() == CellType.STRING){
+                                    employee.setDeptCode(Objects.requireNonNull(getStringValue(row.getCell(12))).toUpperCase());
+                                }else{
+                                    employee.setDeptCode(Objects.requireNonNull(getIntegerValue(row.getCell(12)).toString()).toUpperCase());
+                                }
+                                if (jobTitle.isPresent()) {
+                                    employee.setJobTitle(jobTitle.get().getJobTitle());
+                                    employee.setDivision(jobTitle.get().getDivision());
+                                    employee.setDepartment(jobTitle.get().getDepartment());
+                                    employee.setSection(jobTitle.get().getSection());
+                                    employee.setFleetClassification(jobTitle.get().getFleetClassification());
+                                    employee.setVehicleEligible(jobTitle.get().getVehicleEligible());
+                                }
+
+                                if (grade.isPresent()) {
+                                    employee.setGrade(grade.get().getName());
+                                    employee.setVehicleBudget(grade.get().getVehicleBudget());
+                                }
+
+                                employeeRepository.save(employee);
+
+                            } else {
+                                messages.add("UserName not Found");
+                                return messages;
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            throw new RuntimeException("Error processing data in the Excel file:" + e.getMessage());
                         }
-
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                        throw new RuntimeException("Error processing the Date: " + e.getMessage());
-                    }
-
-                    try {
-                        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-                        if(principal instanceof UserDetails) {
-                            String username = ((UserDetails) principal).getUsername();
-                            User user = userRepository.findByEmail(username);
-                            DataFormatter dataFormatter = new DataFormatter();
-
-                            employee.setEmployeeNumber(getLongValue(row.getCell(1)));
-                            employee.setBudgetRef(getStringValue(row.getCell(2)));
-                            employee.setEmpName(getStringValue(row.getCell(3)));
-                            employee.setGender(row.getCell(4).getStringCellValue().charAt(0));
-                            employee.setMaritalStatus(row.getCell(5).getStringCellValue().charAt(0));
-                            employee.setJobTitle(getStringValue(row.getCell(8)));
-                            employee.setStatus(row.getCell(9).getStringCellValue().charAt(0));
-                            employee.setRegion(getStringValue(row.getCell(10)));
-                            employee.setLocation(getStringValue(row.getCell(11)));
-                            employee.setOrganization(getStringValue(row.getCell(12)));
-                            employee.setDivision(getStringValue(row.getCell(13)));
-                            employee.setDeptCode(getStringValue(row.getCell(14)));
-                            employee.setDepartment(getStringValue(row.getCell(15)));
-                            employee.setSection(getStringValue(row.getCell(16)));
-                            employee.setNationalIdNumber(getLongValue(row.getCell(17)));
-                            employee.setSvEmployeeNumber(getLongValue(row.getCell(18)));
-                            employee.setSvEmployeeName(getStringValue(row.getCell(19)));
-                            employee.setCity(getStringValue(row.getCell(20)));
-//                            employee.setAge((int) row.getCell(21).getNumericCellValue());
-                            employee.setCostCentre(getStringValue(row.getCell(22)));
-                            employee.setNationality(getStringValue(row.getCell(23)));
-                            employee.setCompanyEmailAddress(getStringValue(row.getCell(24)));
-                            employee.setContactNumber(dataFormatter.formatCellValue(row.getCell(25)));
-                            employee.setGrade(Integer.parseInt(getStringValue(row.getCell(26)).replaceAll("\\D+", "")));
-                            employee.setCreatedBy(user);
-                            employee.setCreatedAt(LocalDate.now());
-                            employee.setDeleteStatus(Boolean.TRUE);
-                            employee.setUuid(uuid);
-
-                            employeeRepository.save(employee);
-
-                        }else {
-                            messages.add("UserName not Found");
-                            return messages;
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        throw new RuntimeException("Error processing data in the Excel file:" + e.getMessage());
-                    }
+                    }else break;
                 }
                 FileHistory fileHistory = FileHistory.builder()
                         .fileName(fileName)
@@ -303,10 +330,6 @@ public class EmployeeService {
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Error uploading the file: " + e.getMessage());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Error processing the file: " + e.getMessage());
         }
     }
 
@@ -337,103 +360,213 @@ public class EmployeeService {
         return null;
     }
 
-    private ExcelErrorResponse validateExcelFile(MultipartFile file){
+    private Integer getIntegerValue(Cell cell) {
+        if (cell != null) {
+            if (cell.getCellType() == CellType.NUMERIC) {
+                return (int) cell.getNumericCellValue();
+            }
+        }
+        return null;
+    }
 
-        String fileName = file.getOriginalFilename();
+    private ExcelErrorResponse validateExcelFile(String fileName,Sheet sheet){
+
         Optional<FileHistory> fileHistory = Optional.ofNullable(fileHistoryRepository.findByFileName(fileName));
         if (fileHistory.isPresent()){
             return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList(fileName+" is already uploaded. Please upload a different File."));
         }else {
 
-            try (InputStream inputStream = file.getInputStream()) {
-                Workbook workbook = WorkbookFactory.create(inputStream);
-                Sheet sheet = workbook.getSheetAt(0);
-                Map<Integer, Long> employeeNumberList = new HashMap<>();
+            Map<Integer, Long> employeeNumberList = new HashMap<>();
 
-                Row headerRow = sheet.getRow(0);
-                String[] expectedHeaders = {
-                        "S.No", "EmployeeNumber", "BudgetRef", "EmployeeName", "Gender", "MaritalStatus", "DOB", "DOJ",
-                        "JobTitle", "Status", "Region", "Location", "Organization", "Division", "DeptCode",
-                        "Department", "Section", "NationalIdNumber", "SVEmpNo.", "SVEmpName", "City", "Age", "CostCentre",
-                        "Nationality", "Email", "MobileNo", "Grade"
-                };
+            ExcelErrorResponse headerValidation = validateHeaderRow(sheet);
 
-                for (int i = 0; i < expectedHeaders.length; i++) {
-                    String expectedHeader = expectedHeaders[i];
-                    String actualHeader = headerRow.getCell(i).toString();
+            if(!headerValidation.isStatus()){
+                return headerValidation;
+            }
 
-                    if (!actualHeader.replaceAll("\\s", "").equalsIgnoreCase(expectedHeader)) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Error in column : " + actualHeader,
-                                "Row : " + (headerRow.getRowNum() + 1)+" and Cell : " + (i + 1)
-                                , "Please check the Sample Format of Excel File"));
-                    }
-                }
 
                 for (int rowNum = 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
                     Row row = sheet.getRow(rowNum);
+                    if (row != null && row.getPhysicalNumberOfCells() > 0) {
 
-                    for (int cellNum = 0; cellNum <= row.getLastCellNum() - 1; cellNum++) {
-                        if (String.valueOf(row.getCell(cellNum)).isEmpty()) {
-                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Empty Value at Row " + (rowNum + 1) + " and Cell " + (cellNum + 1)));
+                        for (int cellNum = 0; cellNum <= row.getLastCellNum() - 1; cellNum++) {
+                            if (String.valueOf(row.getCell(cellNum)).isEmpty()) {
+                                return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Empty Value at Row " + (rowNum + 1) + " and Cell " + (cellNum + 1)));
+                            }
                         }
-                    }
 
-                    Optional<Employee> employee = employeeRepository.findByEmployeeNumber(getLongValue(row.getCell(1)));
-                    if (employee.isPresent()){
-                        return new ExcelErrorResponse(Boolean.FALSE,Arrays.asList("Employee Number : "+getLongValue(row.getCell(1))+
-                                " is already Present in the record","Row : "+ (rowNum+1)));
-                    }
+                        Optional<Employee> employee = employeeRepository.findByEmployeeNumber(getLongValue(row.getCell(0)));
+                        if (employee.isPresent()) {
+                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Employee Number : " + getLongValue(row.getCell(0)) +
+                                    " is already Present in the record", "Row : " + (rowNum + 1)));
+                        }
 
-                    ExcelErrorResponse checkDuplicate = checkDuplicateRecord(employeeNumberList,row);
-                    if(!checkDuplicate.isStatus()){
-                        return checkDuplicate;
-                    }
+                        ExcelErrorResponse checkDuplicate = checkDuplicateRecord(employeeNumberList, row);
+                        if (!checkDuplicate.isStatus()) {
+                            return checkDuplicate;
+                        }
 
-                    String regex = "^(0[1-9]|[1-2][0-9]|3[0-1])-(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)-\\d{4}$";
-                    Pattern pattern = Pattern.compile(regex);
-                    Matcher dateOfBirthMatcher = pattern.matcher(String.valueOf(row.getCell(6)));
-                    Matcher joiningDateMatcher = pattern.matcher(String.valueOf(row.getCell(7)));
+                        String regex = "^(0[1-9]|[1-2][0-9]|3[0-1])-(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)-\\d{4}$";
+                        Pattern pattern = Pattern.compile(regex);
+                        Matcher dateOfBirthMatcher = pattern.matcher(String.valueOf(row.getCell(5)));
+                        Matcher joiningDateMatcher = pattern.matcher(String.valueOf(row.getCell(6)));
 
 
-                    if (!dateOfBirthMatcher.matches()) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(6) ,"Row " + (rowNum + 1) + " and Cell 7"));
-                    } else if (!joiningDateMatcher.matches()) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList( "Incorrect Date Format : " + row.getCell(7),
-                                "Row " + (rowNum + 1) + " and Cell 8"));
-                    } else if (getNumericValue(row.getCell(1)) == null) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: "+row.getCell(1),"Row "+(rowNum+1)+" and cell 2"));
-                    }else if (getNumericValue(row.getCell(14)) == null) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: "+row.getCell(14),"Row "+(rowNum+1)+" and cell 15"));
-                    }else if (getNumericValue(row.getCell(17)) == null) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: "+row.getCell(17),"Row "+(rowNum+1)+" and cell 18"));
-                    }else if (getNumericValue(row.getCell(18)) == null) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: "+row.getCell(18),"Row "+(rowNum+1)+" and cell 19"));
-                    }else if (getNumericValue(row.getCell(21)) == null) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: "+row.getCell(21),"Row "+(rowNum+1)+" and cell 22"));
-                    } else if (!String.valueOf(row.getCell(9)).equalsIgnoreCase("A") && !String.valueOf(row.getCell(9)).equalsIgnoreCase("R")
-                               && !String.valueOf(row.getCell(9)).equalsIgnoreCase("T") && !String.valueOf(row.getCell(9)).equalsIgnoreCase("D")) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList( "Incorrect Value : " + row.getCell(9) ,"Row " + (rowNum + 1) + " and Cell 10","Correct Value : 'A' ,'R' ,'T' ,'D'"));
-                    }else if (!String.valueOf(row.getCell(4)).equalsIgnoreCase("M")
-                            && !String.valueOf(row.getCell(4)).equalsIgnoreCase("F")) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList( "Incorrect Value : " + row.getCell(4) ,"Row " + (rowNum + 1) + " and Cell 5","Correct Value : 'M' or 'F'"));
-                    }else if (!String.valueOf(row.getCell(5)).equalsIgnoreCase("M")
-                            && !String.valueOf(row.getCell(5)).equalsIgnoreCase("U")) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList( "Incorrect Value : " + row.getCell(5) ,"Row " + (rowNum + 1) + " and Cell 6","Correct Value : 'M' or 'U'"));
-                    }
+                        if (!dateOfBirthMatcher.matches()) {
+                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(5), "Row " + (rowNum + 1) + " and Cell 6"));
+                        } else if (!joiningDateMatcher.matches()) {
+                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(6),
+                                    "Row " + (rowNum + 1) + " and Cell 7"));
+                        } else if (getNumericValue(row.getCell(0)) == null) {
+                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: " + row.getCell(0), "Row " + (rowNum + 1) + " and cell 1"));
+                        } else if (getNumericValue(row.getCell(14)) == null) {
+                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: " + row.getCell(14), "Row " + (rowNum + 1) + " and cell 15"));
+                        } else if (getNumericValue(row.getCell(15)) == null) {
+                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: " + row.getCell(15), "Row " + (rowNum + 1) + " and cell 16"));
+                        } else if (getNumericValue(row.getCell(20)) == null) {
+                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: " + row.getCell(20), "Row " + (rowNum + 1) + " and cell 21"));
+                        } else if (!String.valueOf(row.getCell(3)).equalsIgnoreCase("M")
+                                && !String.valueOf(row.getCell(3)).equalsIgnoreCase("F")) {
+                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Value : " + row.getCell(3), "Row " + (rowNum + 1) + " and Cell 4", "Correct Value : 'M' or 'F'"));
+                        } else if (!String.valueOf(row.getCell(4)).equalsIgnoreCase("M")
+                                && !String.valueOf(row.getCell(4)).equalsIgnoreCase("U")) {
+                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Value : " + row.getCell(4), "Row " + (rowNum + 1) + " and Cell 5", "Correct Value : 'M' or 'U'"));
+                        }
 
+                        Optional<JobTitle> jobTitle = jobTitleRepository.findByJobTitleAndStatusIsTrue(getStringValue(row.getCell(7)));
+                        if (!jobTitle.isPresent()) {
+                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList(getStringValue(row.getCell(7)) + " job title does not exist in the record", "Row " + (rowNum + 1) + " and Cell 8"));
+                        }
+
+                        Optional<Grade> grade = gradeRepository.findByNameAndStatusIsTrue(getIntegerValue(row.getCell(20)));
+                        if (!grade.isPresent()) {
+                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList(getStringValue(row.getCell(20)) + " job title does not exist in the record", "Row " + (rowNum + 1) + " and Cell 21"));
+                        }
+
+                        ExcelErrorResponse regionValidation = validateRegion(row);
+                        if (!regionValidation.isStatus()) {
+                            return regionValidation;
+                        }
+                    }else break;
                 }
 
-                return new ExcelErrorResponse(Boolean.TRUE, Arrays.asList("Excel File is in Correct Format"));
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new RuntimeException(e);
+
+            ExcelErrorResponse productFieldValidation = validateProductFieldValues(sheet);
+            if(!productFieldValidation.isStatus()){
+                return productFieldValidation;
+            }
+
+            return new ExcelErrorResponse(Boolean.TRUE, Arrays.asList("Excel File is in Correct Format"));
+        }
+    }
+
+    private ExcelErrorResponse validateRegion(Row row){
+
+        String region = getStringValue(row.getCell(8));
+        String country = getStringValue(row.getCell(9));
+        String city = getStringValue(row.getCell(10));
+
+        Optional<Region> optionalRegion = regionRepository.findByNameAndStatusIsTrue(region);
+        if (optionalRegion.isPresent()){
+            String cities = optionalRegion.get().getCities();
+
+            if(Objects.equals(optionalRegion.get().getCountry(), country)){
+
+               cities = cities.replaceAll("\\[", "").replaceAll("\\]", "");
+               String[] citiesArray = cities.split(",");
+               boolean cityCheck = false;
+                for (String cityList : citiesArray) {
+                    if (cityList.trim().replaceAll("\"", "").equals(city)) {
+                        cityCheck=true;
+                        break;
+                    }
+                }
+                if (!cityCheck){
+                    return new ExcelErrorResponse(Boolean.FALSE,Arrays.asList(city+" city doesn't exist in "+region+" region",
+                            "Row "+(row.getRowNum()+1)));
+                }
+
+            }else {
+                return new ExcelErrorResponse(Boolean.FALSE,Arrays.asList(country+" doesn't have region '"+region+"'",
+                        "Row: "+(row.getRowNum()+1)));
+            }
+        }else {
+            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList(region+" region doesn't exist",
+                    "Row "+(row.getRowNum()+1)));
+        }
+        return new ExcelErrorResponse(Boolean.TRUE,null);
+    }
+    private ExcelErrorResponse validateProductFieldValues(Sheet sheet){
+
+        Map<Integer , String> productFields = new HashMap<>();
+        productFields.put(11,"Location");
+        productFields.put(12,"Dept Code");
+        productFields.put(13,"Organization");
+        productFields.put(18,"Nationality");
+
+        for (Map.Entry<Integer, String> entry : productFields.entrySet()) {
+            ProductField productField = productFieldRepository.findByNameAndStatusIsActive(entry.getValue());
+            if(productField != null) {
+                for (int rowIndex = 1; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
+                    Row row = sheet.getRow(rowIndex);
+                    if (row != null && row.getPhysicalNumberOfCells() > 0) {
+                        String cellValue;
+                        if(row.getCell(entry.getKey()).getCellType() == CellType.NUMERIC){
+                            cellValue = getIntegerValue(row.getCell(entry.getKey())).toString();
+                        }else{
+                            cellValue = getStringValue(row.getCell(entry.getKey()));
+                        }
+
+                        Optional<String> checkDuplicateValues = productField.getProductFieldValuesList().stream()
+                                .map(ProductFieldValues::getName)
+                                .filter(value -> value.equalsIgnoreCase(cellValue))
+                                .findFirst();
+
+                        if (!checkDuplicateValues.isPresent()) {
+                            return new ExcelErrorResponse(
+                                    Boolean.FALSE,
+                                    Arrays.asList("Incorrect " + entry.getValue() + " value: " + row.getCell(entry.getKey())
+                                            , "\nCorrect Values: " +
+                                                    productField.getProductFieldValuesList()
+                                                            .stream()
+                                                            .map(ProductFieldValues::getName)
+                                                            .collect(Collectors.joining(", "))));
+                        }
+                    }else break;
+                }
+            }else {
+                return new ExcelErrorResponse(Boolean.FALSE,Arrays.asList("Product Field '"+entry.getValue()+"' doesn't exist in the record"));
             }
         }
+        return new ExcelErrorResponse(Boolean.TRUE,Arrays.asList("Product Field validation successful"));
+    }
+
+    private ExcelErrorResponse validateHeaderRow(Sheet sheet) {
+
+        Row headerRow = sheet.getRow(0);
+        String[] expectedHeaders = {
+                "EmployeeNumber", "BudgetRef", "EmployeeName", "Gender", "MaritalStatus", "DateOfBirth", "JoiningDate",
+                "JobTitle", "Region", "Country", "City", "Location", "DeptCode", "Organization", "NationalIdNumber",
+                "SVEmployeeNumber", "SVEmployeeName",  "CostCentre", "Nationality", "CompanyEmailAddress", "Grade",
+                "LicenseNumber","ContactNumber"
+        };
+
+        for (int i = 0; i < expectedHeaders.length; i++) {
+            String expectedHeader = expectedHeaders[i];
+            String actualHeader = headerRow.getCell(i).toString();
+
+            if (!actualHeader.replaceAll("\\s", "").equalsIgnoreCase(expectedHeader)) {
+                return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Error in column : " + actualHeader,
+                        "Row : " + (headerRow.getRowNum() + 1)+" and Cell : " + (i + 1)
+                        , "Please check the Sample Format of Excel File"));
+            }
+        }
+        return new ExcelErrorResponse(Boolean.TRUE,null);
     }
 
     private ExcelErrorResponse checkDuplicateRecord(Map<Integer, Long> employeeNumbers, Row row){
 
-        Long empNum = getLongValue(row.getCell(1));
+        Long empNum = getLongValue(row.getCell(0));
 
         for (Map.Entry<Integer, Long> entry : employeeNumbers.entrySet()) {
             if(empNum.equals(entry.getValue())){

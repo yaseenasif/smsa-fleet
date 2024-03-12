@@ -13,6 +13,8 @@ import { ProductFieldServiceService } from '../../product-field/service/product-
 import { ProductField } from 'src/app/modal/ProductField';
 import { JobTitleService } from '../../job-title/job-title.service';
 import { JobTitle } from 'src/app/modal/job-title';
+import { BackenCommonErrorThrow } from 'src/app/modal/BackendCommonErrorThrow';
+import { ErrorService } from 'src/app/CommonServices/Error/error.service';
 
 @Component({
   selector: 'app-add-employee',
@@ -198,6 +200,9 @@ export class AddEmployeeComponent implements OnInit {
   uploadedFiles!: Employee[];
   allJobTitle !: JobTitle[]
   temp !: JobTitle[];
+  location: ProductField | null | undefined
+  deptCode: ProductField| null | undefined;
+  organization: ProductField| null | undefined;
 
 
 
@@ -209,19 +214,21 @@ export class AddEmployeeComponent implements OnInit {
     private gradeService: GradeService,
     private regionService: RegionService,
     private productService: ProductFieldServiceService,
-    private jobTitleService: JobTitleService
+    private jobTitleService: JobTitleService,
+    private productFieldService: ProductFieldServiceService,
+    private errorHandleService: ErrorService
   ) { }
 
 
   ngOnInit(): void {
     this.items = [{ label: 'Employee', routerLink: '/employee' }, { label: 'Add Employee' }];
     this.getNationality();
-    // this.getJobTitle();
-    this.getDepartment();
-    this.getSections();
     this.getAllGrades();
     this.getCountry();
     this.getAllJobTitle();
+    this.getLocationList("Location");
+    this.getDeptcodeList("Dept Code");
+    this.getOrganizationList("Organization");
   }
 
   getCountry(): Region[] {
@@ -313,27 +320,7 @@ export class AddEmployeeComponent implements OnInit {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
     })
   }
-  // getJobTitle() {
-  //   this.productService.getProductFieldByName('Job Title').subscribe((res: ProductField) => {
-  //     this.jobTitles = res;
-  //   }, error => {
-  //     this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
-  //   })
-  // }
-  getDepartment() {
-    this.productService.getProductFieldByName('Department').subscribe((res: ProductField) => {
-      this.departments = res;
-    }, error => {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
-    })
-  }
-  getSections() {
-    this.productService.getProductFieldByName('Section').subscribe((res: ProductField) => {
-      this.sections = res;
-    }, error => {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
-    })
-  }
+
 
   getAllJobTitle() {
     this.jobTitleService.getJobTitle().subscribe((res) => {
@@ -351,5 +338,31 @@ export class AddEmployeeComponent implements OnInit {
     this.employee.fleetClassification = this.temp[0].fleetClassification;
     this.employee.vehicleEligible = this.temp[0].vehicleEligible
 
+  }
+
+  private getLocationList(fieldName: string) {
+    this.productFieldService.getProductFieldByName(fieldName).subscribe(
+      (res: ProductField) => {
+        this.location = res;
+      }, (err: BackenCommonErrorThrow) => {
+        this.errorHandleService.showError(err.error!);
+      });
+  }
+
+  private getOrganizationList(fieldName: string) {
+    this.productFieldService.getProductFieldByName(fieldName).subscribe(
+      (res: ProductField) => {
+        this.organization = res;
+      }, (err: BackenCommonErrorThrow) => {
+        this.errorHandleService.showError(err.error!);
+      });
+  }
+  private getDeptcodeList(fieldName: string) {
+    this.productFieldService.getProductFieldByName(fieldName).subscribe(
+      (res: ProductField) => {
+        this.deptCode = res;
+      }, (err: BackenCommonErrorThrow) => {
+        this.errorHandleService.showError(err.error!);
+      });
   }
 }

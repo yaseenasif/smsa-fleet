@@ -13,7 +13,7 @@ interface PermissionRoute {
 export class AuthguardService {
   private permissionRoutes: PermissionRoute[] = [
     { permission: 'Dashboard', route: ['/home', "/"] },
-    { permission: 'Employee', route: ['/employee', '/add-employee', '/edit-employee/:id', '/employee-attachment/:id', 'view-employee/:id'] },
+    { permission: 'Employee', route: ['/employee', '/add-employee', '/edit-employee/:id', '/employee-attachment/:id', '/view-employee/:id'] },
     { permission: 'Driver', route: ['/driver', '/add-driver', '/edit-driver/:id', '/driver-attachment/:id', '/view-driver/:id'] },
     {
       permission: 'Vehicle', route: ['/vehicle', '/add-vehicle', '/add-vehicle/:replacementCheck/:vId', '/edit-vehicle/:id', '/vehicle-history/:id', '/vehicle-attachment/:id', '/vehicle-detail/:id', '/vehicle/:vehicletab', '/view-vehicle/:id', '/view-vehicle/assignmentCheck/:id', '/unassigned-vehicle']

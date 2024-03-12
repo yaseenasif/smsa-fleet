@@ -117,37 +117,6 @@
           <div class="card">
             <p-table [value]="vehicles" [tableStyle]="{ 'min-width': '50rem' }">
               <ng-template pTemplate="header">
-                <!-- <tr>
-                  <th class="text-center">ID</th>
-                  <th
-                    *ngIf="selectedStatus.name === 'Replacement'"
-                    class="text-center"
-                  >
-                    Status
-                  </th>
-                  <th class="text-center">PO Number</th>
-                  <th class="text-center">Plate Number</th>
-                  <th class="text-center">Make</th>
-                  <th class="text-center">Year</th>
-                  <th class="text-center">Design</th>
-                  <th class="text-center">Model</th>
-                  <th class="text-center">Type</th>
-                  <th class="text-center">Capacity</th>
-                  <th class="text-center">Power</th>
-                  <th class="text-center">Registration Expiry</th>
-                  <th class="text-center">Fuel Type</th>
-                  <th class="text-center">Vendor</th>
-                  <th class="text-center">Insurance Expiry</th>
-                  <th class="text-center">Lease Cost</th>
-                  <th class="text-center">Replace Lease Cost</th>
-                  <th class="text-center">Lease Start Date</th>
-                  <th class="text-center">Lease Expiry Date</th>
-                  <th class="text-center">Usage Type</th>
-                  <th class="text-center">Region</th>
-                  <th class="text-center">Category</th>
-                  <th class="text-center">Replace Vehicle</th>
-                  <th class="text-center">Actions</th>
-                </tr> -->
                 <tr>
                   <th pSortableColumn="id" class="text-center">
                     ID <p-sortIcon field="id"></p-sortIcon>
@@ -222,6 +191,10 @@
                   </th>
                   <th pSortableColumn="category" class="text-center">
                     Category <p-sortIcon field="category"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="vehicleStatus" class="text-center">
+                    Status
+                    <p-sortIcon field="vehicleStatus"></p-sortIcon>
                   </th>
                   <th pSortableColumn="replaceVehicle" class="text-center">
                     Replace Vehicle
@@ -417,6 +390,14 @@
                     "
                     class="text-center"
                   >
+                    {{ vehicles.vehicleStatus }}
+                  </td>
+                  <td
+                    [classList]="
+                      vehicles.vehicleReplacement ? 'color-orange' : null
+                    "
+                    class="text-center"
+                  >
                     {{
                       vehicles.vehicleReplacement
                         ? vehicles.vehicleReplacement.vehicle.plateNumber
@@ -558,6 +539,9 @@
                       severity="help"
                     >
                     </p-button>
+
+                    <p-button *ngIf="!vehicletab && !unAssignedVehicleTab && (selectedStatus.name === 'TBA')" (click)="showReplacementDialog(vehicles.id)" pTooltip="Delete" tooltipPosition="top" icon="bi bi-trash" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="danger">
+                    </p-button>
                   </td>
                 </tr>
               </ng-template>
@@ -665,15 +649,7 @@
       ></p-button>
     </div>
     <div>
-      <p-button
-        label="Yes"
-        (click)="
-          selectedStatus.name === 'Under Maintenance'
-            ? markVehicleTotalLost()
-            : deleteReplacementVehicle()
-        "
-        class="bg-b-color ml"
-      ></p-button>
+      <p-button label="Yes" (click)="selectedStatus.name === 'Under Maintenance' ? markVehicleTotalLost() : selectedStatus.name === 'TBA' ? deleteVehicleById() : deleteReplacementVehicle()" class="bg-b-color ml"></p-button>
     </div>
   </div>
 </p-dialog>

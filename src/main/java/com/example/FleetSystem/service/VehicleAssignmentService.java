@@ -3,19 +3,21 @@ package com.example.FleetSystem.service;
 import com.example.FleetSystem.criteria.EmployeeSearchCriteria;
 import com.example.FleetSystem.criteria.VehicleSearchCriteria;
 import com.example.FleetSystem.dto.*;
+import com.example.FleetSystem.exception.ExcelException;
 import com.example.FleetSystem.model.Employee;
 import com.example.FleetSystem.model.User;
 import com.example.FleetSystem.model.Vehicle;
 import com.example.FleetSystem.model.VehicleAssignment;
+import com.example.FleetSystem.payload.ExcelErrorResponse;
 import com.example.FleetSystem.repository.EmployeeRepository;
 import com.example.FleetSystem.repository.UserRepository;
 import com.example.FleetSystem.repository.VehicleAssignmentRepository;
 import com.example.FleetSystem.repository.VehicleRepository;
 import com.example.FleetSystem.specification.VehicleAssignmentSpecification;
-import com.example.FleetSystem.specification.VehicleSpecification;
 import com.example.FleetSystem.model.*;
 import com.example.FleetSystem.payload.ResponseMessage;
 import com.example.FleetSystem.repository.*;
+import org.apache.poi.ss.usermodel.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,16 +29,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -68,6 +64,8 @@ public class VehicleAssignmentService {
     VehicleAssignmentAuditService vehicleAssignmentAuditService;
     @Autowired
     ExcelExportService excelExportService;
+    @Autowired
+    FileHistoryRepository fileHistoryRepository;
 
     public VehicleAssignmentDto save(VehicleAssignmentDto vehicleAssignmentDto) {
         Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -378,7 +376,7 @@ public class VehicleAssignmentService {
         throw new RuntimeException(String.format("Vehicle not found By id => %d", id));
     }
 
-    private AssignmentExcelDto toAssignmentExcelDto(VehicleAssignment vehicleAssignment){
+    private AssignmentExcelDto toAssignmentExcelDto(VehicleAssignment vehicleAssignment) {
         AssignmentExcelDto assignmentExcelDto = modelMapper.map(vehicleAssignment, AssignmentExcelDto.class);
         assignmentExcelDto.setEmpNo(vehicleAssignment.getAssignToEmpId().getEmployeeNumber());
         assignmentExcelDto.setEmpName(vehicleAssignment.getAssignToEmpName());
@@ -394,7 +392,8 @@ public class VehicleAssignmentService {
         assignmentExcelDto.setLeaseExpiry(vehicleAssignment.getVehicle().getLeaseExpiryDate());
         return assignmentExcelDto;
     }
-    private List<AssignmentExcelDto> toAssignmentExcelDtoList(List<VehicleAssignment> vehicleAssignments){
+
+    private List<AssignmentExcelDto> toAssignmentExcelDtoList(List<VehicleAssignment> vehicleAssignments) {
         return vehicleAssignments.stream().map(this::toAssignmentExcelDto).collect(Collectors.toList());
     }
 
@@ -403,4 +402,203 @@ public class VehicleAssignmentService {
         List<AssignmentExcelDto> assignmentExcelDtoList = toAssignmentExcelDtoList(vehicleAssignments);
         return excelExportService.exportToExcel(assignmentExcelDtoList);
     }
+
+    public List<String> bulkUploadAssignment(MultipartFile file) {
+        List<String> messages = new ArrayList<>();
+        try (InputStream inputStream = file.getInputStream()) {
+            Workbook workbook = WorkbookFactory.create(inputStream);
+            Sheet sheet = workbook.getSheetAt(0);
+            String fileName = file.getOriginalFilename();
+            String uuid = UUID.randomUUID().toString();
+
+            ExcelErrorResponse checkFile = validateExcelFile(fileName, sheet);
+            if (checkFile.isStatus()) {
+                for (int rowNum = 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
+                    Row row = sheet.getRow(rowNum);
+                    if (row != null && row.getPhysicalNumberOfCells() > 0) {
+
+                        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                        if (principal instanceof UserDetails) {
+                            String username = ((UserDetails) principal).getUsername();
+                            User user = userRepository.findByEmail(username);
+
+                            Optional<Vehicle> vehicle = vehicleRepository.getEligibleVehicle(getStringValue(row.getCell(0)));
+                            Optional<Employee> employee = employeeRepository.findEligibleEmployee(getLongValue(row.getCell(1)));
+
+                            if (vehicle.isPresent()) {
+                                Optional<VehicleAssignment> vehicleAssignment1 = vehicleAssignmentRepository.findByVehicleAndStatusIsTrue(vehicle.get());
+                                if (employee.isPresent()) {
+                                    if (vehicleAssignment1.isPresent()) {
+                                        vehicleAssignment1.get().setAssignToEmpId(employee.get());
+                                        vehicleAssignment1.get().setAssignToEmpName(employee.get().getEmpName());
+                                        vehicleAssignment1.get().setUpdatedBy(user);
+                                        vehicleAssignment1.get().setUpdatedAt(LocalDate.now());
+                                        vehicleAssignment1.get().setStatus(Boolean.TRUE);
+                                        vehicleAssignmentRepository.save(vehicleAssignment1.get());
+                                    } else {
+                                        VehicleAssignment vehicleAssignment = new VehicleAssignment();
+                                        vehicleAssignment.setAssignToEmpId(employee.get());
+                                        vehicleAssignment.setAssignToEmpName(employee.get().getEmpName());
+                                        vehicleAssignment.setVehicle(vehicle.get());
+                                        vehicleAssignment.setCreatedAt(LocalDate.now());
+                                        vehicleAssignment.setCreatedBy(user);
+                                        vehicleAssignment.setStatus(Boolean.TRUE);
+                                        vehicleAssignmentRepository.save(vehicleAssignment);
+                                    }
+                                } else {
+                                    messages.add("Employee is not eligible for assignment\n");
+                                    messages.add(getLongValue(row.getCell(1)).toString());
+                                    messages.add("Row: " + rowNum);
+                                    throw new ExcelException(messages);
+                                }
+                            } else {
+                                messages.add("Vehicle is not eligible for assignment\n");
+                                messages.add(getStringValue(row.getCell(0)));
+                                messages.add("Row: " + rowNum);
+                                throw new ExcelException(messages);
+                            }
+
+                        } else {
+                            messages.add("UserName not Found");
+                            return messages;
+                        }
+                    }else break;
+                }
+                    FileHistory fileHistory = FileHistory.builder()
+                            .fileName(fileName)
+                            .uuid(uuid)
+                            .build();
+                    fileHistoryRepository.save(fileHistory);
+
+                    messages.add("File uploaded and data saved successfully.");
+                    return messages;
+
+            }else {
+                messages.addAll(checkFile.getMessage());
+                throw new ExcelException(messages);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error uploading the file: " + e.getMessage());
+        }
+    }
+
+    private String getStringValue(Cell cell) {
+
+        if (cell.getCellType() == CellType.STRING) {
+            return cell.getStringCellValue();
+        } else if (cell.getCellType() == CellType.NUMERIC) {
+            return String.valueOf(cell.getNumericCellValue());
+        } else {
+            return null;
+        }
+    }
+
+    private Long getLongValue(Cell cell){
+        if (cell != null) {
+            if (cell.getCellType() == CellType.NUMERIC) {
+                return (long) cell.getNumericCellValue();
+            }
+        }
+        return null;
+    }
+    private ExcelErrorResponse validateExcelFile(String fileName, Sheet sheet) {
+
+        Optional<FileHistory> fileHistory = Optional.ofNullable(fileHistoryRepository.findByFileName(fileName));
+        if (fileHistory.isPresent()) {
+            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList(fileName + " is already uploaded. Please upload a different File."));
+        } else {
+                Map<Integer, String> plateNumberList = new HashMap<>();
+                Map<Integer, Long> employeeNumberList = new HashMap<>();
+
+
+                Row headerRow = sheet.getRow(0);
+                String[] expectedHeaders = {"PlateNumber", "EmployeeNumber"};
+
+                for (int i = 0; i < expectedHeaders.length; i++) {
+                    String expectedHeader = expectedHeaders[i];
+                    String actualHeader = headerRow.getCell(i).toString();
+
+                    if (!actualHeader.replaceAll("\\s", "").equalsIgnoreCase(expectedHeader)) {
+                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Error in column : " + actualHeader,
+                                "Row : " + (headerRow.getRowNum() + 1) + " and Cell : " + (i + 1)
+                                , "Please check the Sample Format of Excel File"));
+                    }
+                }
+
+                for (int rowNum = 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
+                    Row row = sheet.getRow(rowNum);
+                    if (row != null && row.getPhysicalNumberOfCells() > 0) {
+
+                        String plateNumberPattern = "\\d{4} [A-Z]{3}";
+
+                        for (int cellNum = 0; cellNum <= row.getLastCellNum() - 1; cellNum++) {
+                            if (String.valueOf(row.getCell(cellNum)).isEmpty()) {
+                                return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Empty Value at Row " + (rowNum + 1) + " and Cell " + (cellNum + 1)));
+                            }
+                        }
+
+                        if (!getStringValue(row.getCell(0)).matches(plateNumberPattern)) {
+                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Plate Number Format : " + row.getCell(0),
+                                    "Row " + (rowNum + 1) + " and Cell 1", "Correct Format : 1234 ABC"));
+                        }
+
+                        Optional<Vehicle> vehicle = vehicleRepository.findByPlateNumber(getStringValue(row.getCell(0)));
+                        if (!vehicle.isPresent()) {
+                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Plate Number : " + getStringValue(row.getCell(0)) +
+                                    " doesn't exist in the record", "Row : " + (rowNum + 1)));
+                        }
+
+                        Optional<Employee> employee = employeeRepository.findByEmployeeNumber(getLongValue(row.getCell(1)));
+                        if (!employee.isPresent()) {
+                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Employee Number : " + getStringValue(row.getCell(1)) +
+                                    " doesn't exist in the record", "Row : " + (rowNum + 1)));
+                        }
+
+                        ExcelErrorResponse checkDuplicatePlateNumber = checkDuplicatePlateNumber(plateNumberList, row);
+                        if (!checkDuplicatePlateNumber.isStatus()) {
+                            return checkDuplicatePlateNumber;
+                        }
+
+                        ExcelErrorResponse checkDuplicateEmployeeNumber = checkDuplicateEmployeeNumber(employeeNumberList, row);
+                        if (!checkDuplicateEmployeeNumber.isStatus()) {
+                            return checkDuplicateEmployeeNumber;
+                        }
+
+
+                    }else break;
+                }
+
+                return new ExcelErrorResponse(Boolean.TRUE, Arrays.asList("Excel File is in Correct Format"));
+
+            }
+        }
+
+    private ExcelErrorResponse checkDuplicatePlateNumber(Map<Integer, String> plateNumberList, Row row) {
+        String plateNumber = getStringValue(row.getCell(0));
+
+        for (Map.Entry<Integer, String> entry : plateNumberList.entrySet()) {
+            if (plateNumber.equals(entry.getValue())) {
+                return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Duplicate Record in the Row : " + entry.getKey() + " and " + (row.getRowNum() + 1),
+                        "Duplicate Plate Number : " + plateNumber));
+            }
+        }
+        plateNumberList.put(row.getRowNum() + 1, plateNumber);
+        return new ExcelErrorResponse(Boolean.TRUE, Arrays.asList("No Duplicate Record"));
+    }
+
+    private ExcelErrorResponse checkDuplicateEmployeeNumber(Map<Integer, Long> employeeNumbers, Row row){
+
+        Long empNum = getLongValue(row.getCell(1));
+
+        for (Map.Entry<Integer, Long> entry : employeeNumbers.entrySet()) {
+            if(empNum.equals(entry.getValue())){
+                return new ExcelErrorResponse(Boolean.FALSE,Arrays.asList("Duplicate Record in the Row : "+entry.getKey()+" and "+(row.getRowNum()+1),
+                        "Duplicate Employee Number : "+empNum));
+            }
+        }
+        employeeNumbers.put(row.getRowNum()+1,empNum);
+        return new ExcelErrorResponse(Boolean.TRUE,Arrays.asList("No Duplicate Record"));
+    }
+
 }

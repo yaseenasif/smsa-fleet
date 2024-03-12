@@ -41,10 +41,10 @@
       </span>
     </li>
     <li class="child" *ngIf="hasPermission('DeletedVehicles')">
-      <a class="sidebar-list-hover" routerLink="/deleted-vehicles">
+      <span class="sidebar-list-hover" routerLink="/deleted-vehicles">
         <i class="bi bi-truck"></i>
-        <span class="nav-text"> Deleted Vehicles</span>
-      </a>
+        <span class="nav-text"> Deleted Vehicles </span>
+      </span>
     </li>
     <li class="child" *ngIf="hasPermission('User')">
       <a class="sidebar-list-hover text-white" routerLink="/user">

@@ -70,6 +70,8 @@ public class VehicleService {
     ProductFieldRepository productFieldRepository;
     @Autowired
     ExcelExportService excelExportService;
+    @Autowired
+    RegionRepository regionRepository;
 
     @Transactional
     public VehicleDto finalReturnVehicleById(Long id, FinalReturnRequest finalReturnRequest) {
@@ -285,6 +287,7 @@ public class VehicleService {
                 optionalVehicle.get().setLeaseExpiryDate(vehicleDto.getLeaseExpiryDate());
                 optionalVehicle.get().setUsageType(vehicleDto.getUsageType());
                 optionalVehicle.get().setRegion(vehicleDto.getRegion());
+                optionalVehicle.get().setLocation(vehicleDto.getLocation());
                 optionalVehicle.get().setUpdatedAt(LocalDate.now());
                 optionalVehicle.get().setUpdatedBy(user);
 
@@ -314,107 +317,111 @@ public class VehicleService {
             Sheet sheet = workbook.getSheetAt(0);
             String fileName = file.getOriginalFilename();
             String uuid = UUID.randomUUID().toString();
-            ExcelErrorResponse checkFile = validateExcelFile(file);
+            ExcelErrorResponse checkFile = validateExcelFile(fileName,sheet);
 
             if (checkFile.isStatus()) {
                 for (int rowNum = 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
                     Row row = sheet.getRow(rowNum);
-                    Vehicle vehicle = new Vehicle();
+                    if (row != null && row.getPhysicalNumberOfCells() > 0) {
 
-                    SimpleDateFormat inputDateFormat = new SimpleDateFormat("d-MMM-yy");
-                    SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        Vehicle vehicle = new Vehicle();
 
-                    String insuranceExpiryValue = String.valueOf(row.getCell(13));
-                    String registrationExpiryValue = String.valueOf(row.getCell(11));
-                    String leaseStartValue = String.valueOf(row.getCell(17));
-                    String leaseExpiryValue = String.valueOf(row.getCell(18));
+                        SimpleDateFormat inputDateFormat = new SimpleDateFormat("d-MMM-yy");
+                        SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-
-                    try {
-                        if (!insuranceExpiryValue.isEmpty()) {
-                            java.util.Date insuranceUtilDate = inputDateFormat.parse(insuranceExpiryValue);
-                            String insuranceSqlDateStr = outputDateFormat.format(insuranceUtilDate);
-                            Date insuranceSqlDate = Date.valueOf(insuranceSqlDateStr);
-                            vehicle.setInsuranceExpiry(insuranceSqlDate);
-                        }
-
-                        if (!leaseStartValue.isEmpty()) {
-                            java.util.Date leaseStartUtilDate = inputDateFormat.parse(leaseStartValue);
-                            String leaseStartSqlDateStr = outputDateFormat.format(leaseStartUtilDate);
-                            Date leaseStartSqlDate = Date.valueOf(leaseStartSqlDateStr);
-                            vehicle.setLeaseStartDate(leaseStartSqlDate);
-                        }
-
-                        if (!leaseExpiryValue.isEmpty()) {
-                            java.util.Date leaseExpiryUtilDate = inputDateFormat.parse(leaseExpiryValue);
-                            String leaseExpirySqlDateStr = outputDateFormat.format(leaseExpiryUtilDate);
-                            Date leaseExpirySqlDate = Date.valueOf(leaseExpirySqlDateStr);
-                            vehicle.setLeaseExpiryDate(leaseExpirySqlDate);
-                        }
-                        if (!registrationExpiryValue.isEmpty()) {
-                            java.util.Date registrationExpiryUtilDate = inputDateFormat.parse(registrationExpiryValue);
-                            String registrationExpirySqlDateStr = outputDateFormat.format(registrationExpiryUtilDate);
-                            Date registrationExpirySqlDate = Date.valueOf(registrationExpirySqlDateStr);
-                            vehicle.setRegistrationExpiry(registrationExpirySqlDate);
-                        }
+                        String insuranceExpiryValue = String.valueOf(row.getCell(16));
+                        String registrationExpiryValue = String.valueOf(row.getCell(15));
+                        String leaseStartValue = String.valueOf(row.getCell(18));
+                        String leaseExpiryValue = String.valueOf(row.getCell(19));
 
 
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                        throw new RuntimeException("Error processing the Date: " + e.getMessage());
-                    }
-
-                    try {
-                        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-                        if (principal instanceof UserDetails) {
-                            String username = ((UserDetails) principal).getUsername();
-                            User user = userRepository.findByEmail(username);
-
-                            Vendor vendor = vendorRepository.findByVendorNameIgnoreCase(getStringValue(row.getCell(15)));
-
-                            vehicle.setPlateNumber(getStringValue(row.getCell(1)));
-                            vehicle.setProcessOrderNumber(getIntegerValue(row.getCell(2)));
-                            vehicle.setMake(getStringValue(row.getCell(3)));
-                            vehicle.setDesign(getStringValue(row.getCell(4)));
-                            vehicle.setModel(getStringValue(row.getCell(5)));
-                            vehicle.setType(getStringValue(row.getCell(6)));
-                            vehicle.setYear(getIntegerValue(row.getCell(7)));
-                            vehicle.setPower(getStringValue(row.getCell(8)));
-                            vehicle.setCapacity(getStringValue(row.getCell(9)));
-                            vehicle.setFuelType(getStringValue(row.getCell(10)));
-                            vehicle.setVendor(vendor);
-                            vehicle.setLeaseCost(getIntegerValue(row.getCell(16)));
-                            vehicle.setUsageType(Objects.requireNonNull(getStringValue(row.getCell(19))).toUpperCase(Locale.ROOT));
-                            vehicle.setRegion(Objects.requireNonNull(getStringValue(row.getCell(19))).toUpperCase(Locale.ROOT));
-                            vehicle.setCategory(Objects.requireNonNull(getStringValue(row.getCell(20))).toUpperCase(Locale.ROOT));
-                            vehicle.setCreatedBy(user);
-                            vehicle.setCreatedAt(LocalDate.now());
-                            vehicle.setVehicleStatus("TBA");
-//                            vehicle.setStatus(Boolean.TRUE);
-                            vehicle.setUuid(uuid);
-
-                            if (String.valueOf(row.getCell(12)).replaceAll("\\s", "").equalsIgnoreCase("valid")) {
-                                vehicle.setRegistrationStatus(Boolean.TRUE);
-                            } else {
-                                vehicle.setRegistrationStatus(Boolean.FALSE);
+                        try {
+                            if (!insuranceExpiryValue.isEmpty()) {
+                                java.util.Date insuranceUtilDate = inputDateFormat.parse(insuranceExpiryValue);
+                                String insuranceSqlDateStr = outputDateFormat.format(insuranceUtilDate);
+                                Date insuranceSqlDate = Date.valueOf(insuranceSqlDateStr);
+                                vehicle.setInsuranceExpiry(insuranceSqlDate);
                             }
 
-                            if (String.valueOf(row.getCell(14)).replaceAll("\\s", "").equalsIgnoreCase("valid")) {
-                                vehicle.setInsuranceStatus(Boolean.TRUE);
-                            } else {
-                                vehicle.setInsuranceStatus(Boolean.FALSE);
+                            if (!leaseStartValue.isEmpty()) {
+                                java.util.Date leaseStartUtilDate = inputDateFormat.parse(leaseStartValue);
+                                String leaseStartSqlDateStr = outputDateFormat.format(leaseStartUtilDate);
+                                Date leaseStartSqlDate = Date.valueOf(leaseStartSqlDateStr);
+                                vehicle.setLeaseStartDate(leaseStartSqlDate);
                             }
 
-                            vehicleRepository.save(vehicle);
+                            if (!leaseExpiryValue.isEmpty()) {
+                                java.util.Date leaseExpiryUtilDate = inputDateFormat.parse(leaseExpiryValue);
+                                String leaseExpirySqlDateStr = outputDateFormat.format(leaseExpiryUtilDate);
+                                Date leaseExpirySqlDate = Date.valueOf(leaseExpirySqlDateStr);
+                                vehicle.setLeaseExpiryDate(leaseExpirySqlDate);
+                            }
+                            if (!registrationExpiryValue.isEmpty()) {
+                                java.util.Date registrationExpiryUtilDate = inputDateFormat.parse(registrationExpiryValue);
+                                String registrationExpirySqlDateStr = outputDateFormat.format(registrationExpiryUtilDate);
+                                Date registrationExpirySqlDate = Date.valueOf(registrationExpirySqlDateStr);
+                                vehicle.setRegistrationExpiry(registrationExpirySqlDate);
+                            }
 
-                        } else {
-                            messages.add("UserName not Found");
-                            return messages;
+
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                            throw new RuntimeException("Error processing the Date: " + e.getMessage());
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        throw new RuntimeException("Error processing data in the Excel file:" + e.getMessage());
-                    }
+
+                        try {
+                            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                            if (principal instanceof UserDetails) {
+                                String username = ((UserDetails) principal).getUsername();
+                                User user = userRepository.findByEmail(username);
+
+                                Vendor vendor = vendorRepository.findByVendorNameIgnoreCase(getStringValue(row.getCell(13)));
+                                Optional<Region> region = regionRepository.findByNameIgnoreCaseAndStatusIsTrue(getStringValue(row.getCell(14)));
+
+                                vehicle.setProcessOrderNumber(getIntegerValue(row.getCell(0)));
+                                vehicle.setPlateNumber(getStringValue(row.getCell(1)));
+                                vehicle.setMake(Objects.requireNonNull(getStringValue(row.getCell(2))).toUpperCase());
+                                vehicle.setYear(getIntegerValue(row.getCell(3)));
+                                vehicle.setDesign(Objects.requireNonNull(getStringValue(row.getCell(4))).toUpperCase());
+                                vehicle.setModel(Objects.requireNonNull(getStringValue(row.getCell(5))).toUpperCase());
+                                vehicle.setType(Objects.requireNonNull(getStringValue(row.getCell(6))).toUpperCase());
+                                vehicle.setCapacity(Objects.requireNonNull(getStringValue(row.getCell(7))).toUpperCase());
+                                vehicle.setPower(Objects.requireNonNull(getStringValue(row.getCell(8))).toUpperCase());
+                                vehicle.setFuelType(Objects.requireNonNull(getStringValue(row.getCell(9))).toUpperCase());
+                                vehicle.setUsageType(Objects.requireNonNull(getStringValue(row.getCell(10))).toUpperCase(Locale.ROOT));
+                                vehicle.setCategory(Objects.requireNonNull(getStringValue(row.getCell(11))).toUpperCase(Locale.ROOT));
+                                vehicle.setLocation(Objects.requireNonNull(getStringValue(row.getCell(12))).toUpperCase());
+                                vehicle.setVendor(vendor);
+                                vehicle.setRegion(region.get().getName());
+                                vehicle.setLeaseCost(getIntegerValue(row.getCell(17)));
+                                vehicle.setCreatedBy(user);
+                                vehicle.setCreatedAt(LocalDate.now());
+                                vehicle.setVehicleStatus("TBA");
+                                vehicle.setUuid(uuid);
+
+//                            if (String.valueOf(row.getCell(12)).replaceAll("\\s", "").equalsIgnoreCase("valid")) {
+//                                vehicle.setRegistrationStatus(Boolean.TRUE);
+//                            } else {
+//                                vehicle.setRegistrationStatus(Boolean.FALSE);
+//                            }
+//
+//                            if (String.valueOf(row.getCell(14)).replaceAll("\\s", "").equalsIgnoreCase("valid")) {
+//                                vehicle.setInsuranceStatus(Boolean.TRUE);
+//                            } else {
+//                                vehicle.setInsuranceStatus(Boolean.FALSE);
+//                            }
+
+                                vehicleRepository.save(vehicle);
+
+                            } else {
+                                messages.add("UserName not Found");
+                                throw new ExcelException(messages);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            throw new RuntimeException("Error processing data in the Excel file:" + e.getMessage());
+                        }
+                    }else break;
                 }
                 FileHistory fileHistory = FileHistory.builder()
                         .fileName(fileName)
@@ -433,10 +440,6 @@ public class VehicleService {
             e.printStackTrace();
             throw new RuntimeException("Error uploading the file: " + e.getMessage());
         }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            throw new RuntimeException("Error processing the file: " + e.getMessage());
-//        }
     }
 
     private String getStringValue(Cell cell) {
@@ -459,44 +462,28 @@ public class VehicleService {
         return null;
     }
 
-    private ExcelErrorResponse validateExcelFile(MultipartFile file) {
+    private ExcelErrorResponse validateExcelFile(String fileName, Sheet sheet) {
 
-        String fileName = file.getOriginalFilename();
         Optional<FileHistory> fileHistory = Optional.ofNullable(fileHistoryRepository.findByFileName(fileName));
         if (fileHistory.isPresent()) {
             return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList(fileName + " is already uploaded. Please upload a different File."));
         } else {
 
-            try (InputStream inputStream = file.getInputStream()) {
-                Workbook workbook = WorkbookFactory.create(inputStream);
-                Sheet sheet = workbook.getSheetAt(0);
                 Map<Integer, String> plateNumberList = new HashMap<>();
 
-                Row headerRow = sheet.getRow(0);
-                String[] expectedHeaders = {
-                        "S.No:", "Reg#", "PONumber", "Make", "Design", "Model", "Type", "YOM",
-                        "EnginePower", "Capacity(Payload)", "FuelType", "RegistrationExpiry",
-                        "RegistrationStatus", "InsuranceExpiry", "InsuranceStatus",
-                        "Supplier/Agent", "Lease/CostSR.", "Leased/PurchaseDate", "LeaseExpiry", "UsageType", "Category"
-                };
+                ExcelErrorResponse headerValidation = validateHeaderRow(sheet);
 
-                for (int i = 0; i < expectedHeaders.length; i++) {
-                    String expectedHeader = expectedHeaders[i];
-                    String actualHeader = headerRow.getCell(i).toString();
-
-                    if (!actualHeader.replaceAll("\\s", "").equalsIgnoreCase(expectedHeader)) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Error in column : " + actualHeader,
-                                "Row : " + (headerRow.getRowNum() + 1) + " and Cell : " + (i + 1)
-                                , "Please check the Sample Format of Excel File"));
-                    }
+                if(!headerValidation.isStatus()){
+                    return headerValidation;
                 }
 
-                for (int rowNum = 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
-                    Row row = sheet.getRow(rowNum);
+            for (int rowNum = 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
+                Row row = sheet.getRow(rowNum);
+                if (row != null && row.getPhysicalNumberOfCells() > 0) {
                     String plateNumberPattern = "\\d{4} [A-Z]{3}";
 
                     for (int cellNum = 0; cellNum <= row.getLastCellNum() - 1; cellNum++) {
-                        if (String.valueOf(row.getCell(cellNum)).isEmpty()) {
+                        if (String.valueOf(row.getCell(cellNum)).isEmpty() || row.getCell(cellNum) == null) {
                             return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Empty Value at Row " + (rowNum + 1) + " and Cell " + (cellNum + 1)));
                         }
                     }
@@ -520,84 +507,132 @@ public class VehicleService {
 
                     String regex = "^(0[1-9]|[1-2][0-9]|3[0-1])-(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)-\\d{4}$";
                     Pattern pattern = Pattern.compile(regex);
-                    Matcher insuranceMatcher = pattern.matcher(String.valueOf(row.getCell(13)));
-                    Matcher registrationMatcher = pattern.matcher(String.valueOf(row.getCell(11)));
-                    Matcher leaseStartMatcher = pattern.matcher(String.valueOf(row.getCell(17)));
-                    Matcher leaseExpiryMatcher = pattern.matcher(String.valueOf(row.getCell(18)));
+                    Matcher insuranceMatcher = pattern.matcher(String.valueOf(row.getCell(16)));
+                    Matcher registrationMatcher = pattern.matcher(String.valueOf(row.getCell(15)));
+                    Matcher leaseStartMatcher = pattern.matcher(String.valueOf(row.getCell(18)));
+                    Matcher leaseExpiryMatcher = pattern.matcher(String.valueOf(row.getCell(19)));
 
 
                     if (!registrationMatcher.matches()) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(11), "Row " + (rowNum + 1) + " and Cell 12"));
-                    } else if (!String.valueOf(row.getCell(12)).replaceAll("\\s", "").equalsIgnoreCase("valid")
-                            && !String.valueOf(row.getCell(12)).replaceAll("\\s", "").equalsIgnoreCase("invalid")) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Value : " + row.getCell(12), "Row " + (rowNum + 1) + " and Cell 13", "Value should be Valid or Invalid"));
-                    } else if (!String.valueOf(row.getCell(14)).replaceAll("\\s", "").equalsIgnoreCase("valid")
-                            && !String.valueOf(row.getCell(14)).replaceAll("\\s", "").equalsIgnoreCase("invalid")) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Value : " + row.getCell(14), "Row " + (rowNum + 1) + " and Cell 15", "Value should be Valid or Invalid"));
+                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(15), "Row " + (rowNum + 1) + " and Cell 16"));
                     } else if (!insuranceMatcher.matches()) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(13)
-                                , "Row " + (rowNum + 1) + " and Cell 14"));
+                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(16)
+                                , "Row " + (rowNum + 1) + " and Cell 17"));
                     } else if (!leaseStartMatcher.matches()) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(17),
-                                "Row " + (rowNum + 1) + " and Cell 18"));
-                    } else if (!leaseExpiryMatcher.matches()) {
                         return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(18),
                                 "Row " + (rowNum + 1) + " and Cell 19"));
-                    } else if (getIntegerValue(row.getCell(2)) == null) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: " + row.getCell(2), "Row " + (rowNum + 1) + " and cell 3"));
-                    } else if (getIntegerValue(row.getCell(16)) == null) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: " + row.getCell(16), "Row" + (rowNum + 1) + " and cell 17"));
+                    } else if (!leaseExpiryMatcher.matches()) {
+                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(19),
+                                "Row " + (rowNum + 1) + " and Cell 20"));
+                    } else if (getIntegerValue(row.getCell(0)) == null) {
+                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: " + row.getCell(0), "Row " + (rowNum + 1) + " and cell 1"));
+                    } else if (getIntegerValue(row.getCell(17)) == null) {
+                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: " + row.getCell(17), "Row" + (rowNum + 1) + " and cell 18"));
                     }
 
-//                    check product field columns
-                    ProductField usageTypes = productFieldRepository.findByName("Usage Type");
-                    ProductField categories = productFieldRepository.findByName("Category");
-
-                    Optional<String> checkUsageType = usageTypes.getProductFieldValuesList().stream()
-                            .map(ProductFieldValues::getName)
-                            .filter(value -> value.equalsIgnoreCase(getStringValue(row.getCell(19))))
-                            .findFirst();
-
-                    Optional<String> checkCategory = categories.getProductFieldValuesList().stream()
-                            .map(ProductFieldValues::getName)
-                            .filter(value -> value.equalsIgnoreCase(getStringValue(row.getCell(20))))
-                            .findFirst();
-
-                    if (!checkUsageType.isPresent()) {
-                        return new ExcelErrorResponse(
-                                Boolean.FALSE,
-                                Arrays.asList("Incorrect Usage Type", "\nCorrect Values: " +
-                                        usageTypes.getProductFieldValuesList()
-                                                .stream()
-                                                .map(ProductFieldValues::getName)
-                                                .collect(Collectors.joining(", "))));
-                    }
-
-                    if (!checkCategory.isPresent()) {
-                        return new ExcelErrorResponse(
-                                Boolean.FALSE,
-                                Arrays.asList("Incorrect Category", "\nCorrect Values: " +
-                                        categories.getProductFieldValuesList()
-                                                .stream()
-                                                .map(ProductFieldValues::getName)
-                                                .collect(Collectors.joining(", "))));
-                    }
-
-
-                    Optional<Vendor> vendor = Optional.ofNullable(vendorRepository.findByVendorNameIgnoreCase(getStringValue(row.getCell(15))));
+                    Optional<Vendor> vendor = Optional.ofNullable(vendorRepository.findByVendorNameIgnoreCase(getStringValue(row.getCell(13))));
 
                     if (!vendor.isPresent()) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList(getStringValue(row.getCell(15)) + " vendor does not exist in the record", "Row " + (rowNum + 1) + " and Cell 16"));
+                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList(getStringValue(row.getCell(13)) + " vendor does not exist in the record", "Row " + (rowNum + 1) + " and Cell 14"));
                     }
 
-                }
+                    Optional<Region> region = regionRepository.findByNameIgnoreCaseAndStatusIsTrue(getStringValue(row.getCell(14)));
+                    if (!region.isPresent()) {
+                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList(getStringValue(row.getCell(14)) +
+                                " region doesn't exist in the record", "Row " + (rowNum + 1) + " and Cell 15"));
+                    }
+
+                }else break;
+
+            }
+
+            ExcelErrorResponse productFieldValidation = validateProductFieldValues(sheet);
+            if(!productFieldValidation.isStatus()){
+                return productFieldValidation;
+            }
 
                 return new ExcelErrorResponse(Boolean.TRUE, Arrays.asList("Excel File is in Correct Format"));
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new RuntimeException(e);
+        }
+    }
+
+    private ExcelErrorResponse validateProductFieldValues(Sheet sheet){
+
+        Map<Integer , String> productFields = new HashMap<>();
+        productFields.put(2,"Make");
+        productFields.put(3,"Year");
+        productFields.put(4,"Design");
+        productFields.put(5,"Model");
+        productFields.put(6,"Vehicle Type");
+        productFields.put(7,"Capacity");
+        productFields.put(8,"Power");
+        productFields.put(9,"Fuel Type");
+        productFields.put(10,"Usage Type");
+        productFields.put(11,"Category");
+        productFields.put(12,"Location");
+
+        for (Map.Entry<Integer, String> entry : productFields.entrySet()) {
+            ProductField productField = productFieldRepository.findByNameAndStatusIsActive(entry.getValue());
+            if (productField != null) {
+                for (int rowIndex = 1; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
+                    Row row = sheet.getRow(rowIndex);
+                    if (row != null && row.getPhysicalNumberOfCells() > 0) {
+                        Optional<String> checkDuplicateValues;
+
+                        if(entry.getKey() == 3){
+                            checkDuplicateValues = productField.getProductFieldValuesList().stream()
+                                    .map(ProductFieldValues::getName)
+                                    .filter(value -> {
+                                        String cellValue = String.valueOf(getIntegerValue(row.getCell(entry.getKey())));
+                                        return value.equalsIgnoreCase(cellValue);
+                                    })
+                                    .findFirst();
+                        }else {
+                            checkDuplicateValues = productField.getProductFieldValuesList().stream()
+                                    .map(ProductFieldValues::getName)
+                                    .filter(value -> value.equalsIgnoreCase(getStringValue(row.getCell(entry.getKey()))))
+                                    .findFirst();
+                        }
+
+                        if (!checkDuplicateValues.isPresent()) {
+                            return new ExcelErrorResponse(
+                                    Boolean.FALSE,
+                                    Arrays.asList("Incorrect " + entry.getValue() + " value: " + row.getCell(entry.getKey())
+                                            , "\nCorrect Values: " +
+                                                    productField.getProductFieldValuesList()
+                                                            .stream()
+                                                            .map(ProductFieldValues::getName)
+                                                            .collect(Collectors.joining(", "))));
+                        }
+                    }else break;
+                }
+            }else{
+                    return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Product Field '" + entry.getValue() + "' doesn't exist in the record"));
+                }
+
+        }
+        return new ExcelErrorResponse(Boolean.TRUE,Arrays.asList("Product Field validation successful"));
+    }
+
+    private ExcelErrorResponse validateHeaderRow(Sheet sheet){
+        Row headerRow = sheet.getRow(0);
+        String[] expectedHeaders = {
+                "ProcessOrderNumber", "PlateNumber", "Make", "Year", "Design", "Model", "Type", "Capacity",
+                "Power", "FuelType", "UsageType", "Category", "Location", "Vendor", "Region",
+                "RegistrationExpiry", "InsuranceExpiry", "LeaseCost", "LeaseStartDate",
+                "LeaseExpiryDate"
+        };
+
+        for (int i = 0; i < expectedHeaders.length; i++) {
+            String expectedHeader = expectedHeaders[i];
+            String actualHeader = headerRow.getCell(i).toString();
+
+            if (!actualHeader.replaceAll("\\s", "").equalsIgnoreCase(expectedHeader)) {
+                return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Error in column : " + actualHeader,
+                        "Row : " + (headerRow.getRowNum() + 1) + " and Cell : " + (i + 1)
+                        , "Please check the Sample Format of Excel File"));
             }
         }
+        return new ExcelErrorResponse(Boolean.TRUE,null);
     }
 
     private ExcelErrorResponse checkDuplicateRecord(Map<Integer, String> plateNumberList, Row row) {
@@ -941,12 +976,6 @@ public class VehicleService {
         return vehicleList.stream().map(this::toVehicleExcelDto).collect(Collectors.toList());
     }
 
-//    public byte[] downloadExcel(){
-//        List<Vehicle> vehicles = vehicleRepository.findAll();
-//        List<VehicleExcelDto> vehicleExcelDtoList = toVehicleExcelDtoList(vehicles);
-//        return excelExportService.exportToExcel(vehicleExcelDtoList);
-//    }
-
     public byte[] downloadExcel(List<VehicleDto> vehicleDtoList) {
         List<VehicleExcelDto> vehicleExcelDtoList;
 
@@ -997,6 +1026,25 @@ public class VehicleService {
         Vehicle vehicle = toEntity(vehicleDto);
         Specification<Vehicle> vehicleSpecification = VehicleSpecification.getWithDynamicSearchSpecification(vehicle);
         return vehicleRepository.findAll(vehicleSpecification);
+    }
+
+    public VehicleDto deleteVehicleById(Long id) {
+        Optional<Vehicle> vehicle = vehicleRepository.findById(id);
+        if (vehicle.isPresent()) {
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+            if (principal instanceof UserDetails) {
+                String username = ((UserDetails) principal).getUsername();
+                User user = userRepository.findByEmail(username);
+
+                vehicle.get().setVehicleStatus("Deleted");
+                vehicle.get().setUpdatedAt(LocalDate.now());
+                vehicle.get().setUpdatedBy(user);
+
+                return toDto(vehicleRepository.save(vehicle.get()));
+            }
+        }
+        throw new RuntimeException(String.format("Vehicle not found by id => %d",id));
     }
 }
 

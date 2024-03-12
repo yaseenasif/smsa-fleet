@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface VehicleRepository extends JpaRepository<Vehicle, Long>, JpaSpecificationExecutor<Vehicle> {
 
-    @Query("SELECT v FROM Vehicle v WHERE v.vehicleStatus = 'TBA' OR v.vehicleStatus = 'Active'")
+    @Query("SELECT v FROM Vehicle v WHERE v.vehicleStatus = 'TBA' OR v.vehicleStatus = 'Active' OR v.vehicleStatus = 'Replacement'")
     List<Vehicle> getActiveVehicles();
 
     Optional<Vehicle> findByPlateNumber(String plateNumber);
@@ -42,4 +42,7 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long>, JpaSpec
     @Query("SELECT v.region, COUNT(v) AS total_count FROM Vehicle v GROUP BY v.region")
     List<Object[]> getRegionCounts();
 
+    @Query("SELECT v FROM Vehicle v WHERE (v.vehicleStatus = 'TBA' OR v.vehicleStatus = 'Active' " +
+            "OR v.vehicleStatus = 'Replacement') AND v.plateNumber = :plateNumber")
+    Optional<Vehicle> getEligibleVehicle(String plateNumber);
 }

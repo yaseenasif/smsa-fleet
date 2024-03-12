@@ -43,13 +43,11 @@ public class Employee {
     private String nationality;
     private String contactNumber;
     private String companyEmailAddress;
-//    private Integer age;
     private Integer grade;
     private String licenseNumber;
     private Integer vehicleBudget;
     private String costCentre;
     private String budgetRef;
-    private String attachments;
     private String uuid;
     private LocalDate createdAt;
     private LocalDate updatedAt;

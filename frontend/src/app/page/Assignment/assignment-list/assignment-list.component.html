@@ -33,8 +33,19 @@
                     style="font-size: 20px; font-weight: bold"
                   ></i
                   >&nbsp;Add Vehicle Assignment
-                </p-button>
+                </p-button>  
               </div>
+
+              <div class="flex align-items-center">
+                <p-fileUpload #fileUpload icon="pi pi-download" iconPos="left"
+                  styleClass="p-button-outlined p-button-sm" mode="basic" chooseLabel="Upload" name="myfile[]"
+                  [customUpload]="true" (uploadHandler)="onUpload($event)" (onSelect)="onFileSelect()">
+                </p-fileUpload>
+                <ng-container *ngIf="fileSelected">
+                  <button class="p-button p-button-outlined p-button-sm" (click)="onCancel()">Cancel</button>
+                </ng-container>
+              </div>
+              
             </div>
             <p-toolbar [style]="{ 'padding-top': '1.5rem' }">
               <div class="p-toolbar-group-start h-color">
@@ -108,33 +119,6 @@
                   <label for="float-department">Department</label>
                 </span>
               </div>
-              <!--
-              <div
-                class="p-toolbar-group-start h-color"
-                *ngIf="plateNoSearch || empNoSearch || vehicleAssignmentType"
-              >
-                <span class="p-float-label">
-                  <p-dropdown
-                    [options]="departmentList"
-                    (onChange)="getSearchAssignmentByAnyValue($event.value)"
-                    optionLabel="department"
-                    optionValue="department"
-                    [(ngModel)]="globalTransformObj.assignToEmpId.department"
-                    placeholder="Department"
-                    [filter]="true"
-                    (onClear)="clearFields()"
-                    inputId="float-department"
-                    [showClear]="true"
-                    filterBy="department"
-                    [disabled]="
-                      plateNoSearch || empNoSearch || vehicleAssignmentType
-                    "
-                  >
-                  </p-dropdown>
-                  <label for="float-department">Department</label>
-                </span>
-              </div> -->
-
               <div class="p-toolbar-group-start h-color">
                 <span class="p-float-label">
                   <p-dropdown

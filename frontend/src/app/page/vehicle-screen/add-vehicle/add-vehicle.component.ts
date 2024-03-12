@@ -126,6 +126,7 @@ export class AddVehicleComponent implements OnInit {
     leaseExpiryDate: undefined,
     usageType: undefined,
     region: undefined,
+    location: undefined,
     category: undefined,
     vendor: {
       id: undefined,
@@ -144,9 +145,6 @@ export class AddVehicleComponent implements OnInit {
   usageTypes: ProductField | null | undefined;
   categories: ProductField | null | undefined;
   vId!: number;
-
-  // reasons: String[]=["Original Vehicle Under Maintenance","Original Vehicle Under TBA","Original Vehicle is Total lost"]
-  // shortenedReasons: string[] = ["Under Maintenance", "Under TBA", "Total lost"];
 
   reasons: any[] = [
     { full: "Original Vehicle Under Maintenance", short: "Under Maintenance" },
@@ -250,6 +248,7 @@ export class AddVehicleComponent implements OnInit {
   vehicleCapicity: ProductField | null | undefined;
   vehiclePower: ProductField | null | undefined;
   vehicleFuelType: ProductField | null | undefined;
+  location: ProductField | null | undefined
 
   constructor(
     private vehicleService: VehicleService,
@@ -265,11 +264,6 @@ export class AddVehicleComponent implements OnInit {
 
   name!: string;
 
-
-  //  onUpload(event: any) {
-
-  // }
-
   ngOnInit(): void {
     this.items = [{ label: 'Vehicle', routerLink: '/vehicle' }, { label: 'Add Vehicle' }];
     this.getAllVendor();
@@ -284,6 +278,7 @@ export class AddVehicleComponent implements OnInit {
     this.getCapicityList("Capacity");
     this.getPowerList("Power");
     this.getFuelTypeList("Fuel Type");
+    this.getLocationList("Location");
 
     this.route.queryParams.subscribe(params => {
       this.replacementCheck = params['replacementCheck'] === 'true';
@@ -597,6 +592,15 @@ export class AddVehicleComponent implements OnInit {
     this.productFieldService.getProductFieldByName(fieldName).subscribe(
       (res: ProductField) => {
         this.vehicleFuelType = res;
+      }, (err: BackenCommonErrorThrow) => {
+        this.errorHandleService.showError(err.error!);
+      });
+  }
+
+  private getLocationList(fieldName: string) {
+    this.productFieldService.getProductFieldByName(fieldName).subscribe(
+      (res: ProductField) => {
+        this.location = res;
       }, (err: BackenCommonErrorThrow) => {
         this.errorHandleService.showError(err.error!);
       });

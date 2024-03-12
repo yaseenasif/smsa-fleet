@@ -22,4 +22,7 @@ public interface ProductFieldRepository extends JpaRepository<ProductField, Long
     @Transactional
     @Query("UPDATE ProductField pf SET pf.status = 'inActive' WHERE pf.id = :id")
     void setStatusInactive(@Param("id") Long id);
+
+    @Query("Select p from ProductField p where p.name = :value AND p.status = 'Active'")
+    ProductField findByNameAndStatusIsActive(String value);
 }

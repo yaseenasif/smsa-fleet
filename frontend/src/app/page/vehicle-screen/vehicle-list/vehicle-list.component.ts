@@ -190,14 +190,13 @@ export class VehicleListComponent implements OnInit {
     this.vehicleService.downloadAttachments(fileName).subscribe(blob => saveAs(blob, fileName));
   }
 
-  searchAllVehicles(vehiclestatus: string) {
-    
-    this.vehicleService.searchAllVehicles(this.value, vehiclestatus, this.query).subscribe((res: PaginatedResponse<Vehicle>) => {
-      this.vehicles = res.content
-      this.query = { page: res.pageable.pageNumber, size: res.size }
-      this.totalRecords = res.totalElements;
-    })
-  }
+    searchAllVehicles(vehiclestatus: string) {
+      this.vehicleService.searchAllVehicles(this.value, vehiclestatus, this.query).subscribe((res: PaginatedResponse<Vehicle>) => {
+        this.vehicles = res.content
+        this.query = { page: res.pageable.pageNumber, size: res.size }
+        this.totalRecords = res.totalElements;
+      })
+    }
 
   replaceVehicle(id: Number) {
     this.replacementCheck = true;
@@ -247,4 +246,13 @@ export class VehicleListComponent implements OnInit {
     this.selectedStatus.name = status ? status : "TBA";
     this.searchAllVehicles(this.selectedStatus.name);
   }
+
+  deleteVehicleById(){
+    this.vehicleService.deleteVehicleById(this.vId).subscribe((res)=>{
+      this.messageService.add({ severity: 'success', summary: 'Vehicle Deleted' })
+      this.closeDialog()
+      this.searchAllVehicles(this.selectedStatus.name)
+    })
+  }
+
 }

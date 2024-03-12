@@ -7,9 +7,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface GradeRepository extends JpaRepository<Grade,Long> {
     @Query("SELECT g FROM Grade g WHERE g.status = true")
     List<Grade> getActiveGrades();
+
+    Optional<Grade> findByNameAndStatusIsTrue(Integer name);
 }

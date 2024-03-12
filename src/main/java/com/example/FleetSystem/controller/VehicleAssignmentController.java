@@ -214,4 +214,11 @@ public class VehicleAssignmentController {
                 .headers(headers)
                 .body(excelBytes);
     }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/add-bulk-assignment")
+    public ResponseEntity<ResponseMessage> addBulkAssignment(@RequestParam("file") MultipartFile file) {
+        return ResponseEntity.ok(new ResponseMessage(vehicleAssignmentService.bulkUploadAssignment(file)));
+    }
+
 }

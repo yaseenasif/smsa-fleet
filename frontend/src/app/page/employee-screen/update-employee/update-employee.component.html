@@ -425,8 +425,6 @@
                       filterBy="name"
                       [showClear]="true"
                       (onChange)="onAutoFilled()"
-                      placeholder="Select Grade
-                    "
                     >
                       <ng-template pTemplate="selectedItem">
                         <div
@@ -482,72 +480,115 @@
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
-                  <div class="flex flex-column gap-2">
+                  <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Location</label>
-                    <input
-                      pInputText
-                      id="name"
-                      aria-describedby="name-help"
-                      name="location"
+                    <p-dropdown
+                      class="w-full"
                       [(ngModel)]="employee.location"
-                      #location="ngModel"
-                      required
-                    />
+                      [options]="location?.productFieldValuesList"
+                      name="location"
+                      #locationModel="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="employee.location"
+                        >
+                          <div>{{ employee.location }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
                     <small
                       id="name-help"
-                      class="color-red"
+                      class="p-dropdown-empty-message"
                       *ngIf="
-                        location.invalid && (location.dirty || location.touched)
+                        locationModel.invalid &&
+                        (locationModel.dirty || locationModel.touched)
                       "
                     >
                       Location is required
                     </small>
                   </div>
                 </div>
+
                 <div class="col-12 md:col-12 lg:col-6">
-                  <div class="flex flex-column gap-2">
+                  <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Organization</label>
-                    <input
-                      pInputText
-                      id="name"
-                      aria-describedby="name-help"
-                      name="organization"
+                    <p-dropdown
+                      class="w-full"
                       [(ngModel)]="employee.organization"
-                      #organization="ngModel"
-                      required
-                    />
+                      [options]="organization?.productFieldValuesList"
+                      name="organization"
+                      #organizationModel="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="employee.organization"
+                        >
+                          <div>{{ employee.organization }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
                     <small
                       id="name-help"
-                      class="color-red"
+                      class="p-dropdown-empty-message"
                       *ngIf="
-                        organization.invalid &&
-                        (organization.dirty || organization.touched)
+                        organizationModel.invalid &&
+                        (organizationModel.dirty || organizationModel.touched)
                       "
                     >
-                      organization is required
+                      Organization is required
                     </small>
                   </div>
                 </div>
+                
                 <div class="col-12 md:col-12 lg:col-6">
-                  <div class="flex flex-column gap-2">
-                    <label htmlFor="name">DeptCode</label>
-                    <input
-                      pInputText
-                      id="name"
-                      aria-describedby="name-help"
-                      name="deptCode"
+                  <div class="flex flex-column gap-2 form-hook">
+                    <label htmlFor="name">Dept Code</label>
+                    <p-dropdown
+                      class="w-full"
                       [(ngModel)]="employee.deptCode"
-                      #deptCode="ngModel"
-                      required
-                    />
+                      [options]="deptCode?.productFieldValuesList"
+                      name="deptCode"
+                      #deptCodeModel="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      optionValue="name"
+                      [filter]="true"
+                      filterBy="name"
+                      [showClear]="true"
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="employee.deptCode"
+                        >
+                          <div>{{ employee.deptCode }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
                     <small
                       id="name-help"
-                      class="color-red"
+                      class="p-dropdown-empty-message"
                       *ngIf="
-                        deptCode.invalid && (deptCode.dirty || deptCode.touched)
+                        deptCodeModel.invalid &&
+                        (deptCodeModel.dirty || deptCodeModel.touched)
                       "
                     >
-                      deptCode is required
+                      Dept Code is required
                     </small>
                   </div>
                 </div>
@@ -624,27 +665,6 @@
                   </div>
                 </div>
 
-                <!-- <div class="col-12 md:col-12 lg:col-6">
-                  <div class="flex flex-column gap-2">
-                    <label htmlFor="name">Age</label>
-                    <input
-                      pInputText
-                      id="name"
-                      aria-describedby="name-help"
-                      name="age"
-                      [(ngModel)]="employee.age"
-                      #age="ngModel"
-                      required
-                    />
-                    <small
-                      id="name-help"
-                      class="color-red"
-                      *ngIf="age.invalid && (age.dirty || age.touched)"
-                    >
-                      age is required
-                    </small>
-                  </div>
-                </div> -->
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">Cost Center</label>

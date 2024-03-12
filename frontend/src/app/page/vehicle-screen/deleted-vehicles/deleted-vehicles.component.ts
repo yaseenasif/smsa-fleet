@@ -5,6 +5,7 @@ import { PageEvent } from 'src/app/modal/pageEvent';
 import { Vehicle } from 'src/app/modal/vehicle';
 import { VehicleService } from '../service/vehicle.service';
 import { BackenCommonErrorThrow } from 'src/app/modal/BackendCommonErrorThrow';
+import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
 
 @Component({
   selector: 'app-deleted-vehicles',
@@ -14,7 +15,9 @@ import { BackenCommonErrorThrow } from 'src/app/modal/BackendCommonErrorThrow';
 export class DeletedVehiclesComponent {
 
   items: MenuItem[] | undefined;
-  vehicleList: Vehicle[] = [];
+  value: string | null = null;
+  vehicles!: Array<Vehicle>;
+  totalRecords: number = 0;
 
   query: PageEvent = {
     page: 0,
@@ -28,16 +31,21 @@ export class DeletedVehiclesComponent {
 
   ngOnInit(): void {
     this.items = [{ label: 'Deleted Vehicles' }];
-    this.getAllVehicles();
+    this.searchAllVehicles('Deleted');
   }
 
-  getAllVehicles() {
-    // this.vehicleService.xyz.subscribe(
-    //   (res: Vehicle[]) => {
-    //     this.vehicleList = res;
-    //   }, (error: BackenCommonErrorThrow) => {
-    //     this.errorService.showError(error.error!);
-    //   });
+  searchAllVehicles(vehiclestatus: string) {
+    this.vehicleService.searchAllVehicles(this.value, vehiclestatus, this.query).subscribe((res: PaginatedResponse<Vehicle>) => {
+      this.vehicles = res.content
+      this.query = { page: res.pageable.pageNumber, size: res.size }
+      this.totalRecords = res.totalElements;
+    })
+  }
+
+  onPageChange(value?: string | null, event?: any) {
+    this.query.page = event.page;
+    this.query.size = event.rows;
+    this.searchAllVehicles('Deleted')
   }
 
 }

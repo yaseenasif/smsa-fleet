@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MenuItem, SelectItem } from 'primeng/api';
+import { MenuItem, MessageService, SelectItem } from 'primeng/api';
 import { VehicleAssignmentService } from '../vehicle-assignment.service';
 import { VehicleAssignment } from 'src/app/modal/vehicle-assignment';
 import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
@@ -14,6 +14,7 @@ import { ConcateSearch, SearchItems } from 'src/app/modal/SearchCriteria';
 import { RegionService } from '../../region/service/region.service';
 import { Region } from 'src/app/modal/Region';
 import * as saveAs from 'file-saver';
+import { FileUpload } from 'primeng/fileupload';
 
 @Component({
   selector: 'app-assignment-list',
@@ -22,6 +23,10 @@ import * as saveAs from 'file-saver';
 })
 export class AssignmentListComponent {
   items: MenuItem[] | undefined;
+
+  fileUpload!: FileUpload;
+
+  fileSelected: boolean = false;
 
   vehicle!: Vehicle;
   vehicleId: Number | undefined;
@@ -74,6 +79,7 @@ export class AssignmentListComponent {
     private regionService: RegionService,
     private route: ActivatedRoute,
     private router: Router,
+    private messageService: MessageService
   ) { }
 
   ngOnInit() {
@@ -322,5 +328,51 @@ export class AssignmentListComponent {
 
   downloadExcelData() {
     this.vehicleAssignmentService.downloadExcelData().subscribe(blob => saveAs(blob, "Assignment Data.xlsx"))
+  }
+
+  onCancel() {
+    // Handle cancel logic her
+    this.fileSelected = false;
+
+    this.fileUpload.clear();
+
+  }
+
+  onFileSelect() {
+    this.fileSelected = true;
+  }
+
+  onUpload(event: any) {
+    const uploadedFile = event.files[0];
+
+    if (uploadedFile) {
+      this.vehicleAssignmentService.uploadBulkAssignment(uploadedFile).subscribe(
+        (response) => {
+
+          if (Array.isArray(response.message)) {
+
+            response.message.forEach((message: any) => {
+              this.messageService.add({ severity: 'success', summary: 'Upload Successful', detail: message });
+            });
+
+          } else if (response.message) {
+            // If response.message is a single message, display it
+            this.messageService.add({ severity: 'success', summary: 'Upload Successful', detail: response.message });
+          } else {
+            // Display a generic success message if no message is provided
+            this.messageService.add({ severity: 'success', summary: 'Upload Successful', detail: 'File uploaded successfully.' });
+          }
+
+          this.getAllVehicleAssignmentByPlateNum();
+        
+        },
+        (error) => {
+          console.error('Error while saving the file:', error);
+
+          this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
+          // Handle error
+        }
+      );
+    }
   }
 }

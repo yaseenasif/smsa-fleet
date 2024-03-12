@@ -37,9 +37,9 @@ public class VehicleDto {
     private Date leaseExpiryDate;
     private String usageType;
     private String region;
+    private String location;
     private String category;
     private String uuid;
-//    private boolean status;
     private String vehicleStatus;
     private String replacementVehicleStatus;
     private VehicleReplacement vehicleReplacement;

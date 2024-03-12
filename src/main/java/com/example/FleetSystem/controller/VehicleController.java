@@ -2,6 +2,7 @@ package com.example.FleetSystem.controller;
 
 import com.example.FleetSystem.criteria.VehicleSearchCriteria;
 import com.example.FleetSystem.dto.VehicleAssignmentDto;
+import com.example.FleetSystem.dto.EmployeeDto;
 import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.model.Vehicle;
 import com.example.FleetSystem.payload.FinalReturnRequest;
@@ -100,11 +101,11 @@ public class VehicleController {
         return ResponseEntity.ok(vehicleService.activateVehicle(id));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping("/add-bulk-vehicle")
-    public ResponseEntity<ResponseMessage> addBulkVehicle(@RequestParam("file") MultipartFile file) {
-        return ResponseEntity.ok(new ResponseMessage(vehicleService.addBulkVehicle(file)));
-    }
+        @PreAuthorize("hasRole('ROLE_ADMIN')")
+        @PostMapping("/add-bulk-vehicle")
+        public ResponseEntity<ResponseMessage> addBulkVehicle(@RequestParam("file") MultipartFile file) {
+            return ResponseEntity.ok(new ResponseMessage(vehicleService.addBulkVehicle(file)));
+        }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/not-assigned-vehicle")
@@ -259,4 +260,10 @@ public class VehicleController {
     public ResponseEntity<List<Vehicle>> search(@RequestBody VehicleDto vehicleDto) {
         return ResponseEntity.ok(vehicleService.getVehicleBySearch(vehicleDto));
     }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PatchMapping("/delete-vehicle/{id}")
+    public ResponseEntity<VehicleDto> deleteVehicleById(@PathVariable Long id) {
+        return ResponseEntity.ok(vehicleService.deleteVehicleById(id));
+    }
+
 }

@@ -6,9 +6,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface JobTitleRepository extends JpaRepository<JobTitle, Long> {
     @Query("SELECT jt FROM JobTitle jt WHERE jt.status = true")
     List<JobTitle> getActiveJobTitles();
+
+    Optional<JobTitle> findByJobTitleAndStatusIsTrue(String jobTitle);
 }

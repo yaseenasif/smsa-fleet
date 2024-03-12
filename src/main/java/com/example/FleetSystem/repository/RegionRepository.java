@@ -15,4 +15,6 @@ public interface RegionRepository extends JpaRepository<Region,Long> {
     Optional<Region> findByNameAndStatusIsTrue(String name);
 
     List<Region> findByCountryAndStatusIsTrue(String country);
+
+    Optional<Region> findByNameIgnoreCaseAndStatusIsTrue(String name);
 }

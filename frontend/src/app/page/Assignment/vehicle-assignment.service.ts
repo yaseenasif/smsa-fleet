@@ -132,4 +132,12 @@ export class VehicleAssignmentService {
       responseType: 'blob'
     });
    }
+
+
+   uploadBulkAssignment(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post<any>(`${this.url}/add-bulk-assignment`, formData);
+   } 
 }
