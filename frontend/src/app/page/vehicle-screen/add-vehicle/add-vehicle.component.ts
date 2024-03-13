@@ -33,7 +33,6 @@ export class AddVehicleComponent implements OnInit {
 
   vehicleAssignment!: VehicleAssignment
   cities: any[] = [];
-  region !: Region[];
   items: MenuItem[] | undefined;
 
   finalReturnRequest: FinalReturnRequest = {
@@ -53,7 +52,6 @@ export class AddVehicleComponent implements OnInit {
       jobTitle: undefined,
       status: undefined,
       region: undefined,
-      location: undefined,
       organization: undefined,
       division: undefined,
       deptCode: undefined,
@@ -63,8 +61,8 @@ export class AddVehicleComponent implements OnInit {
       nationalIdNumber: undefined,
       svEmployeeNumber: undefined,
       svEmployeeName: undefined,
-      city: undefined,
-      // age: undefined,
+      location: undefined,
+      country: undefined,
       nationality: undefined,
       companyEmailAddress: undefined,
       grade: undefined,
@@ -126,6 +124,7 @@ export class AddVehicleComponent implements OnInit {
     leaseExpiryDate: undefined,
     usageType: undefined,
     region: undefined,
+    country: undefined,
     location: undefined,
     category: undefined,
     vendor: {
@@ -174,7 +173,6 @@ export class AddVehicleComponent implements OnInit {
     jobTitle: undefined,
     status: undefined,
     region: undefined,
-    location: undefined,
     organization: undefined,
     division: undefined,
     deptCode: undefined,
@@ -184,8 +182,8 @@ export class AddVehicleComponent implements OnInit {
     nationalIdNumber:undefined,
     svEmployeeNumber: undefined,
     svEmployeeName: undefined,
-    city: undefined,
-    // age:undefined,
+    location: undefined,
+    country: undefined,
     nationality: undefined,
     companyEmailAddress: undefined,
     grade: undefined,
@@ -248,7 +246,10 @@ export class AddVehicleComponent implements OnInit {
   vehicleCapicity: ProductField | null | undefined;
   vehiclePower: ProductField | null | undefined;
   vehicleFuelType: ProductField | null | undefined;
-  location: ProductField | null | undefined
+
+  country!: Region[];
+  cityData!: Region[];
+  region !: Region[];
 
   constructor(
     private vehicleService: VehicleService,
@@ -269,7 +270,7 @@ export class AddVehicleComponent implements OnInit {
     this.getAllVendor();
     this.getUsageType();
     this.getCategory();
-    this.getRegion();
+    this.getCountry();
     this.getMakeList("Make");
     this.getModelList("Model");
     this.getYearList("Year");
@@ -278,7 +279,6 @@ export class AddVehicleComponent implements OnInit {
     this.getCapicityList("Capacity");
     this.getPowerList("Power");
     this.getFuelTypeList("Fuel Type");
-    this.getLocationList("Location");
 
     this.route.queryParams.subscribe(params => {
       this.replacementCheck = params['replacementCheck'] === 'true';
@@ -368,16 +368,6 @@ export class AddVehicleComponent implements OnInit {
     }, error => {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
     })
-  }
-
-  getRegion() {
-    this.regionService.getRegion().subscribe((regions: Region[]) => {
-      this.region = regions;
-      this.region.forEach((region: any) => {
-        this.cities.push(JSON.parse(region.cities))
-      })
-
-    });
   }
 
   getAssignmentbyVehicleId(id: Number) {
@@ -597,13 +587,66 @@ export class AddVehicleComponent implements OnInit {
       });
   }
 
-  private getLocationList(fieldName: string) {
-    this.productFieldService.getProductFieldByName(fieldName).subscribe(
-      (res: ProductField) => {
-        this.location = res;
-      }, (err: BackenCommonErrorThrow) => {
-        this.errorHandleService.showError(err.error!);
-      });
+  // private getLocationList(fieldName: string) {
+  //   this.productFieldService.getProductFieldByName(fieldName).subscribe(
+  //     (res: ProductField) => {
+  //       this.location = res;
+  //     }, (err: BackenCommonErrorThrow) => {
+  //       this.errorHandleService.showError(err.error!);
+  //     });
+  // }
+
+  getCountry(): Region[] {
+    this.regionService.getRegion().subscribe(
+      (res: Region[]) => {
+        const uniqueCountries = this.getUniqueCountries(res, 'country');
+        this.country = uniqueCountries;
+      },
+      (err) => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: err.error });
+      }
+    );
+    return this.country;
   }
 
+  getUniqueCountries(regions: Region[], propertyName: string): Region[] {
+    const uniqueCountries: Region[] = [];
+    const uniqueCountryNames: Set<string> = new Set();
+
+    for (const region of regions) {
+      const countryName = region[propertyName];
+
+      if (!uniqueCountryNames.has(countryName)) {
+        uniqueCountryNames.add(countryName);
+        uniqueCountries.push(region);
+      }
+    }
+    return uniqueCountries;
+  }
+
+  getRegions(country: string): Region[] {
+    this.regionService.getRegionByCountry(country).subscribe((res: Region[]) => {
+      this.region = [];
+      this.vehicle.region = null;
+      this.region = res;
+    }, err => {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: err.error });
+    });
+    return this.region;
+  }
+
+  getAllCity(region: string): Region[] {
+    this.regionService.getCitiesByRegion(region).subscribe(
+      (res: Region) => {
+        this.vehicle.location = null;
+        const getCities = typeof res.cities === 'string' ? JSON.parse(res.cities) : res.cities;
+        this.cityData = getCities.map((city: Region, index: number) => ({
+          cities: city,
+          id: index + 1,
+        }));
+      }, err => {
+        this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: err.error });
+      });
+    return this.cityData;
+  }
 }

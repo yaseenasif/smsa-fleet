@@ -37,9 +37,8 @@ public class Employee {
     private Character gender;
     private Character maritalStatus;
     private String region;
-    private String city;
-    private String country;
     private String location;
+    private String country;
     private String nationality;
     private String contactNumber;
     private String companyEmailAddress;

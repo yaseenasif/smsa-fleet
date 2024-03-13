@@ -18,13 +18,11 @@ export interface Employee {
         gender: string | null | undefined;
         maritalStatus: string | null | undefined;
         region: string | null | undefined;
-        city: string | null | undefined;
-        country: string | null | undefined;
         location: string | null | undefined;
+        country: string | null | undefined;
         nationality: string | null | undefined;
         contactNumber: string | null | undefined;
         companyEmailAddress: string | null | undefined;
-        // age: number | null | undefined;
         grade: string | null | undefined;
         licenseNumber: String | null | undefined
         vehicleBudget: Number | null | undefined

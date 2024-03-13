@@ -147,7 +147,6 @@ public class EmployeeService {
             if(principal instanceof UserDetails) {
                 String username = ((UserDetails) principal).getUsername();
                 User user = userRepository.findByEmail(username);
-//                Optional<Driver> driver = driverRepository.findByEmpId(employee.get());
 
                 employee.get().setEmployeeNumber(employeeDto.getEmployeeNumber());
                 employee.get().setEmpName(employeeDto.getEmpName());
@@ -156,13 +155,12 @@ public class EmployeeService {
                 employee.get().setJobTitle(employeeDto.getJobTitle());
                 employee.get().setJoiningDate(employeeDto.getJoiningDate());
                 employee.get().setDateOfBirth(employeeDto.getDateOfBirth());
-//                employee.get().setAge(employeeDto.getAge());
                 employee.get().setBudgetRef(employeeDto.getBudgetRef());
                 employee.get().setGender(employeeDto.getGender());
                 employee.get().setMaritalStatus(employeeDto.getMaritalStatus());
                 employee.get().setDepartment(employeeDto.getDepartment());
                 employee.get().setSection(employeeDto.getSection());
-                employee.get().setCity(employeeDto.getCity());
+                employee.get().setLocation(employeeDto.getLocation());
                 employee.get().setRegion(employeeDto.getRegion());
                 employee.get().setCountry(employeeDto.getCountry());
                 employee.get().setNationality(employeeDto.getNationality());
@@ -181,10 +179,6 @@ public class EmployeeService {
                 employee.get().setDeptCode(employeeDto.getDeptCode());
                 employee.get().setUpdatedAt(LocalDate.now());
                 employee.get().setUpdatedBy(user);
-
-//                if (driver.isPresent()){
-//                    driver.get().setEmpId(employee.get());
-//                }
 
                 return toDto(employeeRepository.save(employee.get()));
             }
@@ -257,7 +251,7 @@ public class EmployeeService {
                                 DataFormatter dataFormatter = new DataFormatter();
 
                                 Optional<JobTitle> jobTitle = jobTitleRepository.findByJobTitleAndStatusIsTrue(getStringValue(row.getCell(7)));
-                                Optional<Grade> grade = gradeRepository.findByNameAndStatusIsTrue(getIntegerValue(row.getCell(20)));
+                                Optional<Grade> grade = gradeRepository.findByNameAndStatusIsTrue(getIntegerValue(row.getCell(19)));
 
                                 employee.setEmployeeNumber(getLongValue(row.getCell(0)));
                                 employee.setBudgetRef(getStringValue(row.getCell(1)));
@@ -266,27 +260,26 @@ public class EmployeeService {
                                 employee.setMaritalStatus(row.getCell(4).getStringCellValue().charAt(0));
                                 employee.setRegion(getStringValue(row.getCell(8)));
                                 employee.setCountry(getStringValue(row.getCell(9)));
-                                employee.setCity(getStringValue(row.getCell(10)));
-                                employee.setLocation(Objects.requireNonNull(getStringValue(row.getCell(11))).toUpperCase());
-                                employee.setOrganization(Objects.requireNonNull(getStringValue(row.getCell(13))).toUpperCase());
-                                employee.setNationalIdNumber(getLongValue(row.getCell(14)));
-                                employee.setSvEmployeeNumber(getLongValue(row.getCell(15)));
-                                employee.setSvEmployeeName(getStringValue(row.getCell(16)));
-                                employee.setCostCentre(getStringValue(row.getCell(17)));
-                                employee.setNationality(Objects.requireNonNull(getStringValue(row.getCell(18))).toUpperCase());
-                                employee.setCompanyEmailAddress(getStringValue(row.getCell(19)));
-                                employee.setLicenseNumber(getStringValue(row.getCell(21)));
-                                employee.setContactNumber(dataFormatter.formatCellValue(row.getCell(22)));
+                                employee.setLocation(getStringValue(row.getCell(10)));
+                                employee.setOrganization(Objects.requireNonNull(getStringValue(row.getCell(12))).toUpperCase());
+                                employee.setNationalIdNumber(getLongValue(row.getCell(13)));
+                                employee.setSvEmployeeNumber(getLongValue(row.getCell(14)));
+                                employee.setSvEmployeeName(getStringValue(row.getCell(15)));
+                                employee.setCostCentre(getStringValue(row.getCell(16)));
+                                employee.setNationality(Objects.requireNonNull(getStringValue(row.getCell(17))).toUpperCase());
+                                employee.setCompanyEmailAddress(getStringValue(row.getCell(18)));
+                                employee.setLicenseNumber(getStringValue(row.getCell(20)));
+                                employee.setContactNumber(dataFormatter.formatCellValue(row.getCell(21)));
                                 employee.setStatus('A');
                                 employee.setCreatedBy(user);
                                 employee.setCreatedAt(LocalDate.now());
                                 employee.setDeleteStatus(Boolean.TRUE);
                                 employee.setUuid(uuid);
 
-                                if (row.getCell(12).getCellType() == CellType.STRING){
-                                    employee.setDeptCode(Objects.requireNonNull(getStringValue(row.getCell(12))).toUpperCase());
+                                if (row.getCell(11).getCellType() == CellType.STRING){
+                                    employee.setDeptCode(Objects.requireNonNull(getStringValue(row.getCell(11))).toUpperCase());
                                 }else{
-                                    employee.setDeptCode(Objects.requireNonNull(getIntegerValue(row.getCell(12)).toString()).toUpperCase());
+                                    employee.setDeptCode(Objects.requireNonNull(getIntegerValue(row.getCell(11)).toString()).toUpperCase());
                                 }
                                 if (jobTitle.isPresent()) {
                                     employee.setJobTitle(jobTitle.get().getJobTitle());
@@ -419,12 +412,12 @@ public class EmployeeService {
                                     "Row " + (rowNum + 1) + " and Cell 7"));
                         } else if (getNumericValue(row.getCell(0)) == null) {
                             return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: " + row.getCell(0), "Row " + (rowNum + 1) + " and cell 1"));
+                        } else if (getNumericValue(row.getCell(13)) == null) {
+                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: " + row.getCell(13), "Row " + (rowNum + 1) + " and cell 14"));
                         } else if (getNumericValue(row.getCell(14)) == null) {
                             return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: " + row.getCell(14), "Row " + (rowNum + 1) + " and cell 15"));
-                        } else if (getNumericValue(row.getCell(15)) == null) {
-                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: " + row.getCell(15), "Row " + (rowNum + 1) + " and cell 16"));
-                        } else if (getNumericValue(row.getCell(20)) == null) {
-                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: " + row.getCell(20), "Row " + (rowNum + 1) + " and cell 21"));
+                        } else if (getNumericValue(row.getCell(19)) == null) {
+                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: " + row.getCell(19), "Row " + (rowNum + 1) + " and cell 20"));
                         } else if (!String.valueOf(row.getCell(3)).equalsIgnoreCase("M")
                                 && !String.valueOf(row.getCell(3)).equalsIgnoreCase("F")) {
                             return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Value : " + row.getCell(3), "Row " + (rowNum + 1) + " and Cell 4", "Correct Value : 'M' or 'F'"));
@@ -438,9 +431,9 @@ public class EmployeeService {
                             return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList(getStringValue(row.getCell(7)) + " job title does not exist in the record", "Row " + (rowNum + 1) + " and Cell 8"));
                         }
 
-                        Optional<Grade> grade = gradeRepository.findByNameAndStatusIsTrue(getIntegerValue(row.getCell(20)));
+                        Optional<Grade> grade = gradeRepository.findByNameAndStatusIsTrue(getIntegerValue(row.getCell(19)));
                         if (!grade.isPresent()) {
-                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList(getStringValue(row.getCell(20)) + " job title does not exist in the record", "Row " + (rowNum + 1) + " and Cell 21"));
+                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList(getStringValue(row.getCell(19)) + " job title does not exist in the record", "Row " + (rowNum + 1) + " and Cell 20"));
                         }
 
                         ExcelErrorResponse regionValidation = validateRegion(row);
@@ -499,10 +492,9 @@ public class EmployeeService {
     private ExcelErrorResponse validateProductFieldValues(Sheet sheet){
 
         Map<Integer , String> productFields = new HashMap<>();
-        productFields.put(11,"Location");
-        productFields.put(12,"Dept Code");
-        productFields.put(13,"Organization");
-        productFields.put(18,"Nationality");
+        productFields.put(11,"Dept Code");
+        productFields.put(12,"Organization");
+        productFields.put(17,"Nationality");
 
         for (Map.Entry<Integer, String> entry : productFields.entrySet()) {
             ProductField productField = productFieldRepository.findByNameAndStatusIsActive(entry.getValue());
@@ -546,7 +538,7 @@ public class EmployeeService {
         Row headerRow = sheet.getRow(0);
         String[] expectedHeaders = {
                 "EmployeeNumber", "BudgetRef", "EmployeeName", "Gender", "MaritalStatus", "DateOfBirth", "JoiningDate",
-                "JobTitle", "Region", "Country", "City", "Location", "DeptCode", "Organization", "NationalIdNumber",
+                "JobTitle", "Region", "Country", "Location", "DeptCode", "Organization", "NationalIdNumber",
                 "SVEmployeeNumber", "SVEmployeeName",  "CostCentre", "Nationality", "CompanyEmailAddress", "Grade",
                 "LicenseNumber","ContactNumber"
         };

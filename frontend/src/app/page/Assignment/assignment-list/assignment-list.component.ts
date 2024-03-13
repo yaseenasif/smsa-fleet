@@ -23,6 +23,7 @@ import { FileUpload } from 'primeng/fileupload';
 })
 export class AssignmentListComponent {
   items: MenuItem[] | undefined;
+  fileName: string = 'assignmentSample.xlsx'
 
   fileUpload!: FileUpload;
 
@@ -329,18 +330,16 @@ export class AssignmentListComponent {
   downloadExcelData() {
     this.vehicleAssignmentService.downloadExcelData().subscribe(blob => saveAs(blob, "Assignment Data.xlsx"))
   }
-
-  onCancel() {
-    // Handle cancel logic her
-    this.fileSelected = false;
-
-    this.fileUpload.clear();
-
-  }
-
+  
   onFileSelect() {
     this.fileSelected = true;
   }
+
+  Cancel() {
+    this.fileSelected = false;
+    this.fileUpload.clear();
+  }
+
 
   onUpload(event: any) {
     const uploadedFile = event.files[0];
@@ -374,5 +373,9 @@ export class AssignmentListComponent {
         }
       );
     }
+  }
+  
+  downloadAttachment(fileName:string){
+    this.vehicleService.downloadAttachments(fileName).subscribe(blob => saveAs(blob, fileName));
   }
 }

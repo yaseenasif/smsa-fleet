@@ -12,6 +12,7 @@ export interface Vehicle {
     capacity: String | null | undefined
     power: String | null | undefined
     region: String | null | undefined
+    country: String | null | undefined
     location: String | null | undefined
     registrationExpiry: String | Date | null | undefined
     fuelType: String | null | undefined

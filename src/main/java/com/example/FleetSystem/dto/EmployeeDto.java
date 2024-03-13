@@ -24,7 +24,6 @@ public class EmployeeDto {
     private Character status;
     private String region;
     private String country;
-    private String location;
     private String organization;
     private String division;
     private String fleetClassification;
@@ -35,8 +34,7 @@ public class EmployeeDto {
     private Long nationalIdNumber;
     private Long svEmployeeNumber;
     private String svEmployeeName;
-    private String city;
-//    private Integer age;
+    private String location;
     private String costCentre;
     private String nationality;
     private String companyEmailAddress;

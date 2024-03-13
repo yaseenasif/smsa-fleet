@@ -24,131 +24,6 @@ import { ErrorService } from 'src/app/CommonServices/Error/error.service';
 })
 export class AddEmployeeComponent implements OnInit {
 
-  // grade !: Grade[]
-
-  // city: City = {
-  //   id: undefined,
-  //   name: undefined,
-  //   region: undefined,
-  //   status: undefined
-  // };
-
-  // selectedCity !: City
-
-  // selectedGrade !: Grade
-  // vehicleBudgetFromGrade !: Number | null | undefined
-
-  // dummyData: any = [
-  //   { id: 1, name: 'National Manager - Hub  Linehaul' }
-  // ]
-
-  // dummyDepartment: any = [
-  //   { id: 1, name: 'STN' },
-  // ]
-
-  // dummySection: any = [
-  //   { id: 1, name: 'Station Management' }
-  // ]
-
-  //   dummyNationality: any = [
-  //     { id: 1, name: "Sudan-031" },
-  //     { id: 2, name: "Sudan-032" },
-  //     { id: 3, name: "Sudan-033" },
-  //     { id: 4, name: "Sudan-034" },
-  //     { id: 5, name: "Sudan-035" }
-  //   ]
-
-  // dummyRegion: any = [
-  //   { id: 1, name: "Head Quarter" }
-  // ]
-  // employeeStatus: any = [
-  //   { id: 1, statusName: 'Active' },
-  //   { id: 2, statusName: 'Resigned' },
-  //   { id: 3, statusName: 'Terminated' },
-  //   { id: 4, statusName: 'Deceased' }
-  // ]
-
-  // name!: string;
-
-  // size = 100000
-
-  // onUpload(event: any) {
-
-  // }
-
-  // onUpload1(event: any) {
-  //   for (let file of event.files) {
-  //     this.uploadedFiles.push(file);
-  //   }
-  // }
-
-  // getCountry(): void {
-  //   this.regionService.getRegion().subscribe(
-  //     (res: Region[]) => {
-  //       const uniqueCountries = this.getUniqueCountries(res, 'country');
-  //       this.country = uniqueCountries;
-  //     },
-  //     (err) => {
-  //     }
-  //   );
-  // }
-
-  // getUniqueCountries(regions: Region[], propertyName: string): Region[] {
-  //   const uniqueCountries: Region[] = [];
-  //   const uniqueCountryNames: Set<string> = new Set();
-
-  //   for (const region of regions) {
-  //     const countryName = region[propertyName];
-
-  //     if (!uniqueCountryNames.has(countryName)) {
-  //       uniqueCountryNames.add(countryName);
-  //       uniqueCountries.push(region);
-  //     }
-  //   }
-
-  //   return uniqueCountries;
-  // }
-
-  // getRegions(country: string): void {
-  //   this.regionService.getRegionByCountry(country).subscribe((res: Region[]) => {
-  //     this.region = [];
-  //     this.employee.region = null;
-  //     res.forEach((r: any) => {
-  //       const parsedCities = JSON.parse(r.cities);
-  //       this.region.push({ ...r, cities: parsedCities });
-  //     });
-  //   }, err => {
-  //   });
-  // }
-
-  // getAllCity(region: string): void {
-  //   this.regionService.getCitiesByRegion(region).subscribe(
-  //     (res: Region) => {
-  //       this.cityData = [];
-  //       let getCities = [];
-  //       getCities.push(res);
-  //       getCities.forEach((element: any) => {
-  //         const parsedCities = JSON.parse(element.cities)
-  //         this.cityData.push(...parsedCities);
-  //       });
-  //       this.cityData = this.cityData.map((city, index) => ({
-  //         cities: city,
-  //         id: index + 1,
-  //       }));
-  //     }, err => {
-  //     });
-  // }
-
-  //   getAllCity() {
-  //     this.cityService.getCity().subscribe((res: City[]) => {
-  //       this.cityData = res;
-  //     })
-  //   }
-
-  // getAutoFilledRegion(city: City): void {
-  //   const selectedCityObj = this.cityData.find((item: any) => item.name === city);
-  //   this.region = selectedCityObj.region;
-  // }
 
   items: MenuItem[] | undefined;
   country!: Region[];
@@ -168,7 +43,6 @@ export class AddEmployeeComponent implements OnInit {
     status: undefined,
     region: undefined,
     country: undefined,
-    location: undefined,
     organization: undefined,
     division: undefined,
     deptCode: undefined,
@@ -177,8 +51,7 @@ export class AddEmployeeComponent implements OnInit {
     nationalIdNumber: undefined,
     svEmployeeNumber: undefined,
     svEmployeeName: undefined,
-    city: undefined,
-    // age: undefined,
+    location: undefined,
     costCentre: undefined,
     nationality: undefined,
     companyEmailAddress: undefined,
@@ -200,14 +73,12 @@ export class AddEmployeeComponent implements OnInit {
   uploadedFiles!: Employee[];
   allJobTitle !: JobTitle[]
   temp !: JobTitle[];
-  location: ProductField | null | undefined
   deptCode: ProductField| null | undefined;
   organization: ProductField| null | undefined;
 
 
 
   constructor(
-    // private cityService: CityService,
     private employeeService: EmployeeService,
     private router: Router,
     private messageService: MessageService,
@@ -226,7 +97,6 @@ export class AddEmployeeComponent implements OnInit {
     this.getAllGrades();
     this.getCountry();
     this.getAllJobTitle();
-    this.getLocationList("Location");
     this.getDeptcodeList("Dept Code");
     this.getOrganizationList("Organization");
   }
@@ -273,7 +143,7 @@ export class AddEmployeeComponent implements OnInit {
   getAllCity(region: string): Region[] {
     this.regionService.getCitiesByRegion(region).subscribe(
       (res: Region) => {
-        this.employee.city = null;
+        this.employee.location = null;
         const getCities = typeof res.cities === 'string' ? JSON.parse(res.cities) : res.cities;
         this.cityData = getCities.map((city: Region, index: number) => ({
           cities: city,
@@ -340,14 +210,6 @@ export class AddEmployeeComponent implements OnInit {
 
   }
 
-  private getLocationList(fieldName: string) {
-    this.productFieldService.getProductFieldByName(fieldName).subscribe(
-      (res: ProductField) => {
-        this.location = res;
-      }, (err: BackenCommonErrorThrow) => {
-        this.errorHandleService.showError(err.error!);
-      });
-  }
 
   private getOrganizationList(fieldName: string) {
     this.productFieldService.getProductFieldByName(fieldName).subscribe(

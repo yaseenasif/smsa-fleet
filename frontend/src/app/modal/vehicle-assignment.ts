@@ -13,7 +13,6 @@ export interface VehicleAssignment {
     jobTitle: string | null | undefined;
     status: string | null | undefined;
     region: string | null | undefined;
-    location: string | null | undefined;
     organization: string | null | undefined;
     division: string | null | undefined;
     deptCode: string | null | undefined;
@@ -23,8 +22,8 @@ export interface VehicleAssignment {
     nationalIdNumber: number | null | undefined;
     svEmployeeNumber: string | null | undefined;
     svEmployeeName: string | null | undefined;
-    city: string | null | undefined;
-    // age: number | null | undefined;
+    location: string | null | undefined;
+    country: string | null | undefined;
     nationality: string | null | undefined;
     companyEmailAddress: string | null | undefined;
     grade: string | null | undefined;

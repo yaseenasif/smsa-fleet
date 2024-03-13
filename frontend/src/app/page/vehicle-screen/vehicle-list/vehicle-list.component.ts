@@ -32,12 +32,6 @@ export class VehicleListComponent implements OnInit {
   value: string | null = null;
   totalRecords: number = 0;
 
-  // vehicleReplacement: VehicleReplacement ={
-  //   id:undefined,
-  //   reason:undefined,
-  //   vehicle:undefined
-  // }
-
   statusVisible!: boolean;
   replacementVisible!: boolean;
   vehicletab: boolean | undefined;
@@ -148,15 +142,7 @@ export class VehicleListComponent implements OnInit {
 
 
   flag = 'TBA'
-  // OnSelectChange() {
-
-  //   if (this.selectedStatus.name != this.flag) {
-  //     this.query.page = 0
-  //     this.flag = this.selectedStatus.name
-  //   }
-  //   this.searchAllVehicles(this.selectedStatus.name)
-  // }
-
+ 
   OnSelectChange() {
     if (this.selectedStatus.name !== this.flag) {
       this.query.page = 0;

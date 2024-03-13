@@ -48,6 +48,7 @@ public class Vehicle {
     private String usageType;
     private String region;
     private String location;
+    private String country;
     private String category;
     private String uuid;
     private String vehicleStatus;

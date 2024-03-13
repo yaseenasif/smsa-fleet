@@ -17,34 +17,54 @@
         </div>
         <div class="body-card">
           <div class="table-head">
-            <div class="flex justify-content-between">
-              <div class="flex align-items-center">
+            <div class="grid">
+              
+              <div class="col-3">
                 <p-button
-                  label="Clear"
-                  class="bg-b-color"
-                  (onClick)="clear()"
-                  icon="pi pi-filter-slash"
-                ></p-button>
+                label="Clear"
+                class="bg-b-color"
+                (onClick)="clear()"
+                icon="pi pi-filter-slash"
+              ></p-button>
               </div>
-              <div class="mb-1">
-                <p-button class="bg-b-color" routerLink="/add-assignment">
+              <div class="col-9 flex justify-content-end align-items-center">
+                
+                <p-button class="bg-b-color mr-2" routerLink="/add-assignment">
                   <i
                     class="bi bi-plus-lg"
                     style="font-size: 20px; font-weight: bold"
                   ></i
                   >&nbsp;Add Vehicle Assignment
                 </p-button>  
+
+                <div class="flex flex-column gap-2 ml-5">
+                <p-fileUpload #fileUpload icon="pi pi-download" iconPos="left"
+                styleClass="p-button-outlined p-button-sm ml-2" mode="basic" chooseLabel="Upload" name="myfile[]"
+                [customUpload]="true" (uploadHandler)="onUpload($event)" (onSelect)="onFileSelect()">
+              </p-fileUpload>
+              <ng-container *ngIf="fileSelected">
+                <button class="p-button p-button-outlined p-button-sm" (click)="Cancel()">Cancel</button>
+              </ng-container>
               </div>
 
-              <div class="flex align-items-center">
-                <p-fileUpload #fileUpload icon="pi pi-download" iconPos="left"
-                  styleClass="p-button-outlined p-button-sm" mode="basic" chooseLabel="Upload" name="myfile[]"
-                  [customUpload]="true" (uploadHandler)="onUpload($event)" (onSelect)="onFileSelect()">
-                </p-fileUpload>
-                <ng-container *ngIf="fileSelected">
-                  <button class="p-button p-button-outlined p-button-sm" (click)="onCancel()">Cancel</button>
-                </ng-container>
+              <div class="flex flex-column gap-2 ml-5">
+                <p-button
+                  label="Download Sample"
+                  (click)="downloadAttachment(fileName)"
+                  icon="bi bi-download"
+                ></p-button>
               </div>
+
+              </div>
+             
+               
+              
+            
+            
+
+           
+             
+              
               
             </div>
             <p-toolbar [style]="{ 'padding-top': '1.5rem' }">
@@ -264,35 +284,19 @@
               [tableStyle]="{ 'min-width': '50rem' }"
             >
               <ng-template pTemplate="header">
-                <!-- <tr>
-                  <th class="text-center">Plate Number</th>
-                  <th class="text-center">Assigned (Emp NO)</th>
-                  <th class="text-center">Assigned (Emp Name)</th>
-                  <th class="text-center">Design</th>
-                  <th class="text-center">Make</th>
-                  <th class="text-center">Model</th>
-                  <th class="text-center">Year</th>
-                  <th class="text-center">Region</th>
-                  <th class="text-center">Department</th>
-                  <th class="text-center">Section</th>
-                  <th class="text-center">Lease Expiry</th>
-                  <th class="text-center">Lease Cost</th>
-
-                  <th class="text-center">Actions</th>
-                </tr> -->
                 <tr>
-                  <th pSortableColumn="plateNumber" class="text-center">Plate Number <p-sortIcon field="plateNumber"></p-sortIcon></th>
-                  <th pSortableColumn="assignedEmpNo" class="text-center">Assigned (Emp NO) <p-sortIcon field="assignedEmpNo"></p-sortIcon></th>
-                  <th pSortableColumn="assignedEmpName" class="text-center">Assigned (Emp Name) <p-sortIcon field="assignedEmpName"></p-sortIcon></th>
-                  <th pSortableColumn="design" class="text-center">Design <p-sortIcon field="design"></p-sortIcon></th>
-                  <th pSortableColumn="make" class="text-center">Make <p-sortIcon field="make"></p-sortIcon></th>
-                  <th pSortableColumn="model" class="text-center">Model <p-sortIcon field="model"></p-sortIcon></th>
-                  <th pSortableColumn="year" class="text-center">Year <p-sortIcon field="year"></p-sortIcon></th>
-                  <th pSortableColumn="region" class="text-center">Region <p-sortIcon field="region"></p-sortIcon></th>
-                  <th pSortableColumn="department" class="text-center">Department <p-sortIcon field="department"></p-sortIcon></th>
-                  <th pSortableColumn="section" class="text-center">Section <p-sortIcon field="section"></p-sortIcon></th>
-                  <th pSortableColumn="leaseExpiry" class="text-center">Lease Expiry <p-sortIcon field="leaseExpiry"></p-sortIcon></th>
-                  <th pSortableColumn="leaseCost" class="text-center">Lease Cost <p-sortIcon field="leaseCost"></p-sortIcon></th>
+                  <th pSortableColumn="vehicle.plateNumber" class="text-center">Plate Number <p-sortIcon field="vehicle.plateNumber"></p-sortIcon></th>
+                  <th pSortableColumn="assignToEmpId.employeeNumber" class="text-center">Assigned (Emp NO) <p-sortIcon field="assignToEmpId.employeeNumber"></p-sortIcon></th>
+                  <th pSortableColumn="assignToEmpName" class="text-center">Assigned (Emp Name) <p-sortIcon field="assignToEmpName"></p-sortIcon></th>
+                  <th pSortableColumn="vehicle.design" class="text-center">Design <p-sortIcon field="vehicle.design"></p-sortIcon></th>
+                  <th pSortableColumn="vehicle.make" class="text-center">Make <p-sortIcon field="vehicle.make"></p-sortIcon></th>
+                  <th pSortableColumn="vehicle.model" class="text-center">Model <p-sortIcon field="vehicle.model"></p-sortIcon></th>
+                  <th pSortableColumn="vehicle.year" class="text-center">Year <p-sortIcon field="vehicle.year"></p-sortIcon></th>
+                  <th pSortableColumn="assignToEmpId.region" class="text-center">Region <p-sortIcon field="assignToEmpId.region"></p-sortIcon></th>
+                  <th pSortableColumn="assignToEmpId.department" class="text-center">Department <p-sortIcon field="assignToEmpId.department"></p-sortIcon></th>
+                  <th pSortableColumn="assignToEmpId.section" class="text-center">Section <p-sortIcon field="assignToEmpId.section"></p-sortIcon></th>
+                  <th pSortableColumn="vehicle.leaseExpiry" class="text-center">Lease Expiry <p-sortIcon field="vehicle.leaseExpiry"></p-sortIcon></th>
+                  <th pSortableColumn="vehicle.leaseCost" class="text-center">Lease Cost <p-sortIcon field="vehicle.leaseCost"></p-sortIcon></th>
                   <th class="text-center">Actions</th>
                 </tr>
               </ng-template>

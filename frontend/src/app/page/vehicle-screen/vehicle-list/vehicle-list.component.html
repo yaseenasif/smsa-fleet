@@ -127,8 +127,8 @@
                   >
                     Status
                   </th>
-                  <th pSortableColumn="poNumber">
-                    PO Number <p-sortIcon field="poNumber"></p-sortIcon>
+                  <th pSortableColumn="processOrderNumber">
+                    PO Number <p-sortIcon field="processOrderNumber"></p-sortIcon>
                   </th>
                   <th pSortableColumn="plateNumber" class="text-center">
                     Plate Number <p-sortIcon field="plateNumber"></p-sortIcon>
@@ -161,7 +161,7 @@
                   <th pSortableColumn="fuelType" class="text-center">
                     Fuel Type <p-sortIcon field="fuelType"></p-sortIcon>
                   </th>
-                  <th pSortableColumn="vendor" class="text-center">
+                  <th pSortableColumn="vendor.vendorName" class="text-center">
                     Vendor <p-sortIcon field="vendor"></p-sortIcon>
                   </th>
                   <th pSortableColumn="insuranceExpiry" class="text-center">
@@ -188,6 +188,12 @@
                   </th>
                   <th pSortableColumn="region" class="text-center">
                     Region <p-sortIcon field="region"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="country" class="text-center">
+                    Country <p-sortIcon field="country"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="location" class="text-center">
+                    Location <p-sortIcon field="location"></p-sortIcon>
                   </th>
                   <th pSortableColumn="category" class="text-center">
                     Category <p-sortIcon field="category"></p-sortIcon>
@@ -302,7 +308,6 @@
                   >
                     {{ vehicles.registrationExpiry }}
                   </td>
-                  <!-- <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center">{{ vehicles.registrationStatus }}</td> -->
                   <td
                     [classList]="
                       vehicles.vehicleReplacement ? 'color-orange' : null
@@ -375,6 +380,22 @@
                     class="text-center"
                   >
                     {{ vehicles.region }}
+                  </td>
+                  <td
+                    [classList]="
+                      vehicles.vehicleReplacement ? 'color-orange' : null
+                    "
+                    class="text-center"
+                  >
+                    {{ vehicles.country }}
+                  </td>
+                  <td
+                    [classList]="
+                      vehicles.vehicleReplacement ? 'color-orange' : null
+                    "
+                    class="text-center"
+                  >
+                    {{ vehicles.location }}
                   </td>
                   <td
                     [classList]="
