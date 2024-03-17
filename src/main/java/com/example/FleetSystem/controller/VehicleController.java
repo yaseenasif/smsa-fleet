@@ -31,6 +31,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -101,11 +102,11 @@ public class VehicleController {
         return ResponseEntity.ok(vehicleService.activateVehicle(id));
     }
 
-        @PreAuthorize("hasRole('ROLE_ADMIN')")
-        @PostMapping("/add-bulk-vehicle")
-        public ResponseEntity<ResponseMessage> addBulkVehicle(@RequestParam("file") MultipartFile file) {
-            return ResponseEntity.ok(new ResponseMessage(vehicleService.addBulkVehicle(file)));
-        }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/add-bulk-vehicle")
+    public ResponseEntity<ResponseMessage> addBulkVehicle(@RequestParam("file") MultipartFile file) {
+        return ResponseEntity.ok(new ResponseMessage(vehicleService.addBulkVehicle(file)));
+    }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/not-assigned-vehicle")
@@ -154,7 +155,7 @@ public class VehicleController {
         return ResponseEntity.ok(vehicleService.getAllVehiclesUnderDriverVehicleBudget(value));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEET_MANAGER','ROLE_PROJECT_MANAGER')")
     @GetMapping("/search-all-vehicle")
     public ResponseEntity<Page<VehicleDto>> searchAllVehicles(@RequestParam(value = "value", required = false) String value,
                                                               @RequestParam String vehicleStatus,
@@ -257,13 +258,19 @@ public class VehicleController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/dynamic-search")
-    public ResponseEntity<List<Vehicle>> search(@RequestBody VehicleDto vehicleDto) {
-        return ResponseEntity.ok(vehicleService.getVehicleBySearch(vehicleDto));
+    public ResponseEntity<List<Vehicle>> search(@RequestBody VehicleDto vehicleDto, @RequestParam String stringifyPoNumbers) {
+        return ResponseEntity.ok(vehicleService.getVehicleBySearch(vehicleDto, stringifyPoNumbers));
     }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PatchMapping("/delete-vehicle/{id}")
     public ResponseEntity<VehicleDto> deleteVehicleById(@PathVariable Long id) {
         return ResponseEntity.ok(vehicleService.deleteVehicleById(id));
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/distinct-values")
+    public ResponseEntity<List<Map<String, String>>> getAllDistinctPoNumbers() {
+        return ResponseEntity.ok(vehicleService.findAllDistinctPoNumbers());
+    }
 }

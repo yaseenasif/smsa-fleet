@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
@@ -46,7 +46,14 @@ export class ReportManagmentService {
 
   // }
 
-  searchVehiclesWithDynamicValues(vehicleInterFace: Vehicle): Observable<Vehicle[]> {
-    return this.http.post<Vehicle[]>(`${this.url}/dynamic-search`, vehicleInterFace);
+  // searchVehiclesWithDynamicValues(vehicleInterFace: Vehicle, stringifyPoNumbers: string): Observable<Vehicle[]> {
+  //   return this.http.post<Vehicle[]>(`${this.url}/dynamic-search`, vehicleInterFace,stringifyPoNumbers);
+  // }
+
+  searchVehiclesWithDynamicValues(vehicleInterFace: Vehicle, stringifyPoNumbers?: string): Observable<Vehicle[]> {
+    const params = new HttpParams().set('stringifyPoNumbers', stringifyPoNumbers ? stringifyPoNumbers : '');
+    return this.http.post<Vehicle[]>(`${this.url}/dynamic-search`, vehicleInterFace, { params });
   }
+
+
 }

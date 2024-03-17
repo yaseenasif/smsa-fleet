@@ -316,7 +316,7 @@ public class VehicleService {
             Sheet sheet = workbook.getSheetAt(0);
             String fileName = file.getOriginalFilename();
             String uuid = UUID.randomUUID().toString();
-            ExcelErrorResponse checkFile = validateExcelFile(fileName,sheet);
+            ExcelErrorResponse checkFile = validateExcelFile(fileName, sheet);
 
             if (checkFile.isStatus()) {
                 for (int rowNum = 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
@@ -407,7 +407,7 @@ public class VehicleService {
                             e.printStackTrace();
                             throw new RuntimeException("Error processing data in the Excel file:" + e.getMessage());
                         }
-                    }else break;
+                    } else break;
                 }
                 FileHistory fileHistory = FileHistory.builder()
                         .fileName(fileName)
@@ -455,13 +455,13 @@ public class VehicleService {
             return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList(fileName + " is already uploaded. Please upload a different File."));
         } else {
 
-                Map<Integer, String> plateNumberList = new HashMap<>();
+            Map<Integer, String> plateNumberList = new HashMap<>();
 
-                ExcelErrorResponse headerValidation = validateHeaderRow(sheet);
+            ExcelErrorResponse headerValidation = validateHeaderRow(sheet);
 
-                if(!headerValidation.isStatus()){
-                    return headerValidation;
-                }
+            if (!headerValidation.isStatus()) {
+                return headerValidation;
+            }
 
             for (int rowNum = 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
                 Row row = sheet.getRow(rowNum);
@@ -527,69 +527,69 @@ public class VehicleService {
                         return regionValidation;
                     }
 
-                }else break;
+                } else break;
 
             }
 
             ExcelErrorResponse productFieldValidation = validateProductFieldValues(sheet);
-            if(!productFieldValidation.isStatus()){
+            if (!productFieldValidation.isStatus()) {
                 return productFieldValidation;
             }
 
-                return new ExcelErrorResponse(Boolean.TRUE, Arrays.asList("Excel File is in Correct Format"));
+            return new ExcelErrorResponse(Boolean.TRUE, Arrays.asList("Excel File is in Correct Format"));
         }
     }
 
-    private ExcelErrorResponse validateRegion(Row row){
+    private ExcelErrorResponse validateRegion(Row row) {
 
         String region = getStringValue(row.getCell(13));
         String country = getStringValue(row.getCell(14));
         String city = getStringValue(row.getCell(15));
 
         Optional<Region> optionalRegion = regionRepository.findByNameAndStatusIsTrue(region);
-        if (optionalRegion.isPresent()){
+        if (optionalRegion.isPresent()) {
             String cities = optionalRegion.get().getCities();
 
-            if(Objects.equals(optionalRegion.get().getCountry(), country)){
+            if (Objects.equals(optionalRegion.get().getCountry(), country)) {
 
                 cities = cities.replaceAll("\\[", "").replaceAll("\\]", "");
                 String[] citiesArray = cities.split(",");
                 boolean cityCheck = false;
                 for (String cityList : citiesArray) {
                     if (cityList.trim().replaceAll("\"", "").equals(city)) {
-                        cityCheck=true;
+                        cityCheck = true;
                         break;
                     }
                 }
-                if (!cityCheck){
-                    return new ExcelErrorResponse(Boolean.FALSE,Arrays.asList(city+" city doesn't exist in "+region+" region",
-                            "Row "+(row.getRowNum()+1)));
+                if (!cityCheck) {
+                    return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList(city + " city doesn't exist in " + region + " region",
+                            "Row " + (row.getRowNum() + 1)));
                 }
 
-            }else {
-                return new ExcelErrorResponse(Boolean.FALSE,Arrays.asList(country+" doesn't have region '"+region+"'",
-                        "Row: "+(row.getRowNum()+1)));
+            } else {
+                return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList(country + " doesn't have region '" + region + "'",
+                        "Row: " + (row.getRowNum() + 1)));
             }
-        }else {
-            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList(region+" region doesn't exist",
-                    "Row "+(row.getRowNum()+1)));
+        } else {
+            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList(region + " region doesn't exist",
+                    "Row " + (row.getRowNum() + 1)));
         }
-        return new ExcelErrorResponse(Boolean.TRUE,null);
+        return new ExcelErrorResponse(Boolean.TRUE, null);
     }
 
-    private ExcelErrorResponse validateProductFieldValues(Sheet sheet){
+    private ExcelErrorResponse validateProductFieldValues(Sheet sheet) {
 
-        Map<Integer , String> productFields = new HashMap<>();
-        productFields.put(2,"Make");
-        productFields.put(3,"Year");
-        productFields.put(4,"Design");
-        productFields.put(5,"Model");
-        productFields.put(6,"Vehicle Type");
-        productFields.put(7,"Capacity");
-        productFields.put(8,"Power");
-        productFields.put(9,"Fuel Type");
-        productFields.put(10,"Usage Type");
-        productFields.put(11,"Category");
+        Map<Integer, String> productFields = new HashMap<>();
+        productFields.put(2, "Make");
+        productFields.put(3, "Year");
+        productFields.put(4, "Design");
+        productFields.put(5, "Model");
+        productFields.put(6, "Vehicle Type");
+        productFields.put(7, "Capacity");
+        productFields.put(8, "Power");
+        productFields.put(9, "Fuel Type");
+        productFields.put(10, "Usage Type");
+        productFields.put(11, "Category");
 
         for (Map.Entry<Integer, String> entry : productFields.entrySet()) {
             ProductField productField = productFieldRepository.findByNameAndStatusIsActive(entry.getValue());
@@ -599,7 +599,7 @@ public class VehicleService {
                     if (row != null && row.getPhysicalNumberOfCells() > 0) {
                         Optional<String> checkDuplicateValues;
 
-                        if(entry.getKey() == 3){
+                        if (entry.getKey() == 3) {
                             checkDuplicateValues = productField.getProductFieldValuesList().stream()
                                     .map(ProductFieldValues::getName)
                                     .filter(value -> {
@@ -607,7 +607,7 @@ public class VehicleService {
                                         return value.equalsIgnoreCase(cellValue);
                                     })
                                     .findFirst();
-                        }else {
+                        } else {
                             checkDuplicateValues = productField.getProductFieldValuesList().stream()
                                     .map(ProductFieldValues::getName)
                                     .filter(value -> value.equalsIgnoreCase(getStringValue(row.getCell(entry.getKey()))))
@@ -624,17 +624,17 @@ public class VehicleService {
                                                             .map(ProductFieldValues::getName)
                                                             .collect(Collectors.joining(", "))));
                         }
-                    }else break;
+                    } else break;
                 }
-            }else{
-                    return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Product Field '" + entry.getValue() + "' doesn't exist in the record"));
-                }
+            } else {
+                return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Product Field '" + entry.getValue() + "' doesn't exist in the record"));
+            }
 
         }
-        return new ExcelErrorResponse(Boolean.TRUE,Arrays.asList("Product Field validation successful"));
+        return new ExcelErrorResponse(Boolean.TRUE, Arrays.asList("Product Field validation successful"));
     }
 
-    private ExcelErrorResponse validateHeaderRow(Sheet sheet){
+    private ExcelErrorResponse validateHeaderRow(Sheet sheet) {
         Row headerRow = sheet.getRow(0);
         String[] expectedHeaders = {
                 "ProcessOrderNumber", "PlateNumber", "Make", "Year", "Design", "Model", "Type", "Capacity",
@@ -653,7 +653,7 @@ public class VehicleService {
                         , "Please check the Sample Format of Excel File"));
             }
         }
-        return new ExcelErrorResponse(Boolean.TRUE,null);
+        return new ExcelErrorResponse(Boolean.TRUE, null);
     }
 
     private ExcelErrorResponse checkDuplicateRecord(Map<Integer, String> plateNumberList, Row row) {
@@ -1009,7 +1009,7 @@ public class VehicleService {
             List<Vehicle> vehicles = vehicleRepository.findAll();
             vehicleExcelDtoList = toVehicleExcelDtoList(vehicles);
         }
-            return excelExportService.exportToExcel(vehicleExcelDtoList);
+        return excelExportService.exportToExcel(vehicleExcelDtoList);
     }
 
 
@@ -1043,9 +1043,9 @@ public class VehicleService {
     }
 
 
-    public List<Vehicle> getVehicleBySearch(VehicleDto vehicleDto) {
+    public List<Vehicle> getVehicleBySearch(VehicleDto vehicleDto,String stringifyPoNumbers) {
         Vehicle vehicle = toEntity(vehicleDto);
-        Specification<Vehicle> vehicleSpecification = VehicleSpecification.getWithDynamicSearchSpecification(vehicle);
+        Specification<Vehicle> vehicleSpecification = VehicleSpecification.getWithDynamicSearchSpecification(vehicle,stringifyPoNumbers);
         return vehicleRepository.findAll(vehicleSpecification);
     }
 
@@ -1065,7 +1065,22 @@ public class VehicleService {
                 return toDto(vehicleRepository.save(vehicle.get()));
             }
         }
-        throw new RuntimeException(String.format("Vehicle not found by id => %d",id));
+        throw new RuntimeException(String.format("Vehicle not found by id => %d", id));
+    }
+
+    public List<Map<String, String>> findAllDistinctPoNumbers() {
+        List<String> poNumbers = vehicleRepository.findDistinctByProcessOrderNumberNotNull();
+        List<Map<String, String>> result = new ArrayList<>();
+
+        for (String poNumber : poNumbers) {
+            if (poNumber != null) {
+                Map<String, String> obj = new HashMap<>();
+                obj.put("poNumber", poNumber);
+                result.add(obj);
+            }
+        }
+
+        return result;
     }
 }
 

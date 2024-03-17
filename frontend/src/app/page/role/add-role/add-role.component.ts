@@ -14,11 +14,13 @@ import { Router } from '@angular/router';
 export class AddRoleComponent {
   items: MenuItem[] | undefined;
   permission!: Permission[];
+
   role: Role = {
     id: null,
     name: null,
     permissions: [],
   };
+  vehicleCollapse: boolean = false;
 
   constructor(
     private permissionService: PermissionService,
@@ -32,19 +34,28 @@ export class AddRoleComponent {
     this.getPermissions();
   }
 
-  getPermissions(): Permission[] {
+  getPermissions(): void {
     this.permissionService.getPermissions().subscribe(
       (res: Permission[]) => {
-        this.permission = res;
-      }, error => {
+        const vehiclePermission = res.find(perm => perm.name === 'Vehicles');
+        this.permission = res.filter(perm => perm.name !== 'Vehicles');
+        if (vehiclePermission) {
+          this.permission.push(vehiclePermission);
+        }
+        for (const perm of this.permission) {
+          perm.status = false;
+        }
+      },
+      error => {
         this.showError(error.error);
       }
-    )
-    return this.permission;
+    );
   }
 
   addRole(): void {
-    
+    debugger
+    const selectedPermissions = this.permission.filter(perm => perm.status);
+    this.role.permissions = selectedPermissions;
     this.roleService.addRole(this.role).subscribe(
       (res: Role) => {
         this.showSuccess(res);
@@ -64,5 +75,16 @@ export class AddRoleComponent {
   showSuccess(value: Role): void {
     this.messageService.add({ severity: 'success', summary: ' Added Successfully', detail: `Permission ${value.name} has been added` });
   }
-  
+
+  toggleCollapse() {
+    this.vehicleCollapse = !this.vehicleCollapse;
+  }
+
+  selectAllPermissions(event: Event) {
+    const target = event.target as HTMLInputElement
+    const isChecked = target.checked;
+    for (const perm of this.permission) {
+      perm.status = isChecked;
+    }
+  }
 }

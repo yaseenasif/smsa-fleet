@@ -141,9 +141,13 @@ export class VehicleService {
     return this.http.post(`${this.url}/download-vehicle-excel`, vehicleList, {
       responseType: 'blob'
     });
-   }
+  }
 
-   deleteVehicleById(id: Number): Observable<Vehicle>{
-    return this.http.patch<Vehicle>(`${this.url}/delete-vehicle/${id}`,{});
-   }
+  deleteVehicleById(id: Number): Observable<Vehicle> {
+    return this.http.patch<Vehicle>(`${this.url}/delete-vehicle/${id}`, {});
+  }
+
+  getAllDistinctPoNumbers(): Observable<{ poNumber: string }[]> {
+    return this.http.get<{ poNumber: string }[]>(`${this.url}/distinct-values`);
+  }
 }

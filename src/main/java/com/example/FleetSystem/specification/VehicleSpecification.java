@@ -184,15 +184,16 @@ public class VehicleSpecification {
         };
     }
 
-    public static Specification<Vehicle> getWithDynamicSearchSpecification(Vehicle vehicle) {
+    public static Specification<Vehicle> getWithDynamicSearchSpecification(Vehicle vehicle, String stringifyPoNumbers) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
             addBetweenPredicateIfNotNull(predicates, criteriaBuilder, root.get("leaseExpiryDate"), vehicle.getLeaseStartDate(), vehicle.getLeaseExpiryDate());
-            addLikePredicateIfNotNull(predicates, criteriaBuilder, root.join("vendor").get("vendorName"), vehicle.getVendor().getVendorName());
-            addLikePredicateIfNotNull(predicates, criteriaBuilder, root.get("usageType"), vehicle.getUsageType());
-            addLikePredicateIfNotNull(predicates, criteriaBuilder, root.get("region"), vehicle.getRegion());
-            addLikePredicateIfNotNull(predicates, criteriaBuilder, root.get("vehicleStatus"), vehicle.getVehicleStatus());
+            addLikePredicateIfNotNull(predicates, criteriaBuilder, root.get("processOrderNumber"), stringifyPoNumbers, Integer.class);
+            addLikePredicateIfNotNull(predicates, criteriaBuilder, root.join("vendor").get("vendorName"), vehicle.getVendor().getVendorName(), String.class);
+            addLikePredicateIfNotNull(predicates, criteriaBuilder, root.get("usageType"), vehicle.getUsageType(), String.class);
+            addLikePredicateIfNotNull(predicates, criteriaBuilder, root.get("region"), vehicle.getRegion(), String.class);
+            addLikePredicateIfNotNull(predicates, criteriaBuilder, root.get("vehicleStatus"), vehicle.getVehicleStatus(), String.class);
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
@@ -204,41 +205,72 @@ public class VehicleSpecification {
         }
     }
 
-    private static void addLikePredicateIfNotNull(List<Predicate> predicates, CriteriaBuilder criteriaBuilder, Path<String> path, String valueJson) {
-        if (valueJson != null) {
-            try {
-                ObjectMapper objectMapper = new ObjectMapper();
-                List<String> values = objectMapper.readValue(
-                        valueJson,
-                        new TypeReference<List<String>>() {
-                        }
-                );
-
-                // Create a list to store individual like predicates
-                List<Predicate> likePredicates = new ArrayList<>();
-
-                for (String value : values) {
-                    if (value != null) {
-                        // Convert both the column value and the search value to lowercase
-                        Expression<String> columnValueLower = criteriaBuilder.lower(path);
-                        String searchValueLower = value.toLowerCase();
-
-                        // Create a like predicate for the lowercase values and add it to the list
-                        Predicate likePredicate = criteriaBuilder.equal(columnValueLower, searchValueLower);
-                        likePredicates.add(likePredicate);
-                    }
-                }
-
-                // Combine all the like predicates using 'or' instead of 'and'
-                Predicate combinedPredicate = criteriaBuilder.or(likePredicates.toArray(new Predicate[0]));
-
-                // Add the combined predicate to the list of predicates
-                predicates.add(combinedPredicate);
-            } catch (IOException e) {
-                // Handle exception gracefully
-                Logger.getLogger(Vehicle.class.getName()).log(Level.SEVERE, "Error parsing JSON: " + valueJson, e);
+    private static <T> void addLikePredicateIfNotNull(List<Predicate> predicates, CriteriaBuilder criteriaBuilder, Path<? extends String> path, String valueJson, Class<T> valueType) {
+        if (valueJson == null || valueJson.isEmpty() || valueJson.equalsIgnoreCase("[]")) {
+            return;
+        }
+        try {
+            // Deserialize the JSON string into a list of values
+            List<T> values = deserializeList(valueJson, valueType);
+            // Create a list to store individual like predicates
+            List<Predicate> likePredicates = new ArrayList<>();
+            for (T value : values) {
+                Expression<String> columnValueLower = criteriaBuilder.lower(path.as(String.class));
+                Predicate likePredicate = criteriaBuilder.equal(columnValueLower, value.toString().toLowerCase());
+                likePredicates.add(likePredicate);
             }
+
+            // Combine all the like predicates using 'or' instead of 'and'
+            Predicate combinedPredicate = criteriaBuilder.or(likePredicates.toArray(new Predicate[0]));
+            predicates.add(combinedPredicate);
+        } catch (IOException e) {
+            throw new RuntimeException(String.format("Error parsing JSON: %s", valueJson), e);
+            // Old logging statement
+            // Logger.getLogger(Vehicle.class.getName()).log(Level.SEVERE, "" + valueJson, e);
+
         }
     }
 
+
+    private static <T> List<T> deserializeList(String valueJson, Class<T> valueType) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(valueJson, objectMapper.getTypeFactory().constructCollectionType(List.class, valueType));
+    }
 }
+
+//    private static void addLikePredicateIfNotNull(List<Predicate> predicates, CriteriaBuilder criteriaBuilder, Path<String> path, String valueJson) {
+//        if (valueJson != null) {
+//            try {
+//                ObjectMapper objectMapper = new ObjectMapper();
+//                List<T> values = objectMapper.readValue(
+//                        valueJson,
+//                        new TypeReference<List<T>>() {
+//                        }
+//                );
+//
+//                // Create a list to store individual like predicates
+//                List<Predicate> likePredicates = new ArrayList<>();
+//
+//                for (String value : values) {
+//                    if (value != null) {
+//                        // Convert both the column value and the search value to lowercase
+//                        Expression<String> columnValueLower = criteriaBuilder.lower(path);
+//                        String searchValueLower = value.toLowerCase();
+//
+//                        // Create a like predicate for the lowercase values and add it to the list
+//                        Predicate likePredicate = criteriaBuilder.equal(columnValueLower, searchValueLower);
+//                        likePredicates.add(likePredicate);
+//                    }
+//                }
+//
+//                // Combine all the like predicates using 'or' instead of 'and'
+//                Predicate combinedPredicate = criteriaBuilder.or(likePredicates.toArray(new Predicate[0]));
+//
+//                // Add the combined predicate to the list of predicates
+//                predicates.add(combinedPredicate);
+//            } catch (IOException e) {
+//                // Handle exception gracefully
+//                Logger.getLogger(Vehicle.class.getName()).log(Level.SEVERE, "Error parsing JSON: " + valueJson, e);
+//            }
+//        }
+//    }

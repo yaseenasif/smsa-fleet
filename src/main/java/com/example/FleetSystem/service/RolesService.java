@@ -1,19 +1,14 @@
 package com.example.FleetSystem.service;
 
-import com.example.FleetSystem.dto.RegionDto;
 import com.example.FleetSystem.dto.RolesDto;
-import com.example.FleetSystem.model.Permission;
-import com.example.FleetSystem.model.Region;
 import com.example.FleetSystem.model.Roles;
 import com.example.FleetSystem.repository.RoleRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,14 +24,6 @@ public class RolesService {
         Optional<Roles> existingRole = roleRepository.findByName(rolesDto.getName());
 
         if (existingRole.isPresent()) {
-
-////            Set<Permission> truePermissions = rolesDto.getPermissions()
-////                    .stream()
-////                    .filter(Permission::isStatus)
-////                    .collect(Collectors.toSet());
-////
-////            existingRole.get().setPermissions(truePermissions);
-//            existingRole = Optional.of(roleRepository.save(existingRole.get()));
             throw new RuntimeException("This role " + rolesDto.getName() + " already exist ");
         } else {
             existingRole = Optional.of(roleRepository.save(roles));
