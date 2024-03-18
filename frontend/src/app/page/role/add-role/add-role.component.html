@@ -43,13 +43,61 @@
                     <ng-container *ngFor="let perm of permission">
                       <div class="col-2">
                         <!-- If permission is not "Vehicle", render as usual -->
-                        <ng-container *ngIf="perm.name !== 'Vehicle'">
+                        <ng-container *ngIf="!perm.name?.includes('Vehicle')">
                           <input
                             type="checkbox"
                             id="{{ perm.id }}"
                             [(ngModel)]="perm.status"
+                            (change)="checkIsSeletAll(permission)"
                           />
                           <label for="{{ perm.id }}">{{ perm.name }}</label>
+                        </ng-container>
+                        <!-- If permission is "Vehicle", render as a collapsible section -->
+                        <ng-container *ngIf="perm.name === 'Vehicles'">
+                          <!-- Collapsible section -->
+                          <div style="margin-left: -1rem !important">
+                            <!-- Icon for toggling collapse -->
+                            <span (click)="toggleCollapse()">
+                              <i
+                                class="pi"
+                                [ngClass]="
+                                  vehicleCollapse
+                                    ? 'pi-angle-down'
+                                    : 'pi-angle-right'
+                                "
+                              ></i>
+                            </span>
+                            <!-- Label for the collapsible section -->
+                            <label (click)="toggleCollapse()">{{
+                              perm.name
+                            }}</label>
+                            <!-- Collapsible content -->
+                            <div
+                              class="vehicle-content"
+                              [class.vehicle-properties]="!vehicleCollapse"
+                              [class.active]="vehicleCollapse"
+                            >
+                              <ng-container
+                                *ngFor="
+                                  let item of vehiclePermissionObject[
+                                    'Vehicles'
+                                  ]
+                                "
+                              >
+                                <div style="display: flex">
+                                  <input
+                                    (change)="childPermissions(item)"
+                                    type="checkbox"
+                                    id="{{ item.id }}"
+                                    [(ngModel)]="item.status"
+                                  />
+                                  <h5 style="align-items: center">
+                                    {{ item.name }}
+                                  </h5>
+                                </div>
+                              </ng-container>
+                            </div>
+                          </div>
                         </ng-container>
                       </div>
                     </ng-container>
