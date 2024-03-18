@@ -20,6 +20,10 @@ export class EditRoleComponent {
   };
   permissions!: Permission[];
   roleId: number = 0;
+  vehicleList!: Permission[];
+  vehiclePermissionObject!: { [x: string]: Permission[]; };
+  vehicleCollapse: boolean = false;
+  isSelectAll: boolean = false;
 
   constructor(
     private roleService: RoleService,
@@ -45,6 +49,21 @@ export class EditRoleComponent {
           this.permissions.forEach(permission => {
             permission.status = this.role.permissions.some(rolePermission => rolePermission.name === permission.name);
           });
+          this.isSelectAll = this.permissions.every(permission => permission.status === true);
+          this.vehicleList = this.permissions.filter((vehicle) => vehicle.name?.includes("Vehicle"));
+          const vehiclePermission = this.permissions.find(perm => perm.name === 'Vehicles');
+          if (vehiclePermission && typeof vehiclePermission.name === 'string') {
+            this.vehiclePermissionObject = { [vehiclePermission.name]: this.vehicleList };
+          }
+
+          this.permissions = this.permissions.filter(perm => !perm.name?.includes('Vehicle'));
+          if (this.vehiclePermissionObject) {
+            const vehiclesArray = this.vehiclePermissionObject['Vehicles'];
+            if (Array.isArray(vehiclesArray)) {
+              // Push each item of vehiclesArray into permission array
+              vehiclesArray.forEach(vehicle => this.permissions.push(vehicle));
+            }
+          }
         }
       }, error => {
         this.showError(error.error);
@@ -85,12 +104,30 @@ export class EditRoleComponent {
   showSuccess(value: Role): void {
     this.messageService.add({ severity: 'success', summary: ' Updated Successfully', detail: `Role ${value.name} has been updated` });
   }
+
+  toggleCollapse() {
+    this.vehicleCollapse = !this.vehicleCollapse;
+  }
+
   selectAllPermissions(event: Event) {
     const target = event.target as HTMLInputElement
     const isChecked = target.checked;
     for (const perm of this.permissions) {
       perm.status = isChecked;
     }
+  }
+  childPermissions(item: Permission) {
+    debugger
+    if (item.name === "Vehicles") {
+      this.vehiclePermissionObject['Vehicles'].forEach((element: Permission) => {
+        debugger
+        element.status = item.status;
+      });
+    }
+  }
+
+  checkIsSeletAll(perm: Permission[]) {
+    this.isSelectAll = perm.every(permission => permission.status === true);
   }
 }
 
