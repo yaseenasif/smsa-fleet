@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -45,4 +46,6 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long>, JpaSpec
     @Query("SELECT v FROM Vehicle v WHERE (v.vehicleStatus = 'TBA' OR v.vehicleStatus = 'Active' " +
             "OR v.vehicleStatus = 'Replacement') AND v.plateNumber = :plateNumber")
     Optional<Vehicle> getEligibleVehicle(String plateNumber);
+    @Query("SELECT DISTINCT v.processOrderNumber FROM Vehicle v")
+    List<String> findDistinctByProcessOrderNumberNotNull();
 }

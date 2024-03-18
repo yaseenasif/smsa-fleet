@@ -1,0 +1,35 @@
+.checkbox-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+
+}
+
+/* Optional: Style for checkbox */
+.checkbox-item input[type="checkbox"] {
+  margin-right: 5px; /* Adjust spacing between checkbox and label */
+}
+
+/* Show the collapsible section when active */
+.vehicle-properties.active {
+  display: block;
+}
+
+.vehicle-properties {
+  margin-top: 10px; /* Adjust the margin as needed */
+  display: none; /* Initially hide the collapsible section */
+}
+
+.vehicle-content.active {
+  display: block; /* Show the collapsible section when active */
+  margin-left: 1rem;
+}
+.flex.flex-right {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flex.flex-right > div {
+  flex-grow: 1; /* Fill remaining space */
+  text-align: right; /* Align contents to the right */
+}

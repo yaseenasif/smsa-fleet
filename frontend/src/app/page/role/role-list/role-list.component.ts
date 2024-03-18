@@ -28,6 +28,7 @@ export class RoleListComponent {
   getAllRoles() {
     this.roleService.getAllRoles().subscribe((res: Role[]) => {
       this.roles = res;
+      debugger
     }, err => {
       this.showError(err.error);
     });

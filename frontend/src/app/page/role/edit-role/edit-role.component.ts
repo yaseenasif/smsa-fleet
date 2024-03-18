@@ -33,14 +33,19 @@ export class EditRoleComponent {
   ngOnInit(): void {
     this.items = [{ label: 'Role list', routerLink: '/role' }, { label: 'Edit Role' }];
     this.roleId = +this.route.snapshot.paramMap.get('id')!;
-    this.getPermissions();
     this.getRoleById(this.roleId);
+    this.getPermissions();
   }
 
   getPermissions(): Permission[] {
     this.permissionService.getPermissions().subscribe(
       (res: Permission[]) => {
         this.permissions = res;
+        if (this.role.permissions.length > 0) {
+          this.permissions.forEach(permission => {
+            permission.status = this.role.permissions.some(rolePermission => rolePermission.name === permission.name);
+          });
+        }
       }, error => {
         this.showError(error.error);
       }
@@ -59,7 +64,9 @@ export class EditRoleComponent {
   }
 
   updateRole(): void {
-    
+    debugger
+    const selectedPermissions = this.permissions.filter(perm => perm.status);
+    this.role.permissions = selectedPermissions
     this.roleService.updateRole(this.roleId, this.role).subscribe(
       (res: Role) => {
         this.showSuccess(res);
@@ -77,6 +84,13 @@ export class EditRoleComponent {
   }
   showSuccess(value: Role): void {
     this.messageService.add({ severity: 'success', summary: ' Updated Successfully', detail: `Role ${value.name} has been updated` });
+  }
+  selectAllPermissions(event: Event) {
+    const target = event.target as HTMLInputElement
+    const isChecked = target.checked;
+    for (const perm of this.permissions) {
+      perm.status = isChecked;
+    }
   }
 }
 

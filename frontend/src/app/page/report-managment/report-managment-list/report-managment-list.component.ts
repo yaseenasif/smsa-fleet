@@ -26,6 +26,8 @@ export class ReportManagmentListComponent implements OnInit {
   selectedSearchOption = { name: 'All' };
   vendor: Vendor[] = [];
   selectedVendor: Vendor | undefined
+  selectedPoNumber: string[] | string | undefined | null;
+  poNumber: string[] | undefined | null;
   region: Region[] = [];
   selectedRegion: Region | undefined;
   selectedUsageType: { name: string | undefined; } | undefined
@@ -77,6 +79,7 @@ export class ReportManagmentListComponent implements OnInit {
     insuranceStatus: undefined
   }
   oneIsSelected: boolean | undefined;
+  poNumberList: { poNumber: string }[] = [];
 
   constructor(
     private errorService: ErrorService,
@@ -142,7 +145,7 @@ export class ReportManagmentListComponent implements OnInit {
     this.getAllVendors();
     this.getAllRegion();
     this.getAllVehicles();
-
+    this.ListOfDistinctPoNumbers();
   }
 
   getAllVehicles() {
@@ -212,6 +215,12 @@ export class ReportManagmentListComponent implements OnInit {
     }
   }
 
+  onSelectPoNumbers(selectedValues: string[]) {
+    debugger
+    this.selectedPoNumber = JSON.stringify(selectedValues);
+  }
+
+
   onSelectVendors(slectedValues: string[]) {
     this.vehicle.vendor.vendorName = JSON.stringify(slectedValues);
   }
@@ -226,14 +235,18 @@ export class ReportManagmentListComponent implements OnInit {
   }
 
   dynamicSearch() {
-    this.reportManagmentService.searchVehiclesWithDynamicValues(this.vehicle).subscribe(
+    debugger
+    const selectedPoNumberString: string = this.selectedPoNumber as string;
+    this.reportManagmentService.searchVehiclesWithDynamicValues(this.vehicle, selectedPoNumberString).subscribe(
       (res: Vehicle[]) => {
         this.vehicles = res;
       },
       (error: BackenCommonErrorThrow) => {
+        debugger
         this.errorService.showError(error.error!);
       });
   }
+
 
   clear() {
     this.leaseStartDate = undefined;
@@ -243,6 +256,7 @@ export class ReportManagmentListComponent implements OnInit {
     this.selectedRegion = undefined;
     this.selectedStatus = undefined;
     this.selectedVendor = undefined;
+    this.selectedPoNumber = undefined;
     this.vehicle = {
       id: undefined,
       processOrderNumber: undefined,
@@ -285,6 +299,17 @@ export class ReportManagmentListComponent implements OnInit {
   downloadExcelData() {
     this.vehicleService.downloadExcelData(this.vehicles)
       .subscribe(blob => saveAs(blob, "Report Data.xlsx"));
+  }
+
+  ListOfDistinctPoNumbers() {
+    this.vehicleService.getAllDistinctPoNumbers().subscribe(
+      (res: { poNumber: string }[]) => {
+        this.poNumberList = res;
+      },
+      (error: BackenCommonErrorThrow) => {
+        this.errorService.showError(error.error!);
+      }
+    );
   }
 
 }

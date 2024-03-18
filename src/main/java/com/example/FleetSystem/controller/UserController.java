@@ -18,32 +18,32 @@ public class UserController {
     UserService userService;
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PROJECT_MANAGER')")
     @PostMapping("/user")
     public ResponseEntity<User> addUser(@RequestBody UserDto userDto){
         User user = userService.addUser(userDto);
         return ResponseEntity.ok(user);
 
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PROJECT_MANAGER')")
     @GetMapping("/active-user")
     public ResponseEntity<List<UserDto>> getActiveUser(){
         return ResponseEntity.ok(userService.getActiveUsers());
 
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PROJECT_MANAGER')")
     @GetMapping("/user/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable Long id){
         return ResponseEntity.ok(userService.getById(id));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PROJECT_MANAGER')")
     @DeleteMapping("/delete-user/{id}")
     public ResponseEntity<UserDto> deleteById(@PathVariable Long id){
         return ResponseEntity.ok(userService.deleteById(id));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PROJECT_MANAGER')")
     @PatchMapping("/update-user/{id}")
     public ResponseEntity<UserDto> updateById(@PathVariable Long id, @RequestBody UserDto userDto){
         return ResponseEntity.ok(userService.updateById(id,userDto));

@@ -13,7 +13,7 @@
           <div class="card">
             <h1 class="mb-4 h-color">Add Role</h1>
             <div class="grid">
-              <div class="col-12 md:col-12 lg:col-6">
+              <div class="col-12 md:col-12 lg:col-12">
                 <div class="flex flex-column gap-2">
                   <label htmlFor="name">Role</label>
                   <input
@@ -22,35 +22,56 @@
                     aria-describedby="name-help"
                     [ngModelOptions]="{ standalone: true }"
                     [(ngModel)]="role.name"
+                    required="true"
                   />
                 </div>
               </div>
-              <div class="col-12 md:col-12 lg:col-6">
+              <div class="col-12 md:col-12 lg:col-12">
                 <div class="flex flex-column gap-2 form-hook">
-                  <label htmlFor="name">Permissions</label>
-                  <p-multiSelect
-                    [ngModelOptions]="{ standalone: true }"
-                    [options]="permission"
-                    [(ngModel)]="role.permissions"
-                    optionLabel="name"
-                  ></p-multiSelect>
+                  <div class="flex flex-right mb-3">
+                    <label for="permissions">Permissions:</label>
+                    <div>
+                      <input
+                        type="checkbox"
+                        id="select-all"
+                        (change)="selectAllPermissions($event)"
+                      />
+                      <label for="select-all">Select All</label>
+                    </div>
+                  </div>
+                  <div class="checkbox-grid">
+                    <ng-container *ngFor="let perm of permission">
+                      <div class="col-2">
+                        <!-- If permission is not "Vehicle", render as usual -->
+                        <ng-container *ngIf="perm.name !== 'Vehicle'">
+                          <input
+                            type="checkbox"
+                            id="{{ perm.id }}"
+                            [(ngModel)]="perm.status"
+                          />
+                          <label for="{{ perm.id }}">{{ perm.name }}</label>
+                        </ng-container>
+                      </div>
+                    </ng-container>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="flex align-items-center justify-content-end mt-4">
-              <p-button
-                label="Cancel"
-                class="bg-o-color mr"
-                routerLink="/role"
-                styleClass="p-button-outlined"
-              >
-              </p-button>
-              <p-button
-                label="Save"
-                class="bg-b-color ml"
-                (onClick)="addRole()"
-              >
-              </p-button>
+              <div class="flex align-items-center justify-content-end mt-4">
+                <p-button
+                  label="Cancel"
+                  class="bg-o-color mr"
+                  routerLink="/role"
+                  styleClass="p-button-outlined"
+                >
+                </p-button>
+                <p-button
+                  label="Save"
+                  class="bg-b-color ml"
+                  [disabled]="!role.name"
+                  (onClick)="addRole()"
+                >
+                </p-button>
+              </div>
             </div>
           </div>
         </div>

@@ -128,7 +128,8 @@
                     Status
                   </th>
                   <th pSortableColumn="processOrderNumber">
-                    PO Number <p-sortIcon field="processOrderNumber"></p-sortIcon>
+                    PO Number
+                    <p-sortIcon field="processOrderNumber"></p-sortIcon>
                   </th>
                   <th pSortableColumn="plateNumber" class="text-center">
                     Plate Number <p-sortIcon field="plateNumber"></p-sortIcon>
@@ -427,6 +428,7 @@
                   </td>
                   <td class="text-center flex">
                     <p-button
+                      *ngIf="canView"
                       [routerLink]="['/view-vehicle/', vehicles.id]"
                       pTooltip="View"
                       tooltipPosition="top"
@@ -441,7 +443,8 @@
                       *ngIf="
                         selectedStatus.name === 'In-Active' &&
                         !vehicletab &&
-                        !unAssignedVehicleTab
+                        !unAssignedVehicleTab &&
+                        !canView
                       "
                       class="bg-color"
                       (click)="showActivationDialog(vehicles.id)"
@@ -455,7 +458,7 @@
                     ></p-button>
 
                     <p-button
-                      *ngIf="!vehicletab && !unAssignedVehicleTab"
+                      *ngIf="!vehicletab && !unAssignedVehicleTab && !canView"
                       [routerLink]="['/edit-vehicle/', vehicles.id]"
                       pTooltip="Edit"
                       tooltipPosition="top"
@@ -469,7 +472,9 @@
 
                     <p-button
                       *ngIf="
-                        selectedStatus.name === 'Replacement' && !vehicletab
+                        selectedStatus.name === 'Replacement' &&
+                        !vehicletab &&
+                        !canView
                       "
                       (click)="showReplacementDialog(vehicles.id)"
                       pTooltip="Delete"
@@ -483,7 +488,7 @@
                     ></p-button>
 
                     <p-button
-                      *ngIf="!vehicletab && !unAssignedVehicleTab"
+                      *ngIf="!vehicletab && !unAssignedVehicleTab && !canView"
                       [routerLink]="['/vehicle-attachment/', vehicles.id]"
                       pTooltip="Add Attachments"
                       tooltipPosition="top"
@@ -496,7 +501,7 @@
                     ></p-button>
 
                     <p-button
-                      *ngIf="!vehicletab && !unAssignedVehicleTab"
+                      *ngIf="!vehicletab && !unAssignedVehicleTab && !canView"
                       [routerLink]="[
                         '/individual-file-list-component/',
                         'vehicle',
@@ -512,7 +517,7 @@
                     ></p-button>
 
                     <p-button
-                      *ngIf="!vehicletab && !unAssignedVehicleTab"
+                      *ngIf="!vehicletab && !unAssignedVehicleTab && !canView"
                       [routerLink]="['/vehicle-history/', vehicles.id]"
                       pTooltip="View History"
                       tooltipPosition="top"
@@ -527,6 +532,7 @@
                     <p-button
                       *ngIf="
                         !vehicletab &&
+                        !canView &&
                         !unAssignedVehicleTab &&
                         (selectedStatus.name === 'TBA' ||
                           selectedStatus.name === 'Active')
@@ -561,7 +567,24 @@
                     >
                     </p-button>
 
-                    <p-button *ngIf="!vehicletab && !unAssignedVehicleTab && (selectedStatus.name === 'TBA')" (click)="showReplacementDialog(vehicles.id)" pTooltip="Delete" tooltipPosition="top" icon="bi bi-trash" class='ml mr' [outlined]="true" [rounded]="true" [raised]="true" severity="danger">
+                    <p-button
+                      *ngIf="
+                        !vehicletab &&
+                        !unAssignedVehicleTab &&
+                        selectedStatus.name === 'TBA' &&
+                        canDelete &&
+                        !canView
+                      "
+                      (click)="showReplacementDialog(vehicles.id)"
+                      pTooltip="Delete"
+                      tooltipPosition="top"
+                      icon="bi bi-trash"
+                      class="ml mr"
+                      [outlined]="true"
+                      [rounded]="true"
+                      [raised]="true"
+                      severity="danger"
+                    >
                     </p-button>
                   </td>
                 </tr>
@@ -670,7 +693,17 @@
       ></p-button>
     </div>
     <div>
-      <p-button label="Yes" (click)="selectedStatus.name === 'Under Maintenance' ? markVehicleTotalLost() : selectedStatus.name === 'TBA' ? deleteVehicleById() : deleteReplacementVehicle()" class="bg-b-color ml"></p-button>
+      <p-button
+        label="Yes"
+        (click)="
+          selectedStatus.name === 'Under Maintenance'
+            ? markVehicleTotalLost()
+            : selectedStatus.name === 'TBA'
+            ? deleteVehicleById()
+            : deleteReplacementVehicle()
+        "
+        class="bg-b-color ml"
+      ></p-button>
     </div>
   </div>
 </p-dialog>

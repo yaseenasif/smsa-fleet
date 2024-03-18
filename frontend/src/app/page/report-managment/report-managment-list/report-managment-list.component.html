@@ -18,6 +18,7 @@
 
         <div class="body-card">
           <div class="table-head">
+            <p-toast></p-toast>
             <p-toolbar>
               <div class="flex align-items-start">
                 <p-button
@@ -74,27 +75,27 @@
                 </div>
 
                 <div style="flex: 1">
-                  <label class="mb-1">Vendor:</label>
-                  <!-- <p-multiSelect
-
-                    [(ngModel)]="selectedVendor"
-                    [options]="vendor"
-
-
-
-                    optionLabel="vendorName"
-                    optionValue="vendorName"
-
+                  <label class="mb-1">PoNumbers:</label>
+                  <p-multiSelect
+                    [options]="poNumberList"
+                    class="w-full"
+                    name="poNumber"
+                    [(ngModel)]="poNumber"
+                    [required]="true"
+                    placeholder="Select P.O.Number"
+                    optionLabel="poNumber"
+                    optionValue="poNumber"
+                    (onClear)="selectedPoNumber = null"
+                    display="chip"
+                    [filter]="true"
+                    (ngModelChange)="onSelectPoNumbers($event)"
+                    filterBy="poNumber"
                     [showClear]="true"
-                    placeholder="Select Vendors"
+                  ></p-multiSelect>
+                </div>
 
-                  >
-                    <ng-template let-vendor pTemplate="item">
-                      <div class="flex align-items-center gap-2">
-                        <div>{{ vendor.vendorName }}</div>
-                      </div>
-                    </ng-template>
-                  </p-multiSelect> -->
+                <div style="flex: 1">
+                  <label class="mb-1">Vendor:</label>
                   <p-multiSelect
                     [options]="vendor"
                     class="w-full"
@@ -155,7 +156,9 @@
                 </div>
 
                 <div style="flex: 1">
-                  <label class="mb-1">Vehicle Status:</label>
+                  <label style="display: block !important" class="mb-1"
+                    >Vehicle Status:</label
+                  >
                   <p-multiSelect
                     class="w-full"
                     [(ngModel)]="selectedStatus"

@@ -11,6 +11,8 @@ import { Region } from 'src/app/modal/Region';
 import { RegionService } from '../../region/service/region.service';
 import { EmployeeService } from '../../employee-screen/service/employee.service';
 import { Employee } from 'src/app/modal/employee';
+import { UserService } from '../../user/user.service';
+import { AuthguardService } from 'src/app/auth-service/authguard/authguard.service';
 
 @Component({
   selector: 'app-vehicle-list',
@@ -38,6 +40,8 @@ export class VehicleListComponent implements OnInit {
   tempTab: boolean | undefined;
   unAssignedVehicleTab: boolean | undefined;
   lastAssignedEmployee!: Employee;
+  canDelete: boolean = true;
+  canView: boolean = false;
 
   constructor(
     private vehicleService: VehicleService,
@@ -45,7 +49,8 @@ export class VehicleListComponent implements OnInit {
     private router: Router,
     private regionService: RegionService,
     private route: ActivatedRoute,
-    private employeeService: EmployeeService
+    private employeeService: EmployeeService,
+    private authguardService: AuthguardService
   ) { }
 
   vehicles!: Array<Vehicle>;
@@ -86,7 +91,9 @@ export class VehicleListComponent implements OnInit {
       },
     ]
     this.setSelectedStatusAndGetAllVehicles();
-
+    this.canDelete = this.hasPermission("VehicleDelete");
+    debugger
+    this.canView = this.hasPermission("VehicleRead");
     this.route.queryParams.subscribe(params => {
       this.vehicletab = params['vehicletab'] === 'true';
       this.unAssignedVehicleTab = params['unAssignVehicleTab'] === 'true';
@@ -142,7 +149,7 @@ export class VehicleListComponent implements OnInit {
 
 
   flag = 'TBA'
- 
+
   OnSelectChange() {
     if (this.selectedStatus.name !== this.flag) {
       this.query.page = 0;
@@ -176,13 +183,13 @@ export class VehicleListComponent implements OnInit {
     this.vehicleService.downloadAttachments(fileName).subscribe(blob => saveAs(blob, fileName));
   }
 
-    searchAllVehicles(vehiclestatus: string) {
-      this.vehicleService.searchAllVehicles(this.value, vehiclestatus, this.query).subscribe((res: PaginatedResponse<Vehicle>) => {
-        this.vehicles = res.content
-        this.query = { page: res.pageable.pageNumber, size: res.size }
-        this.totalRecords = res.totalElements;
-      })
-    }
+  searchAllVehicles(vehiclestatus: string) {
+    this.vehicleService.searchAllVehicles(this.value, vehiclestatus, this.query).subscribe((res: PaginatedResponse<Vehicle>) => {
+      this.vehicles = res.content
+      this.query = { page: res.pageable.pageNumber, size: res.size }
+      this.totalRecords = res.totalElements;
+    })
+  }
 
   replaceVehicle(id: Number) {
     this.replacementCheck = true;
@@ -233,12 +240,15 @@ export class VehicleListComponent implements OnInit {
     this.searchAllVehicles(this.selectedStatus.name);
   }
 
-  deleteVehicleById(){
-    this.vehicleService.deleteVehicleById(this.vId).subscribe((res)=>{
+  deleteVehicleById() {
+    this.vehicleService.deleteVehicleById(this.vId).subscribe((res) => {
       this.messageService.add({ severity: 'success', summary: 'Vehicle Deleted' })
       this.closeDialog()
       this.searchAllVehicles(this.selectedStatus.name)
     })
   }
 
+  hasPermission(permission: string): boolean {
+    return this.authguardService.hasPermission(permission)
+  }
 }
