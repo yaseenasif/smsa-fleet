@@ -11,19 +11,6 @@ import java.io.IOException;
 @Configuration
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CorsConfig implements Filter {
-//    @Bean
-//    public WebMvcConfigurer corsConfigurer() {
-//        return new WebMvcConfigurer() {
-//            @Override
-//            public void addCorsMappings(CorsRegistry registry) {
-//                registry.addMapping("/api/**") // Specify the mapping path for your API
-//                        .allowedOrigins("http://localhost:4200") // Replace with your Angular app's URL
-//                        .allowedMethods("GET", "POST", "PUT", "DELETE") // Allowed HTTP methods
-//                        .allowedHeaders("*"); // Allowed headers
-//            }
-//        };
-//    }
-
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
 

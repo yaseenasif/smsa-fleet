@@ -1,28 +1,21 @@
 package com.example.FleetSystem.service;
 
-import com.amazonaws.services.alexaforbusiness.model.NotFoundException;
 import com.example.FleetSystem.dto.ProjectVehicleDto;
 import com.example.FleetSystem.model.ProjectVehicle;
 import com.example.FleetSystem.model.ProjectVehicleValues;
 import com.example.FleetSystem.model.User;
-import com.example.FleetSystem.model.Vendor;
 import com.example.FleetSystem.repository.ProjectVehicleRepository;
 import com.example.FleetSystem.repository.ProjectVehicleValuesRepository;
 import com.example.FleetSystem.repository.UserRepository;
 import com.example.FleetSystem.repository.VendorRepository;
-import com.example.FleetSystem.specification.ProjectVehicleSpecification;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.sql.Date;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -62,7 +55,7 @@ public class ProjectVehicleService {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {
             String username = ((UserDetails) principal).getUsername();
-            User user = userRepository.findByEmail(username);
+            User user = userRepository.findByEmployeeId(username);
 
             ProjectVehicle projectVehicle = toEntity(projectVehicleDto);
             projectVehicle.setCreatedBy(user);
@@ -117,7 +110,7 @@ public class ProjectVehicleService {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {
             String username = ((UserDetails) principal).getUsername();
-            return userRepository.findByEmail(username);
+            return userRepository.findByEmployeeId(username);
         } else {
             throw new RuntimeException("Unable to retrieve current user");
         }

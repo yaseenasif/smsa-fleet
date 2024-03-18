@@ -1,7 +1,6 @@
 package com.example.FleetSystem.service;
 
 //import com.example.FleetSystem.dto.DriverDto;
-import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.dto.VendorDto;
 import com.example.FleetSystem.model.*;
 import com.example.FleetSystem.repository.ContactPersonRepository;
@@ -34,7 +33,7 @@ public class VendorService {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal instanceof UserDetails) {
             String username = ((UserDetails) principal).getUsername();
-            User user = userRepository.findByEmail(username);
+            User user = userRepository.findByEmployeeId(username);
 
             Vendor vendor = toEntity(vendorDto);
             for (ContactPerson contactPerson: vendor.getContactPersonList()) {
@@ -80,7 +79,7 @@ public class VendorService {
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if(principal instanceof UserDetails) {
                 String username = ((UserDetails) principal).getUsername();
-                User user = userRepository.findByEmail(username);
+                User user = userRepository.findByEmployeeId(username);
 
                 vendor.get().setVendorName(vendorDto.getVendorName());
                 vendor.get().setOfficeLocation(vendorDto.getOfficeLocation());

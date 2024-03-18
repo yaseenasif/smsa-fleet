@@ -214,7 +214,6 @@ public class VehicleSpecification {
                         }
                 );
 
-                // Create a list to store individual like predicates
                 List<Predicate> likePredicates = new ArrayList<>();
 
                 for (String value : values) {

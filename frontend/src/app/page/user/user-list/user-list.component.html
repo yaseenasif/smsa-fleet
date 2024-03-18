@@ -31,6 +31,7 @@
             <p-table [value]="users" [tableStyle]="{ 'min-width': '50rem' }">
               <ng-template pTemplate="header">
                 <tr>
+                  <th class="text-center">Employee Id</th>
                   <th class="text-center">Name</th>
                   <th class="text-center">Email</th>
                   <th class="text-center">Role</th>
@@ -40,6 +41,7 @@
               </ng-template>
               <ng-template pTemplate="body" let-users>
                 <tr>
+                  <td class="text-center">{{ users.employeeId }}</td>
                   <td class="text-center">{{ users.name }}</td>
                   <td class="text-center">{{ users.email }}</td>
                   <td *ngFor="let role of users.roles" class="text-center">

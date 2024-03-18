@@ -16,6 +16,20 @@
               <div class="grid">
                 <div class="col-12 md:col-12 lg:col-12">
                   <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Employee Id</label>
+                    <input
+                      pInputText
+                      id="employeeId"
+                      aria-describedby="name-help"
+                      [(ngModel)]="user.employeeId"
+                      #employeeId="ngModel"
+                      name="employeeId"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-12">
+                  <div class="flex flex-column gap-2">
                     <label htmlFor="name">Name</label>
                     <input
                       pInputText

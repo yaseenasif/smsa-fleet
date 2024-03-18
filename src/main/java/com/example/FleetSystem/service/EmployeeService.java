@@ -3,7 +3,6 @@ package com.example.FleetSystem.service;
 import com.example.FleetSystem.criteria.EmployeeSearchCriteria;
 import com.example.FleetSystem.dto.EmployeeDto;
 import com.example.FleetSystem.dto.EmployeeExcelDto;
-import com.example.FleetSystem.dto.VehicleExcelDto;
 import com.example.FleetSystem.exception.ExcelException;
 import com.example.FleetSystem.model.*;
 import com.example.FleetSystem.payload.CheckAssignEmployee;
@@ -18,7 +17,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -80,7 +78,7 @@ public class EmployeeService {
 
             if(principal instanceof UserDetails) {
                 String username = ((UserDetails) principal).getUsername();
-                User user = userRepository.findByEmail(username);
+                User user = userRepository.findByEmployeeId(username);
 
                 Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByAssignToEmpId(employee.get());
                 if (vehicleAssignment.isPresent()) {
@@ -104,7 +102,7 @@ public class EmployeeService {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal instanceof UserDetails) {
             String username = ((UserDetails) principal).getUsername();
-            User user = userRepository.findByEmail(username);
+            User user = userRepository.findByEmployeeId(username);
 
             Optional<Employee> employee = employeeRepository.findByEmployeeNumber(employeeDto.getEmployeeNumber());
 
@@ -146,7 +144,7 @@ public class EmployeeService {
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if(principal instanceof UserDetails) {
                 String username = ((UserDetails) principal).getUsername();
-                User user = userRepository.findByEmail(username);
+                User user = userRepository.findByEmployeeId(username);
 
                 employee.get().setEmployeeNumber(employeeDto.getEmployeeNumber());
                 employee.get().setEmpName(employeeDto.getEmpName());
@@ -247,7 +245,7 @@ public class EmployeeService {
                             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
                             if (principal instanceof UserDetails) {
                                 String username = ((UserDetails) principal).getUsername();
-                                User user = userRepository.findByEmail(username);
+                                User user = userRepository.findByEmployeeId(username);
                                 DataFormatter dataFormatter = new DataFormatter();
 
                                 Optional<JobTitle> jobTitle = jobTitleRepository.findByJobTitleAndStatusIsTrue(getStringValue(row.getCell(7)));

@@ -71,7 +71,7 @@ public class VehicleAssignmentService {
         Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principle instanceof UserDetails) {
             String username = ((UserDetails) principle).getUsername();
-            User user = userRepository.findByEmail(username);
+            User user = userRepository.findByEmployeeId(username);
 
             Optional<Vehicle> vehicle = vehicleRepository.findByPlateNumber(vehicleAssignmentDto.getVehicle().getPlateNumber());
             Optional<Employee> employee = employeeRepository.findById(vehicleAssignmentDto.getAssignToEmpId().getId());
@@ -130,7 +130,7 @@ public class VehicleAssignmentService {
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if (principal instanceof UserDetails) {
                 String username = ((UserDetails) principal).getUsername();
-                User user = userRepository.findByEmail(username);
+                User user = userRepository.findByEmployeeId(username);
 
 //                Optional<Driver> driver = driverRepository.findByEmpId(optionalVehicleAssignment.get().getAssignToEmpId());
 //                driver.ifPresent(value -> value.setAssignedVehicle(null));
@@ -155,7 +155,7 @@ public class VehicleAssignmentService {
             Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if (principle instanceof UserDetails) {
                 String username = ((UserDetails) principle).getUsername();
-                User user = userRepository.findByEmail(username);
+                User user = userRepository.findByEmployeeId(username);
 
                 Optional<Employee> employee = employeeRepository.findById(vehicleAssignmentDto.getAssignToEmpId().getId());
                 if (employee.isPresent()) {
@@ -420,7 +420,7 @@ public class VehicleAssignmentService {
                         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
                         if (principal instanceof UserDetails) {
                             String username = ((UserDetails) principal).getUsername();
-                            User user = userRepository.findByEmail(username);
+                            User user = userRepository.findByEmployeeId(username);
 
                             Optional<Vehicle> vehicle = vehicleRepository.getEligibleVehicle(getStringValue(row.getCell(0)));
                             Optional<Employee> employee = employeeRepository.findEligibleEmployee(getLongValue(row.getCell(1)));

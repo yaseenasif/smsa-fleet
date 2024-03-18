@@ -25,5 +25,6 @@ public class UserDto {
     @NotBlank(message = "Role is required")
     private Set<Roles> roles;
     private boolean status;
+    private String employeeId;
 
 }

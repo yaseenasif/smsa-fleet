@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup} from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AuthService } from 'src/app/auth-service/auth.service';
@@ -22,7 +22,7 @@ export class LoginFormComponent implements OnInit {
   currentIndex: any = 0;
   currentImageUrl!: string;
   togglePassword: any;
-  email!: string
+  employeeId!: string
   error: boolean = false;
   password!: string
   private jwtHelper: JwtHelperService = new JwtHelperService();
@@ -52,20 +52,8 @@ export class LoginFormComponent implements OnInit {
   ngOnInit(): void {
 
     localStorage.removeItem("accessToken");
-    // this.loginForm = this.formBuilder.group({
-    //   name:['',[Validators.required,Validators.min(7)]],
-    //   password:['',[Validators.required,Validators.min(7)]]
-    // })
-
-    // this.changeBackgroundImage();
-    // setInterval(()=>this.changeBackgroundImage(),5000)
-
+    
   }
-
-  // changeBackgroundImage(){
-  //   this.currentImageUrl = `/assets/images/${this.images[this.currentIndex]}`
-  //   this.currentIndex = (this.currentIndex + 1) % this.images.length;
-  // }
 
 
   login(credentials: any) {

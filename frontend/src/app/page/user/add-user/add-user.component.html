@@ -14,7 +14,31 @@
             <h1 class="mb-4 h-color">Add User</h1>
             <form #userForm="ngForm" (ngSubmit)="onSubmit()">
               <div class="grid">
-                <div class="col-12 md:col-12 lg:col-12">
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Employee Id</label>
+                    <input
+                      pInputText
+                      id="employeeId"
+                      aria-describedby="name-help"
+                      [(ngModel)]="user.employeeId"
+                      #employeeId="ngModel"
+                      name="employeeId"
+                      required
+                    />
+                    <small
+                    id="name-help"
+                    class="color-red error"
+                    *ngIf="
+                      employeeId.invalid &&
+                      (employeeId.dirty || employeeId.touched)
+                    "
+                  >
+                  Employee Id is required
+                  </small>
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">Name</label>
                     <input
@@ -62,7 +86,7 @@
                 </div>
 
                 <div class="col-12 md:col-12 lg:col-6">
-                  <div class="flex flex-column gap-2">
+                  <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="password">Password</label>
                     <p-password
                       [toggleMask]="true"
@@ -71,8 +95,6 @@
                       name="password"
                       #password="ngModel"
                       required
-                      [style]="{width: '100%', 'padding-top': '2%'}"
-                      [inputStyle]="{width: '100%'}"
                       ></p-password>
                       <small>{{user.password}}</small>
                     <small

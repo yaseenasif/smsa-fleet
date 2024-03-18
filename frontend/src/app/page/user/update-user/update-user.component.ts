@@ -22,6 +22,7 @@ export class UpdateUserComponent implements OnInit {
     name: undefined,
     email: undefined,
     password: undefined,
+    employeeId: undefined,
     roles: [],
   }
 

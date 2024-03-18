@@ -22,9 +22,9 @@ export class AddUserComponent implements OnInit {
     name: undefined,
     email: undefined,
     password: undefined,
+    employeeId: undefined,
     roles: []
   }
-  // user!: User;
 
   constructor(
     private roleService: RoleService,
@@ -59,11 +59,6 @@ export class AddUserComponent implements OnInit {
         this.showError(error.error);
       });
   }
-
-
-  // getRoleData() {
-
-  // }
 
   showError(error: string): void {
     this.messageService.add({ severity: 'error', summary: 'Add Error', detail: error });
