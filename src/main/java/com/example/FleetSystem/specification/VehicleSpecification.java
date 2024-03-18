@@ -219,29 +219,6 @@ public class VehicleSpecification {
                 Predicate likePredicate = criteriaBuilder.equal(columnValueLower, value.toString().toLowerCase());
                 likePredicates.add(likePredicate);
             }
-    private static void addLikePredicateIfNotNull(List<Predicate> predicates, CriteriaBuilder criteriaBuilder, Path<String> path, String valueJson) {
-        if (valueJson != null) {
-            try {
-                ObjectMapper objectMapper = new ObjectMapper();
-                List<String> values = objectMapper.readValue(
-                        valueJson,
-                        new TypeReference<List<String>>() {
-                        }
-                );
-
-                List<Predicate> likePredicates = new ArrayList<>();
-
-                for (String value : values) {
-                    if (value != null) {
-                        // Convert both the column value and the search value to lowercase
-                        Expression<String> columnValueLower = criteriaBuilder.lower(path);
-                        String searchValueLower = value.toLowerCase();
-
-                        // Create a like predicate for the lowercase values and add it to the list
-                        Predicate likePredicate = criteriaBuilder.equal(columnValueLower, searchValueLower);
-                        likePredicates.add(likePredicate);
-                    }
-                }
 
             // Combine all the like predicates using 'or' instead of 'and'
             Predicate combinedPredicate = criteriaBuilder.or(likePredicates.toArray(new Predicate[0]));
