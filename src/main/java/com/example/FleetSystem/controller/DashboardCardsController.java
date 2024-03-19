@@ -19,7 +19,7 @@ public class DashboardCardsController {
     @Autowired
     DashboardCardsService dashboardCardsService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @GetMapping("/counts")
     public ResponseEntity<Map<String, Object>> getVehicleCounts() {
         Map<String, Object> counts = dashboardCardsService.getCounts();

@@ -42,6 +42,7 @@ export class VehicleListComponent implements OnInit {
   lastAssignedEmployee!: Employee;
   canDelete: boolean = true;
   canView: boolean = false;
+  permissions: string[] | undefined;
 
   constructor(
     private vehicleService: VehicleService,
@@ -64,7 +65,7 @@ export class VehicleListComponent implements OnInit {
   uploadedFiles: any[] = [];
   fileName: string = 'vehicleSample.xlsx'
   replacementCheck: boolean = false;
-
+  token!: string | null;
 
 
   items: MenuItem[] | undefined;
@@ -91,15 +92,18 @@ export class VehicleListComponent implements OnInit {
       },
     ]
     this.setSelectedStatusAndGetAllVehicles();
-    this.canDelete = this.hasPermission("VehicleDelete");
-    debugger
-    this.canView = this.hasPermission("VehicleRead");
+    // this.canDelete = this.hasPermission("DeleteVehicle");
+    // this.canView = this.hasPermission("ViewVehicle");
+    // this.canView = this.hasPermission("AddVehicle");
+    // this.canView = this.hasPermission("UpdateVehicle");
+    // this.canView = this.hasPermission("VehicleHid");
     this.route.queryParams.subscribe(params => {
       this.vehicletab = params['vehicletab'] === 'true';
       this.unAssignedVehicleTab = params['unAssignVehicleTab'] === 'true';
 
     });
-
+    this.token = localStorage.getItem('accessToken');
+    this.getPersmissions();
   }
 
 
@@ -248,7 +252,7 @@ export class VehicleListComponent implements OnInit {
     })
   }
 
-  hasPermission(permission: string): boolean {
-    return this.authguardService.hasPermission(permission)
+  getPersmissions(){
+    this.permissions = this.authguardService.getDecodedAccessToken(this.token!)?.PERMISSIONS    
   }
 }

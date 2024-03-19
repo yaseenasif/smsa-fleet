@@ -5,6 +5,7 @@ import { RoleService } from '../role.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Permission } from 'src/app/modal/Permission';
 import { PermissionService } from '../../permission/service/permission.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-edit-role',
@@ -45,25 +46,30 @@ export class EditRoleComponent {
     this.permissionService.getPermissions().subscribe(
       (res: Permission[]) => {
         this.permissions = res;
+        
         if (this.role.permissions.length > 0) {
           this.permissions.forEach(permission => {
             permission.status = this.role.permissions.some(rolePermission => rolePermission.name === permission.name);
           });
           this.isSelectAll = this.permissions.every(permission => permission.status === true);
-          this.vehicleList = this.permissions.filter((vehicle) => vehicle.name?.includes("Vehicle"));
+          // this.vehicleList = this.permissions.filter((vehicle) => vehicle.name?.includes("Vehicle"));
+          const allowedVehiclePermissions = ['AddVehicles', 'ViewVehicles', 'UpdateVehicles', 'DeleteVehicles', 'VehiclesHistory', 'ReplaceVehicles', 'VehiclesAttachment'];
+
+          this.vehicleList = this.permissions.filter((vehicle) => allowedVehiclePermissions.includes(vehicle.name!));
           const vehiclePermission = this.permissions.find(perm => perm.name === 'Vehicles');
+          
           if (vehiclePermission && typeof vehiclePermission.name === 'string') {
             this.vehiclePermissionObject = { [vehiclePermission.name]: this.vehicleList };
           }
-
-          this.permissions = this.permissions.filter(perm => !perm.name?.includes('Vehicle'));
-          if (this.vehiclePermissionObject) {
-            const vehiclesArray = this.vehiclePermissionObject['Vehicles'];
-            if (Array.isArray(vehiclesArray)) {
-              // Push each item of vehiclesArray into permission array
-              vehiclesArray.forEach(vehicle => this.permissions.push(vehicle));
-            }
-          }
+          
+          // this.permissions = this.permissions.filter(perm => !perm.name?.includes('ViewVehicle'));
+          // if (this.vehiclePermissionObject) {
+          //   // const vehiclesArray = this.vehiclePermissionObject['Vehicles'];
+          //   if (Array.isArray(vehiclesArray)) {
+          //     // Push each item of vehiclesArray into permission array
+          //     vehiclesArray.forEach(vehicle => this.permissions.push(vehicle));
+          //   }
+          // }
         }
       }, error => {
         this.showError(error.error);
@@ -83,7 +89,7 @@ export class EditRoleComponent {
   }
 
   updateRole(): void {
-    debugger
+    
     const selectedPermissions = this.permissions.filter(perm => perm.status);
     this.role.permissions = selectedPermissions
     this.roleService.updateRole(this.roleId, this.role).subscribe(
@@ -117,10 +123,10 @@ export class EditRoleComponent {
     }
   }
   childPermissions(item: Permission) {
-    debugger
+    
     if (item.name === "Vehicles") {
       this.vehiclePermissionObject['Vehicles'].forEach((element: Permission) => {
-        debugger
+        
         element.status = item.status;
       });
     }

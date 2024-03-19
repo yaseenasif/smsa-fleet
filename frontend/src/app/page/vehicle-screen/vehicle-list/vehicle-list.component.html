@@ -428,7 +428,7 @@
                   </td>
                   <td class="text-center flex">
                     <p-button
-                      *ngIf="canView"
+                      *ngIf="permissions && permissions.includes('ViewVehicles')"
                       [routerLink]="['/view-vehicle/', vehicles.id]"
                       pTooltip="View"
                       tooltipPosition="top"
@@ -443,8 +443,8 @@
                       *ngIf="
                         selectedStatus.name === 'In-Active' &&
                         !vehicletab &&
-                        !unAssignedVehicleTab &&
-                        !canView
+                        !unAssignedVehicleTab
+                        
                       "
                       class="bg-color"
                       (click)="showActivationDialog(vehicles.id)"
@@ -458,7 +458,8 @@
                     ></p-button>
 
                     <p-button
-                      *ngIf="!vehicletab && !unAssignedVehicleTab && !canView"
+                      *ngIf="!vehicletab && !unAssignedVehicleTab && 
+                      permissions && permissions.includes('UpdateVehicles')"
                       [routerLink]="['/edit-vehicle/', vehicles.id]"
                       pTooltip="Edit"
                       tooltipPosition="top"
@@ -474,7 +475,7 @@
                       *ngIf="
                         selectedStatus.name === 'Replacement' &&
                         !vehicletab &&
-                        !canView
+                        permissions && permissions.includes('DeleteVehicles')
                       "
                       (click)="showReplacementDialog(vehicles.id)"
                       pTooltip="Delete"
@@ -488,7 +489,8 @@
                     ></p-button>
 
                     <p-button
-                      *ngIf="!vehicletab && !unAssignedVehicleTab && !canView"
+                      *ngIf="!vehicletab && !unAssignedVehicleTab && 
+                      permissions && permissions.includes('VehiclesAttachment')"
                       [routerLink]="['/vehicle-attachment/', vehicles.id]"
                       pTooltip="Add Attachments"
                       tooltipPosition="top"
@@ -501,7 +503,8 @@
                     ></p-button>
 
                     <p-button
-                      *ngIf="!vehicletab && !unAssignedVehicleTab && !canView"
+                      *ngIf="!vehicletab && !unAssignedVehicleTab && 
+                      permissions && permissions.includes('VehiclesAttachment')"
                       [routerLink]="[
                         '/individual-file-list-component/',
                         'vehicle',
@@ -517,7 +520,8 @@
                     ></p-button>
 
                     <p-button
-                      *ngIf="!vehicletab && !unAssignedVehicleTab && !canView"
+                      *ngIf="!vehicletab && !unAssignedVehicleTab && 
+                      permissions && permissions.includes('VehiclesHistory')"
                       [routerLink]="['/vehicle-history/', vehicles.id]"
                       pTooltip="View History"
                       tooltipPosition="top"
@@ -535,7 +539,8 @@
                         !canView &&
                         !unAssignedVehicleTab &&
                         (selectedStatus.name === 'TBA' ||
-                          selectedStatus.name === 'Active')
+                          selectedStatus.name === 'Active') &&
+                          permissions && permissions.includes('ReplacesVehicle')
                       "
                       (click)="replaceVehicle(vehicles.id)"
                       pTooltip="Replace Vehicle"
@@ -573,7 +578,7 @@
                         !unAssignedVehicleTab &&
                         selectedStatus.name === 'TBA' &&
                         canDelete &&
-                        !canView
+                        permissions && permissions.includes('DeleteVehicles')
                       "
                       (click)="showReplacementDialog(vehicles.id)"
                       pTooltip="Delete"

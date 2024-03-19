@@ -9,6 +9,7 @@ import com.example.FleetSystem.payload.ReplacementRequest;
 import com.example.FleetSystem.service.VehicleReplacementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,7 +19,7 @@ public class VehicleReplacementController {
     @Autowired
     VehicleReplacementService vehicleReplacementService;
 
-
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @PatchMapping("/replace-vehicle/{id}")
     public ResponseEntity<VehicleReplacementDto> replaceVehicleById(@PathVariable Long id , @RequestBody ReplacementRequest replacementRequest){
         return ResponseEntity.ok(vehicleReplacementService.replaceVehicleById(id,replacementRequest));
