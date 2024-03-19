@@ -16,37 +16,37 @@ public class PermissionController {
     @Autowired
     private PermissionService permissionService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @PostMapping("/permission")
     public Permission addPermission(@RequestBody Permission permission){
         return permissionService.addPermission(permission);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @GetMapping("/permission")
     public ResponseEntity<List<Permission>> getActivePermissions(){
         return ResponseEntity.ok(permissionService.getActivePermissions());
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @GetMapping("/permission/{id}")
     public ResponseEntity<Permission> findPermissionById(@PathVariable Long id){
         return ResponseEntity.ok(permissionService.findPermissionById(id));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @PatchMapping("/permission/{id}")
     public ResponseEntity<Permission> updatePermission(@PathVariable Long id,@RequestBody Permission permission){
         return ResponseEntity.ok(permissionService.updatePermission(id,permission));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @DeleteMapping("/permission/{id}")
     public ResponseEntity<Permission> deletePermissionById(@PathVariable Long id){
         return ResponseEntity.ok(permissionService.deleteById(id));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @PatchMapping("/permission/active/{id}")
     public ResponseEntity<Permission> makePermissionActive(@PathVariable Long id){
         return ResponseEntity.ok(permissionService.makePermissionActive(id));

@@ -19,37 +19,38 @@ public class VendorController {
         @Autowired
         VendorService vendorService;
 
-        @PreAuthorize("hasRole('ROLE_ADMIN')")
+        @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
         @PostMapping("/add-vendor")
         public ResponseEntity<VendorDto> createVendor(@RequestBody VendorDto vendorDto) {
             return ResponseEntity.ok(vendorService.save(vendorDto));
         }
 
-        @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
         @GetMapping("/vendor/{id}")
         public ResponseEntity<VendorDto> getVehicleById(@PathVariable Long id) {
             return ResponseEntity.ok(vendorService.getById(id));
         }
 
-        @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
         @PatchMapping("/update-vendor/{id}")
         public ResponseEntity<VendorDto> updateVendorById(@PathVariable Long id, @RequestBody VendorDto vendorDto) {
             return ResponseEntity.ok(vendorService.updateById(id, vendorDto));
         }
 
-        @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
         @DeleteMapping("/delete-vendor/{id}")
         public ResponseEntity<VendorDto> deleteVendorById(@PathVariable Long id) {
             return ResponseEntity.ok(vendorService.deleteVendorById(id));
         }
 
-        @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
         @PatchMapping("/vendor-active/{id}")
         public ResponseEntity<VendorDto> makeVendorActive(@PathVariable Long id){
             return ResponseEntity.ok(vendorService.makeVendorActive(id));
         }
 
-       @GetMapping("/get-active-vendors")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @GetMapping("/get-active-vendors")
          public ResponseEntity<List<VendorDto>> getActiveVendors(){
          return ResponseEntity.ok(vendorService.getAll());
        }

@@ -1,7 +1,6 @@
 package com.example.FleetSystem.controller;
 
 import com.example.FleetSystem.dto.CityDto;
-import com.example.FleetSystem.dto.GradeDto;
 import com.example.FleetSystem.service.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,31 +16,31 @@ public class CityController {
     @Autowired
     CityService cityService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @PostMapping("/add-city")
     public ResponseEntity<CityDto> addCity(@RequestBody CityDto cityDto){
         return ResponseEntity.ok(cityService.addCity(cityDto));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @GetMapping("/get-active-city")
     public ResponseEntity<List<CityDto>> getActiveCities(){
         return ResponseEntity.ok(cityService.getActiveCities());
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @GetMapping("/get-city/{id}")
     public ResponseEntity<CityDto> getCitiesById(@PathVariable Long id){
         return ResponseEntity.ok(cityService.getById(id));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @PatchMapping("/update-city/{id}")
     public ResponseEntity<CityDto> updateCityById(@PathVariable Long id, @RequestBody CityDto cityDto){
         return ResponseEntity.ok(cityService.updateCityById(id,cityDto));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @DeleteMapping("/delete-city/{id}")
     public ResponseEntity<CityDto> deleteCityById(@PathVariable Long id){
         return ResponseEntity.ok(cityService.deleteById(id));

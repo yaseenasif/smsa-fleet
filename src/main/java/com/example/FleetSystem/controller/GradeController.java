@@ -17,31 +17,31 @@ public class GradeController {
     @Autowired
     GradeService gradeService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @PostMapping("/addGrade")
     public ResponseEntity<GradeDto> addGrade(@RequestBody GradeDto gradeDto){
         return ResponseEntity.ok(gradeService.addGrade(gradeDto));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @GetMapping("/get-active-grades")
     public ResponseEntity<List<GradeDto>> getActiveGrades(){
         return ResponseEntity.ok(gradeService.getActiveGrades());
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @GetMapping("/get-grade/{id}")
     public ResponseEntity<GradeDto> getGradesById(@PathVariable Long id){
         return ResponseEntity.ok(gradeService.getById(id));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @PatchMapping("/update-grade/{id}")
     public ResponseEntity<GradeDto> updateGradeById(@PathVariable Long id, @RequestBody GradeDto gradeDto){
         return ResponseEntity.ok(gradeService.updateGradeById(id,gradeDto));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @DeleteMapping("/delete-grade/{id}")
     public ResponseEntity<GradeDto> deleteGradeById(@PathVariable Long id){
         return ResponseEntity.ok(gradeService.deleteById(id));

@@ -18,32 +18,32 @@ public class RolesController {
     @Autowired
     RolesService rolesService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @PostMapping("/roles")
     public ResponseEntity<RolesDto> addRoles(@RequestBody RolesDto rolesDto){
         return ResponseEntity.ok(rolesService.addRoles(rolesDto));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @GetMapping("/roles")
     public ResponseEntity<List<RolesDto>> getAll(){
         return ResponseEntity.ok(rolesService.getAll());
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @GetMapping("/roles/{id}")
     public ResponseEntity<RolesDto> getById(@PathVariable Long id){
         return ResponseEntity.ok(rolesService.getById(id));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @DeleteMapping("/roles/{id}")
     public ResponseEntity<String> deleteRoleById(@PathVariable Long id){
         rolesService.deleteRoleById(id);
         return ResponseEntity.ok("Role deleted successfully");
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @PatchMapping("/role/{id}")
     public ResponseEntity<Roles> updateRole(@PathVariable Long id, @RequestBody Roles role){
         return ResponseEntity.ok(rolesService.updateRole(id,role));

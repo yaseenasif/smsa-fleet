@@ -17,31 +17,31 @@ public class JobTitleController {
     @Autowired
     JobTitleService jobTitleService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @PostMapping("/add-job-title")
     public ResponseEntity<JobTitleDto> addJobTitle(@RequestBody JobTitleDto jobTitleDto) {
         return ResponseEntity.ok(jobTitleService.addJobTitle(jobTitleDto));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @GetMapping("/get-all-job-title")
     public ResponseEntity<List<JobTitleDto>> getAllJobTitles() {
         return ResponseEntity.ok(jobTitleService.getAllJobTitles());
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @GetMapping("/job-title/{id}")
     public ResponseEntity<JobTitleDto> getJobTitleById(@PathVariable Long id) {
         return ResponseEntity.ok(jobTitleService.getJobTitleById(id));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @PutMapping("/update-job-title/{id}")
     public ResponseEntity<JobTitleDto> updateJobTitleById(@RequestBody JobTitleDto jobTitleDto, @PathVariable Long id) {
         return ResponseEntity.ok(jobTitleService.updateJobTitleById(jobTitleDto, id));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @DeleteMapping("/delete-job-title/{id}")
     public ResponseEntity<JobTitleDto> deleteJobTitle(@PathVariable Long id) {
         return ResponseEntity.ok(jobTitleService.deleteJobTitle(id));
