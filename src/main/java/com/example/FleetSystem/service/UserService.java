@@ -13,10 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,10 +28,10 @@ public class UserService {
     @Autowired
     ModelMapper modelMapper;
 
-    public User addUser(UserDto userDto){
+    public User addUser(UserDto userDto) {
         Set<Roles> rolesList = new HashSet<>();
         User existingUser = userRepository.findByEmployeeIdAndStatusIsTrue(userDto.getEmployeeId());
-        if(existingUser == null) {
+        if (existingUser == null) {
             for (Roles roleList : userDto.getRoles()) {
                 Optional<Roles> roles = Optional.ofNullable(roleRepository
                         .findByName(roleList.getName())
@@ -53,8 +50,9 @@ public class UserService {
                     .build();
             return userRepository.save(user);
         }
-        throw new RuntimeException(String.format("Employee Id Already Exists => %s",userDto.getEmployeeId()));
+        throw new RuntimeException(String.format("Employee Id Already Exists => %s", userDto.getEmployeeId()));
     }
+
     public List<UserDto> getActiveUsers() {
         List<User> users = userRepository.getActiveUsers();
         return toDtoList(users);
@@ -62,7 +60,7 @@ public class UserService {
 
     public UserDto getById(Long id) {
         Optional<User> user = userRepository.findById(id);
-        if (user.isPresent()){
+        if (user.isPresent()) {
             return toDto(user.get());
         }
         throw new RuntimeException("Record not found");
@@ -70,18 +68,18 @@ public class UserService {
 
     public UserDto deleteById(Long id) {
         Optional<User> user = userRepository.findById(id);
-        if (user.isPresent()){
+        if (user.isPresent()) {
             user.get().setStatus(Boolean.FALSE);
             return toDto(userRepository.save(user.get()));
         }
         throw new RuntimeException("Record doesn't exist");
     }
 
-    public UserDto updateById(Long id,UserDto userDto) {
+    public UserDto updateById(Long id, UserDto userDto) {
         Optional<User> user = userRepository.findById(id);
-        if (user.isPresent()){
+        if (user.isPresent()) {
             Set<Roles> rolesList = new HashSet<>();
-            for (Roles roleList: userDto.getRoles()) {
+            for (Roles roleList : userDto.getRoles()) {
                 Optional<Roles> roles = Optional.ofNullable(roleRepository
                         .findByName(roleList.getName())
                         .orElseThrow(() -> new RuntimeException("Role is incorrect")));
@@ -101,20 +99,40 @@ public class UserService {
     }
 
 
-    public List<UserDto> toDtoList(List<User> userList){
+    public List<UserDto> toDtoList(List<User> userList) {
         return userList.stream().map(this::toDto).collect(Collectors.toList());
     }
 
     private UserDto toDto(User user) {
-        return modelMapper.map(user , UserDto.class);
+        return modelMapper.map(user, UserDto.class);
     }
 
 
-    private User toEntity(UserDto userDto){
-        return modelMapper.map(userDto , User.class);
+    private User toEntity(UserDto userDto) {
+        return modelMapper.map(userDto, User.class);
     }
 
     public UserDto getByEmpId(String id) {
         return toDto(userRepository.findByEmployeeIdAndStatusIsTrue(id));
+    }
+
+    public UserDto updatePasswordById(Long id, String oldPassword, String newPassword) {
+        Optional<User> optionalUser = userRepository.findById(id);
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            String encodedOldPassword = user.getPassword();
+
+            if (bCryptPasswordEncoder.matches(oldPassword, encodedOldPassword)) {
+                String encodedNewPassword = bCryptPasswordEncoder.encode(newPassword);
+                user.setPassword(encodedNewPassword);
+                userRepository.save(user);
+                return toDto(user);
+            } else {
+                throw new IllegalArgumentException("Incorrect Password");
+            }
+        } else {
+            throw new NoSuchElementException("User with id " + id + " not found");
+        }
     }
 }

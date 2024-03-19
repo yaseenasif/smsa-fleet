@@ -41,28 +41,14 @@ export class AddRoleComponent {
     this.permissionService.getPermissions().subscribe(
       (res: Permission[]) => {
         this.permission = res
-        console.log(this.permission);
-        
-        // this.vehicleList = res.filter((vehicle) => vehicle.name?.includes("Vehicle"));
         const allowedVehiclePermissions = ['AddVehicles', 'ViewVehicles', 'UpdateVehicles', 'DeleteVehicles', 'VehiclesHistory', 'ReplaceVehicles', 'VehiclesAttachment'];
+        this.vehicleList = this.permission.filter((vehicle) => allowedVehiclePermissions.includes(vehicle.name!));
 
-          this.vehicleList = this.permission.filter((vehicle) => allowedVehiclePermissions.includes(vehicle.name!));
-          
         const vehiclePermission = res.find(perm => perm.name === 'Vehicles');
         if (vehiclePermission && typeof vehiclePermission.name === 'string') {
           this.vehiclePermissionObject = { [vehiclePermission.name]: this.vehicleList };
         }
 
-        // this.permission = res.filter(perm => !perm.name?.includes('Vehicle'));
-        if (this.vehiclePermissionObject) {
-          const vehiclesArray = this.vehiclePermissionObject['Vehicles'];
-          if (Array.isArray(vehiclesArray)) {
-            // Push each item of vehiclesArray into permission array
-            vehiclesArray.forEach(vehicle => this.permission.push(vehicle));
-          }
-        }
-
-        // Set status to false for each permission
         this.permission.forEach(perm => perm.status = false);
       },
       error => {
@@ -107,12 +93,25 @@ export class AddRoleComponent {
     }
   }
   childPermissions(item: Permission) {
+    debugger
     if (item.name === "Vehicles") {
       this.vehiclePermissionObject.Vehicles.forEach((element: Permission) => {
-        debugger
         element.status = item.status;
       });
+    } else {
+      const allStatusTrue = this.vehiclePermissionObject.Vehicles.every((element: Permission) => {
+        return element.status === true;
+      });
+      debugger
+      if (allStatusTrue) {
+        const vehicles = this.permission.find(obj => obj.name === 'Vehicles');
+        vehicles ? vehicles.status = true : false;
+      }else{
+        const vehicles = this.permission.find(obj => obj.name === 'Vehicles');
+        vehicles ? vehicles.status = false : false;
+      }
     }
+
   }
 
   checkIsSeletAll(perm: Permission[]) {

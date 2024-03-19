@@ -26,7 +26,7 @@
                   />
                 </div>
               </div>
-              <div class="col-12 md:col-12 lg:col-12">
+              <!-- <div class="col-12 md:col-12 lg:col-12">
                 <div class="flex flex-column gap-2 form-hook">
                   <div class="flex flex-right mb-3">
                     <label for="permissions">Permissions:</label>
@@ -42,7 +42,7 @@
                   <div class="checkbox-grid">
                     <ng-container *ngFor="let perm of permission">
                       <div class="col-2">
-                        <!-- If permission is not "Vehicle", render as usual -->
+
                         <ng-container *ngIf="!perm.name?.includes('Vehicles')">
                           <input
                             type="checkbox"
@@ -52,11 +52,11 @@
                           />
                           <label for="{{ perm.id }}">{{ perm.name }}</label>
                         </ng-container>
-                        <!-- If permission is "Vehicle", render as a collapsible section -->
+
                         <ng-container *ngIf="perm.name === 'Vehicles'">
-                          <!-- Collapsible section -->
+
                           <div style="margin-left: -1rem !important">
-                            <!-- Icon for toggling collapse -->
+
                             <span (click)="toggleCollapse()">
                               <i
                                 class="pi"
@@ -67,11 +67,11 @@
                                 "
                               ></i>
                             </span>
-                            <!-- Label for the collapsible section -->
+
                             <label (click)="toggleCollapse()">{{
                               perm.name
                             }}</label>
-                            <!-- Collapsible content -->
+
                             <div
                               class="vehicle-content"
                               [class.vehicle-properties]="!vehicleCollapse"
@@ -99,6 +99,98 @@
                             </div>
                           </div>
                         </ng-container>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+              </div> -->
+              <div class="col-12 md:col-12 lg:col-12">
+                <div class="flex flex-column gap-2 form-hook">
+                  <div class="flex flex-right mb-3">
+                    <label for="permissions">Permissions:</label>
+                    <div>
+                      <input
+                        type="checkbox"
+                        id="select-all"
+                        (change)="selectAllPermissions($event)"
+                        [(ngModel)]="isSelectAll"
+                      />
+                      <label for="select-all">Select All</label>
+                    </div>
+                  </div>
+                  <div class="checkbox-grid">
+                    <!-- Render non-vehicle permissions first -->
+                    <ng-container *ngFor="let perm of permission">
+                      <div
+                        class="col-2"
+                        *ngIf="!perm.name!.includes('Vehicles')"
+                      >
+                        <input
+                          type="checkbox"
+                          id="{{ perm.id }}"
+                          [(ngModel)]="perm.status"
+                          (change)="checkIsSeletAll(permission)"
+                        />
+                        <label for="{{ perm.id }}">{{ perm.name }}</label>
+                      </div>
+                    </ng-container>
+                    <!-- Render the collapsible section for vehicles after non-vehicle permissions -->
+                    <ng-container *ngFor="let perm of permission">
+                      <div class="col-2" *ngIf="perm.name === 'Vehicles'">
+                        <!-- Collapsible section -->
+                        <div style="margin-left: -1rem !important">
+                          <!-- Icon for toggling collapse -->
+                          <span (click)="toggleCollapse()">
+                            <i
+                              class="pi"
+                              [ngClass]="
+                                vehicleCollapse
+                                  ? 'pi-angle-down'
+                                  : 'pi-angle-right'
+                              "
+                            ></i>
+                          </span>
+                          <!-- Label for the collapsible section -->
+                          <input
+                            type="checkbox"
+                            id="{{ perm.id }}"
+                            [(ngModel)]="perm.status"
+                            (change)="
+                              childPermissions(perm);
+                              checkIsSeletAll(permission)
+                            "
+                          />
+                          <label (click)="toggleCollapse()">{{
+                            perm.name
+                          }}</label>
+                          <!-- Collapsible content -->
+                          <div
+                            class="vehicle-content"
+                            [class.vehicle-properties]="!vehicleCollapse"
+                            [class.active]="vehicleCollapse"
+                          >
+                            <ng-container
+                              *ngFor="
+                                let item of vehiclePermissionObject['Vehicles']
+                              "
+                            >
+                              <div style="display: flex">
+                                <input
+                                  (change)="
+                                    childPermissions(item);
+                                    checkIsSeletAll(permission)
+                                  "
+                                  type="checkbox"
+                                  id="{{ item.id }}"
+                                  [(ngModel)]="item.status"
+                                />
+                                <h5 style="align-items: center">
+                                  {{ item.name }}
+                                </h5>
+                              </div>
+                            </ng-container>
+                          </div>
+                        </div>
                       </div>
                     </ng-container>
                   </div>

@@ -76,9 +76,9 @@ export class AuthguardService {
     return !!token;
   }
 
-  getDecodedAccessToken(token: string): { PERMISSIONS: string[] } | null {
+  getDecodedAccessToken(token: string): { PERMISSIONS: string[], ROLES: string[], sub: string } | null {
     try {
-      return jwtDecode(token) as { PERMISSIONS: string[] };
+      return jwtDecode(token) as { PERMISSIONS: string[], ROLES: string[], sub: string };
     } catch (error) {
       console.error('Error decoding JWT token:', error);
       return null;

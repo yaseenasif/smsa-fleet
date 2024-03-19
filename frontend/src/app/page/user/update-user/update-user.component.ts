@@ -64,7 +64,6 @@ export class UpdateUserComponent implements OnInit {
   }
 
   updateUser(user: User) {
-    
     user.roles[0].name = this.selectedRole;
     this.userService.updateUser(this.userId!, user).subscribe(
       (res: User) => {

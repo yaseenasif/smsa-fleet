@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {environment} from '../../environments/environment'
+import { environment } from '../../environments/environment'
+import { LoginCredential } from '../modal/LoginCredential';
+import { LoginResponse } from '../modal/LoginResponse';
+
 
 
 
@@ -14,14 +17,13 @@ const httpOptions = {
 
 export class AuthService {
 
-  url:string=environment.baseurl;
+  url: string = environment.baseurl;
 
-  constructor(private httpClient:HttpClient) { }
+  constructor(private httpClient: HttpClient) { }
 
 
-  login(credentials:any):Observable<any>{
-
-    return this.httpClient.post<any>(this.url.concat("/login"),credentials,httpOptions);
+  login(credentials: LoginCredential): Observable<LoginResponse> {
+    return this.httpClient.post<LoginResponse>(this.url.concat("/login"), credentials, httpOptions);
   }
 
 }

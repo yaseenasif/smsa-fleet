@@ -27,15 +27,15 @@
                       required
                     />
                     <small
-                    id="name-help"
-                    class="color-red error"
-                    *ngIf="
-                      employeeId.invalid &&
-                      (employeeId.dirty || employeeId.touched)
-                    "
-                  >
-                  Employee Id is required
-                  </small>
+                      id="name-help"
+                      class="color-red error"
+                      *ngIf="
+                        employeeId.invalid &&
+                        (employeeId.dirty || employeeId.touched)
+                      "
+                    >
+                      Employee Id is required
+                    </small>
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
@@ -51,15 +51,12 @@
                       required
                     />
                     <small
-                    id="name-help"
-                    class="color-red error"
-                    *ngIf="
-                      name.invalid &&
-                      (name.dirty || name.touched)
-                    "
-                  >
-                    Name is required
-                  </small>
+                      id="name-help"
+                      class="color-red error"
+                      *ngIf="name.invalid && (name.dirty || name.touched)"
+                    >
+                      Name is required
+                    </small>
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
@@ -85,7 +82,7 @@
                   </div>
                 </div>
 
-                <div class="col-12 md:col-12 lg:col-6">
+                <!-- <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="password">Password</label>
                     <p-password
@@ -95,17 +92,19 @@
                       name="password"
                       #password="ngModel"
                       required
-                      ></p-password>
-                      <small>{{user.password}}</small>
+                    ></p-password>
+                    <small>{{ user.password }}</small>
                     <small
                       id="password-help"
                       class="color-red error"
-                      *ngIf="password.invalid && (password.dirty || password.touched)"
+                      *ngIf="
+                        password.invalid && (password.dirty || password.touched)
+                      "
                     >
                       Password is required
                     </small>
                   </div>
-                </div>
+                </div> -->
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Role </label>
@@ -146,9 +145,12 @@
                   styleClass="p-button-outlined"
                 >
                 </p-button>
-                <p-button label="Save" type="submit"   [disabled]="
-                userForm.invalid || userForm.invalid === null
-              " class="bg-b-color ml">
+                <p-button
+                  label="Save"
+                  type="submit"
+                  [disabled]="userForm.invalid || userForm.invalid === null"
+                  class="bg-b-color ml"
+                >
                 </p-button>
               </div>
             </form>

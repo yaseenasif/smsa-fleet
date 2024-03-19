@@ -18,6 +18,7 @@
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">Employee Id</label>
                     <input
+                      *ngIf="user.employeeId"
                       pInputText
                       id="employeeId"
                       aria-describedby="name-help"
@@ -32,6 +33,7 @@
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">Name</label>
                     <input
+                      *ngIf="user.name"
                       pInputText
                       id="name"
                       aria-describedby="name-help"
@@ -48,6 +50,7 @@
                     <input
                       pInputText
                       id="email"
+                      *ngIf="user.email"
                       aria-describedby="email-help"
                       [(ngModel)]="user.email"
                       #email="ngModel"
@@ -57,25 +60,25 @@
                   </div>
                 </div>
                 <!-- <div class="col-12 md:col-12 lg:col-6">
-                <div class="flex flex-column gap-2">
-                  <label htmlFor="password">Password</label>
-                  <input
-                    pInputText
-                    id="password"
-                    aria-describedby="password-help"
-                    [(ngModel)]="user.password"
-                    #password = "ngModel"
-                    name = "password"
-                    required
-                  />
-
-                </div>
-              </div> -->
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="password">Password</label>
+                    <input
+                      pInputText
+                      id="password"
+                      aria-describedby="password-help"
+                      [(ngModel)]="user.password"
+                      #password="ngModel"
+                      name="password"
+                      required
+                    />
+                  </div>
+                </div> -->
 
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2 form-hook">
                     <label htmlFor="name">Role </label>
                     <p-dropdown
+                      *ngIf="selectedRole"
                       class="w-full"
                       [options]="roles"
                       [(ngModel)]="selectedRole"

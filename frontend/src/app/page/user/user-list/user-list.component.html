@@ -72,6 +72,18 @@
                       (onClick)="showDialog(users)"
                     >
                     </p-button>
+                    <p-button
+                      icon="bi bi-arrow-repeat"
+                      class="ml"
+                      pTooltip="Reset Password"
+                      tooltipPosition="top"
+                      [outlined]="true"
+                      [rounded]="true"
+                      [raised]="true"
+                      severity="warning"
+                      (onClick)="passwordDialog(users)"
+                    >
+                    </p-button>
                   </td>
                 </tr>
               </ng-template>
@@ -82,6 +94,49 @@
     </div>
   </div>
 </div>
+<p-dialog
+  header="Change Password of {{ userRow?.name }}"
+  class="form-hook"
+  [(visible)]="resetPassword"
+  [style]="{ width: '25vw' }"
+>
+  <form
+    (ngSubmit)="
+      updatePassword({
+        id: userRow?.id,
+        oldPassword: currentPassword,
+        newPassword: newPassword
+      })
+    "
+    class="login-form"
+  >
+    <div class="flex flex-column gap-2 mt-3 form-hook">
+      <label for="current-password">Current Password</label>
+      <p-password
+        [toggleMask]="true"
+        id="current-password"
+        name="current-password"
+        [(ngModel)]="currentPassword"
+        required
+      ></p-password>
+      <small class="error-message" *ngIf="error">{{ errorMessage }}</small>
+    </div>
+    <div class="flex flex-column gap-2 mt-3 form-hook">
+      <label for="new-password">New Password</label>
+      <p-password
+        [toggleMask]="true"
+        id="new-password"
+        name="new-password"
+        [(ngModel)]="newPassword"
+        required
+      ></p-password>
+    </div>
+    <div class="flex justify-content-center mt-3">
+      <p-button type="submit" label="Confirm" class="bg-b-color ml"> </p-button>
+    </div>
+  </form>
+</p-dialog>
+
 <p-dialog
   header="Delete Permission"
   class="form-hook"
