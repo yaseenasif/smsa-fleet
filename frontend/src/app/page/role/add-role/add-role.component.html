@@ -43,7 +43,7 @@
                     <ng-container *ngFor="let perm of permission">
                       <div class="col-2">
                         <!-- If permission is not "Vehicle", render as usual -->
-                        <ng-container *ngIf="!perm.name?.includes('Vehicle')">
+                        <ng-container *ngIf="!perm.name?.includes('Vehicles')">
                           <input
                             type="checkbox"
                             id="{{ perm.id }}"

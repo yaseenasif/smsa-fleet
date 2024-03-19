@@ -55,6 +55,7 @@ public class UserService {
                         .roles(rolesList)
                         .status(Boolean.TRUE)
                         .email(userDto.getEmail())
+                        .employeeId(userDto.getEmployeeId())
                         .build();
                 return userRepository.save(user);
 
@@ -96,7 +97,7 @@ public class UserService {
 
             user.get().setName(userDto.getName());
             user.get().setEmail(userDto.getEmail());
-//            user.get().setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
+            user.get().setEmployeeId(userDto.getEmployeeId());
             user.get().setRoles(rolesList);
 
             return toDto(userRepository.save(user.get()));
@@ -118,4 +119,7 @@ public class UserService {
         return modelMapper.map(userDto , User.class);
     }
 
+    public UserDto getByempId(String id) {
+        return toDto(userRepository.findByEmployeeId(id));
+    }
 }

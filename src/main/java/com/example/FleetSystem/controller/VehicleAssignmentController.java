@@ -39,32 +39,32 @@ public class VehicleAssignmentController {
     @Autowired
     StorageService storageService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @PostMapping("/add-vehicle-assignment")
     public ResponseEntity<VehicleAssignmentDto> saveVehicleAssignment(@RequestBody VehicleAssignmentDto vehicleAssignmentDto) {
         return ResponseEntity.ok(vehicleAssignmentService.save(vehicleAssignmentDto));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @GetMapping("/vehicle-assignment")
     public ResponseEntity<List<VehicleAssignmentDto>> getAll() {
         return ResponseEntity.ok(vehicleAssignmentService.getActiveVehicleAssignment());
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @GetMapping("/vehicle-assignment/{id}")
     public ResponseEntity<VehicleAssignmentDto> getById(@PathVariable Long id) {
         return ResponseEntity.ok(vehicleAssignmentService.getById(id));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @DeleteMapping("/vehicle-assignment/{id}")
     public ResponseEntity<ResponseMessage> deleteVehicleAssignmentById(@PathVariable Long id) {
         vehicleAssignmentService.deleteVehicleAssignmentById(id);
         return ResponseEntity.ok(new ResponseMessage(Arrays.asList("Record deleted Successfully")));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @PatchMapping("/vehicle-assignment/{id}")
     public ResponseEntity<VehicleAssignmentDto> updateVehicleAssignmentById(@PathVariable Long id, @RequestBody VehicleAssignmentDto vehicleAssignmentDto) {
         return ResponseEntity.ok(vehicleAssignmentService.updateById(id, vehicleAssignmentDto));
@@ -76,17 +76,17 @@ public class VehicleAssignmentController {
 //        return ResponseEntity.ok(vehicleAssignmentService.makeVehicleAssignmentActive(id));
 //    }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @GetMapping("/vehicle-assignment-plateNumber/{plateNumber}")
     public ResponseEntity<VehicleAssignmentDto> getByPlateNumber(@PathVariable String plateNumber) {
         return ResponseEntity.ok(vehicleAssignmentService.getByPlateNumber(plateNumber));
     }
-
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @PostMapping("/add-vehicle-assignment-attachments/{id}/{attachmentType}")
     public ResponseEntity<ResponseMessage> addAttachments(@PathVariable Long id, @PathVariable String attachmentType, @RequestParam("file") MultipartFile multipartFile) throws IOException {
         return ResponseEntity.ok(vehicleAssignmentService.addAttachment(id, attachmentType, multipartFile));
     }
-
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @GetMapping("/vehicle-assignment-download/{fileName}")
     public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable String fileName) {
         byte[] data = storageService.downloadFile(fileName);
@@ -99,7 +99,7 @@ public class VehicleAssignmentController {
                 .body(resource);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @GetMapping("/search-assignment")
     public ResponseEntity<Page<VehicleAssignmentDto>> searchAssignmentByPlateNumber(@RequestParam(value = "value", required = false) String value,
                                                                                     @RequestParam(defaultValue = "0") int page,
@@ -109,7 +109,7 @@ public class VehicleAssignmentController {
     }
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @GetMapping("/search-assignment-by-region")
     public ResponseEntity<Page<VehicleAssignmentDto>> searchAssignmentByRegion(@RequestParam(value = "value", required = false) String value,
                                                                                @RequestParam String vehicleStatus,
@@ -119,7 +119,7 @@ public class VehicleAssignmentController {
         return ResponseEntity.ok(vehicleAssignmentService.searchAssignmentByRegion(vehicleSearchCriteria, vehicleStatus, page, size));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @GetMapping("/search-assignment-by-department")
     public ResponseEntity<Page<VehicleAssignmentDto>> searchAssignmentByDepartment(@RequestParam(value = "value", required = false) String value,
                                                                                    @RequestParam String vehicleStatus,
@@ -129,7 +129,7 @@ public class VehicleAssignmentController {
         return ResponseEntity.ok(vehicleAssignmentService.searchAssignmentByDepartment(vehicleSearchCriteria, vehicleStatus, page, size));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @GetMapping("/search-assignment-by-section")
     public ResponseEntity<Page<VehicleAssignmentDto>> searchAssignmentBySection(@RequestParam(value = "value", required = false) String value,
                                                                                 @RequestParam String vehicleStatus,
@@ -140,7 +140,7 @@ public class VehicleAssignmentController {
     }
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @GetMapping("/search-assignment-inactive")
     public ResponseEntity<Page<VehicleAssignmentDto>> searchInactiveAssignmentByPlateNumber(@RequestParam(value = "value", required = false) String value,
                                                                                             @RequestParam(defaultValue = "0") int page,
@@ -149,7 +149,7 @@ public class VehicleAssignmentController {
         return ResponseEntity.ok(vehicleAssignmentService.searchInactiveAssignmentByPlateNumber(vehicleSearchCriteria, page, size));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @GetMapping("/search-assignment-empno")
     public ResponseEntity<Page<VehicleAssignmentDto>> searchAssignmentByEmployeeNumber(@RequestParam(value = "value", required = false) String value,
                                                                                        @RequestParam(defaultValue = "0") int page,
@@ -159,7 +159,7 @@ public class VehicleAssignmentController {
         return ResponseEntity.ok(vehicleAssignmentService.searchAssignmentByEmployeeNumber(employeeSearchCriteria, page, size));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @GetMapping("/search-assignment-empno-inactive")
     public ResponseEntity<Page<VehicleAssignmentDto>> searchInactiveAssignmentByEmployeeNumber(@RequestParam(value = "value", required = false) Long value,
                                                                                                @RequestParam(defaultValue = "0") int page,
@@ -169,13 +169,13 @@ public class VehicleAssignmentController {
         return ResponseEntity.ok(vehicleAssignmentService.searchInactiveAssignmentByEmployeeNumber(employeeSearchCriteria, page, size));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @GetMapping("/get-by-vehicleId/{id}")
     public ResponseEntity<VehicleAssignmentDto> getByVehicleId(@PathVariable Long id) {
         return ResponseEntity.ok(vehicleAssignmentService.getByVehicleId(id));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @PostMapping("/search-assignment-by-any")
     public ResponseEntity<Page<VehicleAssignmentDto>> search(
             @RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
@@ -185,23 +185,13 @@ public class VehicleAssignmentController {
         return ResponseEntity.ok(pageResult);
     }
 
-    //    @PreAuthorize("hasRole('ROLE_ADMIN')")
-//    @PostMapping("/search-assignment-by-any/search")
-//    public ResponseEntity<PaginationResponse> search(
-//            @RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
-//            @RequestParam(value = "pageSize", defaultValue = "15", required = false) Integer pageSize,
-//            @RequestBody VehicleAssignmentDto vehicleAssignmentDto) {
-//        PaginationResponse paginationResponse = vehicleAssignmentService.getVehicleAssignmentBySearchCriteria(pageNumber, pageSize, vehicleAssignmentDto);
-//        return ResponseEntity.ok(paginationResponse);
-//    }
-
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @GetMapping("/get-last-assignment/{id}")
     public ResponseEntity<Employee> getLastAssignmentByVehicleId(@PathVariable Long id) {
         return ResponseEntity.ok(vehicleAssignmentService.getLastAssignmentByVehicleId(id));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @GetMapping("/download-assignment-excel")
     public ResponseEntity<byte []> downloadAssignmentExcel(){
         byte[] excelBytes = vehicleAssignmentService.downloadExcel();
@@ -215,7 +205,7 @@ public class VehicleAssignmentController {
                 .body(excelBytes);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @PostMapping("/add-bulk-assignment")
     public ResponseEntity<ResponseMessage> addBulkAssignment(@RequestParam("file") MultipartFile file) {
         return ResponseEntity.ok(new ResponseMessage(vehicleAssignmentService.bulkUploadAssignment(file)));

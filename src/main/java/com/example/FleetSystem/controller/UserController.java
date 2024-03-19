@@ -49,7 +49,9 @@ public class UserController {
         return ResponseEntity.ok(userService.updateById(id,userDto));
     }
 
-
-
+    @GetMapping("/get-by-empId/{id}")
+    public ResponseEntity<UserDto> getByEmpId(@PathVariable String id){
+        return ResponseEntity.ok(userService.getByempId(id));
+    }
 
 }

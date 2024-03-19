@@ -24,37 +24,37 @@ public class ProjectVehicleController {
     @Autowired
     ProjectVehicleValuesService projectVehicleValuesService;
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PROJECT_MANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @PostMapping("/add-project-vehicle")
     public ResponseEntity<ProjectVehicleDto> addProjectVehicle(@RequestBody ProjectVehicleDto projectVehicleDto) {
         return ResponseEntity.ok(projectVehicleService.save(projectVehicleDto));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PROJECT_MANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @GetMapping("/get-all-project-vehicle")
     public ResponseEntity<List<ProjectVehicleDto>> getAllProjectVehicle() {
         return ResponseEntity.ok(projectVehicleService.getAll());
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PROJECT_MANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @GetMapping("/project-vehicle/{id}")
     public ResponseEntity<ProjectVehicleDto> getByProjectVehicleId(@PathVariable Long id) {
         return ResponseEntity.ok(projectVehicleService.getByProjectVehicleId(id));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PROJECT_MANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @PatchMapping("/update-project-vehicle/{id}")
     public ResponseEntity<ProjectVehicleDto> updateProjectVehicleById(@PathVariable Long id, @RequestBody ProjectVehicle projectVehicle) {
         return ResponseEntity.ok(projectVehicleService.updateProjectVehicleById(id, projectVehicle));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PROJECT_MANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @DeleteMapping("/delete-project-vehicle/{id}")
     public ResponseEntity<ProjectVehicleDto> deleteProjectVehicleById(@PathVariable Long id) {
         return ResponseEntity.ok(projectVehicleService.deleteProjectVehicleById(id));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_PROJECT_MANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @PostMapping("/get-all-by-searchSpecification-with/{projectVehicleId}")
     public ResponseEntity<List<ProjectVehicleValuesDto>> getAllProjectVehicleValuesBySearchSpecification(
             @PathVariable Long projectVehicleId,
