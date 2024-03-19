@@ -33,7 +33,7 @@ public class VendorService {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal instanceof UserDetails) {
             String username = ((UserDetails) principal).getUsername();
-            User user = userRepository.findByEmployeeId(username);
+            User user = userRepository.findByEmployeeIdAndStatusIsTrue(username);
 
             Vendor vendor = toEntity(vendorDto);
             for (ContactPerson contactPerson: vendor.getContactPersonList()) {
@@ -79,7 +79,7 @@ public class VendorService {
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if(principal instanceof UserDetails) {
                 String username = ((UserDetails) principal).getUsername();
-                User user = userRepository.findByEmployeeId(username);
+                User user = userRepository.findByEmployeeIdAndStatusIsTrue(username);
 
                 vendor.get().setVendorName(vendorDto.getVendorName());
                 vendor.get().setOfficeLocation(vendorDto.getOfficeLocation());

@@ -45,7 +45,7 @@ public class VehicleReplacementService {
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if (principal instanceof UserDetails) {
                 String username = ((UserDetails) principal).getUsername();
-                User user = userRepository.findByEmployeeId(username);
+                User user = userRepository.findByEmployeeIdAndStatusIsTrue(username);
 
                 VehicleReplacement vehicleReplacement = VehicleReplacement
                         .builder()

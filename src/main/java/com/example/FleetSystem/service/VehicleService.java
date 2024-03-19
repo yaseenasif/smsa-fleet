@@ -79,7 +79,7 @@ public class VehicleService {
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if (principal instanceof UserDetails) {
                 String username = ((UserDetails) principal).getUsername();
-                User user = userRepository.findByEmployeeId(username);
+                User user = userRepository.findByEmployeeIdAndStatusIsTrue(username);
 
                 Vehicle replacingVehicle = null;
                 if (finalReturnRequest.getReplacementVehicle() != null) {
@@ -201,7 +201,7 @@ public class VehicleService {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {
             String username = ((UserDetails) principal).getUsername();
-            User user = userRepository.findByEmployeeId(username);
+            User user = userRepository.findByEmployeeIdAndStatusIsTrue(username);
 
             Optional<Vehicle> vehicle = vehicleRepository.findByPlateNumber(vehicleDto.getPlateNumber());
 
@@ -266,7 +266,7 @@ public class VehicleService {
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if (principal instanceof UserDetails) {
                 String username = ((UserDetails) principal).getUsername();
-                User user = userRepository.findByEmployeeId(username);
+                User user = userRepository.findByEmployeeIdAndStatusIsTrue(username);
 
                 optionalVehicle.get().setProcessOrderNumber(vehicleDto.getProcessOrderNumber());
                 optionalVehicle.get().setPlateNumber(vehicleDto.getPlateNumber());
@@ -370,7 +370,7 @@ public class VehicleService {
                             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
                             if (principal instanceof UserDetails) {
                                 String username = ((UserDetails) principal).getUsername();
-                                User user = userRepository.findByEmployeeId(username);
+                                User user = userRepository.findByEmployeeIdAndStatusIsTrue(username);
 
                                 Vendor vendor = vendorRepository.findByVendorNameIgnoreCase(getStringValue(row.getCell(12)));
 
@@ -790,7 +790,7 @@ public class VehicleService {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {
             String username = ((UserDetails) principal).getUsername();
-            User user = userRepository.findByEmployeeId(username);
+            User user = userRepository.findByEmployeeIdAndStatusIsTrue(username);
 
             if (replacementVehicle.isPresent()) {
                 replacementVehicle.get().setVehicleStatus(null);
@@ -866,7 +866,7 @@ public class VehicleService {
             if (originalVehicle.isPresent()) {
                 if (principal instanceof UserDetails) {
                     String username = ((UserDetails) principal).getUsername();
-                    User user = userRepository.findByEmployeeId(username);
+                    User user = userRepository.findByEmployeeIdAndStatusIsTrue(username);
                     Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByVehicle(originalVehicle.get());
 
                     switch (replacementActionRequest.getAction()) {
@@ -1055,7 +1055,7 @@ public class VehicleService {
 
             if (principal instanceof UserDetails) {
                 String username = ((UserDetails) principal).getUsername();
-                User user = userRepository.findByEmployeeId(username);
+                User user = userRepository.findByEmployeeIdAndStatusIsTrue(username);
 
                 vehicle.get().setVehicleStatus("Deleted");
                 vehicle.get().setUpdatedAt(LocalDate.now());

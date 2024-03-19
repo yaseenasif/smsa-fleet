@@ -17,7 +17,7 @@ public class MyUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String employeeId) {
 
-            User user = userRepository.findByEmployeeId(employeeId);
+            User user = userRepository.findByEmployeeIdAndStatusIsTrue(employeeId);
             if(user == null){
                 throw new RuntimeException("Wrong Credentials: "+employeeId);
             }

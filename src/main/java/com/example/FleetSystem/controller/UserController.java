@@ -52,7 +52,7 @@ public class UserController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @GetMapping("/get-by-empId/{id}")
     public ResponseEntity<UserDto> getByEmpId(@PathVariable String id){
-        return ResponseEntity.ok(userService.getByempId(id));
+        return ResponseEntity.ok(userService.getByEmpId(id));
     }
 
 }

@@ -13,5 +13,5 @@ public interface UserRepository extends JpaRepository <User,Long> {
     @Query("SELECT u FROM User u WHERE u.status = true")
     List<User> getActiveUsers();
 
-    User findByEmployeeId(String employeeId);
+    User findByEmployeeIdAndStatusIsTrue(String employeeId);
 }

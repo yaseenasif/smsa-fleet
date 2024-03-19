@@ -55,7 +55,7 @@ public class ProjectVehicleService {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {
             String username = ((UserDetails) principal).getUsername();
-            User user = userRepository.findByEmployeeId(username);
+            User user = userRepository.findByEmployeeIdAndStatusIsTrue(username);
 
             ProjectVehicle projectVehicle = toEntity(projectVehicleDto);
             projectVehicle.setCreatedBy(user);
@@ -110,7 +110,7 @@ public class ProjectVehicleService {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {
             String username = ((UserDetails) principal).getUsername();
-            return userRepository.findByEmployeeId(username);
+            return userRepository.findByEmployeeIdAndStatusIsTrue(username);
         } else {
             throw new RuntimeException("Unable to retrieve current user");
         }

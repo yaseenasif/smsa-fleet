@@ -78,7 +78,7 @@ public class EmployeeService {
 
             if(principal instanceof UserDetails) {
                 String username = ((UserDetails) principal).getUsername();
-                User user = userRepository.findByEmployeeId(username);
+                User user = userRepository.findByEmployeeIdAndStatusIsTrue(username);
 
                 Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByAssignToEmpId(employee.get());
                 if (vehicleAssignment.isPresent()) {
@@ -102,7 +102,7 @@ public class EmployeeService {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal instanceof UserDetails) {
             String username = ((UserDetails) principal).getUsername();
-            User user = userRepository.findByEmployeeId(username);
+            User user = userRepository.findByEmployeeIdAndStatusIsTrue(username);
 
             Optional<Employee> employee = employeeRepository.findByEmployeeNumber(employeeDto.getEmployeeNumber());
 
@@ -144,7 +144,7 @@ public class EmployeeService {
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if(principal instanceof UserDetails) {
                 String username = ((UserDetails) principal).getUsername();
-                User user = userRepository.findByEmployeeId(username);
+                User user = userRepository.findByEmployeeIdAndStatusIsTrue(username);
 
                 employee.get().setEmployeeNumber(employeeDto.getEmployeeNumber());
                 employee.get().setEmpName(employeeDto.getEmpName());
@@ -245,7 +245,7 @@ public class EmployeeService {
                             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
                             if (principal instanceof UserDetails) {
                                 String username = ((UserDetails) principal).getUsername();
-                                User user = userRepository.findByEmployeeId(username);
+                                User user = userRepository.findByEmployeeIdAndStatusIsTrue(username);
                                 DataFormatter dataFormatter = new DataFormatter();
 
                                 Optional<JobTitle> jobTitle = jobTitleRepository.findByJobTitleAndStatusIsTrue(getStringValue(row.getCell(7)));

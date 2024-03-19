@@ -33,8 +33,9 @@ public class UserService {
 
     public User addUser(UserDto userDto){
         Set<Roles> rolesList = new HashSet<>();
-
-            for (Roles roleList: userDto.getRoles()) {
+        User existingUser = userRepository.findByEmployeeIdAndStatusIsTrue(userDto.getEmployeeId());
+        if(existingUser == null) {
+            for (Roles roleList : userDto.getRoles()) {
                 Optional<Roles> roles = Optional.ofNullable(roleRepository
                         .findByName(roleList.getName())
                         .orElseThrow(() -> new RuntimeException("Role is incorrect")));
@@ -42,23 +43,17 @@ public class UserService {
                 rolesList.add(roles.get());
             }
 
-            List<User> userList = userRepository.getActiveUsers();
-            for (User user:userList) {
-                if (user.getEmail().equals(userDto.getEmail())) {
-                    throw new RuntimeException("Email Already Exist");
-                }
-            }
-
-                User user = User.builder()
-                        .name(userDto.getName())
-                        .password(bCryptPasswordEncoder.encode(userDto.getPassword()))
-                        .roles(rolesList)
-                        .status(Boolean.TRUE)
-                        .email(userDto.getEmail())
-                        .employeeId(userDto.getEmployeeId())
-                        .build();
-                return userRepository.save(user);
-
+            User user = User.builder()
+                    .name(userDto.getName())
+                    .password(bCryptPasswordEncoder.encode(userDto.getPassword()))
+                    .roles(rolesList)
+                    .status(Boolean.TRUE)
+                    .email(userDto.getEmail())
+                    .employeeId(userDto.getEmployeeId())
+                    .build();
+            return userRepository.save(user);
+        }
+        throw new RuntimeException(String.format("Employee Id Already Exists => %s",userDto.getEmployeeId()));
     }
     public List<UserDto> getActiveUsers() {
         List<User> users = userRepository.getActiveUsers();
@@ -119,7 +114,7 @@ public class UserService {
         return modelMapper.map(userDto , User.class);
     }
 
-    public UserDto getByempId(String id) {
-        return toDto(userRepository.findByEmployeeId(id));
+    public UserDto getByEmpId(String id) {
+        return toDto(userRepository.findByEmployeeIdAndStatusIsTrue(id));
     }
 }
