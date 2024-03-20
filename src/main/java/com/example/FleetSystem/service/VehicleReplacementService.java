@@ -130,6 +130,8 @@ public class VehicleReplacementService {
 
                 replacingVehicle.setVehicleStatus("Replacement");
                 replacingVehicle.setVehicleReplacement(vehicleReplacement);
+                existingVehicle.get().setUpdatedBy(user);
+                existingVehicle.get().setUpdatedAt(LocalDate.now());
 
                 vehicleRepository.save(existingVehicle.get());
                 vehicleRepository.save(replacingVehicle);

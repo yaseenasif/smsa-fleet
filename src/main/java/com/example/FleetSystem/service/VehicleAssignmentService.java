@@ -12,7 +12,6 @@ import com.example.FleetSystem.repository.UserRepository;
 import com.example.FleetSystem.repository.VehicleAssignmentRepository;
 import com.example.FleetSystem.repository.VehicleRepository;
 import com.example.FleetSystem.specification.VehicleAssignmentSpecification;
-import com.example.FleetSystem.specification.VehicleSpecification;
 import com.example.FleetSystem.model.*;
 import com.example.FleetSystem.payload.ResponseMessage;
 import com.example.FleetSystem.repository.*;
@@ -27,14 +26,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -62,10 +56,8 @@ public class VehicleAssignmentService {
 
     @Autowired
     StorageService storageService;
-    //    @Autowired
-//    DriverRepository driverRepository;
     @Autowired
-    VehicleAssignmentAuditService vehicleAssignmentAuditService;
+    AuditService auditService;
     @Autowired
     ExcelExportService excelExportService;
 
@@ -80,8 +72,6 @@ public class VehicleAssignmentService {
             if (vehicle.isPresent()) {
                 Optional<VehicleAssignment> existingVehicleAssignment = vehicleAssignmentRepository.findByVehicle(vehicle.get());
                 if (employee.isPresent()) {
-//                    Optional<Driver> driver = driverRepository.findByEmpId(employee.get());
-//                    driver.ifPresent(value -> value.setAssignedVehicle(vehicle.get().getPlateNumber()));
                     vehicle.get().setVehicleStatus("Active");
 
                     if (existingVehicleAssignment.isPresent()) {
@@ -362,7 +352,7 @@ public class VehicleAssignmentService {
     public Employee getLastAssignmentByVehicleId(Long id) {
         Optional<Vehicle> vehicle = vehicleRepository.findById(id);
         if (vehicle.isPresent()) {
-            List<AuditDataWrapper> assignmentList = vehicleAssignmentAuditService.retrieveAuditData(vehicle.get().getId());
+            List<AuditDataWrapper> assignmentList = auditService.retrieveAssignmentAuditData(vehicle.get().getId());
 
             for (int i = assignmentList.size() - 1; i >= 0; i--) {
                 AuditDataWrapper assignment = assignmentList.get(i);

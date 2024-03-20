@@ -1,6 +1,8 @@
 package com.example.FleetSystem.service;
 
 import com.example.FleetSystem.dto.AuditDataWrapper;
+import com.example.FleetSystem.dto.VehicleAuditWrapper;
+import com.example.FleetSystem.model.Vehicle;
 import com.example.FleetSystem.model.VehicleAssignment;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
@@ -19,12 +21,12 @@ import java.util.List;
 
 @Service
 @Transactional
-public class VehicleAssignmentAuditService {
+public class AuditService {
 
     @PersistenceContext
     private EntityManager entityManager;
 
-    public List<AuditDataWrapper> retrieveAuditData(Long vehicleId) {
+    public List<AuditDataWrapper> retrieveAssignmentAuditData(Long vehicleId) {
         AuditReader auditReader = AuditReaderFactory.get(entityManager);
 
         List<Object[]> revisions = auditReader.createQuery()
@@ -45,6 +47,29 @@ public class VehicleAssignmentAuditService {
 
         return auditDataList;
     }
+
+    public List<VehicleAuditWrapper> retrieveVehicleAuditData(Long vehicleId){
+        AuditReader auditReader = AuditReaderFactory.get(entityManager);
+
+        List<Object[]> revisions = auditReader.createQuery()
+                .forRevisionsOfEntity(Vehicle.class, false, true)
+                .add(AuditEntity.id().eq(vehicleId))
+                .getResultList();
+
+        List<VehicleAuditWrapper> auditDataList = new ArrayList<>();
+        for (Object[] revision : revisions) {
+            Vehicle entity = (Vehicle) revision[0];
+            DefaultRevisionEntity revisionEntity = (DefaultRevisionEntity) revision[1];
+            RevisionType revisionType = (RevisionType) revision[2];
+            LocalDateTime revisionTimestamp = getLocalDateTimeFromRevisionEntity(revisionEntity);
+
+            VehicleAuditWrapper wrapper = new VehicleAuditWrapper(entity, revisionType,revisionTimestamp);
+            auditDataList.add(wrapper);
+        }
+
+        return auditDataList;
+    }
+
 
     private static LocalDateTime getLocalDateTimeFromRevisionEntity(DefaultRevisionEntity revisionEntity) {
         // Retrieve the revision timestamp using the revision entity
