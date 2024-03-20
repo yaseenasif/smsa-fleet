@@ -1,8 +1,51 @@
+@import '../../../styles.scss';
 
-.p-element>.p-button{
-background-color:#400099!important;
+.p-element>.p-button {
+  background-color: #400099 !important;
 }
-.bi{
-    font-size:20px;
-    font-weight: bold;
+
+.bi {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 3px 10px;
+  border-radius: 3%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.user-info img {
+  width: 42px;
+  height: 42px;
+  background-color: rgb(227, 238, 241);
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
+  max-width: 100px;
+}
+
+.user-details label {
+  font-weight: bold;
+}
+
+.user-details h4 {
+  margin: 0;
+}
+
+.pi-angle-up {
+  margin-left: auto;
+}
+
+.error-message {
+  color: $error-color;
 }

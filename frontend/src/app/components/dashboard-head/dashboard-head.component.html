@@ -1,14 +1,79 @@
-
-
 <div class="hook">
-    <p-toolbar>
-        <div class="p-toolbar-group-start">
-           <img src="../../../assets/images/WhatsApp Image 2024-03-04 at 8.35.09 PM.jpeg" alt="Smsa Logo" width="10%">
+  <p-toolbar>
+    <div class="p-toolbar-group-start">
+      <img
+        src="../../../assets/images/WhatsApp Image 2024-03-04 at 8.35.09 PM.jpeg"
+        alt="Smsa Logo"
+        width="10%"
+      />
+    </div>
+    <div class="p-toolbar-group-end">
+      <p-toast></p-toast>
+      <p-menu
+        #menu
+        [model]="items"
+        [popup]="true"
+        (onShow)="isMenuOpen = true"
+        (onHide)="isMenuOpen = false"
+      ></p-menu>
+
+      <div (click)="toggleMenu($event)" class="user-info">
+        <img src="avatar_image_url" alt="avatar" />
+        <div class="user-details" *ngIf="user">
+          <label>{{ user.employeeId }}</label>
+          <h4>{{ user.roles[0].name }}</h4>
         </div>
-        <div class="p-toolbar-group-end">
-            <p-button (click)="logout()" class="bg-color">
-                Logout&nbsp;<i class="bi bi-box-arrow-right"></i>
-            </p-button>
-        </div>
-    </p-toolbar>
+        <i [ngClass]="isMenuOpen ? 'pi pi-angle-up' : 'pi pi-angle-down'"></i>
+      </div>
+    </div>
+  </p-toolbar>
 </div>
+<p-dialog
+  header="Change Password of {{ user?.name }}"
+  class="form-hook"
+  [(visible)]="resetPassword"
+  [style]="{ width: '25vw' }"
+>
+  <form
+    #passwordForm="ngForm"
+    (ngSubmit)="
+      updatePassword({
+        id: user?.id,
+        oldPassword: currentPassword,
+        newPassword: newPassword
+      })
+    "
+    class="login-form"
+  >
+    <div class="flex flex-column gap-2 mt-3 form-hook">
+      <label for="current-password">Current Password</label>
+      <p-password
+        [toggleMask]="true"
+        id="current-password"
+        name="current-password"
+        [(ngModel)]="currentPassword"
+        required
+      ></p-password>
+      <small class="error-message" *ngIf="error">{{ errorMessage }}</small>
+    </div>
+    <div class="flex flex-column gap-2 mt-3 form-hook">
+      <label for="new-password">New Password</label>
+      <p-password
+        [toggleMask]="true"
+        id="new-password"
+        name="new-password"
+        [(ngModel)]="newPassword"
+        required
+      ></p-password>
+    </div>
+    <div class="flex justify-content-center mt-3">
+      <p-button
+        [disabled]="!passwordForm.valid"
+        type="submit"
+        label="Confirm"
+        class="bg-b-color ml"
+      >
+      </p-button>
+    </div>
+  </form>
+</p-dialog>

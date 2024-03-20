@@ -122,7 +122,8 @@ import { AddJobTitleComponent } from './page/job-title/add-job-title/add-job-tit
 import { JobTitleListComponent } from './page/job-title/job-title-list/job-title-list.component';
 import { ReportManagmentListComponent } from './page/report-managment/report-managment-list/report-managment-list.component';
 import { DeletedVehiclesComponent } from './page/vehicle-screen/deleted-vehicles/deleted-vehicles.component';
-
+import { PanelMenuModule } from 'primeng/panelmenu';
+import { MenuModule } from 'primeng/menu';
 @NgModule({
   declarations: [
     AppComponent,
@@ -236,6 +237,8 @@ import { DeletedVehiclesComponent } from './page/vehicle-screen/deleted-vehicles
     ChipsModule,
     SpeedDialModule,
     CountUpModule,
+    PanelMenuModule,
+    MenuModule,
     NgxUiLoaderHttpModule.forRoot({
       showForeground: true
     })
