@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { VendorService } from '../../vendor-screen/service/vendor.service';
 import { ProductFieldServiceService } from '../../product-field/service/product-field-service.service';
 import { ProductField } from 'src/app/modal/ProductField';
+import { DashboardRedirectServiceService } from 'src/app/CommonServices/dashboard-redirect-service.service';
 
 @Component({
   selector: 'app-edit-project-vehicle',
@@ -60,6 +61,7 @@ export class EditProjectVehicleComponent implements OnInit {
     private route: ActivatedRoute,
     private vendorService: VendorService,
     private productFieldService: ProductFieldServiceService,
+    private dashboardRedirectService: DashboardRedirectServiceService
 
   ) { }
 
@@ -69,6 +71,7 @@ export class EditProjectVehicleComponent implements OnInit {
     this.projectVehicleId = +this.route.snapshot.paramMap.get('id')!;
     this.getProjectVehicleById(this.projectVehicleId);
     this.getProjectName()
+    this.dashboardRedirectService.setDashboardValue('ProjectVehicle');
   }
   projectVehicleField: any = {
     leaseType: null,

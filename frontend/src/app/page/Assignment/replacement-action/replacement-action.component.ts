@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem, MessageService } from 'primeng/api';
+import { DashboardRedirectServiceService } from 'src/app/CommonServices/dashboard-redirect-service.service';
 import { Employee } from 'src/app/modal/employee';
 import { ReplacementActionRequest } from 'src/app/modal/replacement-action-request';
 import { Vehicle } from 'src/app/modal/vehicle';
@@ -39,7 +40,7 @@ export class ReplacementActionComponent {
     private vehicleAssignmentService: VehicleAssignmentService,
     private employeeService: EmployeeService,
     private messageService: MessageService,
-    private router: Router) {
+    private router: Router, private dashboardRedirectService: DashboardRedirectServiceService) {
   }
 
   ngOnInit() {
@@ -48,6 +49,7 @@ export class ReplacementActionComponent {
     this.getVehiclebyId(this.replacementVehicleId);
     this.getAssignmentByVehicleId();
     this.getUnassignedEmployee();
+    this.dashboardRedirectService.setDashboardValue('Assignment');
   }
 
 

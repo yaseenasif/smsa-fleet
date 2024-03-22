@@ -3,6 +3,7 @@ import { MenuItem } from 'primeng/api';
 import { DashboardService } from './service/dashboard.service';
 import { trigger, state, style, transition, animate, keyframes } from '@angular/animations';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DashboardRedirectServiceService } from 'src/app/CommonServices/dashboard-redirect-service.service';
 
 
 @Component({
@@ -12,7 +13,6 @@ import { ActivatedRoute, Router } from '@angular/router';
   animations: [
     trigger('cardAnimation', [
       state('inactive', style({
-        // transform: 'scale(1) rotate(0deg)',
         boxShadow: '0 3px 0px rgba(0, 0, 0, 0.3)',
         borderRadius: '20px',
       })),
@@ -21,12 +21,7 @@ import { ActivatedRoute, Router } from '@angular/router';
         boxShadow: '0 0px 3px rgba(0, 0, 0, 0.5)',
         borderRadius: '20px',
       })),
-    //   transition('inactive => active', animate('700ms', keyframes([
-    //     style({ transform: 'scale(1) rotate(0deg)', offset: 0 }),
-    //     style({ transform: 'scale(1.1) rotate(180deg)', offset: 0.5 }),
-    //     style({ transform: 'scale(1.1) rotate(360deg)', offset: 1.0 }),
-    //   ]))),
-    //   transition('active => inactive', animate('200ms ease-out')),
+ 
     ]),
   ],
 })
@@ -76,45 +71,15 @@ export class DashboardComponent implements OnInit {
   vehicletab: boolean | undefined;
   unAssignVehicleTab: boolean | undefined;
 
-  // countUpOptions: CountUpOptions = {
-  //   duration: 2, // Animation duration in seconds
-  // };
 
-  constructor(private dashboardService: DashboardService, private router: Router) { }
+  constructor(private dashboardService: DashboardService, private router: Router,
+    private dashboardRedirectService: DashboardRedirectServiceService) { }
 
   ngOnInit(): void {
 
     this.items = [{ label: 'DashBoard' }];
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
-
-    // this.data = {
-    //   labels: ['A', 'B', 'C'],
-    //   datasets: [
-    //     {
-    //       data: [300, 50, 100],
-    //       backgroundColor: ["#4099ff", "#2ed8b6", "#FFB64D"],
-    //       hoverBackgroundColor: ["#73b4ff", "#59e0c5", "#ffcb80"]
-    //     }
-    //   ]
-    // };
-
-
-    // this.options = {
-    //   cutout: '60%',
-    //   plugins: {
-    //     legend: {
-    //       labels: {
-    //         color: textColor,
-    //         usePointStyle: true,
-
-    //       },
-    //       position: 'bottom'
-    //     }
-    //   }
-    // };
-
-    // const documentStyle1 = getComputedStyle(document.documentElement);
     const textColor1 = documentStyle.getPropertyValue('--text-color');
     const textColorSecondary1 = documentStyle.getPropertyValue('--text-color-secondary');
     const surfaceBorder1 = documentStyle.getPropertyValue('--surface-border');
@@ -173,109 +138,13 @@ export class DashboardComponent implements OnInit {
         },
       },
     };
-    //   },
-    //   min: 0, // Set the minimum value on the y-axis
-    //       max: 10,
-    // };
+    
     this.getDashboardcounts();
     this.getDashboardPieChartCounts();
+
+    this.dashboardRedirectService.setDashboardValue('Dashboard');
   }
 
-  // toggleCardAnimation() {
-  //   this.cardState = this.cardState === 'inactive' ? 'active' : 'inactive';
-  // }
-
-      // onChartHover(isHovered: boolean): void {
-      //   this.isHover = isHovered;
-
-      //   // Update the options1 object dynamically when isHover changes
-      //   this.options1 = {
-      //     ...this.options1, // Spread the existing properties
-      //     plugins: {
-      //       legend: {
-      //         labels: {
-      //         },
-      //       }
-      //     },
-      //     scales: {
-      //       ...this.options1.scales, // Spread the existing scales properties
-      //       x: {
-      //         ...this.options1.scales.x, // Spread the existing scales.x properties
-      //         ticks: {
-      //           ...this.options1.scales.x.ticks, // Spread the existing scales.x.ticks properties
-      //           color: this.isHover ? "white" : "black", // Set the color based on isHover
-      //         },
-      //       },
-      //       y: {
-      //         title: {
-      //           display: true,
-      //           text: 'Total Vehicles',
-      //           color: this.isHover ? 'white' : "black",
-      //           font: {
-      //             weight: 'bold',
-      //           },
-      //         },
-      //         ticks: {
-      //           color: this.isHover ? 'white' : "black",
-      //         },
-      //         grid: {
-      //           color: this.isHover ? 'white' : "black",
-      //           drawBorder: false,
-      //         },
-      //       },
-      //     },
-      //   };
-      // }
-
-  // onDonut1Hover(isHovered: boolean): void {
-  //   this.isDonut1Hover = isHovered;
-  //   // Update the options1 object dynamically when isHover changes
-  //   this.options = {
-  //     ...this.options, // Spread the existing properties
-  //     plugins: {
-  //       legend: {
-  //         labels: {
-  //           color: this.isDonut1Hover ? "white" : "black",
-  //           usePointStyle: true,
-  //         },
-  //         position: 'bottom'
-  //       }
-  //     },
-  //   };
-  // }
-  // onDonut2Hover(isHovered: boolean): void {
-  //   this.isDonut2Hover = isHovered;
-
-  //   // Update the options1 object dynamically when isHover changes
-  //   this.options2 = {
-  //     ...this.options2, // Spread the existing properties
-  //     plugins: {
-  //       legend: {
-  //         labels: {
-  //           color: this.isDonut2Hover ? "white" : "black",
-  //           usePointStyle: true,
-  //         },
-  //         position: 'bottom'
-  //       }
-  //     },
-  //   };
-  // }
-  // onDonut3Hover(isHovered: boolean): void {
-  //   this.isDonut3Hover = isHovered;
-  //   // Update the options1 object dynamically when isHover changes
-  //   this.options3 = {
-  //     ...this.options3, // Spread the existing properties
-  //     plugins: {
-  //       legend: {
-  //         labels: {
-  //           color: this.isDonut3Hover ? "white" : "black",
-  //           usePointStyle: true,
-  //         },
-  //         position: 'bottom'
-  //       }
-  //     },
-  //   };
-  // }
   showDialouge(modelId: any) {
     if (modelId == "region") {
       this.dialogVisibleRegion = true;

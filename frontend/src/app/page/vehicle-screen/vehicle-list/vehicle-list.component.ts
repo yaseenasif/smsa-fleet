@@ -13,6 +13,7 @@ import { EmployeeService } from '../../employee-screen/service/employee.service'
 import { Employee } from 'src/app/modal/employee';
 import { UserService } from '../../user/user.service';
 import { AuthguardService } from 'src/app/auth-service/authguard/authguard.service';
+import { DashboardRedirectServiceService } from 'src/app/CommonServices/dashboard-redirect-service.service';
 
 @Component({
   selector: 'app-vehicle-list',
@@ -51,7 +52,8 @@ export class VehicleListComponent implements OnInit {
     private regionService: RegionService,
     private route: ActivatedRoute,
     private employeeService: EmployeeService,
-    private authguardService: AuthguardService
+    private authguardService: AuthguardService,
+    private dashboardRedirectService: DashboardRedirectServiceService
   ) { }
 
   vehicles!: Array<Vehicle>;
@@ -92,11 +94,6 @@ export class VehicleListComponent implements OnInit {
       },
     ]
     this.setSelectedStatusAndGetAllVehicles();
-    // this.canDelete = this.hasPermission("DeleteVehicle");
-    // this.canView = this.hasPermission("ViewVehicle");
-    // this.canView = this.hasPermission("AddVehicle");
-    // this.canView = this.hasPermission("UpdateVehicle");
-    // this.canView = this.hasPermission("VehicleHid");
     this.route.queryParams.subscribe(params => {
       this.vehicletab = params['vehicletab'] === 'true';
       this.unAssignedVehicleTab = params['unAssignVehicleTab'] === 'true';
@@ -104,6 +101,7 @@ export class VehicleListComponent implements OnInit {
     });
     this.token = localStorage.getItem('accessToken');
     this.getPersmissions();
+    this.dashboardRedirectService.setDashboardValue('Vehicle');
   }
 
 

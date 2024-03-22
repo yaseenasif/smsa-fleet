@@ -6,6 +6,7 @@ import { FileUpload } from 'primeng/fileupload';
 import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
 import { saveAs } from 'file-saver';
 import { PageEvent } from 'src/app/modal/pageEvent';
+import { DashboardRedirectServiceService } from 'src/app/CommonServices/dashboard-redirect-service.service';
 
 @Component({
   selector: 'app-employee-list',
@@ -21,7 +22,8 @@ export class EmployeeListComponent implements OnInit {
 
   constructor(
     private employeeService: EmployeeService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private dashboardRedirectService: DashboardRedirectServiceService
   ) { }
 
   employee!: Employee[];
@@ -55,6 +57,7 @@ export class EmployeeListComponent implements OnInit {
     ]
 
     this.getAllEmployees();
+    this.dashboardRedirectService.setDashboardValue('Employee');
 
   }
 

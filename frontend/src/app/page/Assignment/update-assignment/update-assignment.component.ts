@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { DashboardRedirectServiceService } from 'src/app/CommonServices/dashboard-redirect-service.service';
 
 @Component({
   selector: 'app-update-assignment',
@@ -23,7 +24,7 @@ export class UpdateAssignmentComponent {
 
   employee!:Employee[];
   selectedEmployee!:Employee;
-  constructor() { }
+  constructor(private dashboardRedirectService: DashboardRedirectServiceService) { }
   name!:string;
   contactNumber!:string;
   referenceNumber!:string;
@@ -51,7 +52,9 @@ export class UpdateAssignmentComponent {
         id:5
       },
     ]
+    this.dashboardRedirectService.setDashboardValue('Assignment');
   }
+  
 }
 interface Employee{
   employeeName:string,

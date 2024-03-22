@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { Menu } from 'primeng/menu';
@@ -8,6 +8,8 @@ import { BackenCommonErrorThrow } from 'src/app/modal/BackendCommonErrorThrow';
 import { User } from 'src/app/modal/user';
 import { PasswordChange } from 'src/app/page/user/user-list/user-list.component';
 import { UserService } from 'src/app/page/user/user.service';
+import { VehicleService } from 'src/app/page/vehicle-screen/service/vehicle.service';
+import { DashboardRedirectServiceService } from 'src/app/CommonServices/dashboard-redirect-service.service';
 @Component({
   selector: 'app-dashboard-head',
   templateUrl: './dashboard-head.component.html',
@@ -25,11 +27,14 @@ export class DashboardHeadComponent implements OnInit {
   newPassword: string | undefined | null;
   user: User | undefined | null;
 
+  @Input() stringValue: string | undefined;
+
   constructor(
     private authService: AuthguardService,
     private errorService: ErrorService,
     private userService: UserService,
     private router: Router,
+    private dashboardRedirectService:DashboardRedirectServiceService
   ) { }
 
   ngOnInit(): void {
@@ -63,6 +68,9 @@ export class DashboardHeadComponent implements OnInit {
         ]
       } 
     ];
+    this.dashboardRedirectService.getDashboardValue().subscribe(value => {
+      this.stringValue = value;
+    });    
   }
 
   logout() {
@@ -85,7 +93,11 @@ export class DashboardHeadComponent implements OnInit {
   }
 
   editUser() {
-    this.router.navigate(['/edit-user/', this.user?.id]);
+    this.router.navigate(['/edit-user/redirectValue/id'], {
+      queryParams: {
+        redirectValue: this.stringValue, id: this.user?.id
+      }
+    });
   }
 
   changePassword() {

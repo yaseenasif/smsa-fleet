@@ -13,6 +13,7 @@ import { VehicleAssignment } from 'src/app/modal/vehicle-assignment';
 import { FinalReturnRequest } from 'src/app/modal/finalReturnRequest';
 import { BackenCommonErrorThrow } from 'src/app/modal/BackendCommonErrorThrow';
 import { ErrorService } from 'src/app/CommonServices/Error/error.service';
+import { DashboardRedirectServiceService } from 'src/app/CommonServices/dashboard-redirect-service.service';
 
 @Component({
   selector: 'app-update-vehicle',
@@ -104,6 +105,7 @@ export class UpdateVehicleComponent implements OnInit {
     private productFieldService: ProductFieldServiceService,
     private vehicleAssignmentService: VehicleAssignmentService,
     private errorHandleService: ErrorService,
+    private dashboardRedirectService: DashboardRedirectServiceService
   ) { }
 
 
@@ -141,6 +143,8 @@ export class UpdateVehicleComponent implements OnInit {
     this.getCapicityList("Capicity");
     this.getPowerList("Power");
     this.getFuelTypeList("Fuel Type");
+    this.dashboardRedirectService.setDashboardValue('Vehicle');
+
   }
 
   getVehicleById(id: Number) {

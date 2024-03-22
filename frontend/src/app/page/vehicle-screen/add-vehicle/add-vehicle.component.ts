@@ -18,6 +18,7 @@ import { FinalReturnRequest } from 'src/app/modal/finalReturnRequest';
 import { ReplacementActionRequest } from 'src/app/modal/replacement-action-request';
 import { ErrorService } from 'src/app/CommonServices/Error/error.service';
 import { BackenCommonErrorThrow } from 'src/app/modal/BackendCommonErrorThrow';
+import { DashboardRedirectServiceService } from 'src/app/CommonServices/dashboard-redirect-service.service';
 
 
 @Component({
@@ -260,7 +261,8 @@ export class AddVehicleComponent implements OnInit {
     private route: ActivatedRoute,
     private vehicleAssignmentService: VehicleAssignmentService,
     private employeeService: EmployeeService,
-    private errorHandleService: ErrorService
+    private errorHandleService: ErrorService,
+    private dashboardRedirectService: DashboardRedirectServiceService
   ) { }
 
   name!: string;
@@ -303,6 +305,7 @@ export class AddVehicleComponent implements OnInit {
     }
 
     this.getUnassignedEmployee();
+    this.dashboardRedirectService.setDashboardValue('Vehicle');
 
   }
 

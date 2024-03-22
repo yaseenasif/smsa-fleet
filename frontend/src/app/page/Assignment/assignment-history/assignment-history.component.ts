@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import * as saveAs from 'file-saver';
 import { MenuItem } from 'primeng/api';
+import { DashboardRedirectServiceService } from 'src/app/CommonServices/dashboard-redirect-service.service';
 import { Vehicle } from 'src/app/modal/vehicle';
 import { VehicleAssignment } from 'src/app/modal/vehicle-assignment';
 import { VehicleHistory } from 'src/app/modal/vehicle-history';
@@ -22,7 +23,8 @@ export class AssignmentHistoryComponent {
   vehicle !: Vehicle
 
   constructor(private vehicleService: VehicleService, private route: ActivatedRoute, 
-              private vehicleAssignmentService: VehicleAssignmentService 
+              private vehicleAssignmentService: VehicleAssignmentService,
+              private dashboardRedirectService: DashboardRedirectServiceService
     ) {
 
   }
@@ -32,6 +34,7 @@ export class AssignmentHistoryComponent {
     this.vehicleAssignmentId = +this.route.snapshot.paramMap.get('id')!;
     this.getVehicleById(this.vehicleAssignmentId)
     this.getVehicleHistoryById(this.vehicleAssignmentId)
+    this.dashboardRedirectService.setDashboardValue('Assignment');
   }
 
   getVehicleHistoryById(id: Number){

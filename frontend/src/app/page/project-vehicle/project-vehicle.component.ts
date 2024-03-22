@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MenuItem, MessageService } from 'primeng/api';
 import { PrjectVehicleService } from './service/prject-vehicle.service';
 import { ProjectVehicle, ProjectVehicleValues } from 'src/app/modal/project-vehicle';
+import { DashboardRedirectServiceService } from 'src/app/CommonServices/dashboard-redirect-service.service';
 
 @Component({
   selector: 'app-project-vehicle',
@@ -15,13 +16,14 @@ export class ProjectVehicleComponent implements OnInit {
   totalCost: number[] | undefined | null;
   totalRentalCost: number = 0;
   constructor(private projectVehicleService: PrjectVehicleService,
-    private messageService: MessageService
+    private messageService: MessageService, private dashboardRedirectService: DashboardRedirectServiceService
   ) { }
   projectVehicles!: ProjectVehicle[];
   projectVehicleId: number | undefined;
   items: MenuItem[] | undefined;
   ngOnInit(): void {
     this.getAllProjectVehicle()
+    this.dashboardRedirectService.setDashboardValue('ProjectVehicle');
   }
   getAllProjectVehicle() {
     this.projectVehicleService.getAllProjectVehicle().subscribe((projectVehicle: ProjectVehicle[]) => {

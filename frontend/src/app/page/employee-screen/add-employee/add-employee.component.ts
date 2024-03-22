@@ -15,6 +15,7 @@ import { JobTitleService } from '../../job-title/job-title.service';
 import { JobTitle } from 'src/app/modal/job-title';
 import { BackenCommonErrorThrow } from 'src/app/modal/BackendCommonErrorThrow';
 import { ErrorService } from 'src/app/CommonServices/Error/error.service';
+import { DashboardRedirectServiceService } from 'src/app/CommonServices/dashboard-redirect-service.service';
 
 @Component({
   selector: 'app-add-employee',
@@ -87,7 +88,8 @@ export class AddEmployeeComponent implements OnInit {
     private productService: ProductFieldServiceService,
     private jobTitleService: JobTitleService,
     private productFieldService: ProductFieldServiceService,
-    private errorHandleService: ErrorService
+    private errorHandleService: ErrorService,
+    private dashboardRedirectService: DashboardRedirectServiceService
   ) { }
 
 
@@ -99,6 +101,8 @@ export class AddEmployeeComponent implements OnInit {
     this.getAllJobTitle();
     this.getDeptcodeList("Dept Code");
     this.getOrganizationList("Organization");
+    this.dashboardRedirectService.setDashboardValue('Employee');
+
   }
 
   getCountry(): Region[] {

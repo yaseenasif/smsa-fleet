@@ -5,6 +5,7 @@ import { Vehicle } from 'src/app/modal/vehicle';
 import { VehicleHistory } from 'src/app/modal/vehicle-history';
 import { VehicleService } from '../service/vehicle.service';
 import { saveAs } from 'file-saver';
+import { DashboardRedirectServiceService } from 'src/app/CommonServices/dashboard-redirect-service.service';
 
 
 // import { DatePipe } from '@angular/common';
@@ -34,7 +35,8 @@ export class VehicleHistoryComponent {
   vehicle!: Vehicle;
 
   constructor(private vehicleService: VehicleService,              
-              private route: ActivatedRoute) {  
+              private route: ActivatedRoute,
+              private dashboardRedirectService: DashboardRedirectServiceService) {  
       this.events = [
           { event: 'Replace',plateNumber:10234, date: '15/10/2020 10:30', icon: 'bi bi-arrow-repeat', color: '#3B82F6'},
           { event: 'Assignment',employ: {name:'Ali Azlan',employNumber:12342}, date: '15/10/2020 14:00', icon: 'bi bi-clipboard2-check', color: '#F59E0B' },
@@ -48,6 +50,7 @@ export class VehicleHistoryComponent {
     this.vehicleId = +this.route.snapshot.paramMap.get('id')!;
     this.getVehicleHistoryById(this.vehicleId);
     this.getVehicleById(this.vehicleId)
+    this.dashboardRedirectService.setDashboardValue('Vehicle');
   }
 
   

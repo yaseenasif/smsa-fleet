@@ -15,6 +15,7 @@ import { RegionService } from '../../region/service/region.service';
 import { Region } from 'src/app/modal/Region';
 import * as saveAs from 'file-saver';
 import { FileUpload } from 'primeng/fileupload';
+import { DashboardRedirectServiceService } from 'src/app/CommonServices/dashboard-redirect-service.service';
 
 @Component({
   selector: 'app-assignment-list',
@@ -80,7 +81,7 @@ export class AssignmentListComponent {
     private regionService: RegionService,
     private route: ActivatedRoute,
     private router: Router,
-    private messageService: MessageService
+    private messageService: MessageService, private dashboardRedirectService: DashboardRedirectServiceService
   ) { }
 
   ngOnInit() {
@@ -93,6 +94,7 @@ export class AssignmentListComponent {
     if (this.vehicleId) {
       this.getVehicleById(this.vehicleId);
     }
+    this.dashboardRedirectService.setDashboardValue('Assignment');
   }
 
   getAllVehicleAssignment() {

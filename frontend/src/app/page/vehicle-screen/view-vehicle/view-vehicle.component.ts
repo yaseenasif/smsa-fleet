@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
+import { DashboardRedirectServiceService } from 'src/app/CommonServices/dashboard-redirect-service.service';
 import { Vehicle } from 'src/app/modal/vehicle';
 import { VehicleService } from '../service/vehicle.service';
 
@@ -21,7 +22,8 @@ export class ViewVehicleComponent {
   tooltipItems: MenuItem[] | undefined;
 
   constructor(private vehicleService: VehicleService, private route: ActivatedRoute,
-    private router: Router) { }
+    private router: Router,
+    private dashboardRedirectService: DashboardRedirectServiceService) { }
 
   ngOnInit() {
     this.items = [{ label: 'Vehicle', routerLink: '/vehicle' }, { label: 'View Vehicle' }];
@@ -82,6 +84,9 @@ export class ViewVehicleComponent {
         severity: 'success'
       },
     ];
+
+    this.dashboardRedirectService.setDashboardValue('Vehicle');
+
   }
 
   getVehicleById(id: Number) {

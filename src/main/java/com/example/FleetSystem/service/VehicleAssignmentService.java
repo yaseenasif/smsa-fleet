@@ -27,6 +27,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -403,6 +404,7 @@ public class VehicleAssignmentService {
         return excelExportService.exportToExcel(assignmentExcelDtoList);
     }
 
+    @Transactional
     public List<String> bulkUploadAssignment(MultipartFile file) {
         List<String> messages = new ArrayList<>();
         try (InputStream inputStream = file.getInputStream()) {
@@ -445,6 +447,8 @@ public class VehicleAssignmentService {
                                         vehicleAssignment.setStatus(Boolean.TRUE);
                                         vehicleAssignmentRepository.save(vehicleAssignment);
                                     }
+                                    vehicle.get().setVehicleStatus("Active");
+                                    vehicleRepository.save(vehicle.get());
                                 } else {
                                     messages.add("Employee is not eligible for assignment\n");
                                     messages.add(getLongValue(row.getCell(1)).toString());

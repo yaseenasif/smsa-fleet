@@ -5,9 +5,6 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AddLocationComponent } from './page/location/add-location/add-location.component';
 import { LocationListComponent } from './page/location/location-list/location-list.component';
 import { UpdateLocationComponent } from './page/location/update-location/update-location.component';
-import { AddLocationPortComponent } from './page/location-port/add-location-port/add-location-port.component';
-import { LocationPortListComponent } from './page/location-port/location-port-list/location-port-list.component';
-import { UpdateLocationPortComponent } from './page/location-port/update-location-port/update-location-port.component';
 import { UserListComponent } from './page/user/user-list/user-list.component';
 import { UpdateUserComponent } from './page/user/update-user/update-user.component';
 import { AddUserComponent } from './page/user/add-user/add-user.component';
@@ -42,7 +39,6 @@ import { GradeListComponent } from './page/grade/grade-list/grade-list.component
 import { AddGradeComponent } from './page/grade/add-grade/add-grade.component';
 import { FormsModule } from '@angular/forms';
 import { EditGradeComponent } from './page/grade/edit-grade/edit-grade.component';
-import { VehicleDetailComponent } from './page/vehicle-screen/vehicle-detail/vehicle-detail.component';
 import { VehicleHistoryComponent } from './page/vehicle-screen/vehicle-history/vehicle-history.component';
 import { VehicleAttachmentComponent } from './page/vehicle-screen/vehicle-attachment/vehicle-attachment.component';
 import { AssigmentAttachmentComponent } from './page/Assignment/assigment-attachment/assigment-attachment.component';
@@ -112,21 +108,6 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'location-port',
-    component: LocationPortListComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'add-location-port',
-    component: AddLocationPortComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'edit-location-port',
-    component: UpdateLocationPortComponent,
-    canActivate: [AuthGuard]
-  },
-  {
     path: 'user',
     component: UserListComponent,
     canActivate: [AuthGuard]
@@ -138,6 +119,11 @@ const routes: Routes = [
   },
   {
     path: 'edit-user/:id',
+    component: UpdateUserComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'edit-user/:redirectValue/:id',
     component: UpdateUserComponent,
     canActivate: [AuthGuard]
   },
@@ -194,11 +180,6 @@ const routes: Routes = [
   {
     path: 'edit-vehicle/:id',
     component: UpdateVehicleComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'vehicle-detail/:id',
-    component: VehicleDetailComponent,
     canActivate: [AuthGuard]
   },
   {

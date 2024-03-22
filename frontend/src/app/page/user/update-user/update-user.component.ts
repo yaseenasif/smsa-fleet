@@ -25,6 +25,7 @@ export class UpdateUserComponent implements OnInit {
     employeeId: undefined,
     roles: [],
   }
+  redirectValue: string | null |undefined;
 
   constructor(
     private route: ActivatedRoute,
@@ -39,9 +40,13 @@ export class UpdateUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.items = [{ label: 'User', routerLink: '/user' }, { label: 'Edit User' }];
-    this.userId = +this.route.snapshot.paramMap.get('id')!;
     this.getAllRoles()
-    this.getUserById(this.userId)
+    this.route.queryParams.subscribe(params => {
+      this.redirectValue = params['redirectValue'];
+      this.userId = params['id'];
+    })
+
+    this.getUserById(this.userId!)
 
   }
 
@@ -68,9 +73,19 @@ export class UpdateUserComponent implements OnInit {
     this.userService.updateUser(this.userId!, user).subscribe(
       (res: User) => {
         this.showSuccess(res);
-        setTimeout(() => {
+        if(this.redirectValue === 'Vehicle'){
+          this.router.navigate(['/vehicle']);
+        }else if(this.redirectValue === 'Employee'){
+          this.router.navigate(['/employee']);
+        }else if(this.redirectValue === 'Assignment'){
+          this.router.navigate(['/assignment']);
+        }else if(this.redirectValue === 'ProjectVehicle'){
+          this.router.navigate(['/project-vehicle']);
+        }else if(this.redirectValue === 'Dashboard'){
+          this.router.navigate(['/home']);
+        }else{
           this.router.navigate(['/user']);
-        }, 1500);
+        }
       }, error => {
         this.showError(error.error);
       });
@@ -86,6 +101,23 @@ export class UpdateUserComponent implements OnInit {
 
   showSuccess(user: User): void {
     this.messageService.add({ severity: 'success', summary: ' Update Successfully', detail: `User ${user.name} has been updated` });
+  }
+
+  onCancel(){
+    if(this.redirectValue === 'Vehicle'){
+      this.router.navigate(['/vehicle']);
+    }else if(this.redirectValue === 'Employee'){
+      this.router.navigate(['/employee']);
+    }else if(this.redirectValue === 'Assignment'){
+      this.router.navigate(['/assignment']);
+    }else if(this.redirectValue === 'ProjectVehicle'){
+      this.router.navigate(['/project-vehicle']);
+    }else if(this.redirectValue === 'Dashboard'){
+      this.router.navigate(['/home']);
+    }
+    else{
+      this.router.navigate(['/user']);
+    }
   }
 
 }

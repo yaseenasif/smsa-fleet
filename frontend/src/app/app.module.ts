@@ -8,15 +8,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DashboardHeadComponent } from './components/dashboard-head/dashboard-head.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-// import { UpdateDriverComponent } from './page/driver/update-driver/update-driver.component';
-// import { AddDriverComponent } from './page/driver/add-driver/add-driver.component';
-// import { DriverListComponent } from './page/driver/driver-list/driver-list.component';
 import { AddLocationComponent } from './page/location/add-location/add-location.component';
 import { UpdateLocationComponent } from './page/location/update-location/update-location.component';
 import { LocationListComponent } from './page/location/location-list/location-list.component';
-import { LocationPortListComponent } from './page/location-port/location-port-list/location-port-list.component';
-import { AddLocationPortComponent } from './page/location-port/add-location-port/add-location-port.component';
-import { UpdateLocationPortComponent } from './page/location-port/update-location-port/update-location-port.component';
 import { UserListComponent } from './page/user/user-list/user-list.component';
 import { AddUserComponent } from './page/user/add-user/add-user.component';
 import { UpdateUserComponent } from './page/user/update-user/update-user.component';
@@ -33,7 +27,6 @@ import { CommonModule } from '@angular/common';
 import { ProductFieldListComponent } from './page/product-field/product-field-list/product-field-list.component';
 import { ProductFieldAddComponent } from './page/product-field/product-field-add/product-field-add.component';
 import { FormsModule } from '@angular/forms'
-// import { DomesticShippingListComponent } from './page/shipping-order/domestic/domestic-shipping-list/domestic-shipping-list.component';
 import { NgxUiLoaderModule, NgxUiLoaderHttpModule } from "ngx-ui-loader";
 import { TimelineModule } from 'primeng/timeline';
 import { TooltipModule } from 'primeng/tooltip';
@@ -84,7 +77,6 @@ import { AddGradeComponent } from './page/grade/add-grade/add-grade.component';
 import { EditGradeComponent } from './page/grade/edit-grade/edit-grade.component';
 import { PaginatorModule } from 'primeng/paginator';
 import { VendorDetailComponent } from './page/vendor-screen/vendor-detail/vendor-detail.component';
-import { VehicleDetailComponent } from './page/vehicle-screen/vehicle-detail/vehicle-detail.component';
 import { VehicleHistoryComponent } from './page/vehicle-screen/vehicle-history/vehicle-history.component';
 import { CardModule } from 'primeng/card';
 import { VehicleAttachmentComponent } from './page/vehicle-screen/vehicle-attachment/vehicle-attachment.component';
@@ -134,9 +126,6 @@ import { MenuModule } from 'primeng/menu';
     AddLocationComponent,
     UpdateLocationComponent,
     LocationListComponent,
-    LocationPortListComponent,
-    AddLocationPortComponent,
-    UpdateLocationPortComponent,
     UserListComponent,
     AddUserComponent,
     UpdateUserComponent,
@@ -170,7 +159,6 @@ import { MenuModule } from 'primeng/menu';
     AddGradeComponent,
     EditGradeComponent,
     VendorDetailComponent,
-    VehicleDetailComponent,
     EditGradeComponent,
     VehicleHistoryComponent,
     VehicleAttachmentComponent,

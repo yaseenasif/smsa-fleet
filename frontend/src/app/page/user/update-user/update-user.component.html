@@ -59,20 +59,6 @@
                     />
                   </div>
                 </div>
-                <!-- <div class="col-12 md:col-12 lg:col-6">
-                  <div class="flex flex-column gap-2">
-                    <label htmlFor="password">Password</label>
-                    <input
-                      pInputText
-                      id="password"
-                      aria-describedby="password-help"
-                      [(ngModel)]="user.password"
-                      #password="ngModel"
-                      name="password"
-                      required
-                    />
-                  </div>
-                </div> -->
 
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2 form-hook">
@@ -91,19 +77,6 @@
                       [showClear]="true"
                       placeholder="Select a Role"
                     >
-                      <!-- <ng-template pTemplate="selecteRole">
-                        <div
-                          class="flex align-items-center gap-2"
-                          *ngIf="selectedRole"
-                        >
-                          <div>{{ selectedRole.name }}</div>
-                        </div>
-                      </ng-template>
-                      <ng-template let-roles pTemplate="item">
-                        <div class="flex align-items-center gap-2">
-                          <div>{{ roles.name }}</div>
-                        </div>
-                      </ng-template> -->
                     </p-dropdown>
                   </div>
                 </div>
@@ -112,8 +85,8 @@
                 <p-button
                   label="Cancel"
                   class="bg-o-color mr"
-                  routerLink="/user"
                   styleClass="p-button-outlined"
+                  (click) = "onCancel()"
                 >
                 </p-button>
                 <p-button label="Update" type="submit" class="bg-b-color ml">

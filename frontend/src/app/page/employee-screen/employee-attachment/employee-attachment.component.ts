@@ -6,6 +6,7 @@ import { FileUploadErrorEvent, FileUploadEvent } from 'primeng/fileupload';
 import { environment } from 'src/environments/environment';
 import { IndividualFileListService } from '../../individual-file-list/individual-file-list.service';
 import { FileMetaData } from 'src/app/modal/file-meta-data';
+import { DashboardRedirectServiceService } from 'src/app/CommonServices/dashboard-redirect-service.service';
 
 @Component({
   selector: 'app-employee-attachment',
@@ -24,6 +25,7 @@ export class EmployeeAttachmentComponent {
     private route:ActivatedRoute,
     private individualFileListService:IndividualFileListService,
     private confirmationService: ConfirmationService,
+    private dashboardRedirectService: DashboardRedirectServiceService
   ) { }
   
   size=environment.fileSize;
@@ -46,6 +48,7 @@ export class EmployeeAttachmentComponent {
   ngOnInit(): void {  
     this.items = [{ label: 'Employee',routerLink:'/employee'},{ label: 'Employee Attachments'}];
     this.getFileMetaData();
+    this.dashboardRedirectService.setDashboardValue('Employee');
   }
 
   getFileMetaData(){

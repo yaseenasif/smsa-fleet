@@ -7,6 +7,7 @@ import { Employee } from 'src/app/modal/employee';
 import { EmployeeService } from '../../employee-screen/service/employee.service';
 import { VehicleAssignmentService } from '../vehicle-assignment.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DashboardRedirectServiceService } from 'src/app/CommonServices/dashboard-redirect-service.service';
 
 @Component({
   selector: 'app-add-assignment',
@@ -126,7 +127,8 @@ export class AddAssignmentComponent {
      private vehicleAssignmentService: VehicleAssignmentService,
      private route: ActivatedRoute,
      private router: Router,
-     private messageService: MessageService) { }
+     private messageService: MessageService,
+     private dashboardRedirectService: DashboardRedirectServiceService) { }
 
 
   name!:string;
@@ -137,6 +139,7 @@ export class AddAssignmentComponent {
     
     this.getAllVehicles();
     this.getAllUnAssignedEmployees();
+    this.dashboardRedirectService.setDashboardValue('Assignment');
   }
 
   getVehicleAssignmentById(id: Number) {

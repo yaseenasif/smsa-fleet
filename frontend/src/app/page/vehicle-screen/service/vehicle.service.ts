@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Region } from 'src/app/modal/Region';
 import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
 import { Vehicle } from 'src/app/modal/vehicle';
@@ -19,6 +19,8 @@ import { ReplacementActionRequest } from 'src/app/modal/replacement-action-reque
 })
 export class VehicleService {
   url = environment.baseurl;
+
+  
 
   constructor(private http: HttpClient) { }
 

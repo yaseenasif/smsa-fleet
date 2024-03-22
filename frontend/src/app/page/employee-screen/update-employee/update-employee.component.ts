@@ -16,6 +16,7 @@ import { ProductFieldServiceService } from '../../product-field/service/product-
 import { BackenCommonErrorThrow } from 'src/app/modal/BackendCommonErrorThrow';
 import { ProductField } from 'src/app/modal/ProductField';
 import { ErrorService } from 'src/app/CommonServices/Error/error.service';
+import { DashboardRedirectServiceService } from 'src/app/CommonServices/dashboard-redirect-service.service';
 
 @Component({
   selector: 'app-update-employee',
@@ -100,7 +101,8 @@ export class UpdateEmployeeComponent {
     private gradeService: GradeService,
     private jobTitleService: JobTitleService,
     private productFieldService: ProductFieldServiceService,
-    private errorHandleService: ErrorService
+    private errorHandleService: ErrorService,
+    private dashboardRedirectService: DashboardRedirectServiceService
 
   ) { }
 
@@ -129,6 +131,7 @@ export class UpdateEmployeeComponent {
     this.getLocationList("Location");
     this.getOrganizationList("Organization");
     this.getDeptcodeList("Dept Code");
+    this.dashboardRedirectService.setDashboardValue('Employee');
   }
 
   getEmployeeById(id: Number) {

@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { VendorService } from '../../vendor-screen/service/vendor.service';
 import { ProductFieldServiceService } from '../../product-field/service/product-field-service.service';
 import { ProductField } from 'src/app/modal/ProductField';
+import { DashboardRedirectServiceService } from 'src/app/CommonServices/dashboard-redirect-service.service';
 
 @Component({
   selector: 'app-add-project-vehicle',
@@ -58,14 +59,15 @@ export class AddProjectVehicleComponent implements OnInit {
     private router: Router,
     private vendorService: VendorService,
     private productFieldService: ProductFieldServiceService,
+    private dashboardRedirectService: DashboardRedirectServiceService
 
   ) { }
 
   ngOnInit(): void {
     this.items = [{ label: 'Project Vehicle', routerLink: '/project-vehicle' }, { label: 'Add Project Vehicle' }];
     this.getAllVendors();
-    console.log(this.projectVehicle);
     this.getProjectName();
+    this.dashboardRedirectService.setDashboardValue('ProjectVehicle');
   }
   addMoreFieldValue() {
     const newFieldValue: ProjectVehicleValues = {

@@ -25,7 +25,7 @@
               class="flex mb-2 align-items-center gap-1"
               style="justify-content: flex-end; align-items: flex-end"
             >
-              <p-button class="bg-b-color" routerLink="/add-vehicle">
+              <p-button *ngIf="permissions && permissions.includes('AddVehicles')" class="bg-b-color" routerLink="/add-vehicle">
                 <i
                   class="bi bi-plus-lg"
                   style="font-size: 20px; font-weight: bold"

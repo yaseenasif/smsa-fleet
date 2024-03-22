@@ -5,6 +5,7 @@ import { MenuItem } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VendorService } from '../../vendor-screen/service/vendor.service';
 import { Vendor } from 'src/app/modal/vendor';
+import { DashboardRedirectServiceService } from 'src/app/CommonServices/dashboard-redirect-service.service';
 
 @Component({
   selector: 'app-view-project-vehicle',
@@ -46,7 +47,8 @@ export class ViewProjectVehicleComponent implements OnInit {
     private projectVehicleService: PrjectVehicleService,
     private router: Router,
     private route: ActivatedRoute,
-    private vendorService: VendorService
+    private vendorService: VendorService,
+    private dashboardRedirectService: DashboardRedirectServiceService
   ) { }
 
   ngOnInit(): void {
@@ -54,6 +56,7 @@ export class ViewProjectVehicleComponent implements OnInit {
     this.getAllVendors();
     this.projectVehicleId = +this.route.snapshot.paramMap.get('id')!;
     this.getProjectVehicleById(this.projectVehicleId);
+    this.dashboardRedirectService.setDashboardValue('ProjectVehicle');
   }
   getProjectVehicleById(id: number) {
     this.projectVehicleService.getProjectVehicleById(id).subscribe(

@@ -6,6 +6,7 @@ import { SelectItem } from 'primeng/api';
 import { ErrorService } from 'src/app/CommonServices/Error/error.service';
 import { ActivatedRoute } from '@angular/router';
 import { PageEvent } from 'src/app/modal/pageEvent';
+import { DashboardRedirectServiceService } from 'src/app/CommonServices/dashboard-redirect-service.service';
 
 @Component({
   selector: 'app-show-vehicle',
@@ -56,7 +57,7 @@ export class ShowVehicleComponent {
   constructor(
     private projectVehicleService: PrjectVehicleService,
     private errorHandleService: ErrorService,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute,private dashboardRedirectService: DashboardRedirectServiceService
   ) { }
 
   ngOnInit(): void {
@@ -65,6 +66,7 @@ export class ShowVehicleComponent {
     if (this.projectVehicleId) {
       this.getProjectVehicleById(this.projectVehicleId);
     }
+    this.dashboardRedirectService.setDashboardValue('ProjectVehicle');
   }
 
   getProjectVehicleById(id: number, value?: string, date?: Date) {

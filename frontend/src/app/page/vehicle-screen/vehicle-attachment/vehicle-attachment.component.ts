@@ -6,6 +6,7 @@ import { FileUploadErrorEvent, FileUploadEvent } from 'primeng/fileupload';
 import { environment } from 'src/environments/environment';
 import { IndividualFileListService } from '../../individual-file-list/individual-file-list.service';
 import { FileMetaData } from 'src/app/modal/file-meta-data';
+import { DashboardRedirectServiceService } from 'src/app/CommonServices/dashboard-redirect-service.service';
 
 @Component({
   selector: 'app-vehicle-attachment',
@@ -20,7 +21,8 @@ export class VehicleAttachmentComponent {
     private messageService: MessageService,
     private route:ActivatedRoute,
     private individualFileListService:IndividualFileListService,
-    private confirmationService:ConfirmationService
+    private confirmationService:ConfirmationService,
+    private dashboardRedirectService: DashboardRedirectServiceService
   ) { }
   
   size=environment.fileSize;
@@ -50,6 +52,8 @@ export class VehicleAttachmentComponent {
   ngOnInit(): void {  
     this.items = [{ label: 'Vehicle',routerLink:'/vehicle'},{ label: 'Vehicle Attachments'}];
     this.getFileMetaData();
+    this.dashboardRedirectService.setDashboardValue('Vehicle');
+
   }
 
   getFileMetaData(){
