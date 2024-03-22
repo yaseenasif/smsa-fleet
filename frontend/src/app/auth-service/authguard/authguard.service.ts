@@ -19,7 +19,7 @@ export class AuthguardService {
       permission: 'ViewVehicles', route: ['/vehicle', '/add-vehicle/:replacementCheck/:vId', '/edit-vehicle/:id', '/vehicle-history/:id', '/vehicle-attachment/:id', '/vehicle-detail/:id', '/vehicle/:vehicletab', '/view-vehicle/:id', '/view-vehicle/assignmentCheck/:id', '/unassigned-vehicle']
     },
     { permission: 'Assignment', route: ['/assignment', '/add-assignment', '/edit-assignment/:id', '/assignment-attachment/:id', '/view-assignment/:id', '/assignment-history/:id', '/replacement-action/:id'] },
-    { permission: 'User', route: ['/user', '/add-user', '/edit-user/:id'] },
+    { permission: 'User', route: ['/user', '/add-user'] },
     { permission: 'Vendor', route: ['/vendor', '/add-vendor', '/edit-vendor/:id', '/vendor-attachment/:id',] },
     { permission: 'Permission', route: ['/permission', '/add-permission', '/edit-permission/:id'] },
     { permission: 'Role', route: ['/role', '/add-role', '/edit-role/:id',] },
@@ -31,7 +31,8 @@ export class AuthguardService {
     { permission: 'JobTitle', route: ['/job-title-list', '/add-job-title', '/add-job-title/:id'] },
     { permission: 'ReportManagement', route: ['/report-managment-list'] },
     { permission: 'Download Attachment', route: ['/individual-file-list-component/:call-type/:id'] },
-    { permission: 'DeletedVehicles', route: ['/deleted-vehicles'] }
+    { permission: 'DeletedVehicles', route: ['/deleted-vehicles'] },
+    { permission: 'EditUser', route: ['/edit-user/:id'] },
   ];
 
   constructor(private router: Router) { }

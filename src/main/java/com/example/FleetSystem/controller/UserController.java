@@ -2,6 +2,7 @@ package com.example.FleetSystem.controller;
 
 import com.example.FleetSystem.dto.UserDto;
 import com.example.FleetSystem.model.User;
+import com.example.FleetSystem.payload.ResponsePayload;
 import com.example.FleetSystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -60,8 +61,9 @@ public class UserController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @PatchMapping("/update-password/{id}")
     public ResponseEntity<UserDto> updatePasswordById(
-            @PathVariable Long id, @RequestParam String oldPassword, @RequestParam String newPassword
+            @PathVariable Long id, @RequestParam String newPassword
     ) {
-        return ResponseEntity.ok(userService.updatePasswordById(id, oldPassword, newPassword));
+        return ResponseEntity.ok(userService.updatePasswordById(id, newPassword));
     }
+
 }

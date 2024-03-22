@@ -17,6 +17,9 @@
   border-radius: 3%;
   white-space: nowrap;
   overflow: hidden;
+  border: 1px solid #400099;
+  border-radius: 8px;
+  background-color: #400099;
 }
 
 .user-info img {
@@ -48,4 +51,30 @@
 
 .error-message {
   color: $error-color;
+}
+
+@media screen and (min-width: 1024px) {
+  .user-info {
+    /* Styles for large screens */
+    position: absolute;
+    right: 20px;
+    /* Additional styles as needed */
+  }
+ 
+}
+
+.role-style{
+  color: #E1E1E1;
+}
+
+.role-hide-prefix {
+  &::before {
+    content: "ROLE_";
+    display: none;
+  }
+}
+
+// Apply the class to your HTML element
+.role-split {
+  @extend .role-hide-prefix;
 }

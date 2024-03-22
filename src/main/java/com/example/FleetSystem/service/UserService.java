@@ -5,11 +5,14 @@ import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.model.Roles;
 import com.example.FleetSystem.model.User;
 import com.example.FleetSystem.model.Vehicle;
+import com.example.FleetSystem.payload.ResponseMessage;
+import com.example.FleetSystem.payload.ResponsePayload;
 import com.example.FleetSystem.repository.RoleRepository;
 import com.example.FleetSystem.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -116,23 +119,13 @@ public class UserService {
         return toDto(userRepository.findByEmployeeIdAndStatusIsTrue(id));
     }
 
-    public UserDto updatePasswordById(Long id, String oldPassword, String newPassword) {
+    public UserDto updatePasswordById(Long id, String newPassword) {
         Optional<User> optionalUser = userRepository.findById(id);
 
         if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            String encodedOldPassword = user.getPassword();
-
-            if (bCryptPasswordEncoder.matches(oldPassword, encodedOldPassword)) {
-                String encodedNewPassword = bCryptPasswordEncoder.encode(newPassword);
-                user.setPassword(encodedNewPassword);
-                userRepository.save(user);
-                return toDto(user);
-            } else {
-                throw new IllegalArgumentException("Incorrect Password");
-            }
-        } else {
-            throw new NoSuchElementException("User with id " + id + " not found");
+                optionalUser.get().setPassword(bCryptPasswordEncoder.encode(newPassword));
+                return toDto(userRepository.save(optionalUser.get()));
         }
+            throw new NoSuchElementException("User with id " + id + " not found");
     }
 }

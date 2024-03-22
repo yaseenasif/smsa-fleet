@@ -7,7 +7,6 @@ import { BackenCommonErrorThrow } from 'src/app/modal/BackendCommonErrorThrow';
 import { ErrorService } from 'src/app/CommonServices/Error/error.service';
 export interface PasswordChange {
   id: number | null | undefined;
-  oldPassword: string | null | undefined;
   newPassword: string | null | undefined;
 }
 

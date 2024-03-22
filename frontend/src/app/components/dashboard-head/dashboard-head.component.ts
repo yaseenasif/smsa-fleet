@@ -61,7 +61,7 @@ export class DashboardHeadComponent implements OnInit {
             }
           }
         ]
-      }
+      } 
     ];
   }
 
@@ -111,4 +111,5 @@ export class DashboardHeadComponent implements OnInit {
       }
     );
   }
+
 }

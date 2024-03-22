@@ -104,23 +104,12 @@
     (ngSubmit)="
       updatePassword({
         id: userRow?.id,
-        oldPassword: currentPassword,
         newPassword: newPassword
       })
     "
     class="login-form"
   >
-    <div class="flex flex-column gap-2 mt-3 form-hook">
-      <label for="current-password">Current Password</label>
-      <p-password
-        [toggleMask]="true"
-        id="current-password"
-        name="current-password"
-        [(ngModel)]="currentPassword"
-        required
-      ></p-password>
-      <small class="error-message" *ngIf="error">{{ errorMessage }}</small>
-    </div>
+    
     <div class="flex flex-column gap-2 mt-3 form-hook">
       <label for="new-password">New Password</label>
       <p-password

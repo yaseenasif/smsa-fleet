@@ -13,7 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 public class ResponseMessage {
 
-//    @JsonRawValue
     private List<String> message;
 
 }

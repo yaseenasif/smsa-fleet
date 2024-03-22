@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ResponsePayload } from 'src/app/modal/ResponsePayload';
 import { User } from 'src/app/modal/user';
 import { environment } from 'src/environments/environment';
 import { PasswordChange } from './user-list/user-list.component';
@@ -41,8 +42,8 @@ export class UserService {
 
   updatePassword(passwords: PasswordChange): Observable<User> {
     const body = new HttpParams()
-      .set('oldPassword', passwords.oldPassword!)
       .set('newPassword', passwords.newPassword!);
     return this.http.patch<User>(`${this.url}/update-password/${passwords.id}`, body);
   }
+
 }
