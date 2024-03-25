@@ -194,6 +194,7 @@ public class VehicleSpecification {
             addLikePredicateIfNotNull(predicates, criteriaBuilder, root.get("usageType"), vehicle.getUsageType(), String.class);
             addLikePredicateIfNotNull(predicates, criteriaBuilder, root.get("region"), vehicle.getRegion(), String.class);
             addLikePredicateIfNotNull(predicates, criteriaBuilder, root.get("vehicleStatus"), vehicle.getVehicleStatus(), String.class);
+            addLikePredicateIfNotNull(predicates, criteriaBuilder, root.get("category"), vehicle.getCategory(), String.class);
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
@@ -237,40 +238,3 @@ public class VehicleSpecification {
         return objectMapper.readValue(valueJson, objectMapper.getTypeFactory().constructCollectionType(List.class, valueType));
     }
 }
-
-//    private static void addLikePredicateIfNotNull(List<Predicate> predicates, CriteriaBuilder criteriaBuilder, Path<String> path, String valueJson) {
-//        if (valueJson != null) {
-//            try {
-//                ObjectMapper objectMapper = new ObjectMapper();
-//                List<T> values = objectMapper.readValue(
-//                        valueJson,
-//                        new TypeReference<List<T>>() {
-//                        }
-//                );
-//
-//                // Create a list to store individual like predicates
-//                List<Predicate> likePredicates = new ArrayList<>();
-//
-//                for (String value : values) {
-//                    if (value != null) {
-//                        // Convert both the column value and the search value to lowercase
-//                        Expression<String> columnValueLower = criteriaBuilder.lower(path);
-//                        String searchValueLower = value.toLowerCase();
-//
-//                        // Create a like predicate for the lowercase values and add it to the list
-//                        Predicate likePredicate = criteriaBuilder.equal(columnValueLower, searchValueLower);
-//                        likePredicates.add(likePredicate);
-//                    }
-//                }
-//
-//                // Combine all the like predicates using 'or' instead of 'and'
-//                Predicate combinedPredicate = criteriaBuilder.or(likePredicates.toArray(new Predicate[0]));
-//
-//                // Add the combined predicate to the list of predicates
-//                predicates.add(combinedPredicate);
-//            } catch (IOException e) {
-//                // Handle exception gracefully
-//                Logger.getLogger(Vehicle.class.getName()).log(Level.SEVERE, "Error parsing JSON: " + valueJson, e);
-//            }
-//        }
-//    }

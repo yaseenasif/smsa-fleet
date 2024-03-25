@@ -5,6 +5,7 @@ import { UserService } from '../user.service';
 import { AuthguardService } from 'src/app/auth-service/authguard/authguard.service';
 import { BackenCommonErrorThrow } from 'src/app/modal/BackendCommonErrorThrow';
 import { ErrorService } from 'src/app/CommonServices/Error/error.service';
+import { PageEvent } from 'src/app/modal/pageEvent';
 export interface PasswordChange {
   id: number | null | undefined;
   newPassword: string | null | undefined;
@@ -24,6 +25,8 @@ export class UserListComponent implements OnInit {
   currentPassword: string | undefined | null;
   errorMessage: string | undefined | null;
   newPassword: string | undefined | null;
+  value: string | null = null;
+  totalRecords: number = 0;
 
 
   constructor(
@@ -35,18 +38,21 @@ export class UserListComponent implements OnInit {
 
   items: MenuItem[] | undefined;
 
-
+  query: PageEvent = {
+    page: 0,
+    size: 7,
+  };
 
   ngOnInit() {
     this.items = [{ label: 'User' }];
-    this.getActiveUsers();
+    // this.getActiveUsers();
     this.checkUser();
+    this.searchUserByEmpId();
   }
 
   getActiveUsers() {
     this.userService.getActiveUsers().subscribe(
       (res: User[]) => {
-        debugger
         const decodedToken = this.checkUser();
         if (decodedToken?.ROLES[0] === "ADMIN") {
           this.users = res;
@@ -88,16 +94,34 @@ export class UserListComponent implements OnInit {
     this.resetPassword = true;
   }
   updatePassword(passwords: PasswordChange) {
-    debugger
     this.userService.updatePassword(passwords).subscribe(
       (res: User) => {
         this.resetPassword = false;
       }, (error: BackenCommonErrorThrow) => {
-        debugger
+        
         this.error = true;
         this.errorMessage = error.error;
         this.errorService.showError(error.error!);
       }
     );
   }
+
+  searchUserByEmpId(){
+    this.userService.searchUser(this.value, this.query).subscribe((res)=>{
+      this.users = res.content
+      this.query = { page: res.pageable.pageNumber, size: res.size }
+      this.totalRecords = res.totalElements;
+    })
+  }
+  
+
+  OnSelectChange() {
+      this.searchUserByEmpId();
+    }
+
+  onPageChange(value?: string | null, event?: any) {
+      this.query.page = event.page;
+      this.query.size = event.rows;
+      this.searchUserByEmpId();
+    }
 }

@@ -177,6 +177,28 @@
                   >
                   </p-multiSelect>
                 </div>
+                <div style="flex: 4">
+                  <label style="display: block !important" class="mb-1"
+                    >Category:</label
+                  >
+                  <p-multiSelect
+                    class="w-full"
+                    [(ngModel)]="selectedCategory"
+                    [options]="category"
+                    placeholder="Select Category"
+                    name="selectedCategory"
+                    (onClear)="vehicle.category = null"
+                    [required]="true"
+                    optionLabel="name"
+                    [showClear]="true"
+                    display="chip"
+                    optionValue="name"
+                    [filter]="true"
+                    filterBy="name"
+                    (ngModelChange)="onSelectCategory($event)"
+                  >
+                  </p-multiSelect>
+                </div>
               </div>
             </p-toolbar>
 

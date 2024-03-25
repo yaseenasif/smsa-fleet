@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
 import { ResponsePayload } from 'src/app/modal/ResponsePayload';
 import { User } from 'src/app/modal/user';
 import { environment } from 'src/environments/environment';
@@ -46,4 +47,10 @@ export class UserService {
     return this.http.patch<User>(`${this.url}/update-password/${passwords.id}`, body);
   }
 
+  searchUser(value?: string | null, query?: { page: number, size: number }): Observable<PaginatedResponse<User>> {
+    if (value) {
+      query = { page: 0, size: 10 };
+    }
+    return this.http.get<PaginatedResponse<User>>(`${this.url}/search-all-user?value=${value ? value : ''}&page=${query?.page ? query.page : ''}&size=${query?.size ? query.size : ''}`);
+  }
 }

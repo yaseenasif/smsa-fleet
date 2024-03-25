@@ -1,5 +1,6 @@
 package com.example.FleetSystem.service;
 
+import com.example.FleetSystem.criteria.VehicleSearchCriteria;
 import com.example.FleetSystem.dto.UserDto;
 import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.model.Roles;
@@ -9,8 +10,14 @@ import com.example.FleetSystem.payload.ResponseMessage;
 import com.example.FleetSystem.payload.ResponsePayload;
 import com.example.FleetSystem.repository.RoleRepository;
 import com.example.FleetSystem.repository.UserRepository;
+import com.example.FleetSystem.specification.UserSpecification;
+import com.example.FleetSystem.specification.VehicleSpecification;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -127,5 +134,12 @@ public class UserService {
                 return toDto(userRepository.save(optionalUser.get()));
         }
             throw new NoSuchElementException("User with id " + id + " not found");
+    }
+
+    public Page<UserDto> searchUserSpecification(VehicleSearchCriteria searchCriteria,int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<User> userSpecification = UserSpecification.getUserSpecification(searchCriteria);
+        Page<User> userPage = userRepository.findAll(userSpecification, pageable);
+        return userPage.map(this::toDto);
     }
 }

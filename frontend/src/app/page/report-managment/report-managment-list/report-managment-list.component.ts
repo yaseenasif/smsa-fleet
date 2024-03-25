@@ -36,6 +36,7 @@ export class ReportManagmentListComponent implements OnInit {
   selectedStatus: { name: string | undefined; } | undefined;
   leaseStartDate: Date | undefined;
   leaseExpiryDate: Date | undefined;
+  selectedCategory: string[] | undefined;
 
   query: PageEvent = {
     page: 0,
@@ -80,6 +81,7 @@ export class ReportManagmentListComponent implements OnInit {
   }
   oneIsSelected: boolean | undefined;
   poNumberList: { poNumber: string }[] = [];
+  category: any;
 
   constructor(
     private errorService: ErrorService,
@@ -142,6 +144,18 @@ export class ReportManagmentListComponent implements OnInit {
       }
     ];
 
+    this.category = [
+      {
+        name: 'Cooling Unit'
+      },
+      {
+        name: 'Dry Unit'
+      },
+      {
+        name: 'NA'
+      }
+    ];
+
     this.getAllVendors();
     this.getAllRegion();
     this.getAllVehicles();
@@ -167,40 +181,6 @@ export class ReportManagmentListComponent implements OnInit {
     })
   }
 
-  // searchVehiclesByRegion() {
-  //   if (this.selectedRegion) {
-  //     this.reportManagmentService.searchVehiclesByRegion(this.selectedRegion.name, this.query)
-  //       .subscribe((res: PaginatedResponse<Vehicle>) => {
-  //         this.vehicles = res.content;
-  //       })
-  //   }
-  // }
-
-  // searchVehiclesByVendor() {
-  //   if (this.selectedVendor) {
-  //     this.reportManagmentService.searchVehiclesByVendor(this.selectedVendor.vendorName, this.query).subscribe((res: PaginatedResponse<Vehicle>) => {
-  //       this.vehicles = res.content;
-  //     })
-  //   }
-  // }
-
-  // searchVehiclesByUsageType() {
-  //   if (this.selectedUsageType) {
-  //     this.reportManagmentService.searchVehiclesByUsageType(this.selectedUsageType.name, this.query)
-  //       .subscribe((res: PaginatedResponse<Vehicle>) => {
-  //         this.vehicles = res.content;
-  //       })
-  //   }
-  // }
-
-  // searchVehiclesByLeaseExpiry() {
-  //   if(this.leaseStartDate && this.leaseExpiryDate) {
-  //     this.reportManagmentService.searchVehiclesByLeaseExpiry(this.leaseStartDate, this.leaseExpiryDate, this.query)
-  //     .subscribe(( res: PaginatedResponse<Vehicle>) => {
-  //       this.vehicles = res.content;
-  //     })
-  //   }
-  // }
 
   checkBothSelected() {
 
@@ -216,16 +196,17 @@ export class ReportManagmentListComponent implements OnInit {
   }
 
   onSelectPoNumbers(selectedValues: string[]) {
-    debugger
     this.selectedPoNumber = JSON.stringify(selectedValues);
   }
-
 
   onSelectVendors(slectedValues: string[]) {
     this.vehicle.vendor.vendorName = JSON.stringify(slectedValues);
   }
   onSelectUsageType(slectedValues: string[]) {
     this.vehicle.usageType = JSON.stringify(slectedValues);
+  }
+  onSelectCategory(slectedValues: string[]) {
+    this.vehicle.category = JSON.stringify(slectedValues);
   }
   onSelectRegion(slectedValues: string[]) {
     this.vehicle.region = JSON.stringify(slectedValues);
@@ -235,14 +216,12 @@ export class ReportManagmentListComponent implements OnInit {
   }
 
   dynamicSearch() {
-    debugger
     const selectedPoNumberString: string = this.selectedPoNumber as string;
     this.reportManagmentService.searchVehiclesWithDynamicValues(this.vehicle, selectedPoNumberString).subscribe(
       (res: Vehicle[]) => {
         this.vehicles = res;
       },
       (error: BackenCommonErrorThrow) => {
-        debugger
         this.errorService.showError(error.error!);
       });
   }
