@@ -57,7 +57,7 @@ public class VehicleReplacementService {
 
                 Vehicle replacingVehicle = replacementRequest.getReplacement().getVehicle();
                 replacingVehicle.setCreatedBy(user);
-                replacingVehicle.setCreatedAt(LocalDate.now());
+                replacingVehicle.setCreatedAt(LocalDateTime.now());
 
                 Date currentDate = Date.valueOf(LocalDate.now());
 
@@ -130,6 +130,10 @@ public class VehicleReplacementService {
 
                 replacingVehicle.setVehicleStatus("Replacement");
                 replacingVehicle.setVehicleReplacement(vehicleReplacement);
+                replacingVehicle.setUpdatedBy(user);
+                replacingVehicle.setUpdatedAt(LocalDate.now());
+                existingVehicle.get().setUpdatedAt(LocalDate.now());
+                existingVehicle.get().setUpdatedBy(user);
 
                 vehicleRepository.save(existingVehicle.get());
                 vehicleRepository.save(replacingVehicle);

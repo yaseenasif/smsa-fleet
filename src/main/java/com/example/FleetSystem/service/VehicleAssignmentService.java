@@ -62,7 +62,7 @@ public class VehicleAssignmentService {
     //    @Autowired
 //    DriverRepository driverRepository;
     @Autowired
-    VehicleAssignmentAuditService vehicleAssignmentAuditService;
+    AuditService vehicleAssignmentAuditService;
     @Autowired
     ExcelExportService excelExportService;
     @Autowired
@@ -361,10 +361,10 @@ public class VehicleAssignmentService {
     public Employee getLastAssignmentByVehicleId(Long id) {
         Optional<Vehicle> vehicle = vehicleRepository.findById(id);
         if (vehicle.isPresent()) {
-            List<AuditDataWrapper> assignmentList = vehicleAssignmentAuditService.retrieveAuditData(vehicle.get().getId());
+            List<AssignmentAuditDataWrapper> assignmentList = vehicleAssignmentAuditService.retrieveAssignmentAuditData(vehicle.get().getId());
 
             for (int i = assignmentList.size() - 1; i >= 0; i--) {
-                AuditDataWrapper assignment = assignmentList.get(i);
+                AssignmentAuditDataWrapper assignment = assignmentList.get(i);
                 if (assignment.getEntity().isStatus()) {
                     Optional<Employee> employee = employeeRepository.findById(assignment.getEntity().getAssignToEmpId().getId());
                     if (employee.isPresent()) {
