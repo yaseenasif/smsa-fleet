@@ -1,10 +1,10 @@
-import { VehicleAssignment } from "./vehicle-assignment";
-import { VehicleReplacement } from "./vehicleReplacement";
+import { Employee } from "./employee";
+import { Vehicle } from "./vehicle";
 
 export interface ReplacementRequest {
 
-    replacement: VehicleReplacement | null | undefined
-    assignment: VehicleAssignment | null | undefined
+    replacementVehicle: Vehicle | null | undefined
+    changeAssignedEmployee: Employee | null | undefined
 
 }
   

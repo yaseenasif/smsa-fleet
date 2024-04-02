@@ -33,7 +33,10 @@ export class UpdateUserComponent implements OnInit {
     private roleService: RoleService,
     private messageService: MessageService,
     private router: Router
-  ) { }
+  ) {
+    // this.userId = +this.route.snapshot.paramMap.get('id')!;
+
+   }
 
   userId: number | undefined;
 
@@ -42,12 +45,22 @@ export class UpdateUserComponent implements OnInit {
     this.items = [{ label: 'User', routerLink: '/user' }, { label: 'Edit User' }];
     this.getAllRoles()
     this.route.queryParams.subscribe(params => {
-      this.redirectValue = params['redirectValue'];
-      this.userId = params['id'];
-    })
-
-    this.getUserById(this.userId!)
-
+      debugger
+      if (params.hasOwnProperty('redirectValue')) {
+        this.redirectValue = params['redirectValue'];
+      }
+      if (params.hasOwnProperty('id')) {
+        this.userId = params['id'];
+        this.getUserById(this.userId!); // Call the function only if userId is available
+      
+      }
+    });
+    
+    if (!this.userId) {
+      this.userId = +this.route.snapshot.paramMap.get('id')!;
+      this.getUserById(this.userId!); // Call the function only if userId is available
+      
+    }
   }
 
   getAllRoles() {

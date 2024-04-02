@@ -60,7 +60,7 @@ export class VehicleListComponent implements OnInit {
   vId!: Number
   region !: Region[];
   vehicleStatus: any;
-  selectedStatus = { name: 'TBA' };
+  selectedStatus = { name: 'All' };
 
   size: number = 10240000;
 
@@ -238,7 +238,7 @@ export class VehicleListComponent implements OnInit {
 
   setSelectedStatusAndGetAllVehicles() {
     const status = sessionStorage.getItem('selectedStatus');
-    this.selectedStatus.name = status ? status : "TBA";
+    this.selectedStatus.name = status ? status : "All";
     this.searchAllVehicles(this.selectedStatus.name);
   }
 

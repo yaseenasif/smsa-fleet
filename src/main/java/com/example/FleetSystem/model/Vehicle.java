@@ -3,14 +3,11 @@ package com.example.FleetSystem.model;
 import lombok.*;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
-import org.hibernate.envers.RelationTargetAuditMode;
 
 import javax.persistence.*;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
 
 import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 
@@ -81,18 +78,20 @@ public class Vehicle {
     private String vehicleStatus;
     private String replacementVehicleStatus;
     private String historyStatus;
+    private String replacementReason;
+    private String replacementRemarks;
+
     @NotAudited
     private LocalDateTime createdAt;
     @NotAudited
     private LocalDate updatedAt;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    private Vehicle replacementVehicle;
+
     @ManyToOne
     @NotAudited
     private Vendor vendor;
-
-    @Audited(targetAuditMode = NOT_AUDITED)
-    @OneToOne
-    private VehicleReplacement vehicleReplacement;
 
     @Audited(targetAuditMode = NOT_AUDITED)
     @ManyToOne

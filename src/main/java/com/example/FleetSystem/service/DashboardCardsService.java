@@ -3,9 +3,7 @@ package com.example.FleetSystem.service;
 import com.example.FleetSystem.dto.VehicleCountPerVendorDto;
 import com.example.FleetSystem.dto.VehiclePerRegionCountDto;
 import com.example.FleetSystem.model.Vehicle;
-//import com.example.FleetSystem.repository.DriverRepository;
 import com.example.FleetSystem.repository.VehicleAssignmentRepository;
-import com.example.FleetSystem.repository.VehicleReplacementRepository;
 import com.example.FleetSystem.repository.VehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,13 +18,6 @@ public class DashboardCardsService {
 
     @Autowired
     VehicleRepository vehicleRepository;
-
-//    @Autowired
-//    DriverRepository driverRepository;
-
-    @Autowired
-    VehicleReplacementRepository vehicleReplacementRepository;
-
     @Autowired
     VehicleAssignmentRepository vehicleAssignmentRepository;
 
@@ -46,8 +37,8 @@ public class DashboardCardsService {
 //        Long totalActiveDrivers = driverRepository.getActiveDriversCount();
 //        counts.put("totalActiveDrivers", totalActiveDrivers);
 
-        Long totalVehicleReplacement = vehicleReplacementRepository.getVehicleReplacementCount();
-        counts.put("totalVehicleReplacement", totalVehicleReplacement);
+//        Long totalVehicleReplacement = vehicleReplacementRepository.getVehicleReplacementCount();
+//        counts.put("totalVehicleReplacement", totalVehicleReplacement);
 
         List<Object[]> totalVehiclesPerRegion = vehicleAssignmentRepository.getActiveVehiclePerRegionCount();
         List<VehiclePerRegionCountDto> vehiclePerRegionCountDtoList = totalVehiclesPerRegion.stream()

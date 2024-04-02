@@ -61,14 +61,16 @@ public class VehicleService {
     StorageService storageService;
     @Autowired
     AuditService vehicleAssignmentAuditService;
-    @Autowired
-    VehicleReplacementRepository vehicleReplacementRepository;
+//    @Autowired
+//    VehicleReplacementRepository vehicleReplacementRepository;
     @Autowired
     ProductFieldRepository productFieldRepository;
     @Autowired
     ExcelExportService excelExportService;
     @Autowired
     RegionRepository regionRepository;
+    @Autowired
+    EmployeeRepository employeeRepository;
 
     @Transactional
     public VehicleDto finalReturnVehicleById(Long id, FinalReturnRequest finalReturnRequest) {
@@ -139,54 +141,53 @@ public class VehicleService {
 
                     vehicleAssignmentRepository.save(vehicleAssignment.get());
                 } else if (vehicle.get().getVehicleStatus().equals("Under Maintenance")) {
-                    List<Vehicle> vehicleReplacements = vehicleReplacementRepository.findReplacementByVehicle(vehicle.get());
-                    Vehicle replacementVehicle = vehicleReplacements.get(vehicleReplacements.size() - 1);
-                    Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByVehicleAndStatusIsTrue(replacementVehicle);
-                    if (replacingVehicle != null) {
-                        if (vehicleAssignment.isPresent()) {
+                    Optional<Vehicle> temporaryReplacement = vehicleRepository.findByReplacementVehicle(vehicle.get());
+                    if (temporaryReplacement.isPresent()) {
+                        Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByVehicleAndStatusIsTrue(temporaryReplacement.get());
+                        if (replacingVehicle != null) {
+                            if (vehicleAssignment.isPresent()) {
 
-                            replacingVehicle.setVehicleStatus("Active");
-                            vehicleRepository.save(replacingVehicle);
-                            VehicleAssignment vehicleAssignment1 = VehicleAssignment.builder()
-                                    .vehicle(replacingVehicle)
-                                    .createdBy(user)
-                                    .createdAt(LocalDate.now())
-                                    .status(Boolean.TRUE)
-                                    .build();
+                                replacingVehicle.setVehicleStatus("Active");
+                                vehicleRepository.save(replacingVehicle);
+                                VehicleAssignment vehicleAssignment1 = VehicleAssignment.builder()
+                                        .vehicle(replacingVehicle)
+                                        .createdBy(user)
+                                        .createdAt(LocalDate.now())
+                                        .status(Boolean.TRUE)
+                                        .build();
 
-                            if (finalReturnRequest.getChangedAssignment() != null) {
-                                vehicleAssignment1.setAssignToEmpId(finalReturnRequest.getChangedAssignment().getAssignToEmpId());
-                                vehicleAssignment1.setAssignToEmpName(finalReturnRequest.getChangedAssignment().getAssignToEmpName());
+                                if (finalReturnRequest.getChangedAssignment() != null) {
+                                    vehicleAssignment1.setAssignToEmpId(finalReturnRequest.getChangedAssignment().getAssignToEmpId());
+                                    vehicleAssignment1.setAssignToEmpName(finalReturnRequest.getChangedAssignment().getAssignToEmpName());
+                                } else {
+                                    vehicleAssignment1.setAssignToEmpId(vehicleAssignment.get().getAssignToEmpId());
+                                    vehicleAssignment1.setAssignToEmpName(vehicleAssignment.get().getAssignToEmpName());
+                                }
+
+                                vehicleAssignment.get().setAssignToEmpId(null);
+                                vehicleAssignment.get().setAssignToEmpName(null);
+                                vehicleAssignment.get().setStatus(Boolean.FALSE);
+                                vehicleAssignmentRepository.save(vehicleAssignment1);
+
                             } else {
-                                vehicleAssignment1.setAssignToEmpId(vehicleAssignment.get().getAssignToEmpId());
-                                vehicleAssignment1.setAssignToEmpName(vehicleAssignment.get().getAssignToEmpName());
+                                replacingVehicle.setVehicleStatus("TBA");
                             }
 
-                            vehicleAssignment.get().setAssignToEmpId(null);
-                            vehicleAssignment.get().setAssignToEmpName(null);
-                            vehicleAssignment.get().setStatus(Boolean.FALSE);
-                            vehicleAssignmentRepository.save(vehicleAssignment1);
+                            temporaryReplacement.get().setReplacementVehicleStatus("Returned Back");
+                            temporaryReplacement.get().setHistoryStatus("Returned Back");
+                            vehicleRepository.save(temporaryReplacement.get());
 
                         } else {
-                            replacingVehicle.setVehicleStatus("TBA");
+                            temporaryReplacement.get().setReplacementVehicleStatus(null);
+                            if (vehicleAssignment.isPresent()) {
+                                temporaryReplacement.get().setVehicleStatus("Active");
+                            } else {
+                                temporaryReplacement.get().setVehicleStatus("TBA");
+                            }
+                            vehicleRepository.save(temporaryReplacement.get());
                         }
-
-                        replacementVehicle.setReplacementVehicleStatus("Returned Back");
-                        replacementVehicle.setHistoryStatus("Returned Back");
-                        vehicleRepository.save(replacementVehicle);
-
-                    } else {
-                        replacementVehicle.setReplacementVehicleStatus(null);
-                        replacementVehicle.setVehicleReplacement(null);
-                        if (vehicleAssignment.isPresent()) {
-                            replacementVehicle.setVehicleStatus("Active");
-                        } else {
-                            replacementVehicle.setVehicleStatus("TBA");
-                        }
-                        vehicleRepository.save(replacementVehicle);
                     }
                 }
-
                 vehicle.get().setVehicleStatus("In-Active");
                 vehicle.get().setHistoryStatus("Final Returned");
                 return toDto(vehicleRepository.save(vehicle.get()));
@@ -733,8 +734,8 @@ public class VehicleService {
 
         List<AssignmentAuditDataWrapper> assignmentList = vehicleAssignmentAuditService.retrieveAssignmentAuditData(vehicle.get().getId());
 
-        List<Vehicle> vehicleReplacementList = vehicleReplacementRepository.findReplacementByVehicle(vehicle.get());
-        List<VehicleAuditDataWrapper> vehicleList = vehicleAssignmentAuditService.retrieveVehicleAuditData(id);
+       List<VehicleAuditDataWrapper> vehicleList = vehicleAssignmentAuditService.retrieveVehicleAuditData(id);
+       List<VehicleAuditDataWrapper> replacedVehicleList = vehicleAssignmentAuditService.retrieveReplacedVehicleAuditData(id);
 
         List<VehicleHistoryResponse> vehicleHistoryList = new ArrayList<>();
         vehicleHistoryList.add(new VehicleHistoryResponse("Creation", vehicle.get().getCreatedAt(), vehicle.get().getCreatedBy().getName(),
@@ -742,30 +743,50 @@ public class VehicleService {
 
         for (VehicleAuditDataWrapper vehicles : vehicleList) {
             VehicleHistoryResponse vehicleHistoryResponse = new VehicleHistoryResponse();
-            if (vehicles.getEntity().getHistoryStatus().equalsIgnoreCase("Final Returned")) {
+            if (vehicles.getEntity().getHistoryStatus() != null) {
+                if (vehicles.getEntity().getHistoryStatus().equalsIgnoreCase("Final Returned")) {
+                    vehicleHistoryResponse.setCreatedBy(vehicles.getEntity().getUpdatedBy().getName());
+                    vehicleHistoryResponse.setCreatedAt(vehicles.getRevisionTimeStamp());
+                    vehicleHistoryResponse.setType("Final Returned");
+                    vehicleHistoryList.add(vehicleHistoryResponse);
+                } else if (vehicles.getEntity().getHistoryStatus().equalsIgnoreCase("Marked Total Lost")) {
+                    vehicleHistoryResponse.setCreatedBy(vehicles.getEntity().getUpdatedBy().getName());
+                    vehicleHistoryResponse.setCreatedAt(vehicles.getRevisionTimeStamp());
+                    vehicleHistoryResponse.setType("Marked Total Lost");
+                    vehicleHistoryList.add(vehicleHistoryResponse);
+                } else if (vehicles.getEntity().getHistoryStatus().equalsIgnoreCase("Returned Back")) {
+                    vehicleHistoryResponse.setCreatedBy(vehicles.getEntity().getUpdatedBy().getName());
+                    vehicleHistoryResponse.setCreatedAt(vehicles.getRevisionTimeStamp());
+                    vehicleHistoryResponse.setType("Returned Back");
+                    vehicleHistoryList.add(vehicleHistoryResponse);
+                } else if (vehicles.getEntity().getHistoryStatus().equalsIgnoreCase("Set Permanent")) {
+                    vehicleHistoryResponse.setCreatedBy(vehicles.getEntity().getUpdatedBy().getName());
+                    vehicleHistoryResponse.setCreatedAt(vehicles.getRevisionTimeStamp());
+                    vehicleHistoryResponse.setType("Set Permanent");
+                    vehicleHistoryList.add(vehicleHistoryResponse);
+                } else if (vehicles.getEntity().getHistoryStatus().equalsIgnoreCase("Deleted")) {
+                    vehicleHistoryResponse.setCreatedBy(vehicles.getEntity().getUpdatedBy().getName());
+                    vehicleHistoryResponse.setCreatedAt(vehicles.getRevisionTimeStamp());
+                    vehicleHistoryResponse.setType("Vehicle Deleted");
+                    vehicleHistoryList.add(vehicleHistoryResponse);
+                }
+            }
+            if(vehicles.getEntity().getVehicleStatus().equalsIgnoreCase("Replacement")){
                 vehicleHistoryResponse.setCreatedBy(vehicles.getEntity().getUpdatedBy().getName());
                 vehicleHistoryResponse.setCreatedAt(vehicles.getRevisionTimeStamp());
-                vehicleHistoryResponse.setType("Final Returned");
+                vehicleHistoryResponse.setType("Temporary Replacement");
+                vehicleHistoryResponse.setPlateNumber(vehicles.getEntity().getReplacementVehicle().getPlateNumber());
                 vehicleHistoryList.add(vehicleHistoryResponse);
-            } else if (vehicles.getEntity().getHistoryStatus().equalsIgnoreCase("Marked Total Lost")) {
-                vehicleHistoryResponse.setCreatedBy(vehicles.getEntity().getUpdatedBy().getName());
-                vehicleHistoryResponse.setCreatedAt(vehicles.getRevisionTimeStamp());
-                vehicleHistoryResponse.setType("Marked Total Lost");
-                vehicleHistoryList.add(vehicleHistoryResponse);
-            } else if (vehicles.getEntity().getHistoryStatus().equalsIgnoreCase("Returned Back")) {
-                vehicleHistoryResponse.setCreatedBy(vehicles.getEntity().getUpdatedBy().getName());
-                vehicleHistoryResponse.setCreatedAt(vehicles.getRevisionTimeStamp());
-                vehicleHistoryResponse.setType("Returned Back");
-                vehicleHistoryList.add(vehicleHistoryResponse);
-            }else if (vehicles.getEntity().getHistoryStatus().equalsIgnoreCase("Set Permanent")){
-                vehicleHistoryResponse.setCreatedBy(vehicles.getEntity().getUpdatedBy().getName());
-                vehicleHistoryResponse.setCreatedAt(vehicles.getRevisionTimeStamp());
-                vehicleHistoryResponse.setType("Set Permanent");
-                vehicleHistoryList.add(vehicleHistoryResponse);
-            } else if (vehicles.getEntity().getHistoryStatus().equalsIgnoreCase("Deleted")) {
-                vehicleHistoryResponse.setCreatedBy(vehicles.getEntity().getUpdatedBy().getName());
-                vehicleHistoryResponse.setCreatedAt(vehicles.getRevisionTimeStamp());
-                vehicleHistoryResponse.setType("Vehicle Deleted");
+            }
+        }
+
+        if(!replacedVehicleList.isEmpty()){
+            for (VehicleAuditDataWrapper replacedVehicles: replacedVehicleList) {
+                VehicleHistoryResponse vehicleHistoryResponse = new VehicleHistoryResponse();
+                vehicleHistoryResponse.setCreatedBy(replacedVehicles.getEntity().getUpdatedBy().getName());
+                vehicleHistoryResponse.setCreatedAt(replacedVehicles.getRevisionTimeStamp());
+                vehicleHistoryResponse.setType("Replacement");
+                vehicleHistoryResponse.setPlateNumber(replacedVehicles.getEntity().getReplacementVehicle().getPlateNumber());
                 vehicleHistoryList.add(vehicleHistoryResponse);
             }
         }
@@ -790,15 +811,6 @@ public class VehicleService {
 
             vehicleHistoryList.add(vehicleHistoryResponse);
 
-        }
-
-        for (Vehicle replacement : vehicleReplacementList) {
-            VehicleHistoryResponse vehicleHistoryResponse = new VehicleHistoryResponse();
-            vehicleHistoryResponse.setType("Replacement");
-            vehicleHistoryResponse.setPlateNumber(replacement.getPlateNumber());
-            vehicleHistoryResponse.setCreatedAt(replacement.getVehicleReplacement().getReplacedAt());
-            vehicleHistoryResponse.setCreatedBy(replacement.getVehicleReplacement().getReplacedBy().getName());
-            vehicleHistoryList.add(vehicleHistoryResponse);
         }
 
         vehicleHistoryList.sort(Comparator.comparing(VehicleHistoryResponse::getCreatedAt));
@@ -828,10 +840,8 @@ public class VehicleService {
 
             if (replacementVehicle.isPresent()) {
                 replacementVehicle.get().setVehicleStatus("Deleted");
-                Optional<VehicleReplacement> vehicleReplacement = vehicleReplacementRepository.findById(replacementVehicle.get().getVehicleReplacement().getId());
-                if (vehicleReplacement.isPresent()) {
 
-                    Vehicle vehicle = vehicleReplacement.get().getVehicle();
+                    Vehicle vehicle = replacementVehicle.get().getReplacementVehicle();
 
                     Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByVehicleAndStatusIsTrue(replacementVehicle.get());
                     if (vehicleAssignment.isPresent()) {
@@ -870,20 +880,15 @@ public class VehicleService {
                 return toDto(vehicleRepository.save(replacementVehicle.get()));
 
             }
-        }
         throw new RuntimeException("Error Deleting Vehicle");
     }
 
     public VehicleDto findReplacementVehicleById(Long id) {
         Optional<Vehicle> vehicle = vehicleRepository.findById(id);
         if (vehicle.isPresent()) {
-            List<Vehicle> vehicleReplacements = vehicleReplacementRepository.findReplacementByVehicle(vehicle.get());
-
-            if (!vehicleReplacements.isEmpty()) {
-                Vehicle replacementVehicle = vehicleReplacements.get(vehicleReplacements.size() - 1);
-                return toDto(replacementVehicle);
-            }
-            return null;
+            return vehicleRepository.findByReplacementVehicle(vehicle.get())
+                    .map(this::toDto)
+                    .orElseThrow(() -> new RuntimeException(String.format("Replacement Vehicle not found by id => %d", id)));
         }
         throw new RuntimeException(String.format("vehicle not found By id => %d", id));
     }
@@ -895,7 +900,7 @@ public class VehicleService {
 
         if (replacementVehicle.isPresent()) {
             Optional<VehicleAssignment> currentAssignment = vehicleAssignmentRepository.findByVehicle(replacementVehicle.get());
-            Optional<Vehicle> originalVehicle = vehicleRepository.findById(replacementVehicle.get().getVehicleReplacement().getVehicle().getId());
+            Optional<Vehicle> originalVehicle = vehicleRepository.findById(replacementVehicle.get().getReplacementVehicle().getId());
 
             if (originalVehicle.isPresent()) {
                 if (principal instanceof UserDetails) {
@@ -927,7 +932,7 @@ public class VehicleService {
                             originalVehicle.get().setVehicleStatus("Active");
                             originalVehicle.get().setUpdatedBy(user);
                             originalVehicle.get().setUpdatedAt(LocalDate.now());
-                            replacementVehicle.get().setVehicleReplacement(null);
+//                            replacementVehicle.get().setVehicleReplacement(null);
                             replacementVehicle.get().setReplacementVehicleStatus("Returned Back");
                             replacementVehicle.get().setHistoryStatus("Returned Back");
                             vehicleAssignmentRepository.save(currentAssignment.get());
@@ -989,7 +994,6 @@ public class VehicleService {
 
                         case "Permanent":
                             replacementVehicle.get().setReplacementVehicleStatus(null);
-                            replacementVehicle.get().setVehicleReplacement(null);
                             replacementVehicle.get().setVehicleStatus("Active");
                             replacementVehicle.get().setHistoryStatus("Set Permanent");
                             break;
@@ -1017,118 +1021,188 @@ public class VehicleService {
                 return toDto(vehicleRepository.save(vehicle.get()));
             }
         }
-            throw new RuntimeException(String.format("Vehicle not found by id => %d", id));
+        throw new RuntimeException(String.format("Vehicle not found by id => %d", id));
     }
 
-        public List<VehicleDto> getAll () {
+    public List<VehicleDto> getAll() {
+        List<Vehicle> vehicles = vehicleRepository.findAll();
+        return toDtoList(vehicles);
+    }
+
+    private VehicleExcelDto toVehicleExcelDto(Vehicle vehicle) {
+        Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByVehicleAndStatusIsTrue(vehicle);
+        VehicleExcelDto vehicleExcelDto = modelMapper.map(vehicle, VehicleExcelDto.class);
+        vehicleExcelDto.setVendor(vehicle.getVendor().getVendorName());
+        if (vehicleAssignment.isPresent()) {
+            vehicleExcelDto.setAssignToEmployeeNo(vehicleAssignment.get().getAssignToEmpId().getEmployeeNumber());
+            vehicleExcelDto.setAssignToEmployeeName(vehicleAssignment.get().getAssignToEmpName());
+        }
+        if (vehicle.getReplacementVehicle() != null) {
+            vehicleExcelDto.setReplacementVehicle(vehicle.getReplacementVehicle().getPlateNumber());
+        }
+        return vehicleExcelDto;
+    }
+
+    private List<VehicleExcelDto> toVehicleExcelDtoList(List<Vehicle> vehicleList) {
+        return vehicleList.stream().map(this::toVehicleExcelDto).collect(Collectors.toList());
+    }
+
+    public byte[] downloadExcel(List<VehicleDto> vehicleDtoList) {
+        List<VehicleExcelDto> vehicleExcelDtoList;
+
+        if (vehicleDtoList != null && !vehicleDtoList.isEmpty()) {
+            List<Vehicle> vehiclesList = vehicleDtoList.stream()
+                    .map(this::toEntity)
+                    .collect(Collectors.toList());
+            vehicleExcelDtoList = toVehicleExcelDtoList(vehiclesList);
+        } else {
             List<Vehicle> vehicles = vehicleRepository.findAll();
-            return toDtoList(vehicles);
+            vehicleExcelDtoList = toVehicleExcelDtoList(vehicles);
         }
-
-        private VehicleExcelDto toVehicleExcelDto (Vehicle vehicle){
-            Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByVehicleAndStatusIsTrue(vehicle);
-            VehicleExcelDto vehicleExcelDto = modelMapper.map(vehicle, VehicleExcelDto.class);
-            vehicleExcelDto.setVendor(vehicle.getVendor().getVendorName());
-            if (vehicleAssignment.isPresent()) {
-                vehicleExcelDto.setAssignToEmployeeNo(vehicleAssignment.get().getAssignToEmpId().getEmployeeNumber());
-                vehicleExcelDto.setAssignToEmployeeName(vehicleAssignment.get().getAssignToEmpName());
-            }
-            if (vehicle.getVehicleReplacement() != null) {
-                vehicleExcelDto.setReplacementVehicle(vehicle.getVehicleReplacement().getVehicle().getPlateNumber());
-            }
-            return vehicleExcelDto;
-        }
-
-        private List<VehicleExcelDto> toVehicleExcelDtoList (List < Vehicle > vehicleList) {
-            return vehicleList.stream().map(this::toVehicleExcelDto).collect(Collectors.toList());
-        }
-
-        public byte[] downloadExcel (List < VehicleDto > vehicleDtoList) {
-            List<VehicleExcelDto> vehicleExcelDtoList;
-
-            if (vehicleDtoList != null && !vehicleDtoList.isEmpty()) {
-                List<Vehicle> vehiclesList = vehicleDtoList.stream()
-                        .map(this::toEntity)
-                        .collect(Collectors.toList());
-                vehicleExcelDtoList = toVehicleExcelDtoList(vehiclesList);
-            } else {
-                List<Vehicle> vehicles = vehicleRepository.findAll();
-                vehicleExcelDtoList = toVehicleExcelDtoList(vehicles);
-            }
-            return excelExportService.exportToExcel(vehicleExcelDtoList);
-        }
-
-
-        public Page<VehicleDto> searchVehicleByVendor (VehicleSearchCriteria vehicleSearchCriteria,int page, int size){
-            Pageable pageable = PageRequest.of(page, size);
-            Specification<Vehicle> vehicleSpecification = VehicleSpecification.getVehicleSearchSpecificationByVendor(vehicleSearchCriteria);
-            Page<Vehicle> vehiclePage = vehicleRepository.findAll(vehicleSpecification, pageable);
-            return vehiclePage.map(this::toDto);
-        }
-
-        public Page<VehicleDto> searchVehicleByRegion (VehicleSearchCriteria vehicleSearchCriteria,int page, int size){
-            Pageable pageable = PageRequest.of(page, size);
-            Specification<Vehicle> vehicleSpecification = VehicleSpecification.getVehicleSearchSpecificationByRegion(vehicleSearchCriteria);
-            Page<Vehicle> vehiclePage = vehicleRepository.findAll(vehicleSpecification, pageable);
-            return vehiclePage.map(this::toDto);
-        }
-
-        public Page<VehicleDto> searchVehicleByUsageType (VehicleSearchCriteria vehicleSearchCriteria,int page, int size)
-        {
-            Pageable pageable = PageRequest.of(page, size);
-            Specification<Vehicle> vehicleSpecification = VehicleSpecification.getVehicleSearchSpecificationByUsageType(vehicleSearchCriteria);
-            Page<Vehicle> vehiclePage = vehicleRepository.findAll(vehicleSpecification, pageable);
-            return vehiclePage.map(this::toDto);
-        }
-
-        public Page<VehicleDto> searchVehicleByLeaseExpiry (Date leaseStartDate, Date leaseExpiryDate,int page, int size)
-        {
-            Pageable pageable = PageRequest.of(page, size);
-            VehicleSearchCriteria vehicleSearchCriteria = new VehicleSearchCriteria();
-            Specification<Vehicle> vehicleSpecification = VehicleSpecification.getVehicleSearchSpecificationByLeaseExpiry(vehicleSearchCriteria, leaseStartDate, leaseExpiryDate);
-            Page<Vehicle> vehiclePage = vehicleRepository.findAll(vehicleSpecification, pageable);
-            return vehiclePage.map(this::toDto);
-        }
-
-
-        public List<Vehicle> getVehicleBySearch (VehicleDto vehicleDto, String stringifyPoNumbers){
-            Vehicle vehicle = toEntity(vehicleDto);
-            Specification<Vehicle> vehicleSpecification = VehicleSpecification.getWithDynamicSearchSpecification(vehicle, stringifyPoNumbers);
-            return vehicleRepository.findAll(vehicleSpecification);
-        }
-
-        public VehicleDto deleteVehicleById (Long id){
-            Optional<Vehicle> vehicle = vehicleRepository.findById(id);
-            if (vehicle.isPresent()) {
-                Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-                if (principal instanceof UserDetails) {
-                    String username = ((UserDetails) principal).getUsername();
-                    User user = userRepository.findByEmployeeIdAndStatusIsTrue(username);
-
-                    vehicle.get().setVehicleStatus("Deleted");
-                    vehicle.get().setUpdatedAt(LocalDate.now());
-                    vehicle.get().setUpdatedBy(user);
-
-                    return toDto(vehicleRepository.save(vehicle.get()));
-                }
-            }
-            throw new RuntimeException(String.format("Vehicle not found by id => %d", id));
-        }
-
-        public List<Map<String, String>> findAllDistinctPoNumbers () {
-            List<String> poNumbers = vehicleRepository.findDistinctByProcessOrderNumberNotNull();
-            List<Map<String, String>> result = new ArrayList<>();
-
-            for (String poNumber : poNumbers) {
-                if (poNumber != null) {
-                    Map<String, String> obj = new HashMap<>();
-                    obj.put("poNumber", poNumber);
-                    result.add(obj);
-                }
-            }
-
-            return result;
-        }
+        return excelExportService.exportToExcel(vehicleExcelDtoList);
     }
+
+
+    public Page<VehicleDto> searchVehicleByVendor(VehicleSearchCriteria vehicleSearchCriteria, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<Vehicle> vehicleSpecification = VehicleSpecification.getVehicleSearchSpecificationByVendor(vehicleSearchCriteria);
+        Page<Vehicle> vehiclePage = vehicleRepository.findAll(vehicleSpecification, pageable);
+        return vehiclePage.map(this::toDto);
+    }
+
+    public Page<VehicleDto> searchVehicleByRegion(VehicleSearchCriteria vehicleSearchCriteria, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<Vehicle> vehicleSpecification = VehicleSpecification.getVehicleSearchSpecificationByRegion(vehicleSearchCriteria);
+        Page<Vehicle> vehiclePage = vehicleRepository.findAll(vehicleSpecification, pageable);
+        return vehiclePage.map(this::toDto);
+    }
+
+    public Page<VehicleDto> searchVehicleByUsageType(VehicleSearchCriteria vehicleSearchCriteria, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<Vehicle> vehicleSpecification = VehicleSpecification.getVehicleSearchSpecificationByUsageType(vehicleSearchCriteria);
+        Page<Vehicle> vehiclePage = vehicleRepository.findAll(vehicleSpecification, pageable);
+        return vehiclePage.map(this::toDto);
+    }
+
+    public Page<VehicleDto> searchVehicleByLeaseExpiry(Date leaseStartDate, Date leaseExpiryDate, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        VehicleSearchCriteria vehicleSearchCriteria = new VehicleSearchCriteria();
+        Specification<Vehicle> vehicleSpecification = VehicleSpecification.getVehicleSearchSpecificationByLeaseExpiry(vehicleSearchCriteria, leaseStartDate, leaseExpiryDate);
+        Page<Vehicle> vehiclePage = vehicleRepository.findAll(vehicleSpecification, pageable);
+        return vehiclePage.map(this::toDto);
+    }
+
+
+    public List<Vehicle> getVehicleBySearch(VehicleDto vehicleDto, String stringifyPoNumbers) {
+        Vehicle vehicle = toEntity(vehicleDto);
+        Specification<Vehicle> vehicleSpecification = VehicleSpecification.getWithDynamicSearchSpecification(vehicle, stringifyPoNumbers);
+        return vehicleRepository.findAll(vehicleSpecification);
+    }
+
+    public VehicleDto deleteVehicleById(Long id) {
+        Optional<Vehicle> vehicle = vehicleRepository.findById(id);
+        if (vehicle.isPresent()) {
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+            if (principal instanceof UserDetails) {
+                String username = ((UserDetails) principal).getUsername();
+                User user = userRepository.findByEmployeeIdAndStatusIsTrue(username);
+
+                vehicle.get().setVehicleStatus("Deleted");
+                vehicle.get().setUpdatedAt(LocalDate.now());
+                vehicle.get().setUpdatedBy(user);
+
+                return toDto(vehicleRepository.save(vehicle.get()));
+            }
+        }
+        throw new RuntimeException(String.format("Vehicle not found by id => %d", id));
+    }
+
+    public List<Map<String, String>> findAllDistinctPoNumbers() {
+        List<String> poNumbers = vehicleRepository.findDistinctByProcessOrderNumberNotNull();
+        List<Map<String, String>> result = new ArrayList<>();
+
+        for (String poNumber : poNumbers) {
+            if (poNumber != null) {
+                Map<String, String> obj = new HashMap<>();
+                obj.put("poNumber", poNumber);
+                result.add(obj);
+            }
+        }
+
+        return result;
+    }
+
+    @Transactional
+    public VehicleDto replaceVehicleById(Long id, ReplacementRequest replacementRequest) {
+        Optional<Vehicle> existingVehicle = vehicleRepository.findById(id);
+
+        if (existingVehicle.isPresent()) {
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (principal instanceof UserDetails) {
+                String username = ((UserDetails) principal).getUsername();
+                User user = userRepository.findByEmployeeIdAndStatusIsTrue(username);
+
+                Vehicle replacingVehicle = replacementRequest.getReplacementVehicle();
+                replacingVehicle.setCreatedBy(user);
+                replacingVehicle.setCreatedAt(LocalDateTime.now());
+
+                Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByVehicleAndStatusIsTrue(existingVehicle.get());
+                if(vehicleAssignment.isPresent()) {
+                    replacingVehicle.setReplacementVehicleStatus("Assigned");
+                    vehicleRepository.save(replacingVehicle);
+                    VehicleAssignment vehicleAssignment1 = VehicleAssignment.builder()
+                            .vehicle(replacingVehicle)
+                            .createdBy(user)
+                            .createdAt(LocalDate.now())
+                            .status(Boolean.TRUE)
+                            .build();
+
+                    if (replacementRequest.getChangeAssignedEmployee() == null){
+                    vehicleAssignment1.setAssignToEmpId(vehicleAssignment.get().getAssignToEmpId());
+                    vehicleAssignment1.setAssignToEmpName(vehicleAssignment.get().getAssignToEmpName());
+
+                    }else{
+                        Optional<Employee> employee = employeeRepository.findByEmployeeNumber(replacementRequest.getChangeAssignedEmployee().getEmployeeNumber());
+                        vehicleAssignment1.setAssignToEmpId(employee.get());
+                        vehicleAssignment1.setAssignToEmpName(employee.get().getEmpName());
+                    }
+
+                    vehicleAssignmentRepository.save(vehicleAssignment1);
+
+                    vehicleAssignment.get().setStatus(Boolean.FALSE);
+                    vehicleAssignment.get().setDeletedAt(LocalDate.now());
+                    vehicleAssignment.get().setDeletedBy(user);
+                    vehicleAssignment.get().setAssignToEmpId(null);
+                    vehicleAssignment.get().setAssignToEmpName(null);
+
+                    vehicleAssignmentRepository.save(vehicleAssignment.get());
+
+                }else replacingVehicle.setReplacementVehicleStatus("Unassigned");
+
+                replacingVehicle.setReplaceLeaseCost(existingVehicle.get().getLeaseCost() - replacingVehicle.getLeaseCost());
+
+                if (replacementRequest.getReplacementVehicle().getReplacementReason().equalsIgnoreCase("Under Maintenance")) {
+                    existingVehicle.get().setVehicleStatus("Under Maintenance");
+                } else if (replacementRequest.getReplacementVehicle().getReplacementReason().equalsIgnoreCase("TBA")) {
+                    existingVehicle.get().setVehicleStatus("TBA");
+                }else if(replacementRequest.getReplacementVehicle().getReplacementReason().equalsIgnoreCase("Total Lost")){
+                    existingVehicle.get().setVehicleStatus("In-Active");
+                }
+
+                replacingVehicle.setVehicleStatus("Replacement");
+                replacingVehicle.setReplacementVehicle(existingVehicle.get());
+                replacingVehicle.setUpdatedBy(user);
+                replacingVehicle.setUpdatedAt(LocalDate.now());
+                existingVehicle.get().setUpdatedAt(LocalDate.now());
+                existingVehicle.get().setUpdatedBy(user);
+
+                vehicleRepository.save(existingVehicle.get());
+                vehicleRepository.save(replacingVehicle);
+                return toDto(replacingVehicle);
+            }
+        }
+        throw new RuntimeException("Vehicle not found by Id "+id);
+    }
+}
 

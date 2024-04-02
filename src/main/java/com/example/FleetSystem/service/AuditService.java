@@ -51,7 +51,7 @@ public class AuditService {
         AuditReader auditReader = AuditReaderFactory.get(entityManager);
 
         List<Object[]> revisions = auditReader.createQuery()
-                .forRevisionsOfEntity(VehicleAssignment.class, false, true)
+                .forRevisionsOfEntity(Vehicle.class, false, true)
                 .add(AuditEntity.id().eq(vehicleId))
                 .getResultList();
 
@@ -63,6 +63,28 @@ public class AuditService {
             LocalDateTime revisionTimestamp = getLocalDateTimeFromRevisionEntity(revisionEntity);
 
             VehicleAuditDataWrapper wrapper = new VehicleAuditDataWrapper(entity, revisionType,revisionTimestamp);
+            auditDataList.add(wrapper);
+        }
+
+        return auditDataList;
+    }
+
+    public List<VehicleAuditDataWrapper> retrieveReplacedVehicleAuditData(Long vehicleId) {
+        AuditReader auditReader = AuditReaderFactory.get(entityManager);
+
+        List<Object[]> revisions = auditReader.createQuery()
+                .forRevisionsOfEntity(Vehicle.class, false, true)
+                .add(AuditEntity.relatedId("replacementVehicle").eq(vehicleId))
+                .getResultList();
+
+        List<VehicleAuditDataWrapper> auditDataList = new ArrayList<>();
+        for (Object[] revision : revisions) {
+            Vehicle entity = (Vehicle) revision[0];
+            DefaultRevisionEntity revisionEntity = (DefaultRevisionEntity) revision[1];
+            RevisionType revisionType = (RevisionType) revision[2];
+            LocalDateTime revisionTimestamp = getLocalDateTimeFromRevisionEntity(revisionEntity);
+
+            VehicleAuditDataWrapper wrapper = new VehicleAuditDataWrapper(entity, revisionType, revisionTimestamp);
             auditDataList.add(wrapper);
         }
 

@@ -61,7 +61,10 @@ export class UpdateVehicleComponent implements OnInit {
     replacementVehicleStatus: undefined,
     registrationStatus: undefined,
     insuranceStatus: undefined,
-    replacementDate: undefined
+    replacementDate: undefined,
+    replacementReason:  undefined,
+    replacementRemarks:  undefined,
+    replacementVehicle:  undefined
   };
 
   dummyData: any = [

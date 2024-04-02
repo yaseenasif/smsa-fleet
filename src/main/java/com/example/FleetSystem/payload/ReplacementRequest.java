@@ -1,7 +1,7 @@
 package com.example.FleetSystem.payload;
 
-import com.example.FleetSystem.dto.VehicleAssignmentDto;
-import com.example.FleetSystem.dto.VehicleReplacementDto;
+import com.example.FleetSystem.model.Employee;
+import com.example.FleetSystem.model.Vehicle;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ReplacementRequest {
 
-    private VehicleReplacementDto replacement;
-    private VehicleAssignmentDto assignment;
+    private Vehicle replacementVehicle;
+    private Employee changeAssignedEmployee;
 }

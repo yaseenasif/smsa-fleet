@@ -1,7 +1,5 @@
 package com.example.FleetSystem.dto;
 
-import com.example.FleetSystem.model.VehicleReplacement;
-import com.example.FleetSystem.model.Vendor;
 import lombok.*;
 
 import java.sql.Date;

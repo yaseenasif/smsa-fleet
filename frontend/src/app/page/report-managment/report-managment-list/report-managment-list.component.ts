@@ -77,7 +77,10 @@ export class ReportManagmentListComponent implements OnInit {
     vehicleReplacement: undefined,
     replacementVehicleStatus: undefined,
     registrationStatus: undefined,
-    insuranceStatus: undefined
+    insuranceStatus: undefined,
+    replacementReason:  undefined,
+    replacementRemarks:  undefined,
+    replacementVehicle:  undefined
   }
   oneIsSelected: boolean | undefined;
   poNumberList: { poNumber: string }[] = [];
@@ -270,7 +273,10 @@ export class ReportManagmentListComponent implements OnInit {
       vehicleReplacement: undefined,
       replacementVehicleStatus: undefined,
       registrationStatus: undefined,
-      insuranceStatus: undefined
+      insuranceStatus: undefined,
+      replacementReason:  undefined,
+      replacementRemarks:  undefined,
+      replacementVehicle:  undefined
     }
     this.getAllVehicles();
   }

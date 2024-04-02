@@ -37,5 +37,7 @@ export interface Vehicle {
     registrationStatus: Boolean | null | undefined
     insuranceStatus: Boolean | null | undefined
     replacementDate: Date | null | undefined
-
+    replacementReason: String | null | undefined
+    replacementRemarks: String | null | undefined
+    replacementVehicle: Vehicle | null | undefined
 }

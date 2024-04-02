@@ -5,10 +5,7 @@ import com.example.FleetSystem.dto.VehicleAssignmentDto;
 import com.example.FleetSystem.dto.EmployeeDto;
 import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.model.Vehicle;
-import com.example.FleetSystem.payload.FinalReturnRequest;
-import com.example.FleetSystem.payload.ReplacementActionRequest;
-import com.example.FleetSystem.payload.ResponseMessage;
-import com.example.FleetSystem.payload.VehicleHistoryResponse;
+import com.example.FleetSystem.payload.*;
 import com.example.FleetSystem.service.ExcelExportService;
 import com.example.FleetSystem.service.StorageService;
 import com.example.FleetSystem.service.VehicleService;
@@ -257,5 +254,11 @@ public class VehicleController {
     @GetMapping("/distinct-values")
     public ResponseEntity<List<Map<String, String>>> getAllDistinctPoNumbers() {
         return ResponseEntity.ok(vehicleService.findAllDistinctPoNumbers());
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PatchMapping("/replace-vehicle/{id}")
+    public ResponseEntity<VehicleDto> replaceVehicleById(@PathVariable Long id , @RequestBody ReplacementRequest replacementRequest){
+        return ResponseEntity.ok(vehicleService.replaceVehicleById(id,replacementRequest));
     }
 }

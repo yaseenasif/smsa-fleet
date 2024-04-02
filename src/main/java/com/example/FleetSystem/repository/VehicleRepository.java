@@ -23,7 +23,7 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long>, JpaSpec
     List<Vehicle> getNotAssignedVehicle();
 
     @Query("select v from Vehicle v\n" +
-            "WHERE v.vehicleReplacement IS NULL AND v.vehicleStatus='TBA'")
+            "WHERE v.replacementVehicle IS NULL AND v.vehicleStatus='TBA'")
     List<Vehicle> availableForReplacement();
 
     @Query("SELECT COUNT(v) AS total_vehicles FROM Vehicle v WHERE v.vehicleStatus = 'TBA' OR v.vehicleStatus = 'Active' OR v.vehicleStatus = 'Under Maintenance'")
@@ -48,4 +48,6 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long>, JpaSpec
     Optional<Vehicle> getEligibleVehicle(String plateNumber);
     @Query("SELECT DISTINCT v.processOrderNumber FROM Vehicle v")
     List<String> findDistinctByProcessOrderNumberNotNull();
+
+    Optional<Vehicle> findByReplacementVehicle(Vehicle vehicle);
 }

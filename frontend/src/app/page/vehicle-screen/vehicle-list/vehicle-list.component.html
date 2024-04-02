@@ -421,8 +421,8 @@
                     class="text-center"
                   >
                     {{
-                      vehicles.vehicleReplacement
-                        ? vehicles.vehicleReplacement.vehicle.plateNumber
+                      vehicles.replacementVehicle
+                        ? vehicles.replacementVehicle.plateNumber
                         : "-----"
                     }}
                   </td>
@@ -540,7 +540,7 @@
                         !unAssignedVehicleTab &&
                         (selectedStatus.name === 'TBA' ||
                           selectedStatus.name === 'Active') &&
-                          permissions && permissions.includes('ReplacesVehicle')
+                          permissions && permissions.includes('ReplaceVehicles')
                       "
                       (click)="replaceVehicle(vehicles.id)"
                       pTooltip="Replace Vehicle"

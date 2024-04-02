@@ -147,10 +147,10 @@ nav.main-menu li.active>a,
 
 
 .main-menu:hover .sidebar-list-hover:hover {
-    background-color: #4d0fa3;
+  
     display: -webkit-inline-box;
     cursor: pointer;
-    color: rgb(255, 255, 255);
+  
 }
 
 .sidebar-head {
@@ -169,3 +169,7 @@ nav.main-menu li.active>a,
 padding-left:10px;
 }
 
+.sidebar-list-hover:hover{
+    color: white;
+    background-color: #FC671A!important;
+}

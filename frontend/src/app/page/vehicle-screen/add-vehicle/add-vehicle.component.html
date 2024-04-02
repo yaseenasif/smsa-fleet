@@ -652,7 +652,7 @@
                     <label htmlFor="name">Reason For Replacement</label>
                     <p-dropdown
                       class="w-full"
-                      [(ngModel)]="replacementRequest.replacement!.reason"
+                      [(ngModel)]="vehicle.replacementReason"
                       [options]="reasons"
                       name="reason"
                       #reason="ngModel"
@@ -682,7 +682,7 @@
                       id="name"
                       aria-describedby="name-help"
                       name="remarks"
-                      [(ngModel)]="replacementRequest.replacement!.remarks"
+                      [(ngModel)]="vehicle.replacementRemarks"
                       #remarks="ngModel"
                       required
                     />

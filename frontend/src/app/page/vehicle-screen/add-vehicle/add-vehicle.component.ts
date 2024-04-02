@@ -139,7 +139,10 @@ export class AddVehicleComponent implements OnInit {
     replacementVehicleStatus: undefined,
     registrationStatus: undefined,
     insuranceStatus: undefined,
-    replacementDate: undefined
+    replacementDate: undefined,
+    replacementReason:  undefined,
+    replacementRemarks:  undefined,
+    replacementVehicle:  undefined
   };
 
   usageTypes: ProductField | null | undefined;
@@ -153,75 +156,79 @@ export class AddVehicleComponent implements OnInit {
   ];
 
   replacementRequest: ReplacementRequest = {
-    replacement: {
+    replacementVehicle: {
       id: undefined,
-      reason: undefined,
-      remarks: undefined,
-      vehicle: undefined
-    },
-    assignment: {
-      id: undefined,
-    assignToEmpName:  undefined,
-    assignToEmpId: {
-        id:undefined,
-    empName: undefined,
-    employeeNumber:undefined,
-    budgetRef: undefined,
-    gender: undefined,
-    maritalStatus: undefined,
-    dateOfBirth:undefined,
-    joiningDate:undefined,
-    jobTitle: undefined,
-    status: undefined,
-    region: undefined,
-    organization: undefined,
-    division: undefined,
-    deptCode: undefined,
-    department: undefined,
-    contactNumber: undefined,
-    section: undefined,
-    nationalIdNumber:undefined,
-    svEmployeeNumber: undefined,
-    svEmployeeName: undefined,
-    location: undefined,
-    country: undefined,
-    nationality: undefined,
-    companyEmailAddress: undefined,
-    grade: undefined,
-    licenseNumber:  undefined,
-    vehicleBudget: undefined,
-    costCentre: undefined,
-                },
-    vehicle: {
-        id: undefined,
-        processOrderNumber: undefined,
-        plateNumber: undefined,
-        make: undefined,
-        year: undefined,
-        design: undefined,
-        model: undefined,
-        type: undefined,
-        capacity: undefined,
-        power: undefined,
-        registrationExpiry: undefined,
-        fuelType: undefined,
-        vendor: {
+      processOrderNumber: undefined,
+      plateNumber: undefined,
+      make: undefined,
+      year: undefined,
+      design: undefined,
+      model: undefined,
+      type: undefined,
+      capacity: undefined,
+      power: undefined,
+      region: undefined,
+      country: undefined,
+      location: undefined,
+      registrationExpiry: undefined,
+      fuelType: undefined,
+       vendor:
+       {
           id: undefined,
           vendorName: undefined,
           officeLocation: undefined,
-          attachments: undefined,
-        },
-        insuranceExpiry: undefined,
-        leaseCost: undefined,
-        leaseStartDate: undefined,
-        leaseExpiryDate: undefined,
-        usageType: undefined,
-        category: undefined,
-        replacementDate: undefined,
-        replaceLeaseCost: undefined,
-        vehicleStatus: undefined
+          attachments: undefined
+      },
+      insuranceExpiry: undefined,
+      leaseCost: undefined,
+      replaceLeaseCost: undefined,
+      leaseStartDate: undefined,
+      leaseExpiryDate: undefined,
+      usageType: undefined,
+      category: undefined,
+      vehicleReplacement: undefined,
+      vehicleStatus: undefined,
+      replacementVehicleStatus: undefined,
+      registrationStatus: undefined,
+      insuranceStatus: undefined,
+      replacementDate: undefined,
+      replacementReason: undefined,
+      replacementRemarks: undefined,
+      replacementVehicle: undefined
+      },
+      changeAssignedEmployee: {
+        id: undefined,
+        employeeNumber: undefined,
+        empName: undefined,
+        svEmployeeNumber: undefined,
+        svEmployeeName: undefined,
+        nationalIdNumber: undefined,
+        jobTitle: undefined,
+        joiningDate: undefined,
+        dateOfBirth: undefined,
+        department: undefined,
+        deptCode: undefined,
+        division: undefined,
+        fleetClassification: undefined,
+        vehicleEligible: undefined,
+        organization: undefined,
+        section: undefined,
+        gender: undefined,
+        maritalStatus: undefined,
+        region: undefined,
+        location: undefined,
+        country: undefined,
+        nationality: undefined,
+        contactNumber: undefined,
+        companyEmailAddress: undefined,
+        grade: undefined,
+        licenseNumber: undefined,
+        vehicleBudget: undefined,
+        costCentre: undefined,
+        budgetRef: undefined,
+        status: undefined
+
       }
-    }
   }
 
   visible: boolean = false;
@@ -313,7 +320,7 @@ export class AddVehicleComponent implements OnInit {
   onSubmit() {
 
     if (this.replacementCheck) {
-      this.replacementRequest.replacement!.vehicle = this.vehicle
+      this.replacementRequest.replacementVehicle = this.vehicle
       this.vehicleService.replaceVehicle(this.vId, this.replacementRequest).subscribe(res => {
         this.messageService.add({ severity: 'success', summary: 'Vehicle Replaced', detail: 'Vehicle is successfully replaced' });
         this.router.navigate(['/vehicle'])
@@ -407,10 +414,8 @@ export class AddVehicleComponent implements OnInit {
 
   replaceVehicleWithAssignment() {
     if (this.replacementCheck) {
-      this.replacementRequest.assignment!.assignToEmpId = this.selectedUnassignedEmployee
-      this.replacementRequest.assignment!.assignToEmpName = this.empName
-      this.replacementRequest.assignment!.vehicle = this.vehicle
-      this.replacementRequest.replacement!.vehicle = this.vehicle
+      this.replacementRequest.changeAssignedEmployee = this.selectedUnassignedEmployee
+      this.replacementRequest.replacementVehicle = this.vehicle
 
       this.vehicleService.replaceVehicle(this.vId, this.replacementRequest).subscribe(res => {
         this.messageService.add({ severity: 'success', summary: 'Vehicle Replaced', detail: 'Vehicle is successfully replaced' });
@@ -447,8 +452,8 @@ export class AddVehicleComponent implements OnInit {
   replaceVehicleWithoutAssignment() {
 
     if (this.replacementCheck) {
-      this.replacementRequest.assignment = null
-      this.replacementRequest.replacement!.vehicle = this.vehicle
+      this.replacementRequest.changeAssignedEmployee = null
+      this.replacementRequest.replacementVehicle = this.vehicle
 
       this.vehicleService.replaceVehicle(this.vId, this.replacementRequest).subscribe(res => {
         this.messageService.add({ severity: 'success', summary: 'Vehicle Replaced', detail: 'Vehicle is successfully replaced' });
