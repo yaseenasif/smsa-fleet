@@ -16,9 +16,13 @@ export class ReportManagmentService {
     private http: HttpClient
   ) { }
 
-  searchVehiclesWithDynamicValues(vehicleInterFace: Vehicle, stringifyPoNumbers?: string): Observable<Vehicle[]> {
+  searchVehiclesWithDynamicValues(vehicleInterFace: Vehicle, stringifyPoNumbers?: string,
+    value?: number | null, query?: { page: number, size: number }): Observable<PaginatedResponse<Vehicle>> {
     const params = new HttpParams().set('stringifyPoNumbers', stringifyPoNumbers ? stringifyPoNumbers : '');
-    return this.http.post<Vehicle[]>(`${this.url}/dynamic-search`, vehicleInterFace, { params });
+    if (value) {
+      query = { page: 0, size: 10 };
+    }
+    return this.http.post<PaginatedResponse<Vehicle>>(`${this.url}/dynamic-search`, vehicleInterFace, { params });
   }
 
 

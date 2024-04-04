@@ -42,6 +42,7 @@ export class ReportManagmentListComponent implements OnInit {
     page: 0,
     size: 7,
   };
+  totalRecords: number = 0;
 
   vehicle: Vehicle = {
     id: undefined,
@@ -221,14 +222,21 @@ export class ReportManagmentListComponent implements OnInit {
   dynamicSearch() {
     const selectedPoNumberString: string = this.selectedPoNumber as string;
     this.reportManagmentService.searchVehiclesWithDynamicValues(this.vehicle, selectedPoNumberString).subscribe(
-      (res: Vehicle[]) => {
-        this.vehicles = res;
+      (res: PaginatedResponse<Vehicle>) => {
+        this.vehicles = res.content;
+        this.query = { page: res.pageable.pageNumber, size: res.size }
+        this.totalRecords = res.totalElements;
       },
       (error: BackenCommonErrorThrow) => {
         this.errorService.showError(error.error!);
       });
   }
 
+  onPageChange(event?: any) {
+    this.query.page = event.page;
+    this.query.size = event.rows;
+    this.dynamicSearch();
+  }
 
   clear() {
     this.leaseStartDate = undefined;

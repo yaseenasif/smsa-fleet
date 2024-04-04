@@ -240,8 +240,10 @@ public class VehicleController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
     @PostMapping("/dynamic-search")
-    public ResponseEntity<List<Vehicle>> search(@RequestBody VehicleDto vehicleDto, @RequestParam String stringifyPoNumbers) {
-        return ResponseEntity.ok(vehicleService.getVehicleBySearch(vehicleDto, stringifyPoNumbers));
+    public ResponseEntity<Page<Vehicle>> search(@RequestBody VehicleDto vehicleDto, @RequestParam String stringifyPoNumbers,
+                                                @RequestParam(defaultValue = "0") int page,
+                                                @RequestParam(defaultValue = "7") int size) {
+        return ResponseEntity.ok(vehicleService.getVehicleBySearch(vehicleDto, stringifyPoNumbers,page,size));
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")

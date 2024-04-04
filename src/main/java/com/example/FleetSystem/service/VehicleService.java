@@ -1093,10 +1093,12 @@ public class VehicleService {
     }
 
 
-    public List<Vehicle> getVehicleBySearch(VehicleDto vehicleDto, String stringifyPoNumbers) {
+    public Page<Vehicle> getVehicleBySearch(VehicleDto vehicleDto, String stringifyPoNumbers, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
         Vehicle vehicle = toEntity(vehicleDto);
         Specification<Vehicle> vehicleSpecification = VehicleSpecification.getWithDynamicSearchSpecification(vehicle, stringifyPoNumbers);
-        return vehicleRepository.findAll(vehicleSpecification);
+        Page<Vehicle> vehiclePage = vehicleRepository.findAll(vehicleSpecification, pageable);
+        return vehiclePage;
     }
 
     public VehicleDto deleteVehicleById(Long id) {
