@@ -772,21 +772,23 @@ public class VehicleService {
                 }
             }
             if(vehicles.getEntity().getVehicleStatus().equalsIgnoreCase("Replacement")){
+                Optional<Vehicle> replacementVehicle = vehicleRepository.findById(vehicles.getEntity().getReplacementVehicle().getId());
                 vehicleHistoryResponse.setCreatedBy(vehicles.getEntity().getUpdatedBy().getName());
                 vehicleHistoryResponse.setCreatedAt(vehicles.getRevisionTimeStamp());
                 vehicleHistoryResponse.setType("Temporary Replacement");
-                vehicleHistoryResponse.setPlateNumber(vehicles.getEntity().getReplacementVehicle().getPlateNumber());
+                vehicleHistoryResponse.setPlateNumber(replacementVehicle.get().getPlateNumber());
                 vehicleHistoryList.add(vehicleHistoryResponse);
             }
         }
 
         if(!replacedVehicleList.isEmpty()){
             for (VehicleAuditDataWrapper replacedVehicles: replacedVehicleList) {
+                Optional<Vehicle> replacementVehicle = vehicleRepository.findById(replacedVehicles.getEntity().getId());
                 VehicleHistoryResponse vehicleHistoryResponse = new VehicleHistoryResponse();
                 vehicleHistoryResponse.setCreatedBy(replacedVehicles.getEntity().getUpdatedBy().getName());
                 vehicleHistoryResponse.setCreatedAt(replacedVehicles.getRevisionTimeStamp());
                 vehicleHistoryResponse.setType("Replacement");
-                vehicleHistoryResponse.setPlateNumber(replacedVehicles.getEntity().getReplacementVehicle().getPlateNumber());
+                vehicleHistoryResponse.setPlateNumber(replacementVehicle.get().getPlateNumber());
                 vehicleHistoryList.add(vehicleHistoryResponse);
             }
         }

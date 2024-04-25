@@ -102,7 +102,6 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 import { AssignmentHistoryComponent } from './page/Assignment/assignment-history/assignment-history.component';
 import { CountUpModule } from 'ngx-countup';
 import { MessageService } from 'primeng/api';
-import { UnAssignedVehiclesComponent } from './page/vehicle-screen/un-assigned-vehicles/un-assigned-vehicles.component';
 import { ProjectVehicleComponent } from './page/project-vehicle/project-vehicle.component';
 import { AddProjectVehicleComponent } from './page/project-vehicle/add-project-vehicle/add-project-vehicle.component';
 import { EditProjectVehicleComponent } from './page/project-vehicle/edit-project-vehicle/edit-project-vehicle.component';
@@ -116,6 +115,7 @@ import { ReportManagmentListComponent } from './page/report-managment/report-man
 import { DeletedVehiclesComponent } from './page/vehicle-screen/deleted-vehicles/deleted-vehicles.component';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { MenuModule } from 'primeng/menu';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
 @NgModule({
   declarations: [
     AppComponent,
@@ -176,7 +176,6 @@ import { MenuModule } from 'primeng/menu';
     RegionComponent,
     AddRegionComponent,
     AssignmentHistoryComponent,
-    UnAssignedVehiclesComponent,
     ProjectVehicleComponent,
     AddProjectVehicleComponent,
     EditProjectVehicleComponent,
@@ -190,6 +189,7 @@ import { MenuModule } from 'primeng/menu';
   ],
   imports: [
     ConfirmDialogModule,
+    ScrollPanelModule,
     CardModule,
     TimelineModule,
     BrowserModule,

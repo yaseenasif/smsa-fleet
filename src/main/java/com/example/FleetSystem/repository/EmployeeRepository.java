@@ -22,7 +22,7 @@ public interface EmployeeRepository extends JpaRepository<Employee,Long>, JpaSpe
     @Query("SELECT e\n" +
             "FROM Employee e\n" +
             "LEFT OUTER JOIN VehicleAssignment va ON va.assignToEmpId = e.id\n" +
-            "WHERE e.deleteStatus = true AND e.vehicleEligible = 'L VEH'")
+            "WHERE e.deleteStatus = true AND e.vehicleEligible = 'L VEH' AND va.assignToEmpId is null")
     List<Employee> getUnAssignedEmployee();
     @Query("SELECT e\n" +
             "FROM Employee e\n" +

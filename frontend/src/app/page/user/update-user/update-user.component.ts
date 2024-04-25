@@ -45,7 +45,6 @@ export class UpdateUserComponent implements OnInit {
     this.items = [{ label: 'User', routerLink: '/user' }, { label: 'Edit User' }];
     this.getAllRoles()
     this.route.queryParams.subscribe(params => {
-      debugger
       if (params.hasOwnProperty('redirectValue')) {
         this.redirectValue = params['redirectValue'];
       }

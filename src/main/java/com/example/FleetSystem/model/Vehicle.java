@@ -86,7 +86,7 @@ public class Vehicle {
     @NotAudited
     private LocalDate updatedAt;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne()
     private Vehicle replacementVehicle;
 
     @ManyToOne

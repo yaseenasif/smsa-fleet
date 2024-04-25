@@ -56,7 +56,6 @@ export class UpdateVehicleComponent implements OnInit {
       officeLocation: undefined,
       attachments: undefined
     },
-    vehicleReplacement: undefined,
     vehicleStatus: undefined,
     replacementVehicleStatus: undefined,
     registrationStatus: undefined,

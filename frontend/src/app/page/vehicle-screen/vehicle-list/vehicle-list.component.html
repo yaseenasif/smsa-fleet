@@ -115,7 +115,8 @@
           </div>
 
           <div class="card">
-            <p-table [value]="vehicles" [tableStyle]="{ 'min-width': '50rem' }">
+            <div class="scrollbar-horizontal top"></div>
+            <p-table [value]="vehicles" [tableStyle]="{ 'min-width': '50rem' }"  [scrollable]="true">
               <ng-template pTemplate="header">
                 <tr>
                   <th pSortableColumn="id" class="text-center">
@@ -441,7 +442,7 @@
 
                     <p-button
                       *ngIf="
-                        selectedStatus.name === 'In-Active' &&
+                        vehicles.vehicleStatus === 'In-Active' &&
                         !vehicletab &&
                         !unAssignedVehicleTab
                         
@@ -473,7 +474,7 @@
 
                     <p-button
                       *ngIf="
-                        selectedStatus.name === 'Replacement' &&
+                        vehicles.vehicleStatus === 'Replacement' &&
                         !vehicletab &&
                         permissions && permissions.includes('DeleteVehicles')
                       "
@@ -538,8 +539,8 @@
                         !vehicletab &&
                         !canView &&
                         !unAssignedVehicleTab &&
-                        (selectedStatus.name === 'TBA' ||
-                          selectedStatus.name === 'Active') &&
+                        (vehicles.vehicleStatus === 'TBA' ||
+                        vehicles.vehicleStatus === 'Active') &&
                           permissions && permissions.includes('ReplaceVehicles')
                       "
                       (click)="replaceVehicle(vehicles.id)"
@@ -558,7 +559,7 @@
                       *ngIf="
                         !vehicletab &&
                         !unAssignedVehicleTab &&
-                        selectedStatus.name === 'Under Maintenance'
+                        vehicles.vehicleStatus === 'Under Maintenance'
                       "
                       (click)="showReplacementDialog(vehicles.id)"
                       pTooltip="Mark total lost"
@@ -576,7 +577,7 @@
                       *ngIf="
                         !vehicletab &&
                         !unAssignedVehicleTab &&
-                        selectedStatus.name === 'TBA' &&
+                        vehicles.vehicleStatus === 'TBA' &&
                         canDelete &&
                         permissions && permissions.includes('DeleteVehicles')
                       "

@@ -119,3 +119,21 @@
     position: absolute;
     margin-left: 1150px;
   }
+  .table-container {
+    position: relative;
+    overflow-x: hidden;
+  }
+  
+  .scrollbar-horizontal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 10px; /* Adjust height as needed */
+    overflow-x: auto;
+  }
+  
+  .scrollbar-horizontal.top {
+    top: -10px; /* Adjust positioning as needed */
+  }
+  

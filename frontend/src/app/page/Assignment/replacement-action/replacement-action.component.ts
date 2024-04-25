@@ -19,8 +19,86 @@ export class ReplacementActionComponent {
 
   items: MenuItem[] | undefined;
   replacementVehicleId!: Number;
-  replacementVehicle!: Vehicle
-  originalVehicle!: Vehicle;
+  replacementVehicle: Vehicle = {
+    id: undefined,
+    processOrderNumber: undefined,
+    plateNumber: undefined,
+    make: undefined,
+    year: undefined,
+    design: undefined,
+    model: undefined,
+    type: undefined,
+    capacity: undefined,
+    power: undefined,
+    region: undefined,
+    country: undefined,
+    location: undefined,
+    registrationExpiry: undefined,
+    fuelType: undefined,
+     vendor:
+     {
+        id: undefined,
+        vendorName: undefined,
+        officeLocation: undefined,
+        attachments: undefined,
+
+    },
+    insuranceExpiry: undefined,
+    leaseCost: undefined,
+    replaceLeaseCost: undefined,
+    leaseStartDate: undefined,
+    leaseExpiryDate: undefined,
+    usageType: undefined,
+    category: undefined,
+    vehicleStatus: undefined,
+    replacementVehicleStatus: undefined,
+    registrationStatus: undefined,
+    insuranceStatus: undefined,
+    replacementDate: undefined,
+    replacementReason: undefined,
+    replacementRemarks: undefined,
+    replacementVehicle: undefined
+  }
+  originalVehicle: Vehicle = {
+    id: undefined,
+    processOrderNumber: undefined,
+    plateNumber: undefined,
+    make: undefined,
+    year: undefined,
+    design: undefined,
+    model: undefined,
+    type: undefined,
+    capacity: undefined,
+    power: undefined,
+    region: undefined,
+    country: undefined,
+    location: undefined,
+    registrationExpiry: undefined,
+    fuelType: undefined,
+     vendor:
+     {
+        id: undefined,
+        vendorName: undefined,
+        officeLocation: undefined,
+        attachments: undefined,
+
+    },
+    insuranceExpiry: undefined,
+    leaseCost: undefined,
+    replaceLeaseCost: undefined,
+    leaseStartDate: undefined,
+    leaseExpiryDate: undefined,
+    usageType: undefined,
+    category: undefined,
+    vehicleStatus: undefined,
+    replacementVehicleStatus: undefined,
+    registrationStatus: undefined,
+    insuranceStatus: undefined,
+    replacementDate: undefined,
+    replacementReason: undefined,
+    replacementRemarks: undefined,
+    replacementVehicle: undefined
+  };
 
   replacementActionRequest: ReplacementActionRequest = {
     changedAssignedEmployee: undefined,
@@ -56,13 +134,7 @@ export class ReplacementActionComponent {
   getVehiclebyId(id: Number) {
     this.vehicleService.getVehicleById(id).subscribe((res) => {
       this.replacementVehicle = res
-      this.getOriginalVehicleById(res.vehicleReplacement?.vehicle?.id!)
-    })
-  }
-
-  getOriginalVehicleById(id: Number) {
-    this.vehicleService.getVehicleById(id).subscribe((res) => {
-      this.originalVehicle = res
+      this.originalVehicle = res.replacementVehicle!
     })
   }
 

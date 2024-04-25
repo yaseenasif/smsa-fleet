@@ -176,9 +176,6 @@ export class AddAssignmentComponent {
       this.assignedEmployeeNumber = res.assignToEmpId.employeeNumber
       this.assignedEmployeeName = res.assignToEmpId.empName;
       this.vehicleAssignmentId = res.id
-      console.log(res);
-      
-
     })
   }
 
@@ -190,10 +187,8 @@ export class AddAssignmentComponent {
 
         this.messageService.add({ severity: 'success', summary: 'Vehicle Assigned Successfully' });
 
-        setTimeout(() => {
           this.router.navigate(['/assignment'])
-        },3000)
-        
+               
       })
 
     }
@@ -201,13 +196,8 @@ export class AddAssignmentComponent {
     else {
       
       this.vehicleAssignmentService.updateVehicleAssignment(this.vehicleAssignmentId!, this.vehicleAssignment).subscribe((res) => {
-      
         this.messageService.add({ severity: 'success', summary: 'Update Successfully' });
-
-        setTimeout(() => {
           this.router.navigate(['/assignment'])
-        },3000)
-
       })
     }
 

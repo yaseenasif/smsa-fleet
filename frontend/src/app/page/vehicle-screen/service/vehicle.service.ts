@@ -5,7 +5,7 @@ import { Region } from 'src/app/modal/Region';
 import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
 import { Vehicle } from 'src/app/modal/vehicle';
 import { VehicleHistory } from 'src/app/modal/vehicle-history';
-import { VehicleReplacement } from 'src/app/modal/vehicleReplacement';
+// import { VehicleReplacement } from 'src/app/modal/vehicleReplacement';
 import { Vendor } from 'src/app/modal/vendor';
 import { environment } from 'src/environments/environment';
 import * as XLSX from 'xlsx';
@@ -53,7 +53,7 @@ export class VehicleService {
 
 
 
-  getVehicleById(id: Number) {
+    getVehicleById(id: Number) {
     return this.http.get<Vehicle>(`${this.url}/vehicle/${id}`);
   }
 
@@ -76,8 +76,8 @@ export class VehicleService {
     return this.http.get<Vendor[]>(`${this.url}/get-active-vendors/`)
   }
 
-  replaceVehicle(vehicleId: number, replacementRequest: ReplacementRequest): Observable<VehicleReplacement> {
-    return this.http.patch<VehicleReplacement>(`${this.url}/replace-vehicle/${vehicleId}`, replacementRequest);
+  replaceVehicle(vehicleId: number, replacementRequest: ReplacementRequest): Observable<Vehicle> {
+    return this.http.patch<Vehicle>(`${this.url}/replace-vehicle/${vehicleId}`, replacementRequest);
   }
 
   getVehicleHistoryById(id: Number): Observable<VehicleHistory[]> {
@@ -152,4 +152,9 @@ export class VehicleService {
   getAllDistinctPoNumbers(): Observable<{ poNumber: string }[]> {
     return this.http.get<{ poNumber: string }[]>(`${this.url}/distinct-values`);
   }
+
+  findOriginalVehicleByReplacementVehicleId(id: Number): Observable<Vehicle>{
+    return this.http.get<Vehicle>(`${this.url}/find-original-vehicle-by-replacement-vehicle/${id}`);
+  }
+
 }

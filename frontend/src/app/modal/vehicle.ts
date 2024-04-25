@@ -1,4 +1,3 @@
-import { VehicleReplacement } from "./vehicleReplacement"
 
 export interface Vehicle {
     id: Number | null | undefined,
@@ -31,7 +30,6 @@ export interface Vehicle {
     leaseExpiryDate: String | Date | null | undefined
     usageType: String | null | undefined
     category: String | null | undefined
-    vehicleReplacement:VehicleReplacement|null|undefined
     vehicleStatus: String | null | undefined
     replacementVehicleStatus: String | null | undefined
     registrationStatus: Boolean | null | undefined

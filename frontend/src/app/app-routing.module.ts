@@ -54,7 +54,6 @@ import { ViewAssignmentComponent } from './page/Assignment/view-assignment/view-
 import { AssignmentHistoryComponent } from './page/Assignment/assignment-history/assignment-history.component';
 import { RegionComponent } from './page/region/region.component';
 import { AddRegionComponent } from './page/region/add-region/add-region.component';
-import { UnAssignedVehiclesComponent } from './page/vehicle-screen/un-assigned-vehicles/un-assigned-vehicles.component';
 import { ProjectVehicleComponent } from './page/project-vehicle/project-vehicle.component';
 import { AddProjectVehicleComponent } from './page/project-vehicle/add-project-vehicle/add-project-vehicle.component';
 import { EditProjectVehicleComponent } from './page/project-vehicle/edit-project-vehicle/edit-project-vehicle.component';
@@ -150,11 +149,6 @@ const routes: Routes = [
   {
     path: 'vehicle/:vehicletab',
     component: VehicleListComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'unassigned-vehicle',
-    component: UnAssignedVehiclesComponent,
     canActivate: [AuthGuard]
   },
   {

@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Vendor } from 'src/app/modal/vendor';
 import { ProductFieldServiceService } from '../../product-field/service/product-field-service.service';
 import { ProductField } from 'src/app/modal/ProductField';
-import { VehicleReplacement } from 'src/app/modal/vehicleReplacement';
+// import { VehicleReplacement } from 'src/app/modal/vehicleReplacement';
 import { RegionService } from '../../region/service/region.service';
 import { Region } from 'src/app/modal/Region';
 import { VehicleAssignmentService } from '../../Assignment/vehicle-assignment.service';
@@ -134,7 +134,6 @@ export class AddVehicleComponent implements OnInit {
       officeLocation: undefined,
       attachments: undefined,
     },
-    vehicleReplacement: undefined,
     vehicleStatus: undefined,
     replacementVehicleStatus: undefined,
     registrationStatus: undefined,
@@ -186,7 +185,6 @@ export class AddVehicleComponent implements OnInit {
       leaseExpiryDate: undefined,
       usageType: undefined,
       category: undefined,
-      vehicleReplacement: undefined,
       vehicleStatus: undefined,
       replacementVehicleStatus: undefined,
       registrationStatus: undefined,
@@ -275,7 +273,7 @@ export class AddVehicleComponent implements OnInit {
   name!: string;
 
   ngOnInit(): void {
-    this.items = [{ label: 'Vehicle', routerLink: '/vehicle' }, { label: 'Add Vehicle' }];
+    
     this.getAllVendor();
     this.getUsageType();
     this.getCategory();
@@ -314,6 +312,11 @@ export class AddVehicleComponent implements OnInit {
     this.getUnassignedEmployee();
     this.dashboardRedirectService.setDashboardValue('Vehicle');
 
+    if(this.screenType === 'assignment'){
+    this.items = [{ label: 'Assignment', routerLink: '/assignment' }, { label: 'Add Vehicle' }];
+    }else {
+    this.items = [{ label: 'Vehicle', routerLink: '/vehicle' }, { label: 'Add Vehicle' }];
+    }
   }
 
 
@@ -419,7 +422,11 @@ export class AddVehicleComponent implements OnInit {
 
       this.vehicleService.replaceVehicle(this.vId, this.replacementRequest).subscribe(res => {
         this.messageService.add({ severity: 'success', summary: 'Vehicle Replaced', detail: 'Vehicle is successfully replaced' });
-        this.router.navigate(['/vehicle'])
+        if(this.screenType === 'assignment'){
+          this.router.navigate(['/assignment'])
+         }else{
+          this.router.navigate(['/vehicle'])
+         }
       }, error => {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
       })
@@ -431,8 +438,12 @@ export class AddVehicleComponent implements OnInit {
 
       this.vehicleService.finalReturnVehicleById(this.vId, this.finalReturnRequest).subscribe((res) => {
         this.messageService.add({ severity: 'success', summary: 'Final Returned', detail: 'Vehicle has been final returned' });
-        this.router.navigate(['/vehicle'])
-      }, error => {
+        if(this.screenType === 'assignment'){
+          this.router.navigate(['/assignment'])
+         }else{
+          this.router.navigate(['/vehicle'])
+         }
+              }, error => {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
       })
     } else if (this.actionCheck) {
@@ -457,7 +468,12 @@ export class AddVehicleComponent implements OnInit {
 
       this.vehicleService.replaceVehicle(this.vId, this.replacementRequest).subscribe(res => {
         this.messageService.add({ severity: 'success', summary: 'Vehicle Replaced', detail: 'Vehicle is successfully replaced' });
+       if(this.screenType === 'assignment'){
+        this.router.navigate(['/assignment'])
+       }else{
         this.router.navigate(['/vehicle'])
+       }
+
       }, error => {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
       })
@@ -467,8 +483,12 @@ export class AddVehicleComponent implements OnInit {
 
       this.vehicleService.finalReturnVehicleById(this.vId, this.finalReturnRequest).subscribe((res) => {
         this.messageService.add({ severity: 'success', summary: 'Final Returned', detail: 'Vehicle has been final returned' });
-        this.router.navigate(['/vehicle'])
-      }, error => {
+        if(this.screenType === 'assignment'){
+          this.router.navigate(['/assignment'])
+         }else{
+          this.router.navigate(['/vehicle'])
+         }
+       }, error => {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
       })
     } else if (this.actionCheck) {
@@ -595,14 +615,6 @@ export class AddVehicleComponent implements OnInit {
       });
   }
 
-  // private getLocationList(fieldName: string) {
-  //   this.productFieldService.getProductFieldByName(fieldName).subscribe(
-  //     (res: ProductField) => {
-  //       this.location = res;
-  //     }, (err: BackenCommonErrorThrow) => {
-  //       this.errorHandleService.showError(err.error!);
-  //     });
-  // }
 
   getCountry(): Region[] {
     this.regionService.getRegion().subscribe(
