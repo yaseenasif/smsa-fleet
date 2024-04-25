@@ -78,13 +78,14 @@ export class ReportManagmentListComponent implements OnInit {
     replacementVehicleStatus: undefined,
     registrationStatus: undefined,
     insuranceStatus: undefined,
-    replacementReason:  undefined,
-    replacementRemarks:  undefined,
-    replacementVehicle:  undefined
+    replacementReason: undefined,
+    replacementRemarks: undefined,
+    replacementVehicle: undefined
   }
   oneIsSelected: boolean | undefined;
   poNumberList: { poNumber: string }[] = [];
   category: any;
+  one: number = 1;
 
   constructor(
     private errorService: ErrorService,
@@ -161,20 +162,19 @@ export class ReportManagmentListComponent implements OnInit {
 
     this.getAllVendors();
     this.getAllRegion();
-    this.getAllVehicles();
+    this.dynamicSearch();
     this.ListOfDistinctPoNumbers();
   }
 
-  getAllVehicles() {
-    this.vehicleService.getAllVehicles().subscribe((res) => {
-      this.vehicles = res;
-    })
-  }
+  // getAllVehicles() {
+  //   this.vehicleService.getAllVehicles().subscribe((res) => {
+  //     this.vehicles = res;
+  //   })
+  // }
 
   getAllVendors() {
     this.vendorService.getVendor().subscribe((res) => {
       this.vendor = res;
-
     })
   };
 
@@ -220,10 +220,17 @@ export class ReportManagmentListComponent implements OnInit {
 
   dynamicSearch() {
     const selectedPoNumberString: string = this.selectedPoNumber as string;
-    this.reportManagmentService.searchVehiclesWithDynamicValues(this.vehicle, selectedPoNumberString).subscribe(
+    this.reportManagmentService.searchVehiclesWithDynamicValues(this.vehicle, selectedPoNumberString,undefined,this.query).subscribe(
       (res: PaginatedResponse<Vehicle>) => {
         this.vehicles = res.content;
-        this.query = { page: res.pageable.pageNumber, size: res.size }
+        debugger
+        if (res.content.length > 0) {
+          this.query = { page: res.pageable.pageNumber, size: res.size }
+          this.one = 1;
+        }else{
+          this.query = { page: 0, size: 0 }
+          this.one = 0;
+        }
         this.totalRecords = res.totalElements;
       },
       (error: BackenCommonErrorThrow) => {
@@ -246,6 +253,7 @@ export class ReportManagmentListComponent implements OnInit {
     this.selectedStatus = undefined;
     this.selectedVendor = undefined;
     this.selectedPoNumber = undefined;
+    this.poNumber = undefined;
     this.vehicle = {
       id: undefined,
       processOrderNumber: undefined,
@@ -280,11 +288,11 @@ export class ReportManagmentListComponent implements OnInit {
       replacementVehicleStatus: undefined,
       registrationStatus: undefined,
       insuranceStatus: undefined,
-      replacementReason:  undefined,
-      replacementRemarks:  undefined,
-      replacementVehicle:  undefined
+      replacementReason: undefined,
+      replacementRemarks: undefined,
+      replacementVehicle: undefined
     }
-    this.getAllVehicles();
+    this.dynamicSearch();
   }
 
   downloadExcelData() {

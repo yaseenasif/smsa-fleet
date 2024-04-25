@@ -7,9 +7,9 @@
 
       <div class="main">
         <div class="card flex justify-content-center">
-          <p-breadcrumb class="max-w-full" [model]="items"> </p-breadcrumb>
+          <!-- <p-breadcrumb class="max-w-full" [model]="items"> </p-breadcrumb> -->
           <p-button
-            class="bg-b-color adjust mt-2"
+            class="bg-b-color adjust mt-5 pt-2"
             (click)="downloadExcelData()"
           >
             <i class="bi bi-download"></i>&nbsp; Export data
@@ -74,7 +74,7 @@
                   ></p-calendar>
                 </div>
 
-                <div style="flex: 1">
+                <div style="flex: 1" class="form-hook">
                   <label class="mb-1">PoNumbers:</label>
                   <p-multiSelect
                     [options]="poNumberList"
@@ -94,8 +94,8 @@
                   ></p-multiSelect>
                 </div>
 
-                <div style="flex: 1">
-                  <label class="mb-1">Vendor:</label>
+                <div style="flex: 1" class="form-hook">
+                  <label class="mb-1" style="display: block;">Vendor:</label>
                   <p-multiSelect
                     [options]="vendor"
                     class="w-full"
@@ -113,8 +113,9 @@
                     [showClear]="true"
                   ></p-multiSelect>
                 </div>
-
-                <div style="flex: 1">
+              </div>
+              <div style="display: flex; flex-wrap: wrap; gap: 93px">
+                <div style="flex: 1.1" class="form-hook">
                   <label class="mb-1">Usage Type:</label>
                   <p-multiSelect
                     class="w-full"
@@ -134,7 +135,7 @@
                   ></p-multiSelect>
                 </div>
 
-                <div style="flex: 1">
+                <div style="flex: 1.1" class="form-hook">
                   <label class="mb-1">Region:</label>
                   <p-multiSelect
                     class="w-full"
@@ -155,7 +156,7 @@
                   </p-multiSelect>
                 </div>
 
-                <div style="flex: 1">
+                <div style="flex: 1" class="form-hook">
                   <label style="display: block !important" class="mb-1"
                     >Vehicle Status:</label
                   >
@@ -177,7 +178,7 @@
                   >
                   </p-multiSelect>
                 </div>
-                <div style="flex: 4">
+                <div style="flex: 1" class="form-hook">
                   <label style="display: block !important" class="mb-1"
                     >Category:</label
                   >
@@ -292,7 +293,7 @@
                   [pageLinkSize]="4"
                   [showCurrentPageReport]="true"
                   currentPageReportTemplate="Showing {{
-                    query.page * query.size + 1
+                    query.page * query.size + one
                   }} to {{ (query.page + 1) * query.size }} of total {{
                     totalRecords
                   }} entries"

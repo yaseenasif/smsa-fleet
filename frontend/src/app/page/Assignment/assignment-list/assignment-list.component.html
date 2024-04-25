@@ -7,9 +7,9 @@
       <div class="main">
         <p-toast></p-toast>
         <div class="card flex justify-content-center">
-          <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
+          <!-- <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb> -->
           <p-button
-            class="bg-b-color adjust mt-2"
+            class="bg-b-color adjust mt-3"
             (click)="downloadExcelData()"
           >
             <i class="bi bi-download"></i>&nbsp; Export data
@@ -17,8 +17,8 @@
         </div>
         <div class="body-card">
           <div class="table-head">
-            <div class="grid">
-              
+            <div class="grid mt-5">
+
               <div class="col-3">
                 <p-button
                 label="Clear"
@@ -28,14 +28,14 @@
               ></p-button>
               </div>
               <div class="col-9 flex justify-content-end align-items-center">
-                
+
                 <p-button class="bg-b-color mr-2" routerLink="/add-assignment">
                   <i
                     class="bi bi-plus-lg"
                     style="font-size: 20px; font-weight: bold"
                   ></i
                   >&nbsp;Add Vehicle Assignment
-                </p-button>  
+                </p-button>
 
                 <div class="flex flex-column gap-2 ml-5">
                 <p-fileUpload #fileUpload icon="pi pi-download" iconPos="left"
@@ -56,16 +56,16 @@
               </div>
 
               </div>
-             
-               
-              
-            
-            
 
-           
-             
-              
-              
+
+
+
+
+
+
+
+
+
             </div>
             <p-toolbar [style]="{ 'padding-top': '1.5rem' }">
               <div class="p-toolbar-group-start h-color">

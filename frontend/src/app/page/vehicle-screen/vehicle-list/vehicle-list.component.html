@@ -6,9 +6,9 @@
 
       <div class="main">
         <div class="card flex justify-content-center">
-          <p-breadcrumb class="max-w-full" [model]="items"> </p-breadcrumb>
+          <!-- <p-breadcrumb class="max-w-full" [model]="items"> </p-breadcrumb> -->
           <p-button
-            class="bg-b-color adjust mt-2"
+            class="bg-b-color adjust mt-3"
             (click)="downloadExcelData()"
           >
             <i class="bi bi-download"></i>&nbsp; Export data
@@ -22,7 +22,7 @@
           <div class="table-head">
             <div
               *ngIf="!vehicletab && !unAssignedVehicleTab"
-              class="flex mb-2 align-items-center gap-1"
+              class="flex mb-2 align-items-center gap-1 mt-5"
               style="justify-content: flex-end; align-items: flex-end"
             >
               <p-button *ngIf="permissions && permissions.includes('AddVehicles')" class="bg-b-color" routerLink="/add-vehicle">
@@ -445,7 +445,7 @@
                         vehicles.vehicleStatus === 'In-Active' &&
                         !vehicletab &&
                         !unAssignedVehicleTab
-                        
+
                       "
                       class="bg-color"
                       (click)="showActivationDialog(vehicles.id)"
@@ -459,7 +459,7 @@
                     ></p-button>
 
                     <p-button
-                      *ngIf="!vehicletab && !unAssignedVehicleTab && 
+                      *ngIf="!vehicletab && !unAssignedVehicleTab &&
                       permissions && permissions.includes('UpdateVehicles')"
                       [routerLink]="['/edit-vehicle/', vehicles.id]"
                       pTooltip="Edit"
@@ -490,7 +490,7 @@
                     ></p-button>
 
                     <p-button
-                      *ngIf="!vehicletab && !unAssignedVehicleTab && 
+                      *ngIf="!vehicletab && !unAssignedVehicleTab &&
                       permissions && permissions.includes('VehiclesAttachment')"
                       [routerLink]="['/vehicle-attachment/', vehicles.id]"
                       pTooltip="Add Attachments"
@@ -504,7 +504,7 @@
                     ></p-button>
 
                     <p-button
-                      *ngIf="!vehicletab && !unAssignedVehicleTab && 
+                      *ngIf="!vehicletab && !unAssignedVehicleTab &&
                       permissions && permissions.includes('VehiclesAttachment')"
                       [routerLink]="[
                         '/individual-file-list-component/',
@@ -521,7 +521,7 @@
                     ></p-button>
 
                     <p-button
-                      *ngIf="!vehicletab && !unAssignedVehicleTab && 
+                      *ngIf="!vehicletab && !unAssignedVehicleTab &&
                       permissions && permissions.includes('VehiclesHistory')"
                       [routerLink]="['/vehicle-history/', vehicles.id]"
                       pTooltip="View History"
