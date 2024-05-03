@@ -30,7 +30,7 @@ export class AssignmentHistoryComponent {
   }
 
   ngOnInit() {
-    this.items = [{ label: 'Vehicle Assignment',routerLink:'/assignment'},{ label: 'Vehicle Assignment History'}];
+    this.items = [{ label: 'Vehicle Assignment',routerLink:'/assignment'},{ label: 'Vehicle History'}];
     this.vehicleAssignmentId = +this.route.snapshot.paramMap.get('id')!;
     this.getVehicleById(this.vehicleAssignmentId)
     this.getVehicleHistoryById(this.vehicleAssignmentId)
