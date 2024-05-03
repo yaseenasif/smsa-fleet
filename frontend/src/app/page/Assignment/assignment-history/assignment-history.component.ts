@@ -22,13 +22,13 @@ export class AssignmentHistoryComponent {
   vehicleHistory !: VehicleHistory[]
   vehicle !: Vehicle
 
-  constructor(private vehicleService: VehicleService, private route: ActivatedRoute, 
+  constructor(private vehicleService: VehicleService, private route: ActivatedRoute,
               private vehicleAssignmentService: VehicleAssignmentService,
               private dashboardRedirectService: DashboardRedirectServiceService
     ) {
 
   }
-  
+
   ngOnInit() {
     this.items = [{ label: 'Vehicle Assignment',routerLink:'/assignment'},{ label: 'Vehicle Assignment History'}];
     this.vehicleAssignmentId = +this.route.snapshot.paramMap.get('id')!;
@@ -38,10 +38,10 @@ export class AssignmentHistoryComponent {
   }
 
   getVehicleHistoryById(id: Number){
-  
+
     this.vehicleService.getVehicleHistoryById(id).subscribe((res)=>{
       this.vehicleHistory = res.map((el)=> {
-        
+
         [el.createdAtDate, el.createdAtTime] = el.createdAt.split('T');
 
         if(el.type == 'Assignment' || el.type == 'Released'){
@@ -50,17 +50,17 @@ export class AssignmentHistoryComponent {
           return {...el,icon: 'bi bi-arrow-repeat', color: '#3B82F6'}
         }
 
-        
+
       });
-      
+
     })
-  } 
+  }
 
   getVehicleById(id: Number){
-    
+
     this.vehicleService.getVehicleById(id).subscribe((res)=>{
     this.vehicle = res;
-    
+
   });
 }
 
@@ -68,4 +68,13 @@ downloadPdf(id: Number){
   this.vehicleService.generateVehicleHistoryPdf(id).subscribe(blob => saveAs(blob,"vehicle_history_"+id));
 }
 
+removeSecondsFromTime(time: string): string {
+  const [hours, minutes] = time.split(':');
+
+  let formattedHours = parseInt(hours, 10);
+  const amPm = formattedHours >= 12 ? 'PM' : 'AM';
+  formattedHours = formattedHours % 12 || 12;
+
+  return `${formattedHours}:${minutes} ${amPm}`;
+}
 }
