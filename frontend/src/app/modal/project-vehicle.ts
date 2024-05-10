@@ -7,16 +7,18 @@ export interface ProjectVehicle {
   projectVehicleValuesList: ProjectVehicleValues[]
 }
 export interface ProjectVehicleValues {
-  id: Number | null | undefined
-  plateNumber: String | null | undefined
-  leaseCost: number | null | undefined
-  type: String | null | undefined
-  origin: String | null | undefined
-  destination: String | null | undefined
+  id: Number | null | undefined;
+  dateForMonth?: Date | null | undefined;
+  month: string | null | undefined;
+  plateNumber: String | null | undefined;
+  leaseCost: number | null | undefined;
+  type: String | null | undefined;
+  origin: String | null | undefined;
+  destination: String | null | undefined;
   rentalDate: Date | null | undefined;
   rentalDateTo: Date | null | undefined;
-  startLease: Date | null | undefined
-  expiryLease: Date | null | undefined
-  vendor: Vendor
-  duration: number | null | undefined
+  startLease: Date | null | undefined;
+  expiryLease: Date | null | undefined;
+  vendor: Vendor;
+  duration: number | null | undefined;
 }

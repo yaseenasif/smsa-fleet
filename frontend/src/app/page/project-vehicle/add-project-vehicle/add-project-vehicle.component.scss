@@ -1,0 +1,20 @@
+.header-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.left-content {
+  display: flex;
+  align-items: center; /* Vertically align left content */
+}
+
+.right-content {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  right: 1%;
+  top: 39%;
+}
+.trash-icon {
+  margin-right: 10px; /* Adjust margin as needed */
+}

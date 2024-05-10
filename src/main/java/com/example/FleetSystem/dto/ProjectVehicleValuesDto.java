@@ -28,6 +28,7 @@ public class ProjectVehicleValuesDto {
     private Date expiryLease;
     private Boolean status;
     private VendorDto vendor;
+    private String month;
     private ProjectVehicleDto projectVehicleDto;
 }
 

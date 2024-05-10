@@ -116,6 +116,8 @@ import { DeletedVehiclesComponent } from './page/vehicle-screen/deleted-vehicles
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { MenuModule } from 'primeng/menu';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { AccordionModule } from 'primeng/accordion';
+import { BadgeModule } from 'primeng/badge';
 @NgModule({
   declarations: [
     AppComponent,
@@ -226,6 +228,8 @@ import { ScrollPanelModule } from 'primeng/scrollpanel';
     SpeedDialModule,
     CountUpModule,
     PanelMenuModule,
+    BadgeModule,
+    AccordionModule,
     MenuModule,
     NgxUiLoaderHttpModule.forRoot({
       showForeground: true

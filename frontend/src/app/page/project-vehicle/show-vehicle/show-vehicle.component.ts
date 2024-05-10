@@ -48,6 +48,7 @@ export class ShowVehicleComponent {
     origin: undefined,
     type: undefined,
     id: undefined,
+    month: undefined
   };
   projectVehicleId: number | undefined;
   minDueDate: Date | null | undefined;
@@ -71,7 +72,7 @@ export class ShowVehicleComponent {
 
   getProjectVehicleById(id: number, value?: string, date?: Date) {
     this.projectVehicleService.getProjectVehicleById(id).subscribe((res: ProjectVehicle) => {
-      
+
       this.projectVehicle = res;
       this.convertInDate(this.projectVehicle)
       if (value) {
@@ -182,6 +183,7 @@ export class ShowVehicleComponent {
         }],
         attachments: undefined,
       },
+      month:undefined,
       rentalDateTo: undefined,
       plateNumber: undefined,
       destination: undefined,

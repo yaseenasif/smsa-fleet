@@ -47,7 +47,8 @@ export class EditProjectVehicleComponent implements OnInit {
         officeLocation: null,
         contactPersonList: [],
         attachments: null
-      }
+      },
+      month: null,
     }]
   };
 
@@ -90,7 +91,7 @@ export class EditProjectVehicleComponent implements OnInit {
 
   }
   patchProjectVehicle(obj: ProjectVehicle) {
-    
+
     obj.date = new Date
     this.convertInDate(obj)
     this.projectVehicle = obj
@@ -117,17 +118,17 @@ export class EditProjectVehicleComponent implements OnInit {
         officeLocation: null,
         contactPersonList: [],
         attachments: null
-
-      }
+      },
+      month: null,
+      dateForMonth: new Date,
     };
-
     this.projectVehicle.projectVehicleValuesList.push(newFieldValue);
-
+    this.updateMonthForFieldValue(newFieldValue);
   }
 
 
   removeFieldValue(index: number) {
-    if (this.projectVehicle.projectVehicleValuesList.length > 1) {
+    if (this.projectVehicle.projectVehicleValuesList.length >= 1) {
       this.projectVehicle.projectVehicleValuesList.splice(index, 1);
     }
   }
@@ -139,7 +140,7 @@ export class EditProjectVehicleComponent implements OnInit {
   }
 
   onSubmit() {
-    
+
     this.projectVehicleService.updateProjectVehicle(this.projectVehicleId!, this.projectVehicle).subscribe(
       (res: ProjectVehicle) => {
         this.messageService.add({
@@ -218,4 +219,11 @@ export class EditProjectVehicleComponent implements OnInit {
     }
   }
 
+  updateMonthForFieldValue(projectVehicleField: ProjectVehicleValues): void {
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"];
+    const monthIndex = projectVehicleField.dateForMonth!.getMonth();
+    const monthName = monthNames[monthIndex];
+    projectVehicleField.month = monthName;
+  }
 }

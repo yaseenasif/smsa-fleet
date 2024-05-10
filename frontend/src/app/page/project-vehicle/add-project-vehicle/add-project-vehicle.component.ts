@@ -22,12 +22,12 @@ export class AddProjectVehicleComponent implements OnInit {
   types: ProductField | null | undefined;
   replacementCheck: boolean | undefined;
 
+
   vehicleTypes: SelectItem[] = [
     { label: 'Rental', value: 'Rental' },
     { label: 'Leased', value: 'Leased' },
   ];
   minDueDate: Date | null | undefined;
-
   projectVehicle: ProjectVehicle = {
     id: null,
     projectName: null,
@@ -50,7 +50,9 @@ export class AddProjectVehicleComponent implements OnInit {
         officeLocation: null,
         contactPersonList: [],
         attachments: null
-      }
+      },
+      dateForMonth: new Date,
+      month: null
     }]
   };
   constructor(
@@ -68,10 +70,14 @@ export class AddProjectVehicleComponent implements OnInit {
     this.getAllVendors();
     this.getProjectName();
     this.dashboardRedirectService.setDashboardValue('ProjectVehicle');
+    this.updateMonthForFieldValue(this.projectVehicle.projectVehicleValuesList[0]);
   }
+
   addMoreFieldValue() {
     const newFieldValue: ProjectVehicleValues = {
       id: null,
+      dateForMonth: new Date,
+      month: null,
       plateNumber: null,
       leaseCost: null,
       type: null,
@@ -92,7 +98,7 @@ export class AddProjectVehicleComponent implements OnInit {
     };
 
     this.projectVehicle.projectVehicleValuesList.push(newFieldValue);
-
+    this.updateMonthForFieldValue(newFieldValue);
   }
 
 
@@ -130,7 +136,6 @@ export class AddProjectVehicleComponent implements OnInit {
   }
 
   updateDuration(i: number) {
-
     if (this.projectVehicle.projectVehicleValuesList[i].startLease) {
       this.minDueDate = new Date(this.projectVehicle.projectVehicleValuesList[i].startLease!);
     } else {
@@ -155,5 +160,11 @@ export class AddProjectVehicleComponent implements OnInit {
       this.projectVehicle.projectVehicleValuesList[i].duration = null;
     }
   }
-
+  updateMonthForFieldValue(projectVehicleField: ProjectVehicleValues): void {
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"];
+    const monthIndex = projectVehicleField.dateForMonth!.getMonth();
+    const monthName = monthNames[monthIndex];
+    projectVehicleField.month = monthName;
+  }
 }
