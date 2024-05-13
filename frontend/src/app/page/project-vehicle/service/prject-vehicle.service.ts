@@ -33,6 +33,11 @@ export class PrjectVehicleService {
     return this.http.post<ProjectVehicleValues[]>(`${this.url}/get-all-by-searchSpecification-with/${projectVehicleId}`, projectVehicleValues);
   }
 
+  downloadExcelData(projectVehicleValueList: ProjectVehicleValues[]): Observable<Blob> {
+    return this.http.post(`${this.url}/download-project-vehicle-values-excel`, projectVehicleValueList, {
+      responseType: 'blob'
+    });
+  }
 }
 
 // getAllProjectVehicleValuesByLeaseDates(projectVehicleId: number,startLease: Date, expiryLease: Date): Observable<ProjectVehicleValues[]> {

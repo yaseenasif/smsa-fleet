@@ -8,6 +8,8 @@ import { VendorService } from '../../vendor-screen/service/vendor.service';
 import { ProductFieldServiceService } from '../../product-field/service/product-field-service.service';
 import { ProductField } from 'src/app/modal/ProductField';
 import { DashboardRedirectServiceService } from 'src/app/CommonServices/dashboard-redirect-service.service';
+import { BackenCommonErrorThrow } from 'src/app/modal/BackendCommonErrorThrow';
+import { ErrorService } from 'src/app/CommonServices/Error/error.service';
 
 @Component({
   selector: 'app-edit-project-vehicle',
@@ -49,20 +51,26 @@ export class EditProjectVehicleComponent implements OnInit {
         attachments: null
       },
       month: null,
+      vehicleType: undefined,
+      referenceNo: undefined
     }]
   };
 
   types: ProductField | null | undefined;
   projectVehicleId: number | undefined | null;
+  tabIndex: number = 0;
+  vehicleTypeList: ProductField | undefined | null;
+
 
   constructor(
-    private projectVehicleService: PrjectVehicleService,
-    private messageService: MessageService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private vendorService: VendorService,
+    private dashboardRedirectService: DashboardRedirectServiceService,
     private productFieldService: ProductFieldServiceService,
-    private dashboardRedirectService: DashboardRedirectServiceService
+    private projectVehicleService: PrjectVehicleService,
+    private errorHandleService: ErrorService,
+    private messageService: MessageService,
+    private vendorService: VendorService,
+    private route: ActivatedRoute,
+    private router: Router,
 
   ) { }
 
@@ -72,6 +80,7 @@ export class EditProjectVehicleComponent implements OnInit {
     this.projectVehicleId = +this.route.snapshot.paramMap.get('id')!;
     this.getProjectVehicleById(this.projectVehicleId);
     this.getProjectName()
+    this.getTypeList('Vehicle Type');
     this.dashboardRedirectService.setDashboardValue('ProjectVehicle');
   }
   projectVehicleField: any = {
@@ -91,17 +100,22 @@ export class EditProjectVehicleComponent implements OnInit {
 
   }
   patchProjectVehicle(obj: ProjectVehicle) {
-
     obj.date = new Date
     this.convertInDate(obj)
-    this.projectVehicle = obj
+    this.destructureResponse(obj);
     for (let index = 0; index < obj.projectVehicleValuesList.length; index++) {
-      this.updateDuration(index)
+      this.updateDuration(index, obj.projectVehicleValuesList[index].month!)
     }
   }
-  addMoreFieldValue() {
+
+  addMoreFieldValue(event: Event, month: string) {
+    event.stopPropagation();
+
+    // Create a new instance of ProjectVehicleValues
     const newFieldValue: ProjectVehicleValues = {
       id: null,
+      dateForMonth: new Date(),
+      month: month,
       plateNumber: null,
       leaseCost: null,
       type: null,
@@ -119,28 +133,38 @@ export class EditProjectVehicleComponent implements OnInit {
         contactPersonList: [],
         attachments: null
       },
-      month: null,
-      dateForMonth: new Date,
+      vehicleType: undefined,
+      referenceNo: undefined
     };
-    this.projectVehicle.projectVehicleValuesList.push(newFieldValue);
-    this.updateMonthForFieldValue(newFieldValue);
+
+    // Find the month in monthWiseList and push the new field value
+    const monthData = this.projectVehicle.monthWiseList?.find(data => data.month === month);
+    if (monthData) {
+      monthData.values.push(newFieldValue);
+    } else {
+      // If the month doesn't exist, create a new entry for it
+      this.projectVehicle.monthWiseList?.push({ month: month, values: [newFieldValue] });
+    }
   }
 
 
-  removeFieldValue(index: number) {
-    if (this.projectVehicle.projectVehicleValuesList.length >= 1) {
-      this.projectVehicle.projectVehicleValuesList.splice(index, 1);
-    }
+  removeFieldValue(index: number, month: string) {
+    this.projectVehicle.monthWiseList?.find(data => data.month === month)?.values.splice(index, 1);
   }
 
   getAllVendors() {
     this.vendorService.getVendor().subscribe((res: Vendor[]) => {
+      console.log(res);
       this.vendors = res;
     });
   }
 
   onSubmit() {
-
+    debugger
+    this.projectVehicle.projectVehicleValuesList = [];
+    this.projectVehicle.monthWiseList?.forEach(data => {
+      this.projectVehicle.projectVehicleValuesList = this.projectVehicle.projectVehicleValuesList.concat(data.values);
+    });
     this.projectVehicleService.updateProjectVehicle(this.projectVehicleId!, this.projectVehicle).subscribe(
       (res: ProjectVehicle) => {
         this.messageService.add({
@@ -160,8 +184,6 @@ export class EditProjectVehicleComponent implements OnInit {
   getProjectName() {
     this.productFieldService.getProductFieldByName('Project Name').subscribe((res: ProductField) => {
       this.projectNames = res;
-      console.log(res);
-
     }, error => {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
     })
@@ -193,7 +215,14 @@ export class EditProjectVehicleComponent implements OnInit {
     });
   }
 
-  updateDuration(i: number) {
+  updateDuration(i: number, month: string) {
+    if (this.projectVehicle.monthWiseList) {
+      this.projectVehicle.projectVehicleValuesList = this.projectVehicle.monthWiseList
+        .filter(data => data.month === month)
+        .map(data => data.values)
+        .flat();
+    }
+    debugger
     if (this.projectVehicle.projectVehicleValuesList[i].startLease) {
       this.minDueDate = new Date(this.projectVehicle.projectVehicleValuesList[i].startLease!);
     } else {
@@ -219,11 +248,57 @@ export class EditProjectVehicleComponent implements OnInit {
     }
   }
 
-  updateMonthForFieldValue(projectVehicleField: ProjectVehicleValues): void {
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-      "July", "August", "September", "October", "November", "December"];
-    const monthIndex = projectVehicleField.dateForMonth!.getMonth();
-    const monthName = monthNames[monthIndex];
-    projectVehicleField.month = monthName;
+  destructureResponse(projectVehicle: ProjectVehicle) {
+    console.log(projectVehicle.projectVehicleValuesList);
+    const { projectVehicleValuesList } = projectVehicle;
+
+    // Extracting unique month names and filtering out null or undefined values
+    const monthList = [...new Set(projectVehicleValuesList
+      .map(item => item.month)
+      .filter(month => typeof month === 'string')
+    )];
+
+    // Get current month
+    const currentDate = new Date();
+    const currentMonth = currentDate.toLocaleString('en-us', { month: 'long' });
+
+    // Add current month to monthList if it doesn't already exist
+    if (!monthList.includes(currentMonth)) {
+      monthList.push(currentMonth);
+    }
+
+    // Sort the monthList in chronological order
+    monthList.sort((a, b) => {
+      const monthA = new Date(Date.parse("01 " + a + " 2000"));
+      const monthB = new Date(Date.parse("01 " + b + " 2000"));
+      return monthA.getTime() - monthB.getTime();
+    });
+
+    // Initialize an array to hold month-wise data
+    const monthWiseList: { month: string; values: ProjectVehicleValues[] }[] = [];
+
+    // Group projectVehicleValues by month
+    for (const month of monthList) {
+      if (month) {
+        const values = projectVehicleValuesList.filter(item => item.month === month);
+        monthWiseList.push({ month, values });
+      }
+    }
+
+    // Assign monthWiseList to projectVehicle
+    this.projectVehicle.monthWiseList = monthWiseList;
+
+    console.log(projectVehicle);
   }
+
+  private getTypeList(fieldName: string): void {
+    this.productFieldService.getProductFieldByName(fieldName).subscribe(
+      (res: ProductField) => {
+        this.vehicleTypeList = res;
+        debugger
+      }, (err: BackenCommonErrorThrow) => {
+        this.errorHandleService.showError(err.error!);
+      });
+  }
+
 }

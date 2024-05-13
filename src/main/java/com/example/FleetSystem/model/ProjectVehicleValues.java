@@ -29,6 +29,8 @@ public class ProjectVehicleValues {
     private Date expiryLease;
     private Boolean status;
     private String month;
+    private String vehicleType;
+    private Integer referenceNo;
 
     @ManyToOne
     private Vendor vendor;

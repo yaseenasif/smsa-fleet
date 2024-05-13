@@ -7,6 +7,8 @@ import { ErrorService } from 'src/app/CommonServices/Error/error.service';
 import { ActivatedRoute } from '@angular/router';
 import { PageEvent } from 'src/app/modal/pageEvent';
 import { DashboardRedirectServiceService } from 'src/app/CommonServices/dashboard-redirect-service.service';
+import { VehicleService } from '../../vehicle-screen/service/vehicle.service';
+import * as saveAs from 'file-saver';
 
 @Component({
   selector: 'app-show-vehicle',
@@ -39,6 +41,8 @@ export class ShowVehicleComponent {
     },
     rentalDateTo: undefined,
     plateNumber: undefined,
+    referenceNo: undefined,
+    vehicleType: undefined,
     destination: undefined,
     expiryLease: undefined,
     rentalDate: undefined,
@@ -46,19 +50,29 @@ export class ShowVehicleComponent {
     leaseCost: undefined,
     duration: undefined,
     origin: undefined,
+    month: undefined,
     type: undefined,
     id: undefined,
-    month: undefined
   };
   projectVehicleId: number | undefined;
   minDueDate: Date | null | undefined;
   items: MenuItem[] | undefined;
   searchType: string | null | undefined;
+  selectedMonths: string[] = [];
+  monthList: { name: string }[] = [
+    { name: "January" }, { name: "February" },
+    { name: "March" }, { name: "April" },
+    { name: "May" }, { name: "June" },
+    { name: "July" }, { name: "August" },
+    { name: "September" }, { name: "October" },
+    { name: "November" }, { name: "December" }
+  ];
+
 
   constructor(
     private projectVehicleService: PrjectVehicleService,
     private errorHandleService: ErrorService,
-    private route: ActivatedRoute,private dashboardRedirectService: DashboardRedirectServiceService
+    private route: ActivatedRoute, private dashboardRedirectService: DashboardRedirectServiceService,
   ) { }
 
   ngOnInit(): void {
@@ -72,7 +86,6 @@ export class ShowVehicleComponent {
 
   getProjectVehicleById(id: number, value?: string, date?: Date) {
     this.projectVehicleService.getProjectVehicleById(id).subscribe((res: ProjectVehicle) => {
-
       this.projectVehicle = res;
       this.convertInDate(this.projectVehicle)
       if (value) {
@@ -183,10 +196,11 @@ export class ShowVehicleComponent {
         }],
         attachments: undefined,
       },
-      month:undefined,
       rentalDateTo: undefined,
       plateNumber: undefined,
       destination: undefined,
+      vehicleType: undefined,
+      referenceNo: undefined,
       expiryLease: undefined,
       rentalDate: undefined,
       startLease: undefined,
@@ -194,11 +208,34 @@ export class ShowVehicleComponent {
       duration: undefined,
       origin: undefined,
       type: undefined,
+      month: undefined,
       id: undefined,
     };
     this.selectedVehicleType = '';
 
     this.getProjectVehicleById(this.projectVehicleId!);
+  }
+
+  stringifyMonths(monthList: string[]): void {
+    this.searchDates.month = JSON.stringify(monthList);
+    this.searchByMonth(this.searchDates);
+  }
+
+  searchByMonth(searchDates: ProjectVehicleValues): void {
+    this.selectedVehicleType = '';
+    this.projectVehicleService.getAllProjectVehicleValuesBySearchSpecification(this.projectVehicleId!,searchDates)
+      .subscribe((res: ProjectVehicleValues[]) => {
+        if (this.projectVehicle?.projectVehicleValuesList) {
+          this.projectVehicle.projectVehicleValuesList = res;
+        }
+      });
+  }
+
+  downloadExcelData() {
+    if (this.projectVehicle && this.projectVehicle.projectVehicleValuesList) {
+      this.projectVehicleService.downloadExcelData(this.projectVehicle.projectVehicleValuesList)
+        .subscribe(blob => saveAs(blob, "Report Data.xlsx"));
+    }
   }
 }
 

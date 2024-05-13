@@ -2,12 +2,15 @@ package com.example.FleetSystem.controller;
 
 import com.example.FleetSystem.dto.ProjectVehicleDto;
 import com.example.FleetSystem.dto.ProjectVehicleValuesDto;
+import com.example.FleetSystem.dto.VehicleDto;
 import com.example.FleetSystem.model.ProjectVehicle;
 import com.example.FleetSystem.model.ProjectVehicleValues;
 import com.example.FleetSystem.service.ProjectVehicleService;
 import com.example.FleetSystem.service.ProjectVehicleValuesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -64,4 +67,16 @@ public class ProjectVehicleController {
         return ResponseEntity.ok(result);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PostMapping("/download-project-vehicle-values-excel")
+    public ResponseEntity<byte[]> downloadVehicleExcel(@RequestBody List<ProjectVehicleValuesDto> projectVehicleValuesDtoList) {
+        byte[] excelBytes = projectVehicleValuesService.downloadExcel(projectVehicleValuesDtoList);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", "vehicles.xlsx");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(excelBytes);
+    }
 }

@@ -8,6 +8,8 @@ import { VendorService } from '../../vendor-screen/service/vendor.service';
 import { ProductFieldServiceService } from '../../product-field/service/product-field-service.service';
 import { ProductField } from 'src/app/modal/ProductField';
 import { DashboardRedirectServiceService } from 'src/app/CommonServices/dashboard-redirect-service.service';
+import { BackenCommonErrorThrow } from 'src/app/modal/BackendCommonErrorThrow';
+import { ErrorService } from 'src/app/CommonServices/Error/error.service';
 
 @Component({
   selector: 'app-add-project-vehicle',
@@ -52,16 +54,22 @@ export class AddProjectVehicleComponent implements OnInit {
         attachments: null
       },
       dateForMonth: new Date,
-      month: null
+      month: null,
+      vehicleType: undefined,
+      referenceNo: undefined
     }]
   };
+  month: string[] = [];
+  tabIndex: number = 0;
+  vehicleTypeList: ProductField | undefined | null;
   constructor(
-    private projectVehicleService: PrjectVehicleService,
-    private messageService: MessageService,
-    private router: Router,
-    private vendorService: VendorService,
+    private dashboardRedirectService: DashboardRedirectServiceService,
     private productFieldService: ProductFieldServiceService,
-    private dashboardRedirectService: DashboardRedirectServiceService
+    private projectVehicleService: PrjectVehicleService,
+    private errorHandleService: ErrorService,
+    private messageService: MessageService,
+    private vendorService: VendorService,
+    private router: Router,
 
   ) { }
 
@@ -71,9 +79,14 @@ export class AddProjectVehicleComponent implements OnInit {
     this.getProjectName();
     this.dashboardRedirectService.setDashboardValue('ProjectVehicle');
     this.updateMonthForFieldValue(this.projectVehicle.projectVehicleValuesList[0]);
+    this.getTypeList('Vehicle Type');
+    this.projectVehicle.projectVehicleValuesList.forEach((item: ProjectVehicleValues) => {
+      this.month.push(item.month!);
+    })
   }
 
-  addMoreFieldValue() {
+  addMoreFieldValue(event: Event) {
+    event.stopPropagation();
     const newFieldValue: ProjectVehicleValues = {
       id: null,
       dateForMonth: new Date,
@@ -95,10 +108,10 @@ export class AddProjectVehicleComponent implements OnInit {
         contactPersonList: [],
         attachments: null
       },
+      vehicleType: undefined,
+      referenceNo: undefined
     };
-
     this.projectVehicle.projectVehicleValuesList.push(newFieldValue);
-    this.updateMonthForFieldValue(newFieldValue);
   }
 
 
@@ -108,7 +121,7 @@ export class AddProjectVehicleComponent implements OnInit {
     }
   }
 
-  getAllVendors() {
+  private getAllVendors() {
     this.vendorService.getVendor().subscribe((res: Vendor[]) => {
       this.vendors = res;
     });
@@ -125,7 +138,7 @@ export class AddProjectVehicleComponent implements OnInit {
       }
     );
   }
-  getProjectName() {
+  private getProjectName() {
     this.productFieldService.getProductFieldByName('Project Name').subscribe((res: ProductField) => {
       this.projectNames = res;
       console.log(res);
@@ -160,11 +173,22 @@ export class AddProjectVehicleComponent implements OnInit {
       this.projectVehicle.projectVehicleValuesList[i].duration = null;
     }
   }
-  updateMonthForFieldValue(projectVehicleField: ProjectVehicleValues): void {
+  private updateMonthForFieldValue(projectVehicleField: ProjectVehicleValues): void {
     const monthNames = ["January", "February", "March", "April", "May", "June",
       "July", "August", "September", "October", "November", "December"];
     const monthIndex = projectVehicleField.dateForMonth!.getMonth();
     const monthName = monthNames[monthIndex];
+    console.log(this.projectVehicle);
     projectVehicleField.month = monthName;
+  }
+
+  private getTypeList(fieldName: string): void {
+    this.productFieldService.getProductFieldByName(fieldName).subscribe(
+      (res: ProductField) => {
+        this.vehicleTypeList = res;
+        debugger
+      }, (err: BackenCommonErrorThrow) => {
+        this.errorHandleService.showError(err.error!);
+      });
   }
 }

@@ -5,16 +5,36 @@
 
 .left-content {
   display: flex;
-  align-items: center; /* Vertically align left content */
+  align-items: center;
+  /* Vertically align left content */
 }
 
 .right-content {
   display: flex;
   align-items: center;
   position: absolute;
-  right: 1%;
-  top: 39%;
+  right: -0.5%;
+  top: 5%;
 }
+
 .trash-icon {
-  margin-right: 10px; /* Adjust margin as needed */
+  margin-right: 10px;
+}
+
+.plus-icon {
+  margin-right: 10px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.card-right {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  right: 0%;
+  top: 39%;
 }

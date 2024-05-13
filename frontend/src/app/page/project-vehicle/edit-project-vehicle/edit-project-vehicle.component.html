@@ -92,311 +92,432 @@
                   </div>
                 </div>
               </div>
-              <div class="row text-right mt-4 mb-3">
-                <div>
-                  <p-button
-                    icon="bi bi-plus"
-                    (click)="addMoreFieldValue()"
-                    styleClass="p-button-rounded p-button-help p-button-text p-button-raised"
-                    type="button"
-                  >
-                  </p-button>
-                </div>
-              </div>
               <h1 class="mb-4 h-color">Add Vehicles</h1>
-              <div class="card">
+              <div
+                class="card"
+                *ngIf="
+                  projectVehicle.monthWiseList !== undefined &&
+                  projectVehicle.monthWiseList !== null &&
+                  projectVehicle.monthWiseList.length > 0
+                "
+              >
                 <p-accordion [activeIndex]="[0]" [multiple]="true">
                   <p-accordionTab
-                    *ngFor="
-                      let projectVehicleField of projectVehicle.projectVehicleValuesList;
-                      let i = index
-                    "
+                    *ngFor="let monthData of projectVehicle.monthWiseList"
                   >
                     <ng-template pTemplate="header">
                       <div class="header-container">
                         <div class="left-content">
-                          <div class="ml-2">
-                            <p-badge
-                              [value]="(i + 1).toString()"
-                              [style]="{ 'background-color': 'black' }"
-                            ></p-badge>
-                          </div>
                           <div class="ml-3">
-                            {{ projectVehicleField.month }}
+                            {{ monthData.month }}
                           </div>
                         </div>
                         <div class="right-content">
-                          <div class="trash-icon">
-                            <span
-                              class="pi pi-trash text-red-500"
-                              (click)="removeFieldValue(i)"
-                            ></span>
+                          <div class="plus-icon">
+                            <p-button
+                              icon="bi bi-plus"
+                              (click)="
+                                addMoreFieldValue($event, monthData.month)
+                              "
+                              styleClass="p-button-rounded p-button-help p-button-text p-button-raised"
+                              type="button"
+                            >
+                            </p-button>
                           </div>
                         </div>
                       </div>
                     </ng-template>
-
-                    <div class="grid">
-                      <div class="col-12 md:col-12 lg:col-6">
-                        <div class="flex flex-column gap-2 form-hook">
-                          <div>
-                            <!-- <h2 style="color: #400099">{{ }}.</h2> -->
-                          </div>
-                          <label htmlFor="name">Type</label>
-                          <p-dropdown
-                            class="w-full"
-                            [(ngModel)]="projectVehicleField.type"
-                            [options]="vehicleTypes"
-                            [name]="'type[' + i + ']'"
-                            #type="ngModel"
-                            [required]="true"
-                            optionLabel="value"
-                            optionValue="value"
-                            [filter]="true"
-                            filterBy="name"
-                            [showClear]="true"
-                          >
-                          </p-dropdown>
-                          <small
-                            id="name-help"
-                            class="p-dropdown-empty-message"
-                            *ngIf="
-                              type.invalid &&
-                              (type.dirty || type.touched) &&
-                              !type.value
-                            "
-                          >
-                          </small>
-                        </div>
-                      </div>
-                      <div
-                        class="col-12 md:col-12 lg:col-6"
-                        style="margin-top: 0.5rem"
-                      >
-                        <div class="flex flex-column gap-2 form-hook">
-                          <label htmlFor="plateNumber">Plate Number</label>
-                          <input
-                            pInputText
-                            id="plateNumber"
-                            aria-describedby="plateNumber-help"
-                            name="plateNumber{{ i }}"
-                            [(ngModel)]="projectVehicleField.plateNumber"
-                            #plateNumber="ngModel"
-                            required
-                          />
-                          <small
-                            id="plateNumber-help"
-                            class="p-dropdown-empty-message"
-                            *ngIf="
-                              plateNumber.invalid &&
-                              (plateNumber.dirty || plateNumber.touched)
-                            "
-                          >
-                            Plate Number is required
-                          </small>
-                        </div>
-                      </div>
-                      <div
-                        *ngIf="projectVehicleField.type === 'Rental'"
-                        class="col-12 md:col-12 lg:col-12"
-                        style="margin-top: 16px"
-                      >
-                        <div class="flex flex-row gap-2">
-                          <div class="col-12 md:col-6 lg:col-6">
-                            <div class="flex flex-column gap-2 form-hook">
-                              <label for="origin">Origin</label>
-                              <input
-                                pInputText
-                                id="origin"
-                                [name]="'origin[' + i + ']'"
-                                [(ngModel)]="projectVehicleField.origin"
-                                #origin="ngModel"
-                                required
-                              />
-                              <small
-                                id="origin-help"
-                                class="p-dropdown-empty-message"
-                                *ngIf="
-                                  origin.invalid &&
-                                  (origin.dirty || origin.touched)
-                                "
-                              >
-                                Origin is required
-                              </small>
-                              <label for="origin">Rental Date</label>
-                              <p-calendar
-                                [showIcon]="true"
-                                [style]="{ width: '100%' }"
-                                id="rentalDate"
-                                [name]="'rentalDate[' + i + ']'"
-                                [(ngModel)]="projectVehicleField.rentalDate"
-                                #rentalDate="ngModel"
-                              />
-                              <small
-                                id="rentalDate-help"
-                                class="p-dropdown-empty-message"
-                                *ngIf="
-                                  rentalDate.invalid &&
-                                  (rentalDate.dirty || rentalDate.touched)
-                                "
-                              >
-                                Rental Date is required
-                              </small>
+                    <p-card
+                      styleClass="mt-5"
+                      *ngFor="
+                        let projectVehicleField of monthData.values;
+                        let i = index
+                      "
+                    >
+                      <ng-template pTemplate="header">
+                        <div class="card-header">
+                          <div class="left-content">
+                            <div class="m-1">
+                              <p-badge
+                                [value]="(i + 1).toString()"
+                                [style]="{ 'background-color': 'black' }"
+                              ></p-badge>
                             </div>
                           </div>
-                          <div class="col-12 md:col-6 lg:col-6">
-                            <div class="flex flex-column gap-2 form-hook">
-                              <label for="destination">Destination</label>
-                              <input
-                                pInputText
-                                id="destination"
-                                [name]="'destination[' + i + ']'"
-                                [(ngModel)]="projectVehicleField.destination"
-                                #destination="ngModel"
-                                required
-                              />
-                              <small
-                                id="destination-help"
-                                class="p-dropdown-empty-message"
-                                *ngIf="
-                                  destination.invalid &&
-                                  (destination.dirty || destination.touched)
-                                "
-                              >
-                                Destination is required
-                              </small>
+                          <div class="card-right">
+                            <div class="trash-icon">
+                              <span
+                                class="pi pi-trash text-red-500"
+                                (click)="removeFieldValue(i, monthData.month)"
+                              ></span>
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div
-                        *ngIf="projectVehicleField.type === 'Leased'"
-                        class="col-12 md:col-12 lg:col-12"
-                        style="margin-top: 16px"
-                      >
-                        <div class="flex flex-row gap-2">
-                          <div class="col-12 md:col-6 lg:col-6">
-                            <div class="flex flex-column gap-2 form-hook">
-                              <label for="startLease">Start Lease</label>
-                              <p-calendar
-                                [style]="{ width: '100%' }"
-                                [showIcon]="true"
-                                [name]="'startLease[' + i + ']'"
-                                [(ngModel)]="projectVehicleField.startLease"
-                                (onSelect)="updateDuration(i)"
-                                #startLease="ngModel"
-                              ></p-calendar>
-                              <small
-                                id="startLease-help"
-                                class="p-dropdown-empty-message"
-                                *ngIf="
-                                  startLease.invalid &&
-                                  (startLease.dirty || startLease.touched)
-                                "
-                              >
-                                Start Lease is required
-                              </small>
-                              <label for="duration">Duration (in days)</label>
-                              <input
-                                pInputText
-                                [name]="'duration[' + i + ']'"
-                                [(ngModel)]="projectVehicleField.duration"
-                                readonly
-                              />
-                            </div>
+                      </ng-template>
+                      <div class="grid">
+                        <div class="col-12 md:col-12 lg:col-6">
+                          <div class="flex flex-column gap-2 form-hook">
+                            <label htmlFor="name">Type</label>
+                            <p-dropdown
+                              class="w-full"
+                              [(ngModel)]="projectVehicleField.type"
+                              [options]="vehicleTypes"
+                              [name]="'type_' + monthData.month + '_' + i"
+                              [id]="'type_' + monthData.month + '_' + i"
+                              #type="ngModel"
+                              [required]="true"
+                              optionLabel="value"
+                              optionValue="value"
+                              [filter]="true"
+                              filterBy="name"
+                              [showClear]="true"
+                            >
+                            </p-dropdown>
+                            <small
+                              id="name-help"
+                              class="p-dropdown-empty-message"
+                              *ngIf="
+                                type.invalid &&
+                                (type.dirty || type.touched) &&
+                                !type.value
+                              "
+                            >
+                            </small>
                           </div>
-                          <div class="col-12 md:col-6 lg:col-6">
-                            <div class="flex flex-column gap-2 form-hook">
-                              <label for="expiryLease">Expiry Lease</label>
-                              <p-calendar
-                                [style]="{ width: '100%' }"
-                                [showIcon]="true"
-                                [name]="'expiryLease[' + i + ']'"
-                                [(ngModel)]="projectVehicleField.expiryLease"
-                                [minDate]="minDueDate!"
-                                (onSelect)="updateDuration(i)"
-                                #expiryLease="ngModel"
-                              ></p-calendar>
-                              <small
-                                id="expiryLease-help"
-                                class="p-dropdown-empty-message"
-                                *ngIf="
-                                  expiryLease.invalid &&
-                                  (expiryLease.dirty || expiryLease.touched)
-                                "
-                              >
-                                Expiry Lease is required
-                              </small>
+                        </div>
+                        <div
+                          class="col-12 md:col-12 lg:col-6"
+                          style="margin-top: 0.5rem"
+                        >
+                          <div class="flex flex-column gap-2 form-hook">
+                            <label htmlFor="plateNumber">Plate Number</label>
+                            <input
+                              pInputText
+                              aria-describedby="plateNumber-help"
+                              [name]="
+                                'plateNumber_' + monthData.month + '_' + i
+                              "
+                              [id]="'plateNumber_' + monthData.month + '_' + i"
+                              [(ngModel)]="projectVehicleField.plateNumber"
+                              #plateNumber="ngModel"
+                              required
+                            />
+                            <small
+                              id="plateNumber-help"
+                              class="p-dropdown-empty-message"
+                              *ngIf="
+                                plateNumber.invalid &&
+                                (plateNumber.dirty || plateNumber.touched)
+                              "
+                            >
+                              Plate Number is required
+                            </small>
+                          </div>
+                        </div>
+                        <div
+                          *ngIf="projectVehicleField.type === 'Rental'"
+                          class="col-12 md:col-12 lg:col-12"
+                          style="margin-top: 16px"
+                        >
+                          <div class="flex flex-row gap-2">
+                            <div class="col-12 md:col-6 lg:col-6">
+                              <div class="flex flex-column gap-2 form-hook">
+                                <label for="origin">Origin</label>
+                                <input
+                                  pInputText
+                                  [name]="'origin_' + monthData.month + '_' + i"
+                                  [id]="'origin_' + monthData.month + '_' + i"
+                                  [(ngModel)]="projectVehicleField.origin"
+                                  #origin="ngModel"
+                                  required
+                                />
+                                <small
+                                  id="origin-help"
+                                  class="p-dropdown-empty-message"
+                                  *ngIf="
+                                    origin.invalid &&
+                                    (origin.dirty || origin.touched)
+                                  "
+                                >
+                                  Origin is required
+                                </small>
+                                <label for="origin">Rental Date</label>
+                                <p-calendar
+                                  [showIcon]="true"
+                                  [style]="{ width: '100%' }"
+                                  [name]="
+                                    'rentalDate_' + monthData.month + '_' + i
+                                  "
+                                  [id]="
+                                    'rentalDate_' + monthData.month + '_' + i
+                                  "
+                                  [(ngModel)]="projectVehicleField.rentalDate"
+                                  #rentalDate="ngModel"
+                                />
+                                <small
+                                  id="rentalDate-help"
+                                  class="p-dropdown-empty-message"
+                                  *ngIf="
+                                    rentalDate.invalid &&
+                                    (rentalDate.dirty || rentalDate.touched)
+                                  "
+                                >
+                                  Rental Date is required
+                                </small>
+                              </div>
+                            </div>
+                            <div class="col-12 md:col-6 lg:col-6">
+                              <div class="flex flex-column gap-2 form-hook">
+                                <label for="destination">Destination</label>
+                                <input
+                                  pInputText
+                                  [name]="
+                                    'destination_' + monthData.month + '_' + i
+                                  "
+                                  [id]="
+                                    'destination_' + monthData.month + '_' + i
+                                  "
+                                  [(ngModel)]="projectVehicleField.destination"
+                                  #destination="ngModel"
+                                  required
+                                />
+                                <small
+                                  id="destination-help"
+                                  class="p-dropdown-empty-message"
+                                  *ngIf="
+                                    destination.invalid &&
+                                    (destination.dirty || destination.touched)
+                                  "
+                                >
+                                  Destination is required
+                                </small>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div class="col-12 md:col-12 lg:col-6">
-                        <div class="flex flex-column gap-2 form-hook">
-                          <label htmlFor="cost">Cost</label>
-                          <input
-                            pInputText
-                            id="cost"
-                            aria-describedby="cost-help"
-                            name="cost{{ i }}"
-                            [(ngModel)]="projectVehicleField.leaseCost"
-                            #cost="ngModel"
-                            required
-                          />
-                          <small
-                            id="cost-help"
-                            class="p-dropdown-empty-message"
-                            *ngIf="cost.invalid && (cost.dirty || cost.touched)"
-                          >
-                            Cost is required
-                          </small>
+                        <div
+                          *ngIf="projectVehicleField.type === 'Leased'"
+                          class="col-12 md:col-12 lg:col-12"
+                          style="margin-top: 16px"
+                        >
+                          <div class="flex flex-row gap-2">
+                            <div class="col-12 md:col-6 lg:col-6">
+                              <div class="flex flex-column gap-2 form-hook">
+                                <label for="startLease">Start Lease</label>
+                                <p-calendar
+                                  [style]="{ width: '100%' }"
+                                  [showIcon]="true"
+                                  [name]="
+                                    'startLease_' + monthData.month + '_' + i
+                                  "
+                                  [id]="
+                                    'startLease_' + monthData.month + '_' + i
+                                  "
+                                  [(ngModel)]="projectVehicleField.startLease"
+                                  (onSelect)="
+                                    updateDuration(i, monthData.month)
+                                  "
+                                  #startLease="ngModel"
+                                ></p-calendar>
+                                <small
+                                  id="startLease-help"
+                                  class="p-dropdown-empty-message"
+                                  *ngIf="
+                                    startLease.invalid &&
+                                    (startLease.dirty || startLease.touched)
+                                  "
+                                >
+                                  Start Lease is required
+                                </small>
+                                <label for="duration">Duration (in days)</label>
+                                <input
+                                  pInputText
+                                  [name]="
+                                    'duration_' + monthData.month + '_' + i
+                                  "
+                                  [id]="'duration_' + monthData.month + '_' + i"
+                                  [(ngModel)]="projectVehicleField.duration"
+                                  readonly
+                                />
+                              </div>
+                            </div>
+                            <div class="col-12 md:col-6 lg:col-6">
+                              <div class="flex flex-column gap-2 form-hook">
+                                <label for="expiryLease">Expiry Lease</label>
+                                <p-calendar
+                                  [style]="{ width: '100%' }"
+                                  [showIcon]="true"
+                                  [name]="
+                                    'expiryLease_' + monthData.month + '_' + i
+                                  "
+                                  [id]="
+                                    'expiryLease_' + monthData.month + '_' + i
+                                  "
+                                  [(ngModel)]="projectVehicleField.expiryLease"
+                                  [minDate]="minDueDate!"
+                                  (onSelect)="
+                                    updateDuration(i, monthData.month)
+                                  "
+                                  #expiryLease="ngModel"
+                                ></p-calendar>
+                                <small
+                                  id="expiryLease-help"
+                                  class="p-dropdown-empty-message"
+                                  *ngIf="
+                                    expiryLease.invalid &&
+                                    (expiryLease.dirty || expiryLease.touched)
+                                  "
+                                >
+                                  Expiry Lease is required
+                                </small>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                      <div class="col-12 md:col-12 lg:col-6">
-                        <div class="flex flex-column gap-2 form-hook">
-                          <label htmlFor="name">Vendor</label>
-                          <p-dropdown
-                            class="w-full"
-                            [(ngModel)]="projectVehicleField.vendor"
-                            [options]="vendors"
-                            name="vendor{{ i }}"
-                            #vendor="ngModel"
-                            [required]="true"
-                            optionLabel="vendorName"
-                            [filter]="true"
-                            filterBy="vendorName"
-                            [showClear]="true"
-                            placeholder="Select Vendor
-                        "
-                          >
-                            <ng-template pTemplate="selectedItem">
-                              <div
-                                class="flex align-items-center gap-2"
-                                *ngIf="projectVehicleField.vendor"
-                              >
-                                <div>
-                                  {{ projectVehicleField.vendor.vendorName }}
+                        <div class="col-12 md:col-12 lg:col-6">
+                          <div class="flex flex-column gap-2 form-hook">
+                            <label htmlFor="cost">Cost</label>
+                            <input
+                              pInputText
+                              aria-describedby="cost-help"
+                              [name]="'cost_' + monthData.month + '_' + i"
+                              [id]="'cost_' + monthData.month + '_' + i"
+                              [(ngModel)]="projectVehicleField.leaseCost"
+                              #cost="ngModel"
+                              required
+                            />
+                            <small
+                              id="cost-help"
+                              class="p-dropdown-empty-message"
+                              *ngIf="
+                                cost.invalid && (cost.dirty || cost.touched)
+                              "
+                            >
+                              Cost is required
+                            </small>
+                          </div>
+                        </div>
+                        <div class="col-12 md:col-12 lg:col-6">
+                          <div class="flex flex-column gap-2 form-hook">
+                            <label htmlFor="refNo">Reference No</label>
+                            <p-inputNumber
+                              aria-describedby="refNo-help"
+                              [(ngModel)]="projectVehicleField.referenceNo"
+                              #refNo="ngModel"
+                              [required]="true"
+                              [name]="'refNo_' + monthData.month + '_' + i"
+                              [id]="'refNo_' + monthData.month + '_' + i"
+                              [min]="1"
+                              styleClass="w-full"
+                            />
+                            <small
+                              id="refNo-help"
+                              class="p-dropdown-empty-message"
+                              *ngIf="
+                                refNo.invalid && (refNo.dirty || refNo.touched)
+                              "
+                            >
+                              Reference No# is required
+                            </small>
+                          </div>
+                        </div>
+                        <div class="col-12 md:col-12 lg:col-6">
+                          <div class="flex flex-column gap-2 form-hook">
+                            <label htmlFor="name">Vendor</label>
+                            <p-dropdown
+                              class="w-full"
+                              [(ngModel)]="projectVehicleField.vendor"
+                              [options]="vendors"
+                              [name]="'name' + monthData.month + '_' + i"
+                              [id]="'name' + monthData.month + '_' + i"
+                              #vendor="ngModel"
+                              [required]="true"
+                              optionLabel="vendorName"
+                              optionValue="vendorName"
+                              [filter]="true"
+                              filterBy="vendorName"
+                              [showClear]="true"
+                            >
+                              <ng-template pTemplate="selectedItem">
+                                <div
+                                  class="flex align-items-center gap-2"
+                                  *ngIf="projectVehicleField.vendor"
+                                >
+                                  <div>
+                                    {{ projectVehicleField.vendor.vendorName }}
+                                  </div>
                                 </div>
-                              </div>
-                            </ng-template>
-                            <ng-template let-vendors pTemplate="item">
-                              <div class="flex align-items-center gap-2">
-                                <div>{{ vendors.vendorName }}</div>
-                              </div>
-                            </ng-template>
-                          </p-dropdown>
-                          <small
-                            id="name-help"
-                            class="p-dropdown-empty-message"
-                            *ngIf="
-                              vendor.invalid && (vendor.dirty || vendor.touched)
-                            "
-                          >
-                            Vendor is required
-                          </small>
+                              </ng-template>
+                              <ng-template let-vendors pTemplate="item">
+                                <div class="flex align-items-center gap-2">
+                                  <div>{{ vendors.vendorName }}</div>
+                                </div>
+                              </ng-template>
+                            </p-dropdown>
+                            <small
+                              id="name-help"
+                              class="p-dropdown-empty-message"
+                              *ngIf="
+                                vendor.invalid &&
+                                (vendor.dirty || vendor.touched)
+                              "
+                            >
+                              Vendor is required
+                            </small>
+                          </div>
+                        </div>
+                        <div class="col-12 md:col-12 lg:col-6">
+                          <div class="flex flex-column gap-2 form-hook">
+                            <label htmlFor="name">Vehicle Type</label>
+                            <p-dropdown
+                              class="w-full"
+                              [(ngModel)]="projectVehicleField.vehicleType"
+                              [options]="
+                                vehicleTypeList?.productFieldValuesList
+                              "
+                              [name]="
+                                'vehicleType_' + monthData.month + '_' + i
+                              "
+                              [id]="'vehicleType_' + monthData.month + '_' + i"
+                              #vehicleType="ngModel"
+                              [required]="true"
+                              optionLabel="name"
+                              optionValue="name"
+                              [filter]="true"
+                              filterBy="vehicleType"
+                              [showClear]="true"
+                              placeholder="Select Vehicle Type"
+                            >
+                              <ng-template pTemplate="selectedItem">
+                                <div
+                                  class="flex align-items-center gap-2"
+                                  *ngIf="projectVehicleField.vehicleType"
+                                >
+                                  <div>
+                                    {{ projectVehicleField.vehicleType }}
+                                  </div>
+                                </div>
+                              </ng-template>
+                              <ng-template let-vehicleType pTemplate="item">
+                                <div class="flex align-items-center gap-2">
+                                  <div>{{ vehicleType.name }}</div>
+                                </div>
+                              </ng-template>
+                            </p-dropdown>
+                            <small
+                              id="name-help"
+                              class="p-dropdown-empty-message"
+                              *ngIf="
+                                vehicleType.invalid &&
+                                (vehicleType.dirty || vehicleType.touched)
+                              "
+                            >
+                              Vehicle Type is required
+                            </small>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    </p-card>
                   </p-accordionTab>
                 </p-accordion>
               </div>

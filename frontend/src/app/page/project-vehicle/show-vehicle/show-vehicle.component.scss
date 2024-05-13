@@ -1,0 +1,29 @@
+.flex {
+  display: flex;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.gap-1 {
+  gap: 1rem; /* Adjust the gap between elements */
+}
+
+.bg-b-color {
+  color: #ffffff; /* Adjust button text color */
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px; /* Adjust button padding */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Additional styles for adjusting margin and padding if needed */
+.mt-5 {
+  margin-top: 5px;
+}
+
+.pt-2 {
+  padding-top: 2px;
+}

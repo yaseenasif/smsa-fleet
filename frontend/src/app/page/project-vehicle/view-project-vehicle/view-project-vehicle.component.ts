@@ -39,7 +39,9 @@ export class ViewProjectVehicleComponent implements OnInit {
         contactPersonList: [],
         attachments: null
       },
-      month: undefined
+      month: undefined,
+      vehicleType: undefined,
+      referenceNo: undefined
     }]
   };
   projectVehicleId: number | undefined | null;

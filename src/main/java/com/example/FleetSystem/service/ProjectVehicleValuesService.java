@@ -1,5 +1,6 @@
 package com.example.FleetSystem.service;
 
+import com.example.FleetSystem.dto.ProjectVehicleExcelDto;
 import com.example.FleetSystem.dto.ProjectVehicleValuesDto;
 import com.example.FleetSystem.model.ProjectVehicleValues;
 import com.example.FleetSystem.repository.ProjectVehicleValuesRepository;
@@ -16,13 +17,15 @@ public class ProjectVehicleValuesService {
 
     private final ProjectVehicleValuesRepository projectVehicleValuesRepository;
     private final ModelMapper modelMapper;
+    private final ExcelExportService excelService;
 
     public ProjectVehicleValuesService(
             ProjectVehicleValuesRepository projectVehicleValuesRepository,
-            ModelMapper modelMapper
-    ) {
+            ModelMapper modelMapper,
+            ExcelExportService excelService) {
         this.projectVehicleValuesRepository = projectVehicleValuesRepository;
         this.modelMapper = modelMapper;
+        this.excelService = excelService;
     }
 
     public List<ProjectVehicleValuesDto> getAllBySearchSpecification(
@@ -46,8 +49,23 @@ public class ProjectVehicleValuesService {
     private ProjectVehicleValues toEntity(ProjectVehicleValuesDto projectVehicleValuesDto) {
         return modelMapper.map(projectVehicleValuesDto, ProjectVehicleValues.class);
     }
-}
 
+    public byte[] downloadExcel(List<ProjectVehicleValuesDto> projectVehicleValuesDtoList) {
+       List<ProjectVehicleExcelDto> projectVehicleExcelDto = toExcelDtoList(projectVehicleValuesDtoList);
+        return excelService.exportToExcel(projectVehicleExcelDto);
+    }
+
+    private List<ProjectVehicleExcelDto> toExcelDtoList(List<ProjectVehicleValuesDto> projectVehicleValuesDtoList) {
+        return projectVehicleValuesDtoList.stream().map(this::toExcelDto).collect(Collectors.toList());
+
+    }
+
+    private ProjectVehicleExcelDto toExcelDto(ProjectVehicleValuesDto projectVehicleValuesDto) {
+        ProjectVehicleExcelDto projectVehicleExcelDto = modelMapper.map(projectVehicleValuesDto, ProjectVehicleExcelDto.class);
+        projectVehicleExcelDto.setVendor(projectVehicleValuesDto.getVendor().getVendorName());
+        return projectVehicleExcelDto;
+    }
+}
 //    public List<ProjectVehicleValuesDto> getAllByLeaseDates(Long id, Date startLease, Date expiryLease) {
 //        List<ProjectVehicleValues> projectVehicleValuesList = projectVehicleValuesRepository
 //                .findAllByProjectVehicleId(id);

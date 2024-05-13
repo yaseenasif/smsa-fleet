@@ -14,19 +14,19 @@
             [hideTransitionOptions]="'5000ms'"
           ></p-toast>
           <div class="table-head">
-            <div
-              class="flex mb-2 align-items-center gap-1"
-              style="justify-content: flex-start; align-items: flex-start"
-            >
+
+            <div class="flex mb-2 align-items-center gap-1" style="justify-content: space-between; align-items: flex-start">
               <div class="flex align-items-center">
-                <p-button
-                  label="Clear"
-                  class="bg-b-color"
-                  (onClick)="clear()"
-                  icon="pi pi-filter-slash"
-                ></p-button>
+                <p-button label="Clear" class="bg-b-color" (onClick)="clear()" icon="pi pi-filter-slash"></p-button>
+              </div>
+              <div class="flex align-items-center">
+                <p-button class="bg-b-color adjust pt-2" (click)="downloadExcelData()">
+                  <i class="bi bi-download"></i>&nbsp; Export data
+                </p-button>
               </div>
             </div>
+
+
             <p-toolbar [style]="{ 'padding-top': '1.5rem' }">
               <div class="p-toolbar-group-start h-color">
                 <h3>
@@ -121,6 +121,22 @@
                     <label for="float-vehicleType">Search Vehicle Type</label>
                   </span>
                 </div>
+                <div class="ml-3">
+                  <span class="p-float-label">
+                    <p-multiSelect
+                      id="month"
+                      display="chip"
+                      [(ngModel)]="selectedMonths"
+                      [options]="monthList"
+                      optionLabel="name"
+                      optionValue="name"
+                      inputId="float-month"
+                      placeholder="Search by month"
+                      (onChange)="stringifyMonths($event.value)"
+                    ></p-multiSelect>
+                    <label for="float-month">Search by month</label>
+                  </span>
+                </div>
               </div>
             </p-toolbar>
             <p-toolbar>
@@ -169,6 +185,7 @@
                     Duration
                   </th>
                   <th class="text-center">Vendor</th>
+                  <th class="text-center">Month</th>
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-projectVehicleValue>
@@ -231,6 +248,9 @@
                   </td>
                   <td style="text-align: center">
                     {{ projectVehicleValue?.vendor?.vendorName }}
+                  </td>
+                  <td style="text-align: center">
+                    {{ projectVehicleValue?.month }}
                   </td>
                 </tr>
               </ng-template>
