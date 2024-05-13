@@ -59,7 +59,7 @@ export class AddProjectVehicleComponent implements OnInit {
       referenceNo: undefined
     }]
   };
-  month: string[] = [];
+  month: string | null | undefined;
   tabIndex: number = 0;
   vehicleTypeList: ProductField | undefined | null;
   constructor(
@@ -80,9 +80,6 @@ export class AddProjectVehicleComponent implements OnInit {
     this.dashboardRedirectService.setDashboardValue('ProjectVehicle');
     this.updateMonthForFieldValue(this.projectVehicle.projectVehicleValuesList[0]);
     this.getTypeList('Vehicle Type');
-    this.projectVehicle.projectVehicleValuesList.forEach((item: ProjectVehicleValues) => {
-      this.month.push(item.month!);
-    })
   }
 
   addMoreFieldValue(event: Event) {
@@ -90,7 +87,7 @@ export class AddProjectVehicleComponent implements OnInit {
     const newFieldValue: ProjectVehicleValues = {
       id: null,
       dateForMonth: new Date,
-      month: null,
+      month: this.month,
       plateNumber: null,
       leaseCost: null,
       type: null,
@@ -178,15 +175,13 @@ export class AddProjectVehicleComponent implements OnInit {
       "July", "August", "September", "October", "November", "December"];
     const monthIndex = projectVehicleField.dateForMonth!.getMonth();
     const monthName = monthNames[monthIndex];
-    console.log(this.projectVehicle);
-    projectVehicleField.month = monthName;
+    this.month = monthName;
   }
 
   private getTypeList(fieldName: string): void {
     this.productFieldService.getProductFieldByName(fieldName).subscribe(
       (res: ProductField) => {
         this.vehicleTypeList = res;
-        debugger
       }, (err: BackenCommonErrorThrow) => {
         this.errorHandleService.showError(err.error!);
       });
