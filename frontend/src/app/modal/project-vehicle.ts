@@ -1,6 +1,9 @@
 import { Vendor } from "./vendor"
 
 export interface ProjectVehicle {
+  totalRentalCost?: number
+  totalLease?: number
+  totalRental?: number
   id: Number | null | undefined
   projectName: String | null | undefined
   date: Date | null | undefined | String

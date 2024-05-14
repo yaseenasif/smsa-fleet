@@ -11,9 +11,9 @@ import { DashboardRedirectServiceService } from 'src/app/CommonServices/dashboar
   providers: [MessageService]
 })
 export class ProjectVehicleComponent implements OnInit {
-  countLease: number[] | undefined | null;
-  countRental: number[] | undefined | null;
-  totalCost: number[] | undefined | null;
+  countLease: number | undefined | null;
+  countRental: number | undefined | null;
+  totalCost: number | undefined | null;
   totalRentalCost: number = 0;
   constructor(private projectVehicleService: PrjectVehicleService,
     private messageService: MessageService, private dashboardRedirectService: DashboardRedirectServiceService
@@ -26,52 +26,31 @@ export class ProjectVehicleComponent implements OnInit {
     this.dashboardRedirectService.setDashboardValue('ProjectVehicle');
   }
   getAllProjectVehicle() {
-    this.projectVehicleService.getAllProjectVehicle().subscribe((projectVehicle: ProjectVehicle[]) => {
-      this.projectVehicles = projectVehicle;
-      console.log(projectVehicle);
-  
-      this.countLease = [];
-      this.countRental = [];
-      this.totalCost = []; // Reset totalCost array
-  
-      for (let index = 0; index < this.projectVehicles.length; index++) {
-        this.projectVehicles[index].projectVehicleValuesList.forEach((item: ProjectVehicleValues) => {
-          
-          if (item.type === "Leased") {
-            if (this.countLease) {
-              this.countLease.push((this.countLease[this.countLease.length - 1] || 0) + 1);
-            } else {
-              this.countLease = [1];
-            }
-          } else if (item.type === "Rental") {
-            // Accumulate rental costs
-            if (item.leaseCost) { // Ensure leaseCost exists
-              this.totalCost?.push(item.leaseCost!);
-            }
-  
-            if (this.countRental) {
-              this.countRental.push((this.countRental[this.countRental.length - 1] || 0) + 1);
-            } else {
-              this.countRental = [1];
-            }
-          }
-        });
-      }
-      // Calculate and store the total rental cost
-      this.totalRentalCost = this.getTotalRentalCost();
+    this.projectVehicleService.getAllProjectVehicle().subscribe((projectVehicles: ProjectVehicle[]) => {
+      this.projectVehicles = projectVehicles;
+      this.calculateTotals();
     });
   }
-  
-  getTotalRentalCost(): number {
-    let total = 0;
-  
-    if (this.totalCost) {
-      this.totalCost.forEach((value: number) => {
-        total += value;
+
+  calculateTotals() {
+    this.projectVehicles.forEach(project => {
+      let totalRental = 0;
+      let totalLease = 0;
+      let totalRentalCost = 0;
+
+      project.projectVehicleValuesList.forEach(value => {
+        if (value.type === 'Rental') {
+          totalRental++;
+          totalRentalCost += value.leaseCost || 0;
+        } else if (value.type === 'Leased') {
+          totalLease++;
+        }
       });
-    }
-  
-    return total;
+
+      project.totalRental = totalRental;
+      project.totalLease = totalLease;
+      project.totalRentalCost = totalRentalCost;
+    });
   }
   deleteProjectVehicleById(id: number) {
     this.projectVehicleService.deleteGradeByProjectVehicle(id).subscribe((res) => {
