@@ -212,7 +212,7 @@ export class ShowVehicleComponent {
       id: undefined,
     };
     this.selectedVehicleType = '';
-
+    this.selectedMonths = [];
     this.getProjectVehicleById(this.projectVehicleId!);
   }
 

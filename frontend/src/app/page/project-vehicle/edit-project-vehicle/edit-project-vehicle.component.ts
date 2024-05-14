@@ -160,7 +160,7 @@ export class EditProjectVehicleComponent implements OnInit {
   }
 
   onSubmit() {
-    debugger
+    
     this.projectVehicle.projectVehicleValuesList = [];
     this.projectVehicle.monthWiseList?.forEach(data => {
       this.projectVehicle.projectVehicleValuesList = this.projectVehicle.projectVehicleValuesList.concat(data.values);
@@ -222,7 +222,6 @@ export class EditProjectVehicleComponent implements OnInit {
         .map(data => data.values)
         .flat();
     }
-    debugger
     if (this.projectVehicle.projectVehicleValuesList[i].startLease) {
       this.minDueDate = new Date(this.projectVehicle.projectVehicleValuesList[i].startLease!);
     } else {
@@ -249,7 +248,7 @@ export class EditProjectVehicleComponent implements OnInit {
   }
 
   destructureResponse(projectVehicle: ProjectVehicle) {
-    console.log(projectVehicle.projectVehicleValuesList);
+    this.projectVehicle = projectVehicle
     const { projectVehicleValuesList } = projectVehicle;
 
     // Extracting unique month names and filtering out null or undefined values
@@ -295,7 +294,7 @@ export class EditProjectVehicleComponent implements OnInit {
     this.productFieldService.getProductFieldByName(fieldName).subscribe(
       (res: ProductField) => {
         this.vehicleTypeList = res;
-        debugger
+
       }, (err: BackenCommonErrorThrow) => {
         this.errorHandleService.showError(err.error!);
       });
