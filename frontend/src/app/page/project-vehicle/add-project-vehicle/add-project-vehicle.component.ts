@@ -109,6 +109,7 @@ export class AddProjectVehicleComponent implements OnInit {
       referenceNo: undefined
     };
     this.projectVehicle.projectVehicleValuesList.push(newFieldValue);
+    console.log(this.projectVehicle.projectVehicleValuesList);
   }
 
 
@@ -175,6 +176,7 @@ export class AddProjectVehicleComponent implements OnInit {
       "July", "August", "September", "October", "November", "December"];
     const monthIndex = projectVehicleField.dateForMonth!.getMonth();
     const monthName = monthNames[monthIndex];
+    projectVehicleField.month = monthName;
     this.month = monthName;
   }
 
