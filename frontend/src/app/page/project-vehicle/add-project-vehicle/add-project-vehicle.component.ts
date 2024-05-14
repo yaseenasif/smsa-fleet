@@ -74,11 +74,12 @@ export class AddProjectVehicleComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.updateMonthForFieldValue();
+    console.log(this.projectVehicle.projectVehicleValuesList);
     this.items = [{ label: 'Project Vehicle', routerLink: '/project-vehicle' }, { label: 'Add Project Vehicle' }];
     this.getAllVendors();
     this.getProjectName();
     this.dashboardRedirectService.setDashboardValue('ProjectVehicle');
-    this.updateMonthForFieldValue(this.projectVehicle.projectVehicleValuesList[0]);
     this.getTypeList('Vehicle Type');
   }
 
@@ -171,12 +172,12 @@ export class AddProjectVehicleComponent implements OnInit {
       this.projectVehicle.projectVehicleValuesList[i].duration = null;
     }
   }
-  private updateMonthForFieldValue(projectVehicleField: ProjectVehicleValues): void {
+  private updateMonthForFieldValue(): void {
     const monthNames = ["January", "February", "March", "April", "May", "June",
       "July", "August", "September", "October", "November", "December"];
-    const monthIndex = projectVehicleField.dateForMonth!.getMonth();
+    const monthIndex = this.projectVehicle.projectVehicleValuesList[0].dateForMonth!.getMonth();
     const monthName = monthNames[monthIndex];
-    projectVehicleField.month = monthName;
+    this.projectVehicle.projectVehicleValuesList[0].month = monthName;
     this.month = monthName;
   }
 
