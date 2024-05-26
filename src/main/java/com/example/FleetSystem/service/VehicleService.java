@@ -375,7 +375,7 @@ public class VehicleService {
                                 String username = ((UserDetails) principal).getUsername();
                                 User user = userRepository.findByEmployeeIdAndStatusIsTrue(username);
 
-                                Vendor vendor = vendorRepository.findByVendorNameIgnoreCase(getStringValue(row.getCell(12)));
+                                Vendor vendor = vendorRepository.findByVendorNameIgnoreCaseAndStatusIsTrue(getStringValue(row.getCell(12)));
 
 //                                vehicle.setProcessOrderNumber(getIntegerValue(row.getCell(0)));
                                 vehicle.setPlateNumber(getStringValue(row.getCell(1)));
