@@ -14,4 +14,6 @@ public interface VendorRepository extends JpaRepository<Vendor,Long> {
 
     @Query("SELECT v FROM Vendor v WHERE v.status = true")
     List<Vendor> getActiveVendors();
+
+    Vendor findByVendorNameIgnoreCaseAndStatusIsTrue(String stringValue);
 }

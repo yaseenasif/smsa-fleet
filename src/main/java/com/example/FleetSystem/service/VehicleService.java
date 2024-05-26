@@ -521,7 +521,7 @@ public class VehicleService {
                         return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: " + row.getCell(18), "Row" + (rowNum + 1) + " and cell 19"));
                     }
 
-                    Optional<Vendor> vendor = Optional.ofNullable(vendorRepository.findByVendorNameIgnoreCase(getStringValue(row.getCell(12))));
+                    Optional<Vendor> vendor = Optional.ofNullable(vendorRepository.findByVendorNameIgnoreCaseAndStatusIsTrue(getStringValue(row.getCell(12))));
 
                     if (!vendor.isPresent()) {
                         return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList(getStringValue(row.getCell(12)) + " vendor does not exist in the record", "Row " + (rowNum + 1) + " and Cell 13"));
