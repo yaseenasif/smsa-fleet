@@ -215,31 +215,31 @@ public class EmployeeService {
 
                         Employee employee = new Employee();
 
-                        SimpleDateFormat inputDateFormat = new SimpleDateFormat("d-MMM-yy");
-                        SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-                        String dateOfBirthValue = String.valueOf(row.getCell(5));
-                        String joiningDateValue = String.valueOf(row.getCell(6));
-
-                        try {
-                            if (!dateOfBirthValue.isEmpty()) {
-                                java.util.Date birthDateUtil = inputDateFormat.parse(dateOfBirthValue);
-                                String birthDateSqlDateStr = outputDateFormat.format(birthDateUtil);
-                                Date birthDateSql = Date.valueOf(birthDateSqlDateStr);
-                                employee.setDateOfBirth(birthDateSql);
-                            }
-
-                            if (!joiningDateValue.isEmpty()) {
-                                java.util.Date joiningDateUtil = inputDateFormat.parse(joiningDateValue);
-                                String joiningDateSqlDateStr = outputDateFormat.format(joiningDateUtil);
-                                Date joiningDateSql = Date.valueOf(joiningDateSqlDateStr);
-                                employee.setJoiningDate(joiningDateSql);
-                            }
-
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                            throw new RuntimeException("Error processing the Date: " + e.getMessage());
-                        }
+//                        SimpleDateFormat inputDateFormat = new SimpleDateFormat("d-MMM-yy");
+//                        SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//
+//                        String dateOfBirthValue = String.valueOf(row.getCell(5));
+//                        String joiningDateValue = String.valueOf(row.getCell(6));
+//
+//                        try {
+//                            if (!dateOfBirthValue.isEmpty()) {
+//                                java.util.Date birthDateUtil = inputDateFormat.parse(dateOfBirthValue);
+//                                String birthDateSqlDateStr = outputDateFormat.format(birthDateUtil);
+//                                Date birthDateSql = Date.valueOf(birthDateSqlDateStr);
+//                                employee.setDateOfBirth(birthDateSql);
+//                            }
+//
+//                            if (!joiningDateValue.isEmpty()) {
+//                                java.util.Date joiningDateUtil = inputDateFormat.parse(joiningDateValue);
+//                                String joiningDateSqlDateStr = outputDateFormat.format(joiningDateUtil);
+//                                Date joiningDateSql = Date.valueOf(joiningDateSqlDateStr);
+//                                employee.setJoiningDate(joiningDateSql);
+//                            }
+//
+//                        } catch (ParseException e) {
+//                            e.printStackTrace();
+//                            throw new RuntimeException("Error processing the Date: " + e.getMessage());
+//                        }
 
                         try {
                             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -252,33 +252,34 @@ public class EmployeeService {
                                 Optional<Grade> grade = gradeRepository.findByNameAndStatusIsTrue(getIntegerValue(row.getCell(19)));
 
                                 employee.setEmployeeNumber(getLongValue(row.getCell(0)));
-                                employee.setBudgetRef(getStringValue(row.getCell(1)));
+//                                employee.setBudgetRef(getStringValue(row.getCell(1)));
                                 employee.setEmpName(getStringValue(row.getCell(2)));
-                                employee.setGender(row.getCell(3).getStringCellValue().charAt(0));
-                                employee.setMaritalStatus(row.getCell(4).getStringCellValue().charAt(0));
+//                                employee.setGender(row.getCell(3).getStringCellValue().charAt(0));
+//                                employee.setMaritalStatus(row.getCell(4).getStringCellValue().charAt(0));
                                 employee.setRegion(getStringValue(row.getCell(8)));
                                 employee.setCountry(getStringValue(row.getCell(9)));
                                 employee.setLocation(getStringValue(row.getCell(10)));
                                 employee.setOrganization(Objects.requireNonNull(getStringValue(row.getCell(12))).toUpperCase());
-                                employee.setNationalIdNumber(getLongValue(row.getCell(13)));
-                                employee.setSvEmployeeNumber(getLongValue(row.getCell(14)));
-                                employee.setSvEmployeeName(getStringValue(row.getCell(15)));
-                                employee.setCostCentre(getStringValue(row.getCell(16)));
+//                                employee.setNationalIdNumber(getLongValue(row.getCell(13)));
+//                                employee.setSvEmployeeNumber(getLongValue(row.getCell(14)));
+//                                employee.setSvEmployeeName(getStringValue(row.getCell(15)));
+//                                employee.setCostCentre(getStringValue(row.getCell(16)));
                                 employee.setNationality(Objects.requireNonNull(getStringValue(row.getCell(17))).toUpperCase());
-                                employee.setCompanyEmailAddress(getStringValue(row.getCell(18)));
-                                employee.setLicenseNumber(getStringValue(row.getCell(20)));
-                                employee.setContactNumber(dataFormatter.formatCellValue(row.getCell(21)));
+//                                employee.setCompanyEmailAddress(getStringValue(row.getCell(18)));
+//                                employee.setLicenseNumber(getStringValue(row.getCell(20)));
+//                                employee.setContactNumber(dataFormatter.formatCellValue(row.getCell(21)));
                                 employee.setStatus('A');
                                 employee.setCreatedBy(user);
                                 employee.setCreatedAt(LocalDate.now());
                                 employee.setDeleteStatus(Boolean.TRUE);
                                 employee.setUuid(uuid);
 
-                                if (row.getCell(11).getCellType() == CellType.STRING){
-                                    employee.setDeptCode(Objects.requireNonNull(getStringValue(row.getCell(11))).toUpperCase());
-                                }else{
-                                    employee.setDeptCode(Objects.requireNonNull(getIntegerValue(row.getCell(11)).toString()).toUpperCase());
-                                }
+//                                if (row.getCell(11).getCellType() == CellType.STRING){
+//                                    employee.setDeptCode(Objects.requireNonNull(getStringValue(row.getCell(11))).toUpperCase());
+//                                }else{
+//                                    employee.setDeptCode(Objects.requireNonNull(getIntegerValue(row.getCell(11)).toString()).toUpperCase());
+//                                }
+
                                 if (jobTitle.isPresent()) {
                                     employee.setJobTitle(jobTitle.get().getJobTitle());
                                     employee.setDivision(jobTitle.get().getDivision());
@@ -288,10 +289,10 @@ public class EmployeeService {
                                     employee.setVehicleEligible(jobTitle.get().getVehicleEligible());
                                 }
 
-                                if (grade.isPresent()) {
-                                    employee.setGrade(grade.get().getName());
-                                    employee.setVehicleBudget(grade.get().getVehicleBudget());
-                                }
+//                                if (grade.isPresent()) {
+//                                    employee.setGrade(grade.get().getName());
+//                                    employee.setVehicleBudget(grade.get().getVehicleBudget());
+//                                }
 
                                 employeeRepository.save(employee);
 
@@ -380,11 +381,11 @@ public class EmployeeService {
                     Row row = sheet.getRow(rowNum);
                     if (row != null && row.getPhysicalNumberOfCells() > 0) {
 
-                        for (int cellNum = 0; cellNum <= row.getLastCellNum() - 1; cellNum++) {
-                            if (String.valueOf(row.getCell(cellNum)).isEmpty()) {
-                                return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Empty Value at Row " + (rowNum + 1) + " and Cell " + (cellNum + 1)));
-                            }
-                        }
+//                        for (int cellNum = 0; cellNum <= row.getLastCellNum() - 1; cellNum++) {
+//                            if (String.valueOf(row.getCell(cellNum)).isEmpty()) {
+//                                return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Empty Value at Row " + (rowNum + 1) + " and Cell " + (cellNum + 1)));
+//                            }
+//                        }
 
                         Optional<Employee> employee = employeeRepository.findByEmployeeNumber(getLongValue(row.getCell(0)));
                         if (employee.isPresent()) {
@@ -397,18 +398,19 @@ public class EmployeeService {
                             return checkDuplicate;
                         }
 
-                        String regex = "^(0[1-9]|[1-2][0-9]|3[0-1])-(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)-\\d{4}$";
-                        Pattern pattern = Pattern.compile(regex);
-                        Matcher dateOfBirthMatcher = pattern.matcher(String.valueOf(row.getCell(5)));
-                        Matcher joiningDateMatcher = pattern.matcher(String.valueOf(row.getCell(6)));
+//                        String regex = "^(0[1-9]|[1-2][0-9]|3[0-1])-(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)-\\d{4}$";
+//                        Pattern pattern = Pattern.compile(regex);
+//                        Matcher dateOfBirthMatcher = pattern.matcher(String.valueOf(row.getCell(5)));
+//                        Matcher joiningDateMatcher = pattern.matcher(String.valueOf(row.getCell(6)));
 
 
-                        if (!dateOfBirthMatcher.matches()) {
-                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(5), "Row " + (rowNum + 1) + " and Cell 6"));
-                        } else if (!joiningDateMatcher.matches()) {
-                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(6),
-                                    "Row " + (rowNum + 1) + " and Cell 7"));
-                        } else if (getNumericValue(row.getCell(0)) == null) {
+//                        if (!dateOfBirthMatcher.matches()) {
+//                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(5), "Row " + (rowNum + 1) + " and Cell 6"));
+//                        } else if (!joiningDateMatcher.matches()) {
+//                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(6),
+//                                    "Row " + (rowNum + 1) + " and Cell 7"));
+//                        }
+                         if (getNumericValue(row.getCell(0)) == null) {
                             return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: " + row.getCell(0), "Row " + (rowNum + 1) + " and cell 1"));
                         } else if (getNumericValue(row.getCell(13)) == null) {
                             return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: " + row.getCell(13), "Row " + (rowNum + 1) + " and cell 14"));
