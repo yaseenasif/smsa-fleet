@@ -329,19 +329,19 @@ public class VehicleService {
 
                         SimpleDateFormat inputDateFormat = new SimpleDateFormat("d-MMM-yy");
                         SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                        String registrationExpiryValue = String.valueOf(row.getCell(16));
-                        String insuranceExpiryValue = String.valueOf(row.getCell(17));
+//                        String registrationExpiryValue = String.valueOf(row.getCell(16));
+//                        String insuranceExpiryValue = String.valueOf(row.getCell(17));
                         String leaseStartValue = String.valueOf(row.getCell(19));
                         String leaseExpiryValue = String.valueOf(row.getCell(20));
 
 
                         try {
-                            if (!insuranceExpiryValue.isEmpty()) {
-                                java.util.Date insuranceUtilDate = inputDateFormat.parse(insuranceExpiryValue);
-                                String insuranceSqlDateStr = outputDateFormat.format(insuranceUtilDate);
-                                Date insuranceSqlDate = Date.valueOf(insuranceSqlDateStr);
-                                vehicle.setInsuranceExpiry(insuranceSqlDate);
-                            }
+//                            if (!insuranceExpiryValue.isEmpty()) {
+//                                java.util.Date insuranceUtilDate = inputDateFormat.parse(insuranceExpiryValue);
+//                                String insuranceSqlDateStr = outputDateFormat.format(insuranceUtilDate);
+//                                Date insuranceSqlDate = Date.valueOf(insuranceSqlDateStr);
+//                                vehicle.setInsuranceExpiry(insuranceSqlDate);
+//                            }
 
                             if (!leaseStartValue.isEmpty()) {
                                 java.util.Date leaseStartUtilDate = inputDateFormat.parse(leaseStartValue);
@@ -356,12 +356,12 @@ public class VehicleService {
                                 Date leaseExpirySqlDate = Date.valueOf(leaseExpirySqlDateStr);
                                 vehicle.setLeaseExpiryDate(leaseExpirySqlDate);
                             }
-                            if (!registrationExpiryValue.isEmpty()) {
-                                java.util.Date registrationExpiryUtilDate = inputDateFormat.parse(registrationExpiryValue);
-                                String registrationExpirySqlDateStr = outputDateFormat.format(registrationExpiryUtilDate);
-                                Date registrationExpirySqlDate = Date.valueOf(registrationExpirySqlDateStr);
-                                vehicle.setRegistrationExpiry(registrationExpirySqlDate);
-                            }
+//                            if (!registrationExpiryValue.isEmpty()) {
+//                                java.util.Date registrationExpiryUtilDate = inputDateFormat.parse(registrationExpiryValue);
+//                                String registrationExpirySqlDateStr = outputDateFormat.format(registrationExpiryUtilDate);
+//                                Date registrationExpirySqlDate = Date.valueOf(registrationExpirySqlDateStr);
+//                                vehicle.setRegistrationExpiry(registrationExpirySqlDate);
+//                            }
 
 
                         } catch (ParseException e) {
@@ -377,7 +377,7 @@ public class VehicleService {
 
                                 Vendor vendor = vendorRepository.findByVendorNameIgnoreCase(getStringValue(row.getCell(12)));
 
-                                vehicle.setProcessOrderNumber(getIntegerValue(row.getCell(0)));
+//                                vehicle.setProcessOrderNumber(getIntegerValue(row.getCell(0)));
                                 vehicle.setPlateNumber(getStringValue(row.getCell(1)));
                                 vehicle.setMake(Objects.requireNonNull(getStringValue(row.getCell(2))).toUpperCase());
                                 vehicle.setYear(getIntegerValue(row.getCell(3)));
@@ -387,7 +387,7 @@ public class VehicleService {
                                 vehicle.setCapacity(Objects.requireNonNull(getStringValue(row.getCell(7))).toUpperCase());
                                 vehicle.setPower(Objects.requireNonNull(getStringValue(row.getCell(8))).toUpperCase());
                                 vehicle.setFuelType(Objects.requireNonNull(getStringValue(row.getCell(9))).toUpperCase());
-                                vehicle.setUsageType(Objects.requireNonNull(getStringValue(row.getCell(10))).toUpperCase(Locale.ROOT));
+//                                vehicle.setUsageType(Objects.requireNonNull(getStringValue(row.getCell(10))).toUpperCase(Locale.ROOT));
                                 vehicle.setCategory(Objects.requireNonNull(getStringValue(row.getCell(11))).toUpperCase(Locale.ROOT));
                                 vehicle.setVendor(vendor);
                                 vehicle.setRegion(getStringValue(row.getCell(13)));
@@ -470,11 +470,11 @@ public class VehicleService {
                 if (row != null && row.getPhysicalNumberOfCells() > 0) {
                     String plateNumberPattern = "\\d{4} [A-Z]{3}";
 
-                    for (int cellNum = 0; cellNum <= row.getLastCellNum() - 1; cellNum++) {
-                        if (String.valueOf(row.getCell(cellNum)).isEmpty() || row.getCell(cellNum) == null) {
-                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Empty Value at Row " + (rowNum + 1) + " and Cell " + (cellNum + 1)));
-                        }
-                    }
+//                    for (int cellNum = 0; cellNum <= row.getLastCellNum() - 1; cellNum++) {
+//                        if (String.valueOf(row.getCell(cellNum)).isEmpty() || row.getCell(cellNum) == null) {
+//                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Empty Value at Row " + (rowNum + 1) + " and Cell " + (cellNum + 1)));
+//                        }
+//                    }
 
                     if (!getStringValue(row.getCell(1)).matches(plateNumberPattern)) {
                         return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Plate Number Format : " + row.getCell(1),
@@ -495,26 +495,29 @@ public class VehicleService {
 
                     String regex = "^(0[1-9]|[1-2][0-9]|3[0-1])-(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)-\\d{4}$";
                     Pattern pattern = Pattern.compile(regex);
-                    Matcher registrationMatcher = pattern.matcher(String.valueOf(row.getCell(16)));
-                    Matcher insuranceMatcher = pattern.matcher(String.valueOf(row.getCell(17)));
+//                    Matcher registrationMatcher = pattern.matcher(String.valueOf(row.getCell(16)));
+//                    Matcher insuranceMatcher = pattern.matcher(String.valueOf(row.getCell(17)));
                     Matcher leaseStartMatcher = pattern.matcher(String.valueOf(row.getCell(19)));
                     Matcher leaseExpiryMatcher = pattern.matcher(String.valueOf(row.getCell(20)));
 
 
-                    if (!registrationMatcher.matches()) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(16), "Row " + (rowNum + 1) + " and Cell 17"));
-                    } else if (!insuranceMatcher.matches()) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(17)
-                                , "Row " + (rowNum + 1) + " and Cell 18"));
-                    } else if (!leaseStartMatcher.matches()) {
+//                    if (!registrationMatcher.matches()) {
+//                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(16), "Row " + (rowNum + 1) + " and Cell 17"));
+//                    } else if (!insuranceMatcher.matches()) {
+//                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(17)
+//                                , "Row " + (rowNum + 1) + " and Cell 18"));
+//                    } else
+                        if (!leaseStartMatcher.matches()) {
                         return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(19),
                                 "Row " + (rowNum + 1) + " and Cell 20"));
                     } else if (!leaseExpiryMatcher.matches()) {
                         return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(20),
                                 "Row " + (rowNum + 1) + " and Cell 21"));
-                    } else if (getIntegerValue(row.getCell(0)) == null) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: " + row.getCell(0), "Row " + (rowNum + 1) + " and cell 1"));
-                    } else if (getIntegerValue(row.getCell(18)) == null) {
+                    }
+//                        else if (getIntegerValue(row.getCell(0)) == null) {
+//                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: " + row.getCell(0), "Row " + (rowNum + 1) + " and cell 1"));
+//                    }
+                        else if (getIntegerValue(row.getCell(18)) == null) {
                         return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: " + row.getCell(18), "Row" + (rowNum + 1) + " and cell 19"));
                     }
 
@@ -590,7 +593,7 @@ public class VehicleService {
         productFields.put(7, "Capacity");
         productFields.put(8, "Power");
         productFields.put(9, "Fuel Type");
-        productFields.put(10, "Usage Type");
+//        productFields.put(10, "Usage Type");
         productFields.put(11, "Category");
 
         for (Map.Entry<Integer, String> entry : productFields.entrySet()) {
