@@ -623,7 +623,7 @@ public class VehicleService {
                             return new ExcelErrorResponse(
                                     Boolean.FALSE,
                                     Arrays.asList("Incorrect " + entry.getValue() + " value: " + row.getCell(entry.getKey())
-                                            , "\nCorrect Values: " +
+                                            ,"ROW : "+rowIndex , "\nCorrect Values: " +
                                                     productField.getProductFieldValuesList()
                                                             .stream()
                                                             .map(ProductFieldValues::getName)
