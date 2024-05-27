@@ -33,4 +33,11 @@ export class JobTitleService {
     return this.http.delete<any>(`${this.url}/delete-job-title/${id}`)
   }
 
+  addBulkJobTitle(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post<any>(`${this.url}/add-bulk-jobTitle`, formData);
+  }
+
 }

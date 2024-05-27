@@ -2,11 +2,13 @@ package com.example.FleetSystem.controller;
 
 import com.example.FleetSystem.dto.JobTitleDto;
 import com.example.FleetSystem.model.JobTitle;
+import com.example.FleetSystem.payload.ResponseMessage;
 import com.example.FleetSystem.service.JobTitleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -46,4 +48,11 @@ public class JobTitleController {
     public ResponseEntity<JobTitleDto> deleteJobTitle(@PathVariable Long id) {
         return ResponseEntity.ok(jobTitleService.deleteJobTitle(id));
     }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PostMapping("/add-bulk-jobTitle")
+    public ResponseEntity<ResponseMessage> addBulkJobTitle(@RequestParam("file") MultipartFile file){
+        return ResponseEntity.ok(new ResponseMessage(jobTitleService.addBulkJobTitles(file)));
+    }
+
 }
