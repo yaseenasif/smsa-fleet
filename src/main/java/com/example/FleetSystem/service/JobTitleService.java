@@ -211,8 +211,8 @@ public class JobTitleService {
         productFields.put(0,"Division");
         productFields.put(2,"Department");
         productFields.put(3,"Section");
-        productFields.put(3,"Fleet Classification");
-        productFields.put(3,"Vehicle Eligible");
+        productFields.put(4,"Fleet Classification");
+        productFields.put(5,"Vehicle Eligible");
 
         for (Map.Entry<Integer, String> entry : productFields.entrySet()) {
             ProductField productField = productFieldRepository.findByNameAndStatusIsActive(entry.getValue());
