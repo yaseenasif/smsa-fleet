@@ -15,10 +15,33 @@
               <div class="p-toolbar-group-start">
                 <h2 class="h-color">Job Title</h2>
               </div>
-              <div class="p-toolbar-group-end">
+              <!-- <div class="p-toolbar-group-end"> -->
                   <p-button class="bg-b-color" routerLink="/add-job-title">
                     <i class="bi bi-plus-lg" style="font-size: 20px;font-weight: bold;"></i>&nbsp;Add Job Title
                   </p-button>
+              <!-- </div> -->
+              <div class="flex flex-column gap-2 ml-5">
+                <p-fileUpload
+                  #fileUpload
+                  icon="pi pi-download"
+                  iconPos="left"
+                  styleClass="p-button-outlined p-button-sm"
+                  mode="basic"
+                  chooseLabel="Upload"
+                  name="myfile[]"
+                  [customUpload]="true"
+                  (uploadHandler)="onUpload($event)"
+                  (onSelect)="onFileSelect()"
+                >
+                </p-fileUpload>
+                <ng-container *ngIf="fileSelected">
+                  <button
+                    class="p-button p-button-outlined p-button-sm"
+                    (click)="onCancel()"
+                  >
+                    Cancel
+                  </button>
+                </ng-container>
               </div>
           </p-toolbar>
 
