@@ -249,7 +249,7 @@ public class EmployeeService {
                                 DataFormatter dataFormatter = new DataFormatter();
 
                                 Optional<JobTitle> jobTitle = jobTitleRepository.findByJobTitleAndStatusIsTrue(getStringValue(row.getCell(7)));
-                                Optional<Grade> grade = gradeRepository.findByNameAndStatusIsTrue(getIntegerValue(row.getCell(19)));
+//                                Optional<Grade> grade = gradeRepository.findByNameAndStatusIsTrue(getIntegerValue(row.getCell(19)));
 
                                 employee.setEmployeeNumber(getLongValue(row.getCell(0)));
 //                                employee.setBudgetRef(getStringValue(row.getCell(1)));
@@ -412,29 +412,31 @@ public class EmployeeService {
 //                        }
                          if (getNumericValue(row.getCell(0)) == null) {
                             return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: " + row.getCell(0), "Row " + (rowNum + 1) + " and cell 1"));
-                        } else if (getNumericValue(row.getCell(13)) == null) {
-                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: " + row.getCell(13), "Row " + (rowNum + 1) + " and cell 14"));
-                        } else if (getNumericValue(row.getCell(14)) == null) {
-                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: " + row.getCell(14), "Row " + (rowNum + 1) + " and cell 15"));
-                        } else if (getNumericValue(row.getCell(19)) == null) {
-                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: " + row.getCell(19), "Row " + (rowNum + 1) + " and cell 20"));
-                        } else if (!String.valueOf(row.getCell(3)).equalsIgnoreCase("M")
-                                && !String.valueOf(row.getCell(3)).equalsIgnoreCase("F")) {
-                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Value : " + row.getCell(3), "Row " + (rowNum + 1) + " and Cell 4", "Correct Value : 'M' or 'F'"));
-                        } else if (!String.valueOf(row.getCell(4)).equalsIgnoreCase("M")
-                                && !String.valueOf(row.getCell(4)).equalsIgnoreCase("U")) {
-                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Value : " + row.getCell(4), "Row " + (rowNum + 1) + " and Cell 5", "Correct Value : 'M' or 'U'"));
                         }
+//                         else if (getNumericValue(row.getCell(13)) == null) {
+//                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: " + row.getCell(13), "Row " + (rowNum + 1) + " and cell 14"));
+//                        } else if (getNumericValue(row.getCell(14)) == null) {
+//                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: " + row.getCell(14), "Row " + (rowNum + 1) + " and cell 15"));
+//                        } else if (getNumericValue(row.getCell(19)) == null) {
+//                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("The cell does not contain a numeric value: " + row.getCell(19), "Row " + (rowNum + 1) + " and cell 20"));
+//                        }
+//                         else if (!String.valueOf(row.getCell(3)).equalsIgnoreCase("M")
+//                                && !String.valueOf(row.getCell(3)).equalsIgnoreCase("F")) {
+//                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Value : " + row.getCell(3), "Row " + (rowNum + 1) + " and Cell 4", "Correct Value : 'M' or 'F'"));
+//                        } else if (!String.valueOf(row.getCell(4)).equalsIgnoreCase("M")
+//                                && !String.valueOf(row.getCell(4)).equalsIgnoreCase("U")) {
+//                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Value : " + row.getCell(4), "Row " + (rowNum + 1) + " and Cell 5", "Correct Value : 'M' or 'U'"));
+//                        }
 
                         Optional<JobTitle> jobTitle = jobTitleRepository.findByJobTitleAndStatusIsTrue(getStringValue(row.getCell(7)));
                         if (!jobTitle.isPresent()) {
                             return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList(getStringValue(row.getCell(7)) + " job title does not exist in the record", "Row " + (rowNum + 1) + " and Cell 8"));
                         }
 
-                        Optional<Grade> grade = gradeRepository.findByNameAndStatusIsTrue(getIntegerValue(row.getCell(19)));
-                        if (!grade.isPresent()) {
-                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList(getStringValue(row.getCell(19)) + " job title does not exist in the record", "Row " + (rowNum + 1) + " and Cell 20"));
-                        }
+//                        Optional<Grade> grade = gradeRepository.findByNameAndStatusIsTrue(getIntegerValue(row.getCell(19)));
+//                        if (!grade.isPresent()) {
+//                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList(getStringValue(row.getCell(19)) + " job title does not exist in the record", "Row " + (rowNum + 1) + " and Cell 20"));
+//                        }
 
                         ExcelErrorResponse regionValidation = validateRegion(row);
                         if (!regionValidation.isStatus()) {
@@ -492,7 +494,7 @@ public class EmployeeService {
     private ExcelErrorResponse validateProductFieldValues(Sheet sheet){
 
         Map<Integer , String> productFields = new HashMap<>();
-        productFields.put(11,"Dept Code");
+//        productFields.put(11,"Dept Code");
         productFields.put(12,"Organization");
         productFields.put(17,"Nationality");
 
