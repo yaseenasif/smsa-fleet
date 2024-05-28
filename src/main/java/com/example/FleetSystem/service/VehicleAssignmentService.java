@@ -549,17 +549,17 @@ public class VehicleAssignmentService {
                                     "Row " + (rowNum + 1) + " and Cell 1", "Correct Format : 1234 ABC"));
                         }
 
-                        Optional<Vehicle> vehicle = vehicleRepository.findByPlateNumber(getStringValue(row.getCell(0)));
-                        if (!vehicle.isPresent()) {
-                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Plate Number : " + getStringValue(row.getCell(0)) +
-                                    " doesn't exist in the record", "Row : " + (rowNum + 1)));
-                        }
-
-                        Optional<Employee> employee = employeeRepository.findByEmployeeNumber(getLongValue(row.getCell(1)));
-                        if (!employee.isPresent()) {
-                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Employee Number : " + getStringValue(row.getCell(1)) +
-                                    " doesn't exist in the record", "Row : " + (rowNum + 1)));
-                        }
+//                        Optional<Vehicle> vehicle = vehicleRepository.findByPlateNumber(getStringValue(row.getCell(0)));
+//                        if (!vehicle.isPresent()) {
+//                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Plate Number : " + getStringValue(row.getCell(0)) +
+//                                    " doesn't exist in the record", "Row : " + (rowNum + 1)));
+//                        }
+//
+//                        Optional<Employee> employee = employeeRepository.findByEmployeeNumber(getLongValue(row.getCell(1)));
+//                        if (!employee.isPresent()) {
+//                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Employee Number : " + getStringValue(row.getCell(1)) +
+//                                    " doesn't exist in the record", "Row : " + (rowNum + 1)));
+//                        }
 
                         ExcelErrorResponse checkDuplicatePlateNumber = checkDuplicatePlateNumber(plateNumberList, row);
                         if (!checkDuplicatePlateNumber.isStatus()) {
