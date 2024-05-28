@@ -425,7 +425,9 @@ public class VehicleAssignmentService {
                             User user = userRepository.findByEmployeeIdAndStatusIsTrue(username);
 
                             Optional<Vehicle> vehicle = vehicleRepository.getEligibleVehicle(getStringValue(row.getCell(0)));
-                            Optional<Employee> employee = employeeRepository.findEligibleEmployee(getLongValue(row.getCell(1)));
+//                            Optional<Employee> employee = employeeRepository.findEligibleEmployee(getLongValue(row.getCell(1)));
+
+                            Optional<Employee> employee = employeeRepository.findByEmployeeNumber(getLongValue(row.getCell(1)));
 
                             if (vehicle.isPresent()) {
                                 Optional<VehicleAssignment> vehicleAssignment1 = vehicleAssignmentRepository.findByVehicleAndStatusIsTrue(vehicle.get());
@@ -450,7 +452,7 @@ public class VehicleAssignmentService {
                                     vehicle.get().setVehicleStatus("Active");
                                     vehicleRepository.save(vehicle.get());
                                 } else {
-                                    messages.add("Employee is not eligible for assignment\n");
+                                    messages.add("Employee not in the record\n");
                                     messages.add(getLongValue(row.getCell(1)).toString());
                                     messages.add("Row: " + rowNum);
                                     throw new ExcelException(messages);
