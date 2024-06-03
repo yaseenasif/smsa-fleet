@@ -16,6 +16,7 @@ import { Region } from 'src/app/modal/Region';
 import * as saveAs from 'file-saver';
 import { FileUpload } from 'primeng/fileupload';
 import { DashboardRedirectServiceService } from 'src/app/CommonServices/dashboard-redirect-service.service';
+import { BackenCommonErrorThrow } from 'src/app/modal/BackendCommonErrorThrow';
 
 @Component({
   selector: 'app-assignment-list',
@@ -72,6 +73,7 @@ export class AssignmentListComponent {
     { label: "Orignal", value: "Active" },
   ];
   slectedAssignmentType: String | undefined | null;
+  allVehicleAssignments: VehicleAssignment[] = [];
 
   constructor(
     private vehicleAssignmentService: VehicleAssignmentService,
@@ -90,6 +92,7 @@ export class AssignmentListComponent {
     this.getDepartmentValues("Department");
     this.getSectionValues("Section");
     this.getAllVehicleAssignmentByPlateNum();
+    this.getVehicleAssignmentsForFiltering();
     this.vehicleId = +this.route.snapshot.paramMap.get('id')!;
     if (this.vehicleId) {
       this.getVehicleById(this.vehicleId);
@@ -141,7 +144,7 @@ export class AssignmentListComponent {
           this.vehicleAssignment = res.content;
           this.plateNumber = res.content[0].vehicle.plateNumber;
           this.slectedAssignmentType = res.content[0].vehicle.vehicleStatus;
-          
+
           this.globalTransformObj.assignToEmpId = {
             department: res.content[0].assignToEmpId?.department?.toUpperCase(),
             region: res.content[0].assignToEmpId?.region?.toUpperCase(),
@@ -171,7 +174,7 @@ export class AssignmentListComponent {
         if (searchTerm) {
           this.employeeNumber = res.content[0].assignToEmpId.employeeNumber;
           this.slectedAssignmentType = res.content[0].vehicle.vehicleStatus;
-          
+
           this.globalTransformObj.assignToEmpId = {
             department: res.content[0].assignToEmpId?.department?.toUpperCase(),
             region: res.content[0].assignToEmpId?.region?.toUpperCase(),
@@ -186,7 +189,7 @@ export class AssignmentListComponent {
             section: undefined
           };
         }
-        
+
         this.query = { page: res.pageable.pageNumber, size: res.size };
         this.totalRecords = res.totalElements;
       }, error => {
@@ -200,7 +203,7 @@ export class AssignmentListComponent {
       queryParams: {
         replacementCheck: this.replacementCheck,
         vId: id,
-        screenType:'assignment'
+        screenType: 'assignment'
       }
     });
   }
@@ -266,7 +269,7 @@ export class AssignmentListComponent {
   }
 
   getSearchAssignmentByAnyValue(searchTerm: SearchItems) {
-    
+
     this.criteriaSearch = true;
     const transformSearch = (search: SearchItems, field: keyof SearchItems) => {
       return search?.hasOwnProperty(field) ? { [field]: search[field] } : null;
@@ -287,7 +290,7 @@ export class AssignmentListComponent {
     this.vehicleAssignmentService.searchAssignmentByAnyValue(this.query, this.globalTransformObj)
       .subscribe((res: PaginatedResponse<VehicleAssignment>) => {
         this.vehicleAssignment = res.content;
-        
+
         this.query = { page: res.pageable.pageNumber, size: res.size };
         this.totalRecords = res.totalElements;
       }, error => {
@@ -320,7 +323,7 @@ export class AssignmentListComponent {
     this.vehicleAssignmentType = searchTerm ? true : false;
     this.vehicleAssignmentService.searchAssignmentByPlateNumber(searchTerm, this.query)
       .subscribe((res: PaginatedResponse<VehicleAssignment>) => {
-        
+
         this.vehicleAssignment = res.content;
         this.query = { page: res.pageable.pageNumber, size: res.size };
         this.totalRecords = res.totalElements;
@@ -332,7 +335,7 @@ export class AssignmentListComponent {
   downloadExcelData() {
     this.vehicleAssignmentService.downloadExcelData().subscribe(blob => saveAs(blob, "Assignment Data.xlsx"))
   }
-  
+
   onFileSelect() {
     this.fileSelected = true;
   }
@@ -365,7 +368,7 @@ export class AssignmentListComponent {
           }
 
           this.getAllVehicleAssignmentByPlateNum();
-        
+
         },
         (error) => {
           console.error('Error while saving the file:', error);
@@ -376,8 +379,15 @@ export class AssignmentListComponent {
       );
     }
   }
-  
-  downloadAttachment(fileName:string){
+
+  downloadAttachment(fileName: string) {
     this.vehicleService.downloadAttachments(fileName).subscribe(blob => saveAs(blob, fileName));
+  }
+  private getVehicleAssignmentsForFiltering() {
+    this.vehicleAssignmentService.getAllVehicleAssignment().subscribe((res: VehicleAssignment[]) => {
+      this.allVehicleAssignments = res;
+    }, (error:BackenCommonErrorThrow) => {
+      this.errorHandleService.showError(error.error!);
+     });
   }
 }
