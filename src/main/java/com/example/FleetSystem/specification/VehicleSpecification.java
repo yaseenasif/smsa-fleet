@@ -83,22 +83,52 @@ public class VehicleSpecification {
 
     public static Specification<Vehicle> getVehicleSearchSpecification(VehicleSearchCriteria vehicleSearchCriteria, String vehicleStatus) {
 
+//        return (root, query, criteriaBuilder) -> {
+//            if ((vehicleSearchCriteria == null || vehicleSearchCriteria.getValue() == null || vehicleSearchCriteria
+//                    .getValue().isEmpty()) &&
+//                    !"All".equals(vehicleStatus)) {
+//                query.orderBy(criteriaBuilder.desc(root.get("id")));
+//                return criteriaBuilder.and(criteriaBuilder.equal(root.get("vehicleStatus"), vehicleStatus));
+//            } else if ("All".equalsIgnoreCase(vehicleStatus)) {
+//                query.orderBy(criteriaBuilder.desc(root.get("id")));
+//                return null;
+//            }
+//
+//            // Adjust the field name based on your entity
+//            return criteriaBuilder.and
+//                    (criteriaBuilder.like(criteriaBuilder.lower(root.get("plateNumber")),
+//                            "%" + vehicleSearchCriteria
+//                                    .getValue().toLowerCase() + "%"), criteriaBuilder.equal(root.get("vehicleStatus"), vehicleStatus));
+//        };
         return (root, query, criteriaBuilder) -> {
-            if ((vehicleSearchCriteria == null || vehicleSearchCriteria.getValue() == null || vehicleSearchCriteria
-                    .getValue().isEmpty()) &&
-                    !"All".equals(vehicleStatus)) {
-                query.orderBy(criteriaBuilder.desc(root.get("id")));
-                return criteriaBuilder.and(criteriaBuilder.equal(root.get("vehicleStatus"), vehicleStatus));
-            } else if ("All".equalsIgnoreCase(vehicleStatus)) {
-                query.orderBy(criteriaBuilder.desc(root.get("id")));
-                return null;
+            // Handle the case when vehicleSearchCriteria is null or the value is null/empty
+            if (vehicleSearchCriteria == null || vehicleSearchCriteria.getValue() == null || vehicleSearchCriteria.getValue().isEmpty()) {
+                if (!"All".equalsIgnoreCase(vehicleStatus)) {
+                    // If status is not "All", filter by status only
+                    query.orderBy(criteriaBuilder.desc(root.get("id")));
+                    return criteriaBuilder.equal(root.get("vehicleStatus"), vehicleStatus);
+                } else {
+                    // If status is "All", do not filter by any criteria
+                    query.orderBy(criteriaBuilder.desc(root.get("id")));
+                    return null;
+                }
             }
 
             // Adjust the field name based on your entity
-            return criteriaBuilder.and
-                    (criteriaBuilder.like(criteriaBuilder.lower(root.get("plateNumber")),
-                            "%" + vehicleSearchCriteria
-                                    .getValue().toLowerCase() + "%"), criteriaBuilder.equal(root.get("vehicleStatus"), vehicleStatus));
+            String searchValue = "%" + vehicleSearchCriteria.getValue().toLowerCase() + "%";
+
+            if ("All".equalsIgnoreCase(vehicleStatus)) {
+                // If status is "All", filter by search value only
+                query.orderBy(criteriaBuilder.desc(root.get("id")));
+                return criteriaBuilder.like(criteriaBuilder.lower(root.get("plateNumber")), searchValue);
+            } else {
+                // If status is not "All", filter by both status and search value
+                query.orderBy(criteriaBuilder.desc(root.get("id")));
+                return criteriaBuilder.and(
+                        criteriaBuilder.like(criteriaBuilder.lower(root.get("plateNumber")), searchValue),
+                        criteriaBuilder.equal(root.get("vehicleStatus"), vehicleStatus)
+                );
+            }
         };
     }
 
