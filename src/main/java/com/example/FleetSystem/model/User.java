@@ -5,7 +5,9 @@ import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -25,6 +27,13 @@ public class User {
     private boolean status;
     private String email;
     private String employeeId;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_region",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "region_id")
+    )
+    private Set<Region> regions = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",

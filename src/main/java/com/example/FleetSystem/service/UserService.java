@@ -3,11 +3,13 @@ package com.example.FleetSystem.service;
 import com.example.FleetSystem.criteria.VehicleSearchCriteria;
 import com.example.FleetSystem.dto.UserDto;
 import com.example.FleetSystem.dto.VehicleDto;
+import com.example.FleetSystem.model.Region;
 import com.example.FleetSystem.model.Roles;
 import com.example.FleetSystem.model.User;
 import com.example.FleetSystem.model.Vehicle;
 import com.example.FleetSystem.payload.ResponseMessage;
 import com.example.FleetSystem.payload.ResponsePayload;
+import com.example.FleetSystem.repository.RegionRepository;
 import com.example.FleetSystem.repository.RoleRepository;
 import com.example.FleetSystem.repository.UserRepository;
 import com.example.FleetSystem.specification.UserSpecification;
@@ -36,6 +38,8 @@ public class UserService {
     @Autowired
     RoleRepository roleRepository;
     @Autowired
+    RegionRepository regionRepository;
+    @Autowired
     ModelMapper modelMapper;
 
     public User addUser(UserDto userDto) {
@@ -49,6 +53,12 @@ public class UserService {
 
                 rolesList.add(roles.get());
             }
+            Set<Region> regionList = new HashSet<>();
+            for(Region region : userDto.getRegions()) {
+                    Region foundRegion = regionRepository.findByNameAndStatusIsTrue(region.getName())
+                            .orElseThrow(() -> new RuntimeException("Region is incorrect"));
+                    regionList.add(foundRegion);
+            }
 
             User user = User.builder()
                     .name(userDto.getName())
@@ -57,6 +67,7 @@ public class UserService {
                     .status(Boolean.TRUE)
                     .email(userDto.getEmail())
                     .employeeId(userDto.getEmployeeId())
+                    .regions(regionList)
                     .build();
             return userRepository.save(user);
         }
@@ -97,11 +108,18 @@ public class UserService {
                 rolesList.add(roles.get());
             }
 
+            Set<Region> regionList = new HashSet<>();
+            for(Region region : userDto.getRegions()) {
+                Region foundRegion = regionRepository.findByNameAndStatusIsTrue(region.getName())
+                        .orElseThrow(() -> new RuntimeException("Region is incorrect"));
+                regionList.add(foundRegion);
+            }
 
             user.get().setName(userDto.getName());
             user.get().setEmail(userDto.getEmail());
             user.get().setEmployeeId(userDto.getEmployeeId());
             user.get().setRoles(rolesList);
+            user.get().setRegions(regionList);
 
             return toDto(userRepository.save(user.get()));
         }
