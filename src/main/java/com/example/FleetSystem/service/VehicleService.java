@@ -832,9 +832,22 @@ public class VehicleService {
 
     public Page<VehicleDto> searchVehicle(VehicleSearchCriteria vehicleSearchCriteria, String vehicleStatus, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Specification<Vehicle> vehicleSpecification = VehicleSpecification.getVehicleSearchSpecification(vehicleSearchCriteria, vehicleStatus);
+        Set<Region> userRegions = getUserRegions();
+        Specification<Vehicle> vehicleSpecification = VehicleSpecification.getVehicleSearchSpecification(vehicleSearchCriteria, vehicleStatus, userRegions);
         Page<Vehicle> vehiclePage = vehicleRepository.findAll(vehicleSpecification, pageable);
         return vehiclePage.map(this::toDto);
+    }
+
+    private Set<Region> getUserRegions() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            String username = ((UserDetails) principal).getUsername();
+            User user = userRepository.findByEmployeeIdAndStatusIsTrue(username);
+
+            return user.getRegions();
+        } else {
+            return null;
+        }
     }
 
     public VehicleDto deleteReplacementVehicle(Long id) {

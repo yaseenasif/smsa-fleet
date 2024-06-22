@@ -1,10 +1,7 @@
 package com.example.FleetSystem.specification;
 
 import com.example.FleetSystem.criteria.VehicleSearchCriteria;
-import com.example.FleetSystem.model.Employee;
-import com.example.FleetSystem.model.Vehicle;
-import com.example.FleetSystem.model.VehicleAssignment;
-import com.example.FleetSystem.model.Vendor;
+import com.example.FleetSystem.model.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,12 +10,10 @@ import org.springframework.data.jpa.domain.Specification;
 import javax.persistence.criteria.*;
 import java.io.IOException;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 
 public class VehicleSpecification {
@@ -81,54 +76,63 @@ public class VehicleSpecification {
         };
     }
 
-    public static Specification<Vehicle> getVehicleSearchSpecification(VehicleSearchCriteria vehicleSearchCriteria, String vehicleStatus) {
+    public static Specification<Vehicle> getVehicleSearchSpecification(VehicleSearchCriteria vehicleSearchCriteria, String vehicleStatus, Set<Region> userRegions) {
 
 //        return (root, query, criteriaBuilder) -> {
-//            if ((vehicleSearchCriteria == null || vehicleSearchCriteria.getValue() == null || vehicleSearchCriteria
-//                    .getValue().isEmpty()) &&
-//                    !"All".equals(vehicleStatus)) {
-//                query.orderBy(criteriaBuilder.desc(root.get("id")));
-//                return criteriaBuilder.and(criteriaBuilder.equal(root.get("vehicleStatus"), vehicleStatus));
-//            } else if ("All".equalsIgnoreCase(vehicleStatus)) {
-//                query.orderBy(criteriaBuilder.desc(root.get("id")));
-//                return null;
+//            // Handle the case when vehicleSearchCriteria is null or the value is null/empty
+//            if (vehicleSearchCriteria == null || vehicleSearchCriteria.getValue() == null || vehicleSearchCriteria.getValue().isEmpty()) {
+//                if (!"All".equalsIgnoreCase(vehicleStatus)) {
+//                    // If status is not "All", filter by status only
+//                    query.orderBy(criteriaBuilder.desc(root.get("id")));
+//                    return criteriaBuilder.equal(root.get("vehicleStatus"), vehicleStatus);
+//                } else {
+//                    // If status is "All", do not filter by any criteria
+//                    query.orderBy(criteriaBuilder.desc(root.get("id")));
+//                    return null;
+//                }
 //            }
 //
 //            // Adjust the field name based on your entity
-//            return criteriaBuilder.and
-//                    (criteriaBuilder.like(criteriaBuilder.lower(root.get("plateNumber")),
-//                            "%" + vehicleSearchCriteria
-//                                    .getValue().toLowerCase() + "%"), criteriaBuilder.equal(root.get("vehicleStatus"), vehicleStatus));
+//            String searchValue = "%" + vehicleSearchCriteria.getValue().toLowerCase() + "%";
+//
+//            if ("All".equalsIgnoreCase(vehicleStatus)) {
+//                // If status is "All", filter by search value only
+//                query.orderBy(criteriaBuilder.desc(root.get("id")));
+//                return criteriaBuilder.like(criteriaBuilder.lower(root.get("plateNumber")), searchValue);
+//            } else {
+//                // If status is not "All", filter by both status and search value
+//                query.orderBy(criteriaBuilder.desc(root.get("id")));
+//                return criteriaBuilder.and(
+//                        criteriaBuilder.like(criteriaBuilder.lower(root.get("plateNumber")), searchValue),
+//                        criteriaBuilder.equal(root.get("vehicleStatus"), vehicleStatus)
+//                );
+//            }
 //        };
         return (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
             // Handle the case when vehicleSearchCriteria is null or the value is null/empty
-            if (vehicleSearchCriteria == null || vehicleSearchCriteria.getValue() == null || vehicleSearchCriteria.getValue().isEmpty()) {
-                if (!"All".equalsIgnoreCase(vehicleStatus)) {
-                    // If status is not "All", filter by status only
-                    query.orderBy(criteriaBuilder.desc(root.get("id")));
-                    return criteriaBuilder.equal(root.get("vehicleStatus"), vehicleStatus);
-                } else {
-                    // If status is "All", do not filter by any criteria
-                    query.orderBy(criteriaBuilder.desc(root.get("id")));
-                    return null;
-                }
+            if (vehicleSearchCriteria != null && vehicleSearchCriteria.getValue() != null && !vehicleSearchCriteria.getValue().isEmpty()) {
+                String searchValue = "%" + vehicleSearchCriteria.getValue().toLowerCase() + "%";
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("plateNumber")), searchValue));
             }
 
-            // Adjust the field name based on your entity
-            String searchValue = "%" + vehicleSearchCriteria.getValue().toLowerCase() + "%";
-
-            if ("All".equalsIgnoreCase(vehicleStatus)) {
-                // If status is "All", filter by search value only
-                query.orderBy(criteriaBuilder.desc(root.get("id")));
-                return criteriaBuilder.like(criteriaBuilder.lower(root.get("plateNumber")), searchValue);
-            } else {
-                // If status is not "All", filter by both status and search value
-                query.orderBy(criteriaBuilder.desc(root.get("id")));
-                return criteriaBuilder.and(
-                        criteriaBuilder.like(criteriaBuilder.lower(root.get("plateNumber")), searchValue),
-                        criteriaBuilder.equal(root.get("vehicleStatus"), vehicleStatus)
-                );
+            if (!"All".equalsIgnoreCase(vehicleStatus)) {
+                predicates.add(criteriaBuilder.equal(root.get("vehicleStatus"), vehicleStatus));
             }
+
+            // Add location restriction
+            if (!userRegions.isEmpty()) {
+                List<String> regions = userRegions.stream()
+                        .map(Region::getName)
+                        .collect(Collectors.toList());
+
+                predicates.add(root.get("region").in(regions));
+            }
+
+            query.orderBy(criteriaBuilder.desc(root.get("id")));
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
     }
 

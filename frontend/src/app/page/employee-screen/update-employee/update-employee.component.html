@@ -452,19 +452,8 @@
                       name="budgetRef"
                       [(ngModel)]="employee.budgetRef"
                       #budgetRef="ngModel"
-                      required
                     />
-                    <small
-                      id="name-help"
-                      class="color-red"
-                      *ngIf="
-                        budgetRef.invalid &&
-                        (budgetRef.dirty || budgetRef.touched)
-                      "
-                    >
-                      Budget Reference is required
-                    </small>
-                  </div>
+                                    </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2 emp-form-date">
@@ -638,18 +627,8 @@
                       name="costCentre"
                       [(ngModel)]="employee.costCentre"
                       #costCentre="ngModel"
-                      required
                     />
-                    <small
-                      id="name-help"
-                      class="color-red"
-                      *ngIf="
-                        costCentre.invalid &&
-                        (costCentre.dirty || costCentre.touched)
-                      "
-                    >
-                      Cost Centre is required
-                    </small>
+                   
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
@@ -702,7 +681,7 @@
                 </div>
               </div>
               <div class="grid mt-3">
-                <div class="col-12 md:col-12 lg:col-4">
+                <!-- <div class="col-12 md:col-12 lg:col-4">
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">Marital Status</label>
                     <div class="flex flex-wrap gap-3">
@@ -730,7 +709,7 @@
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> -->
 
                 <div class="col-12 md:col-12 lg:col-4">
                   <div class="flex flex-column gap-2">
