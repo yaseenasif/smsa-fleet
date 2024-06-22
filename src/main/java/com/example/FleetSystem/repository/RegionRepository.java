@@ -12,6 +12,7 @@ public interface RegionRepository extends JpaRepository<Region,Long> {
     @Query("SELECT r FROM Region r WHERE r.status = true")
     List<Region> getActiveRegions();
 
+    @Query("SELECT r FROM Region r WHERE r.name = :name AND r.status = true")
     Optional<Region> findByNameAndStatusIsTrue(String name);
 
     List<Region> findByCountryAndStatusIsTrue(String country);

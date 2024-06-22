@@ -1,5 +1,6 @@
 package com.example.FleetSystem.dto;
 
+import com.example.FleetSystem.model.Region;
 import com.example.FleetSystem.model.Roles;
 import lombok.*;
 
@@ -26,5 +27,6 @@ public class UserDto {
     private Set<Roles> roles;
     private boolean status;
     private String employeeId;
+    private Set<Region> regions;
 
 }

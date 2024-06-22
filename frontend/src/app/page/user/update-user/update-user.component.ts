@@ -5,6 +5,8 @@ import { Role } from 'src/app/modal/role';
 import { User } from 'src/app/modal/user';
 import { RoleService } from '../../role/role.service';
 import { UserService } from '../user.service';
+import { Region } from 'src/app/modal/Region';
+import { RegionService } from '../../region/service/region.service';
 
 @Component({
   selector: 'app-update-user',
@@ -16,6 +18,8 @@ export class UpdateUserComponent implements OnInit {
 
   selectedRole: string | undefined | null;
   roles!: Role[];
+  regions!: Region[]
+  selectedRegion!: Region[]
 
   user: User = {
     id: undefined,
@@ -24,6 +28,7 @@ export class UpdateUserComponent implements OnInit {
     password: undefined,
     employeeId: undefined,
     roles: [],
+    regions: []
   }
   redirectValue: string | null |undefined;
 
@@ -31,6 +36,7 @@ export class UpdateUserComponent implements OnInit {
     private route: ActivatedRoute,
     private userService: UserService,
     private roleService: RoleService,
+    private regionService: RegionService,
     private messageService: MessageService,
     private router: Router
   ) {
@@ -43,7 +49,8 @@ export class UpdateUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.items = [{ label: 'User', routerLink: '/user' }, { label: 'Edit User' }];
-    this.getAllRoles()
+    this.getAllRoles();
+    this.getAllRegions();
     this.route.queryParams.subscribe(params => {
       if (params.hasOwnProperty('redirectValue')) {
         this.redirectValue = params['redirectValue'];
@@ -51,14 +58,14 @@ export class UpdateUserComponent implements OnInit {
       if (params.hasOwnProperty('id')) {
         this.userId = params['id'];
         this.getUserById(this.userId!); // Call the function only if userId is available
-      
+
       }
     });
-    
+
     if (!this.userId) {
       this.userId = +this.route.snapshot.paramMap.get('id')!;
       this.getUserById(this.userId!); // Call the function only if userId is available
-      
+
     }
   }
 
@@ -69,6 +76,12 @@ export class UpdateUserComponent implements OnInit {
       }, error => {
         this.showError(error.error);
       });
+  }
+
+  getAllRegions() {
+    this.regionService.getRegion().subscribe((res: Region[]) => {
+      this.regions = res;
+    })
   }
 
   getUserById(id: number) {

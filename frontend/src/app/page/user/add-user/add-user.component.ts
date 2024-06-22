@@ -5,6 +5,8 @@ import { User } from 'src/app/modal/user';
 import { RoleService } from '../../role/role.service';
 import { UserService } from '../user.service';
 import { Router } from '@angular/router';
+import { Region } from 'src/app/modal/Region';
+import { RegionService } from '../../region/service/region.service';
 
 @Component({
   selector: 'app-add-user',
@@ -17,17 +19,21 @@ export class AddUserComponent implements OnInit {
   roles!: Role[];
   selectedRole!: Role
   error: boolean = false;
+  regions!: Region[];
+  selectedRegion!: Region[]
   user: User = {
     id: undefined,
     name: undefined,
     email: undefined,
     password: undefined,
     employeeId: undefined,
-    roles: []
+    roles: [],
+    regions: []
   }
 
   constructor(
     private roleService: RoleService,
+    private regionService: RegionService,
     private userService: UserService,
     private router: Router,
     private messageService: MessageService
@@ -38,6 +44,7 @@ export class AddUserComponent implements OnInit {
 
     this.items = [{ label: 'User', routerLink: '/user' }, { label: 'Add User' }];
     this.getAllRoles();
+    this.getAllRegions();
   }
 
 
@@ -47,8 +54,14 @@ export class AddUserComponent implements OnInit {
     })
   }
 
+  getAllRegions() {
+    this.regionService.getRegion().subscribe((res: Region[]) => {
+      this.regions = res;
+
+    })
+  }
+
   onSubmit() {
-    debugger
     this.user.password = "smsa123";
     this.userService.addUser(this.user).subscribe(
       (res: User) => {
