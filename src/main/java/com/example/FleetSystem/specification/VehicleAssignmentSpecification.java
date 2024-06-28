@@ -5,6 +5,7 @@ import com.example.FleetSystem.criteria.VehicleSearchCriteria;
 import com.example.FleetSystem.dto.VehicleAssignmentDto;
 //import com.example.FleetSystem.model.Driver;
 import com.example.FleetSystem.model.Employee;
+import com.example.FleetSystem.model.Region;
 import com.example.FleetSystem.model.Vehicle;
 import com.example.FleetSystem.model.VehicleAssignment;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,30 +19,68 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class VehicleAssignmentSpecification {
 
-    public static Specification<VehicleAssignment> getSearchSpecificationByPlateNumber(VehicleSearchCriteria vehicleSearchCriteria) {
+//    public static Specification<VehicleAssignment> getSearchSpecificationByPlateNumber(VehicleSearchCriteria vehicleSearchCriteria) {
+//
+//        return (root, query, criteriaBuilder) -> {
+//            if (vehicleSearchCriteria == null || vehicleSearchCriteria.getValue() == null || vehicleSearchCriteria
+//                    .getValue().isEmpty()) {
+//                query.orderBy(criteriaBuilder.desc(root.get("id")));
+//                return criteriaBuilder.and(criteriaBuilder.isTrue(root.get("status")));
+//            }
+//            Join<VehicleAssignment, Vehicle> vehicleJoin = root.join("vehicle");
+//            if (!"Replacement".equals(vehicleSearchCriteria.getValue()) && !"Active".equals(vehicleSearchCriteria.getValue())) {
+//                // Adjust the field name based on your entity
+//                return criteriaBuilder.and
+//                        (criteriaBuilder.like(criteriaBuilder.lower(vehicleJoin.get("plateNumber")),
+//                                "%" + vehicleSearchCriteria
+//                                        .getValue().toLowerCase() + "%"), criteriaBuilder.isTrue(root.get("status")));
+//            } else {
+//                return criteriaBuilder.and(
+//                        criteriaBuilder.equal(criteriaBuilder.lower(vehicleJoin.get("vehicleStatus")),
+//                                vehicleSearchCriteria.getValue().toLowerCase()),
+//                        criteriaBuilder.isTrue(root.get("status")));
+//            }
+//        };
+//    }
 
+    public static Specification<VehicleAssignment> getSearchSpecificationByPlateNumber(VehicleSearchCriteria vehicleSearchCriteria, Set<Region> regions) {
         return (root, query, criteriaBuilder) -> {
-            if (vehicleSearchCriteria == null || vehicleSearchCriteria.getValue() == null || vehicleSearchCriteria
-                    .getValue().isEmpty()) {
-                query.orderBy(criteriaBuilder.desc(root.get("id")));
-                return criteriaBuilder.and(criteriaBuilder.isTrue(root.get("status")));
-            }
+
             Join<VehicleAssignment, Vehicle> vehicleJoin = root.join("vehicle");
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (regions != null && !regions.isEmpty()) {
+                List<String> userRegion = regions.stream()
+                        .map(Region::getName)
+                        .collect(Collectors.toList());
+                predicates.add(vehicleJoin.get("region").in(userRegion));
+            }
+
+            if (vehicleSearchCriteria == null || vehicleSearchCriteria.getValue() == null || vehicleSearchCriteria.getValue().isEmpty()) {
+                query.orderBy(criteriaBuilder.desc(root.get("id")));
+                criteriaBuilder.and(criteriaBuilder.isTrue(root.get("status")));
+                return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+            }
+
+            // Add the plate number or status filter
             if (!"Replacement".equals(vehicleSearchCriteria.getValue()) && !"Active".equals(vehicleSearchCriteria.getValue())) {
                 // Adjust the field name based on your entity
-                return criteriaBuilder.and
-                        (criteriaBuilder.like(criteriaBuilder.lower(vehicleJoin.get("plateNumber")),
-                                "%" + vehicleSearchCriteria
-                                        .getValue().toLowerCase() + "%"), criteriaBuilder.isTrue(root.get("status")));
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(vehicleJoin.get("plateNumber")),
+                        "%" + vehicleSearchCriteria.getValue().toLowerCase() + "%"));
             } else {
-                return criteriaBuilder.and(
-                        criteriaBuilder.equal(criteriaBuilder.lower(vehicleJoin.get("vehicleStatus")),
-                                vehicleSearchCriteria.getValue().toLowerCase()),
-                        criteriaBuilder.isTrue(root.get("status")));
+                predicates.add(criteriaBuilder.equal(criteriaBuilder.lower(vehicleJoin.get("vehicleStatus")),
+                        vehicleSearchCriteria.getValue().toLowerCase()));
             }
+
+            predicates.add(criteriaBuilder.isTrue(root.get("status")));
+            query.orderBy(criteriaBuilder.desc(root.get("id")));
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
     }
 

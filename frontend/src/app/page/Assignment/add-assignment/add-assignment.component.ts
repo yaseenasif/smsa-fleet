@@ -150,8 +150,6 @@ export class AddAssignmentComponent {
 
   getAllVehicles() {
     this.vehicleService.getAllVehicles().subscribe((res : Vehicle[]) => {
-      console.log(res);
-      
       this.vehicle = res;
 
     })

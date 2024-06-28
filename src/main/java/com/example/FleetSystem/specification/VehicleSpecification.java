@@ -78,36 +78,6 @@ public class VehicleSpecification {
 
     public static Specification<Vehicle> getVehicleSearchSpecification(VehicleSearchCriteria vehicleSearchCriteria, String vehicleStatus, Set<Region> userRegions) {
 
-//        return (root, query, criteriaBuilder) -> {
-//            // Handle the case when vehicleSearchCriteria is null or the value is null/empty
-//            if (vehicleSearchCriteria == null || vehicleSearchCriteria.getValue() == null || vehicleSearchCriteria.getValue().isEmpty()) {
-//                if (!"All".equalsIgnoreCase(vehicleStatus)) {
-//                    // If status is not "All", filter by status only
-//                    query.orderBy(criteriaBuilder.desc(root.get("id")));
-//                    return criteriaBuilder.equal(root.get("vehicleStatus"), vehicleStatus);
-//                } else {
-//                    // If status is "All", do not filter by any criteria
-//                    query.orderBy(criteriaBuilder.desc(root.get("id")));
-//                    return null;
-//                }
-//            }
-//
-//            // Adjust the field name based on your entity
-//            String searchValue = "%" + vehicleSearchCriteria.getValue().toLowerCase() + "%";
-//
-//            if ("All".equalsIgnoreCase(vehicleStatus)) {
-//                // If status is "All", filter by search value only
-//                query.orderBy(criteriaBuilder.desc(root.get("id")));
-//                return criteriaBuilder.like(criteriaBuilder.lower(root.get("plateNumber")), searchValue);
-//            } else {
-//                // If status is not "All", filter by both status and search value
-//                query.orderBy(criteriaBuilder.desc(root.get("id")));
-//                return criteriaBuilder.and(
-//                        criteriaBuilder.like(criteriaBuilder.lower(root.get("plateNumber")), searchValue),
-//                        criteriaBuilder.equal(root.get("vehicleStatus"), vehicleStatus)
-//                );
-//            }
-//        };
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 

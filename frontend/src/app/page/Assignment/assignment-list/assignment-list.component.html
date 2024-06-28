@@ -292,7 +292,7 @@
                   <th pSortableColumn="vehicle.make" class="text-center">Make <p-sortIcon field="vehicle.make"></p-sortIcon></th>
                   <th pSortableColumn="vehicle.model" class="text-center">Model <p-sortIcon field="vehicle.model"></p-sortIcon></th>
                   <th pSortableColumn="vehicle.year" class="text-center">Year <p-sortIcon field="vehicle.year"></p-sortIcon></th>
-                  <th pSortableColumn="assignToEmpId.region" class="text-center">Region <p-sortIcon field="assignToEmpId.region"></p-sortIcon></th>
+                  <th pSortableColumn="vehicle.region" class="text-center">Region <p-sortIcon field="vehicle.region"></p-sortIcon></th>
                   <th pSortableColumn="assignToEmpId.department" class="text-center">Department <p-sortIcon field="assignToEmpId.department"></p-sortIcon></th>
                   <th pSortableColumn="assignToEmpId.section" class="text-center">Section <p-sortIcon field="assignToEmpId.section"></p-sortIcon></th>
                   <th pSortableColumn="vehicle.leaseExpiryDate" class="text-center">Lease Expiry <p-sortIcon field="vehicle.leaseExpiryDate"></p-sortIcon></th>
@@ -335,7 +335,7 @@
                     {{ vehicleAssignment.vehicle.year }}
                   </td>
                   <td class="text-center">
-                    {{ vehicleAssignment.assignToEmpId.region }}
+                    {{ vehicleAssignment.vehicle.region }}
                   </td>
                   <td class="text-center">
                     {{ vehicleAssignment.assignToEmpId.department }}

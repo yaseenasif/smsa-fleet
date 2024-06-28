@@ -2,15 +2,18 @@ package com.example.FleetSystem.service;
 
 import com.example.FleetSystem.dto.VehicleCountPerVendorDto;
 import com.example.FleetSystem.dto.VehiclePerRegionCountDto;
+import com.example.FleetSystem.model.Region;
+import com.example.FleetSystem.model.User;
 import com.example.FleetSystem.model.Vehicle;
+import com.example.FleetSystem.repository.UserRepository;
 import com.example.FleetSystem.repository.VehicleAssignmentRepository;
 import com.example.FleetSystem.repository.VehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,11 +23,16 @@ public class DashboardCardsService {
     VehicleRepository vehicleRepository;
     @Autowired
     VehicleAssignmentRepository vehicleAssignmentRepository;
+    @Autowired
+    UserRepository userRepository;
 
     public Map<String, Object> getCounts() {
         Map<String, Object> counts = new HashMap<>();
         // Get total count of active vehicles
-        Long totalActiveVehicles = vehicleRepository.getActiveVehicleCount();
+
+        List<String> userRegions = Objects.requireNonNull(getUserRegions()).stream().map(Region::getName).collect(Collectors.toList());
+
+        Long totalActiveVehicles = vehicleRepository.getActiveVehicleCount(userRegions);
         counts.put("totalActiveVehicles", totalActiveVehicles);
 
         // Get count of active vehicles per vendor
@@ -33,12 +41,6 @@ public class DashboardCardsService {
                 .map(objects -> new VehicleCountPerVendorDto((Long) objects[0], (String) objects[1], (Long) objects[2]))
                 .collect(Collectors.toList());
         counts.put("activeVehiclesPerVendor", vehicleCountPerVendorDtoList);
-
-//        Long totalActiveDrivers = driverRepository.getActiveDriversCount();
-//        counts.put("totalActiveDrivers", totalActiveDrivers);
-
-//        Long totalVehicleReplacement = vehicleReplacementRepository.getVehicleReplacementCount();
-//        counts.put("totalVehicleReplacement", totalVehicleReplacement);
 
         List<Object[]> totalVehiclesPerRegion = vehicleAssignmentRepository.getActiveVehiclePerRegionCount();
         List<VehiclePerRegionCountDto> vehiclePerRegionCountDtoList = totalVehiclesPerRegion.stream()
@@ -66,8 +68,9 @@ public class DashboardCardsService {
             }
         }
         counts.put("usageTypeCounts", usageTypeMap);
+        List<String> userRegions = Objects.requireNonNull(getUserRegions()).stream().map(Region::getName).collect(Collectors.toList());
 
-        Long totalVehicleCounts = vehicleRepository.getActiveVehicleCount();
+        Long totalVehicleCounts = vehicleRepository.getActiveVehicleCount(userRegions);
         counts.put("totalVehicleCount", totalVehicleCounts);
 
         List<Object[]> regionCounts = vehicleRepository.getRegionCounts();
@@ -95,5 +98,17 @@ public class DashboardCardsService {
         counts.put("departmentCounts", departmentMap);
 
         return counts;
+    }
+
+    private Set<Region> getUserRegions() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            String username = ((UserDetails) principal).getUsername();
+            User user = userRepository.findByEmployeeIdAndStatusIsTrue(username);
+
+            return user.getRegions();
+        } else {
+            return null;
+        }
     }
 }

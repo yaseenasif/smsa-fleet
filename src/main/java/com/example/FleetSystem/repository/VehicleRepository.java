@@ -14,8 +14,11 @@ import java.util.Optional;
 @Repository
 public interface VehicleRepository extends JpaRepository<Vehicle, Long>, JpaSpecificationExecutor<Vehicle> {
 
-    @Query("SELECT v FROM Vehicle v WHERE v.vehicleStatus = 'TBA' OR v.vehicleStatus = 'Active' OR v.vehicleStatus = 'Replacement'")
-    List<Vehicle> getActiveVehicles();
+    @Query("SELECT v FROM Vehicle v " +
+            "WHERE (v.vehicleStatus = 'TBA' OR v.vehicleStatus = 'Active' OR v.vehicleStatus = 'Replacement') " +
+            "AND v.region IN (:regions)")
+    List<Vehicle> getVehiclesPerUserRegion(@Param("regions") List<String> regions);
+
 
     Optional<Vehicle> findByPlateNumber(String plateNumber);
 
@@ -26,8 +29,10 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long>, JpaSpec
             "WHERE v.replacementVehicle IS NULL AND v.vehicleStatus='TBA'")
     List<Vehicle> availableForReplacement();
 
-    @Query("SELECT COUNT(v) AS total_vehicles FROM Vehicle v WHERE v.vehicleStatus = 'TBA' OR v.vehicleStatus = 'Active' OR v.vehicleStatus = 'Under Maintenance'")
-    Long getActiveVehicleCount();
+    @Query("SELECT COUNT(v) AS total_vehicles FROM Vehicle v " +
+            "WHERE (v.vehicleStatus = 'TBA' OR v.vehicleStatus = 'Active' OR v.vehicleStatus = 'Under Maintenance' OR v.vehicleStatus = 'Replacement')" +
+            " AND v.region IN (:regions)")
+    Long getActiveVehicleCount(@Param("regions") List<String> regions);
 
     @Query("SELECT v.vendor.id AS id, v.vendor.vendorName AS name, COUNT(v) AS total_vehicles FROM Vehicle v GROUP BY v.vendor.id")
     List<Object[]> getActiveVehiclePerVendor();

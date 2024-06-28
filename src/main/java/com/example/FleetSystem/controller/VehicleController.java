@@ -67,9 +67,9 @@ public class VehicleController {
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
-    @GetMapping("/get-all-vehicle")
-    public ResponseEntity<List<VehicleDto>> getAllVehicles() {
-        List<VehicleDto> vehicleDtoList = vehicleService.getActiveVehicles();
+    @GetMapping("/get-vehicle-per-user-region")
+    public ResponseEntity<List<VehicleDto>> getVehiclesPerUserRegion() {
+        List<VehicleDto> vehicleDtoList = vehicleService.getVehiclesPerUserRegion();
         return ResponseEntity.ok(vehicleDtoList);
     }
 
