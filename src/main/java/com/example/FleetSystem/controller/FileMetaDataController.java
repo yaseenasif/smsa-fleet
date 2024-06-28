@@ -20,17 +20,17 @@ public class FileMetaDataController {
     @Autowired
     FileMetaDataService fileMetaDataService;
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @GetMapping("/file-meta-data-by-employee/{id}")
     public ResponseEntity<List<FileMetaDataDto>> getMetaDataByEmployee(@PathVariable Long id) {
         return ResponseEntity.ok(fileMetaDataService.getFileMetaDataByEmployee(id));
     }
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @GetMapping("/file-meta-data-by-vehicle/{id}")
     public ResponseEntity<List<FileMetaDataDto>> getMetaDataByVehicle(@PathVariable Long id) {
         return ResponseEntity.ok(fileMetaDataService.getFileMetaDataByVehicle(id));
     }
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @GetMapping("/file-meta-data-by-vehicle-assignment/{id}")
     public ResponseEntity<List<FileMetaDataDto>> getMetaDataByVehicleAssignment(@PathVariable Long id) {
         return ResponseEntity.ok(fileMetaDataService.getFileMetaDataByVehicleAssignment(id));

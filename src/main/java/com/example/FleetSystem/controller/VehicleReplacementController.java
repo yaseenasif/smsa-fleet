@@ -19,7 +19,7 @@
 //    @Autowired
 //    VehicleReplacementService vehicleReplacementService;
 //
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+//    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
 //    @PatchMapping("/replace-vehicle/{id}")
 //    public ResponseEntity<VehicleReplacementDto> replaceVehicleById(@PathVariable Long id , @RequestBody ReplacementRequest replacementRequest){
 //        return ResponseEntity.ok(vehicleReplacementService.replaceVehicleById(id,replacementRequest));
