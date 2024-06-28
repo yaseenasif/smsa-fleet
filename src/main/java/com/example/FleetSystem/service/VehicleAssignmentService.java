@@ -235,11 +235,22 @@ public class VehicleAssignmentService {
 
     public Page<VehicleAssignmentDto> searchAssignmentByPlateNumber(VehicleSearchCriteria vehicleSearchCriteria, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Specification<VehicleAssignment> vehicleAssignmentSpecification = VehicleAssignmentSpecification.getSearchSpecificationByPlateNumber(vehicleSearchCriteria);
+        Specification<VehicleAssignment> vehicleAssignmentSpecification = VehicleAssignmentSpecification.getSearchSpecificationByPlateNumber(vehicleSearchCriteria,getUserRegions());
         Page<VehicleAssignment> vehicleAssignmentPage = vehicleAssignmentRepository.findAll(vehicleAssignmentSpecification, pageable);
         return vehicleAssignmentPage.map(this::toDto);
     }
 
+    private Set<Region> getUserRegions() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            String username = ((UserDetails) principal).getUsername();
+            User user = userRepository.findByEmployeeIdAndStatusIsTrue(username);
+
+            return user.getRegions();
+        } else {
+            return null;
+        }
+    }
     public Page<VehicleAssignmentDto> searchInactiveAssignmentByPlateNumber(VehicleSearchCriteria vehicleSearchCriteria, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Specification<VehicleAssignment> vehicleAssignmentSpecification = VehicleAssignmentSpecification.getInactiveSearchSpecificationByPlateNumber(vehicleSearchCriteria);

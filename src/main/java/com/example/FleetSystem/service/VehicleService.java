@@ -1,5 +1,6 @@
 package com.example.FleetSystem.service;
 
+import com.amazonaws.regions.Regions;
 import com.example.FleetSystem.criteria.VehicleSearchCriteria;
 import com.example.FleetSystem.dto.AssignmentAuditDataWrapper;
 import com.example.FleetSystem.dto.VehicleAuditDataWrapper;
@@ -700,9 +701,13 @@ public class VehicleService {
         return toDtoList(vehicles);
     }
 
-    public List<VehicleDto> getActiveVehicles() {
-        return toDtoList(vehicleRepository.getActiveVehicles());
-    }
+    public List<VehicleDto> getVehiclesPerUserRegion() {
+        List<String> userRegions = getUserRegions().stream()
+                .map(Region::getName)
+                .collect(Collectors.toList());
+
+            return toDtoList(vehicleRepository.getVehiclesPerUserRegion(userRegions));
+        }
 
     public ResponseMessage addAttachment(Long id, String attachmentType, MultipartFile multipartFile) throws IOException {
         Optional<Vehicle> vehicle = vehicleRepository.findById(id);

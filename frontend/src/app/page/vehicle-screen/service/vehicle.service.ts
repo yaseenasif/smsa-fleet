@@ -30,7 +30,7 @@ export class VehicleService {
   }
 
   getAllVehicles(): Observable<Vehicle[]> {
-    return this.http.get<Vehicle[]>(`${this.url}/get-all-vehicle`);
+    return this.http.get<Vehicle[]>(`${this.url}/get-vehicle-per-user-region`);
 
   }
   availableForReplacement(): Observable<Vehicle[]> {
