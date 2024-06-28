@@ -24,7 +24,7 @@ public class UserController {
     UserService userService;
 
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @PostMapping("/user")
     public ResponseEntity<User> addUser(@RequestBody UserDto userDto) {
         User user = userService.addUser(userDto);
@@ -32,38 +32,38 @@ public class UserController {
 
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @GetMapping("/active-user")
     public ResponseEntity<List<UserDto>> getActiveUser() {
         return ResponseEntity.ok(userService.getActiveUsers());
 
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @GetMapping("/user/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getById(id));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @DeleteMapping("/delete-user/{id}")
     public ResponseEntity<UserDto> deleteById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.deleteById(id));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @PatchMapping("/update-user/{id}")
     public ResponseEntity<UserDto> updateById(@PathVariable Long id, @RequestBody UserDto userDto) {
         return ResponseEntity.ok(userService.updateById(id, userDto));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @GetMapping("/get-by-empId/{id}")
     public ResponseEntity<UserDto> getByEmpId(@PathVariable String id) {
         return ResponseEntity.ok(userService.getByEmpId(id));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @PatchMapping("/update-password/{id}")
     public ResponseEntity<UserDto> updatePasswordById(
             @PathVariable Long id, @RequestParam String newPassword
@@ -71,7 +71,7 @@ public class UserController {
         return ResponseEntity.ok(userService.updatePasswordById(id, newPassword));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @GetMapping("/search-all-user")
     public ResponseEntity<Page<UserDto>> searchAllUsers(@RequestParam(value = "value", required = false) String value,
                                                               @RequestParam(defaultValue = "0") int page,

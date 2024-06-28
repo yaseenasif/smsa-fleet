@@ -25,7 +25,7 @@ public class PdfController {
     @Autowired
     VehicleService vehicleService;
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @GetMapping("/vehicle-history-download/{id}")
     public ResponseEntity<byte[]> downloadPdf(@PathVariable Long id){
         try {

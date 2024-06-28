@@ -35,64 +35,64 @@ public class EmployeeController {
     @Autowired
     StorageService storageService;
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @PostMapping("/add-employee")
     public ResponseEntity<EmployeeDto> createEmployee(@RequestBody EmployeeDto employeeDto) {
         return ResponseEntity.ok(employeeService.save(employeeDto));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @GetMapping("/get-all-employee")
     public ResponseEntity<List<EmployeeDto>> getAllEmployee() {
         return ResponseEntity.ok(employeeService.getAll());
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @GetMapping("/employee/{id}")
     public ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable Long id) {
         return ResponseEntity.ok(employeeService.findById(id));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @PatchMapping("/update-employee/{id}")
     public ResponseEntity<EmployeeDto> updateEmployeeById(@PathVariable Long id, @RequestBody EmployeeDto employeeDto) {
         return ResponseEntity.ok(employeeService.updateEmployee(id,employeeDto));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @PatchMapping("/delete-employee/{id}")
     public ResponseEntity<EmployeeDto> deleteEmployeeById(@PathVariable Long id, @RequestBody EmployeeDto employeeDto) {
         return ResponseEntity.ok(employeeService.deleteEmployeeById(id,employeeDto));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @PatchMapping("/employee-active/{id}")
     public ResponseEntity<EmployeeDto> makeEmployeeActive(@PathVariable Long id){
         return ResponseEntity.ok(employeeService.makeEmployeeActive(id));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @PostMapping("/add-bulk-employee")
     public ResponseEntity<ResponseMessage> addBulkEmployee(@RequestParam("file") MultipartFile file){
         return ResponseEntity.ok(new ResponseMessage(employeeService.addBulkEmployee(file)));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @GetMapping("/get-all-unassigned-employee")
     public ResponseEntity<List<EmployeeDto>> getAllUnAssignedEmployee(){
         return ResponseEntity.ok(employeeService.getAllUnAssignedEmployee());
     }
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @PostMapping("/add-attachments/{id}/{attachmentType}")
     public ResponseEntity<ResponseMessage> addAttachments(@PathVariable Long id, @PathVariable String attachmentType, @RequestParam("file") MultipartFile multipartFile) throws IOException {
         return ResponseEntity.ok(employeeService.addAttachment(id, attachmentType, multipartFile));
     }
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @DeleteMapping("/delete-attachment/{id}")
     public ResponseEntity<ResponseMessage> deleteAttachment(@PathVariable Long id) {
         return ResponseEntity.ok(employeeService.deleteAttachment(id));
     }
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @GetMapping("/download/{fileName}")
     public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable String fileName) {
         byte[] data = storageService.downloadFile(fileName);
@@ -105,7 +105,7 @@ public class EmployeeController {
                 .body(resource);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @GetMapping("/search-employee")
     public ResponseEntity<Page<EmployeeDto>> searchEmployee(@RequestParam(value = "value",required = false) Long value,
                                                            @RequestParam(defaultValue = "0") int page,
@@ -115,7 +115,7 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.searchEmployee(employeeSearchCriteria,page, size));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @GetMapping("/check-assigned-employee/{empId}")
     public ResponseEntity<CheckAssignEmployee> checkAssignedEmployee(@PathVariable Long empId){
         return ResponseEntity.ok(employeeService.checkAssignedEmployee(empId));
@@ -126,7 +126,7 @@ public class EmployeeController {
 //    public ResponseEntity<List<EmployeeDto>> getEmployeesNotDriver(){
 //        return ResponseEntity.ok(employeeService.getEmployeesNotDriver());
 //    }
-@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @GetMapping("/search-employee-inactive")
     public ResponseEntity<Page<EmployeeDto>> searchInactiveEmployee(@RequestParam(value = "value",required = false) Long value,
                                                             @RequestParam(defaultValue = "0") int page,
@@ -136,7 +136,7 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.searchInactiveEmployee(employeeSearchCriteria,page, size));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @GetMapping("/download-employee-excel")
     public ResponseEntity<byte[]> downloadEmployeeExcel() {
 

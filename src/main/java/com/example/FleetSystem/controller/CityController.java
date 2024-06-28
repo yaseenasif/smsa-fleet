@@ -16,31 +16,31 @@ public class CityController {
     @Autowired
     CityService cityService;
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @PostMapping("/add-city")
     public ResponseEntity<CityDto> addCity(@RequestBody CityDto cityDto){
         return ResponseEntity.ok(cityService.addCity(cityDto));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @GetMapping("/get-active-city")
     public ResponseEntity<List<CityDto>> getActiveCities(){
         return ResponseEntity.ok(cityService.getActiveCities());
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @GetMapping("/get-city/{id}")
     public ResponseEntity<CityDto> getCitiesById(@PathVariable Long id){
         return ResponseEntity.ok(cityService.getById(id));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @PatchMapping("/update-city/{id}")
     public ResponseEntity<CityDto> updateCityById(@PathVariable Long id, @RequestBody CityDto cityDto){
         return ResponseEntity.ok(cityService.updateCityById(id,cityDto));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @DeleteMapping("/delete-city/{id}")
     public ResponseEntity<CityDto> deleteCityById(@PathVariable Long id){
         return ResponseEntity.ok(cityService.deleteById(id));
