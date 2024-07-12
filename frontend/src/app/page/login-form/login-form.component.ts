@@ -123,6 +123,7 @@ export class LoginFormComponent implements OnInit {
   }
 
   redirectBasedOnUserRole(user: User) {
+    // debugger
     if (user) {
       if (user.roles[0].name === 'ROLE_COORDINATOR' || 'ROLE_FINANCE') {
         this.router.navigate(['/vehicle']);
