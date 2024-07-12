@@ -8,12 +8,13 @@ import { Observable, switchMap, tap } from 'rxjs';
 import { User } from '../../../modal/User';
 import { MessageService } from 'primeng/api';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { BackenCommonErrorThrow } from '../../../modal/BackenCommonErrorThrow';
+import { ErrorService } from '../../service/ErrorService';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
-  providers: [MessageService]
 })
 export class LoginComponent implements OnInit{
 
@@ -25,10 +26,12 @@ export class LoginComponent implements OnInit{
 
 
 
+
   constructor(
     private loginService: LoginService,
     private router: Router,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private errorHandelService: ErrorService
   ) {}
 
   ngAfterViewInit(): void {
@@ -57,44 +60,40 @@ export class LoginComponent implements OnInit{
     return this.jwtHelper.isTokenExpired(token);
   }
 
-  getUserByEmpId(employeeId: string): Observable<User> {
-    return this.loginService.getUserByEmpId(employeeId);
-  }
+  
 
   login( credentials: LoginCredential ) {
-    this.loginService.login(credentials).subscribe(( res: any) => {
-      console.log(res.roles);
-      localStorage.setItem('accessToken', res.accessToken!);
-      localStorage.setItem("isLoggedIn", "true");
-      this.router.navigate(['']);
-    })
-
-    // this.loginService.login(credentials).pipe(
-    //   tap((res: LoginResponse) => {
-    //     localStorage.setItem('accessToken', res.accessToken!);
-    //     localStorage.setItem("isLoggedIn", "true");
-    //   }),
-    //   switchMap(() => this.getUserByEmpId(this.employeeId))
-    // ).subscribe(
-    //   (user: User) => {
-    //     this.redirectBasedOnUserRole(user);
-    //   },
-    //   (err) => {
-    //     console.log(err);
-
-    //   }
-    // );
+        this.loginService.login(credentials).pipe(
+      tap((res: LoginResponse) => {
+        localStorage.setItem('accessToken', res.accessToken!);
+        localStorage.setItem("isLoggedIn", "true");
+      }),
+      switchMap(() => this.getUserByEmpId(this.employeeId))
+    ).subscribe(
+      (user: User) => {
+        this.validationOnUserRole(user);
+      },
+      (err: BackenCommonErrorThrow) => {
+        this.errorHandelService.showError(err.error!);
+      }
+    );
 
   }
 
-  // redirectBasedOnUserRole(user: User) {
-  //   if (user) {
-  //     if (user.roles[0].name === 'ROLE_ADMIN') {
-  //       this.router.navigate(['']);
-  //     } else {
-  //       this.router.navigate(['/access']);
-  //     }
-  //   }
-  // }
+  getUserByEmpId(employeeId: string): Observable<User> {
+    return this.loginService.getUserByEmpId(employeeId);
+  } 
+
+  validationOnUserRole(user: User) {
+    if (user) {
+      console.log(user);
+      
+      if (user.roles[0].name === 'ROLE_FINANCE') {
+        this.router.navigate(['/finance-dashboard'])
+      } else {
+        this.errorHandelService.showError('The Role is not Finance');
+      }
+    }
+  }
 
 }

@@ -22,7 +22,7 @@ public class CityController {
         return ResponseEntity.ok(cityService.addCity(cityDto));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','npmiROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @GetMapping("/get-active-city")
     public ResponseEntity<List<CityDto>> getActiveCities(){
         return ResponseEntity.ok(cityService.getActiveCities());

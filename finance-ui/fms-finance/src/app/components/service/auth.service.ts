@@ -16,7 +16,7 @@ interface PermissionRoute {
 export class AuthService {
 
   private permissionRoutes: PermissionRoute[] = [
-    { permission: 'FinanceDashboard', route: ['/finance-dashboard', "/"] }
+    { permission: 'Dashboard', route: ['/finance-dashboard', "/"] }
   ]
 
   constructor( private router: Router) { }
