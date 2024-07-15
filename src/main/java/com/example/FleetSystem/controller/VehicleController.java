@@ -226,6 +226,12 @@ public class VehicleController {
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
+    @GetMapping("/search-by-vehicle/{plateNumber}")
+    public ResponseEntity<VehicleDto> searchByPlateNumber(@PathVariable String plateNumber){
+        return ResponseEntity.ok(vehicleService.searchVehicleByPlateNumber(plateNumber));
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @PostMapping("/download-vehicle-excel")
     public ResponseEntity<byte[]> downloadVehicleExcel(@RequestBody List<VehicleDto> vehicleDtoList) {
         byte[] excelBytes = vehicleService.downloadExcel(vehicleDtoList);

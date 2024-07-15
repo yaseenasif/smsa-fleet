@@ -1,4 +1,5 @@
 <div class="grid">
+  <app-app-topbar></app-app-topbar>
   <div class="col-12 lg:col-4 xl:col-4">
       <div class="card mb-0 custom-card">
           <div class="flex justify-content-between mb-3">
@@ -90,7 +91,7 @@
 
 
 
-  <div class="col-12 xl:col-6">
+  <!-- <div class="col-12 xl:col-6">
       <div class="card flex flex-column align-items-center">
           <h5 class="text-left w-full" style="font-weight: 700; font-size:18px;">Air WayBill Status Overview</h5>
           <p-chart class="custom-chart" type="doughnut" [data]="pieDataAwb"
@@ -98,12 +99,12 @@
           <p-skeleton shape="circle" width="300px"
               height="300px"></p-skeleton>
       </div>
-  </div>
+  </div> -->
 
       <div class="col-12 xl:col-6">
           <div class="card card-scroll" style="padding: 2rem 0rem; max-height:543px; min-height:543px;  overflow: auto;">
               <div style="padding: 0rem 2rem 1rem 2rem;" class="flex justify-content-between align-items-center">
-                  <h5 class="mb-0" style="font-weight: 700; font-size:18px;">Airbills Status</h5>
+                  <h5 class="mb-0" style="font-weight: 700; font-size:18px;">View Vehicle</h5>
               </div>
               <p-table #dt1 [value]="awbData" responsiveLayout="scroll" [globalFilterFields]="['uniqueNumber','awbStatus']"
                   rowHover="true">
@@ -111,29 +112,56 @@
                       <div class="flex justify-content-between flex-column sm:flex-row">
                           <span class="p-input-icon-left mb-2 input-table">
                               <i class="pi pi-search"></i>
-                              <input pInputText type="text" #filter
-                                  placeholder="Search......" class="w-full" />
+                              <input pInputText type="text"
+                                [(ngModel)]="value"
+                                placeholder="Search......" class="w-full" />
                           </span>
+                          <p-button type="button" icon="pi pi-search" (click)="search()" label="Search" class="ml-2"></p-button>
                       </div>
                   </ng-template>
                   <ng-template pTemplate="header">
-                      <tr>
-                          <th style="min-width: 6rem;">
-                              <div class="flex justify-content-center align-items-center">
-                                  Awb Number
-                              </div>
-                          </th>
-                          <th style="min-width: 6rem;">
-                              <div class="flex justify-content-center align-items-center">
-                                  Created At
-                              </div>
-                          </th>
-                          <th style="min-width: 6rem">
-                              <div class="flex justify-content-center align-items-center">
-                                  Status
-                              </div>
-                          </th>
-                      </tr>
+                    <div style="margin-top: 60px; line-height: 20px; display: flex; flex-wrap: wrap;">
+                      <div style="flex: 1 1 50%; box-sizing: border-box; padding: 0 15px; margin-bottom: 20px;">
+                          <label htmlFor="poNumber" style="color: #2e026d;"><strong>PO Number: </strong></label>
+                          <label>{{vehicle.processOrderNumber}}</label>
+                      </div>
+                      <div style="flex: 1 1 50%; box-sizing: border-box; padding: 0 15px;">
+                          <label htmlFor="plateNumber" style="color: #2e026d;"><strong>Plate Number: </strong></label>
+                          <label>{{vehicle.plateNumber}}</label>
+                      </div>
+                      <div style="flex: 1 1 50%; box-sizing: border-box; padding: 0 15px; margin-bottom: 20px;">
+                        <label htmlFor="poNumber" style="color: #2e026d;"><strong>Make: </strong></label>
+                        <label>{{vehicle.make}}</label>
+                      </div>
+                      <div style="flex: 1 1 50%; box-sizing: border-box; padding: 0 15px;">
+                        <label htmlFor="plateNumber" style="color: #2e026d;"><strong>Year: </strong></label>
+                        <label>{{vehicle.year}}</label>
+                      </div>
+                      <div style="flex: 1 1 50%; box-sizing: border-box; padding: 0 15px; margin-bottom: 20px;">
+                        <label htmlFor="poNumber" style="color: #2e026d;"><strong>Type: </strong></label>
+                        <label>{{vehicle.type}}</label>
+                      </div>
+                      <div style="flex: 1 1 50%; box-sizing: border-box; padding: 0 15px;">
+                        <label htmlFor="plateNumber" style="color: #2e026d;"><strong>Region: </strong></label>
+                        <label>{{vehicle.region}}</label>
+                      </div>
+                      <div style="flex: 1 1 50%; box-sizing: border-box; padding: 0 15px; margin-bottom: 20px;">
+                        <label htmlFor="poNumber" style="color: #2e026d;"><strong>Country: </strong></label>
+                        <label>{{vehicle.country}}</label>
+                      </div>
+                      <div style="flex: 1 1 50%; box-sizing: border-box; padding: 0 15px;">
+                        <label htmlFor="plateNumber" style="color: #2e026d;"><strong>Vendor Name: </strong></label>
+                        <label>{{vehicle.vendor.vendorName}}</label>
+                      </div>
+                      <div style="flex: 1 1 50%; box-sizing: border-box; padding: 0 15px; margin-bottom: 20px;">
+                        <label htmlFor="poNumber" style="color: #2e026d;"><strong>Lease Cost: </strong></label>
+                        <label>{{vehicle.leaseCost}}</label>
+                      </div>
+                      <div style="flex: 1 1 50%; box-sizing: border-box; padding: 0 15px;">
+                        <label htmlFor="plateNumber" style="color: #2e026d;"><strong>Vehicle Status: </strong></label>
+                        <label>{{vehicle.vehicleStatus}}</label>
+                      </div>
+                    </div>
                   </ng-template>
                   <ng-template pTemplate="body" let-data>
                       <tr>
@@ -154,15 +182,40 @@
 
   <div class="col-12 xl:col-6">
       <div class="card flex flex-column align-items-center">
-          <h5 class="text-left w-full" style="font-weight: 700; font-size:18px;">Ticket Status Breakdown</h5>
-          <p-chart type="doughnut" [data]="pieData"
-              [options]="pieOptions"></p-chart>
-          <p-skeleton shape="circle" width="300px"
-              height="300px"></p-skeleton>
+          <h5 class="text-left w-full" style="font-weight: 700; font-size:18px;">Vehicle History</h5>
+          <p-timeline [value]="vehicleHistory" align="alternate" styleClass="customized-timeline">
+            <ng-template pTemplate="marker" let-vehicleHistory>
+                <span
+                    class="flex w-2rem h-2rem align-items-center justify-content-center text-white border-circle z-1 shadow-1"
+                    [style]="{ 'background-color': vehicleHistory.color }">
+                        <i [class]="vehicleHistory.icon"></i>
+                </span>
+            </ng-template>
+            <ng-template pTemplate="content" let-vehicleHistory>
+              <p-card [header]="vehicleHistory.type">
+                <p><strong><i class="bi bi-calendar" style="color: #4400ff;"></i></strong> {{vehicleHistory.createdAtDate}}</p>
+                <p><strong><i class="bi bi-clock" style="color: #4400ff;"></i></strong> {{ removeSecondsFromTime(vehicleHistory.createdAtTime) }}</p><br>
+                 <h3 *ngIf="vehicleHistory.type === 'Replacement' || vehicleHistory.type === 'Temporary Replacement'">
+                  <p><strong>Replaced By : </strong> {{vehicleHistory.createdBy}}</p><br>
+                   <h3>Replaced with</h3>Plate Number: {{vehicleHistory.plateNumber}}</h3>
+                 <h3 *ngIf="vehicleHistory.type === 'Assignment'">
+                  <p><strong>Assigned By : </strong> {{vehicleHistory.createdBy}}</p><br>
+                   <h3>Assigned To:</h3>Employ Number: {{vehicleHistory.empNo}}</h3>
+                 <h3 *ngIf="vehicleHistory.type === 'Assignment'">Name: {{vehicleHistory.empName}}</h3>
+                 <h3 *ngIf="vehicleHistory.type === 'Released'">Released By: {{vehicleHistory.createdBy}}</h3>
+                 <h3 *ngIf="vehicleHistory.type === 'Final Returned'">Returned By: {{vehicleHistory.createdBy}}</h3>
+                 <h3 *ngIf="vehicleHistory.type === 'Returned Back'">Returned By: {{vehicleHistory.createdBy}}</h3>
+                 <h3 *ngIf="vehicleHistory.type === 'Marked Total Lost'">Marked By: {{vehicleHistory.createdBy}}</h3>
+                 <h3 *ngIf="vehicleHistory.type === 'Set Permanent'">Set By: {{vehicleHistory.createdBy}}</h3>
+                 <h3 *ngIf="vehicleHistory.type === 'Vehicle Deleted'">Deleted By: {{vehicleHistory.createdBy}}</h3>
+                 <h3 *ngIf="vehicleHistory.type === 'Creation'">Created By: {{vehicleHistory.createdBy}}</h3>
+              </p-card>
+            </ng-template>
+        </p-timeline>
       </div>
   </div>
 
-  <div class="lg:col-6 col-12">
+  <!-- <div class="lg:col-6 col-12">
       <div class="card flex flex-column align-items-center">
           <h5 class="text-left w-full" style="font-weight: 700; font-size:18px;">Account Status Overview</h5>
           <p-chart type="doughnut"
@@ -170,7 +223,7 @@
           <p-skeleton shape="circle" width="300px"
               height="300px"></p-skeleton>
       </div>
-  </div>
+  </div> -->
 
 
 </div>

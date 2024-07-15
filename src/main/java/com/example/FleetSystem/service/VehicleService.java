@@ -1248,5 +1248,13 @@ public class VehicleService {
         }
         throw new RuntimeException("Vehicle not found by Id " + id);
     }
+
+    public VehicleDto searchVehicleByPlateNumber(String plateNumber){
+        Optional<Vehicle> vehicle =  vehicleRepository.findByPlateNumber(plateNumber);
+        if (vehicle.isPresent()){
+            return toDto(vehicle.get());
+        }
+        throw new RuntimeException("vehicle not found by plate number : "+plateNumber);
+    }
 }
 
