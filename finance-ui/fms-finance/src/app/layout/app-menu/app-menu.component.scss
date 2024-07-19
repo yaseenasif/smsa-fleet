@@ -1,0 +1,29 @@
+.layout-menu li {
+  margin: 0;
+  padding: 10px; /* Adjust as needed */
+}
+
+.layout-menu a {
+  display: flex;
+  align-items: center;
+  text-decoration: none; /* Remove underline from links */
+  color: #333; /* Text color */
+}
+
+.layout-menu i {
+  font-size: 16px; /* Adjust icon size */
+  color: #660099; /* Icon color */
+  margin-right: 10px; /* Space between icon and label */
+  width: 30px; /* Width of the icon container */
+  height: 30px; /* Height of the icon container */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.layout-menu span {
+  font-size: 14px; /* Font size of the label */
+  color: #660099; /* Text color for label */
+  font-weight: 600; /* Make label bold */
+  white-space: nowrap; /* Prevent text wrapping */
+}

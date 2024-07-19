@@ -25,6 +25,7 @@ import { AppLayoutComponent } from './layout/app-layout/app-layout.component';
 import { AppSidebarComponent } from './layout/app-sidebar/app-sidebar.component';
 import { AppMenuComponent } from './layout/app-menu/app-menu.component';
 import { AppMenuitemComponent } from './layout/app-menu/menu-items.component';
+import { ViewVehicleComponent } from './components/vehicle-screen/view-vehicle/view-vehicle/view-vehicle.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { AppMenuitemComponent } from './layout/app-menu/menu-items.component';
     AppLayoutComponent,
     AppSidebarComponent,
     AppMenuComponent,
-    AppMenuitemComponent
+    AppMenuitemComponent,
+    ViewVehicleComponent
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { LayoutService } from '../service/layout.service';
 
 @Component({
   selector: 'app-app-menu',
@@ -7,17 +8,30 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppMenuComponent implements OnInit{
 
-  model: any[] = [];
 
+  model: any[] = [];
+  isSidebarCollapsed: boolean = true;
+
+  constructor( private layoutService: LayoutService) {
+    this.layoutService.staticMenuDesktopInactive$.subscribe(( inactive: boolean) => {
+      this.isSidebarCollapsed = inactive;
+    })
+  }
 
   ngOnInit(): void {
 
     this.model = [
-      {
-        label: "Dashboard",
-        icon: "pi pi-fw pi-home",
-        routerLink: ["/"],
-      }
+
+          {
+            label: "Dashboard",
+            icon: "pi pi-fw pi-home",
+            routerLink: ["/"],
+          },
+          {
+            label: "View Vehicles",
+            icon: "pi pi-fw pi-car",
+            routerLink: ["/view-vehicle"],
+          }
     ]
   }
 

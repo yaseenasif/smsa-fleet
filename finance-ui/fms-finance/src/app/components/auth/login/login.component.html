@@ -12,25 +12,27 @@
           <form (ngSubmit)="login({employeeId:employeeId,password:password})" class="login-form">
             <h2 class="text-center">Login</h2>
         <div class="flex flex-column gap-2 mt-3">
-          <label htmlFor="name">Employee Id</label>
+          <!-- <label htmlFor="name">Employee Id</label> -->
           <input
             pInputText
             id="name"
             aria-describedby="name-help"
             [(ngModel)]="employeeId"
             [ngModelOptions]="{ standalone: true }"
+            placeholder="Employee ID"
           />
           <!-- <small id="username-help" class="r-color"
             >Invalid Username.</small
           > -->
         </div>
         <div class="flex flex-column gap-2 mt-3 form-hook">
-          <label htmlFor="username">Password</label>
+          <!-- <label htmlFor="username">Password</label> -->
           <p-password
             [(ngModel)]="password"
             [ngModelOptions]="{ standalone: true }"
             [toggleMask]="true"
-            [feedback]="false" 
+            [feedback]="false"
+            placeholder="Password"
           ></p-password>
           <!-- <small id="username-help" class="r-color"
             >Invalid password.</small

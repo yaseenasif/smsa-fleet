@@ -53,6 +53,10 @@ export class LayoutService {
 
   overlayOpen$ = this.overlayOpen.asObservable();
 
+  private staticMenuDesktopInactiveSubject = new Subject<boolean>();
+  staticMenuDesktopInactive$ = this.staticMenuDesktopInactiveSubject.asObservable();
+
+
   onMenuToggle() {
     if (this.isOverlay()) {
       this.state.overlayMenuActive = !this.state.overlayMenuActive;
@@ -64,6 +68,9 @@ export class LayoutService {
     if (this.isDesktop()) {
       this.state.staticMenuDesktopInactive =
         !this.state.staticMenuDesktopInactive;
+        this.staticMenuDesktopInactiveSubject.next(this.state.staticMenuDesktopInactive)
+        console.log(this.state.staticMenuDesktopInactive);
+
     } else {
       this.state.staticMenuMobileActive = !this.state.staticMenuMobileActive;
 
