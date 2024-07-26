@@ -12,8 +12,11 @@ import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { TimelineModule } from 'primeng/timeline';
 import { CardModule } from 'primeng/card';
-
+import { DropdownModule } from 'primeng/dropdown';
+import { CalendarModule } from 'primeng/calendar';
 import { AppRoutingModule } from './app-routing.module';
+import { FileUploadModule } from 'primeng/fileupload';
+
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -26,6 +29,8 @@ import { AppSidebarComponent } from './layout/app-sidebar/app-sidebar.component'
 import { AppMenuComponent } from './layout/app-menu/app-menu.component';
 import { AppMenuitemComponent } from './layout/app-menu/menu-items.component';
 import { ViewVehicleComponent } from './components/vehicle-screen/view-vehicle/view-vehicle/view-vehicle.component';
+import { InvoiceUploadComponent } from './components/invoice-screen/invoice-upload/invoice-upload.component';
+import { InvoiceDetailsComponent } from './components/invoice-screen/invoice-details/invoice-details.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +42,9 @@ import { ViewVehicleComponent } from './components/vehicle-screen/view-vehicle/v
     AppSidebarComponent,
     AppMenuComponent,
     AppMenuitemComponent,
-    ViewVehicleComponent
+    ViewVehicleComponent,
+    InvoiceUploadComponent,
+    InvoiceDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +63,10 @@ import { ViewVehicleComponent } from './components/vehicle-screen/view-vehicle/v
     AvatarModule,
     AvatarGroupModule,
     TimelineModule,
-    CardModule
+    CardModule,
+    DropdownModule,
+    CalendarModule,
+    FileUploadModule,
 
   ],
   providers: [MessageService],

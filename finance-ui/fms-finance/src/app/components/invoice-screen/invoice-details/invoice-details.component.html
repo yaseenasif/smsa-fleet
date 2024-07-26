@@ -1,0 +1,136 @@
+<div class="flex flex-row">
+  <div class="body-position">
+    <div class="body-holder">
+
+      <div class="main">
+        <div class="body-card">
+          <div class="card">
+            <h1 class="mb-4 h-color">Invoice Details</h1>
+
+            <form #employeeForm="ngForm">
+              <div class="grid">
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2 form-hook">
+                    <label htmlFor="name">Supplier Number</label>
+                    <p-dropdown
+                    [options]="invoiceDetails"
+                    [(ngModel)]="selectedInvoiceDetail"
+                    optionLabel="name"
+                    [ngModelOptions]="{standalone: true}"
+                    placeholder="Select Supplier Number" />
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Supplier Name</label>
+                    <input type="text" pInputText [(ngModel)]="value"
+                    [ngModelOptions]="{standalone: true}" />
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Supplier Site</label>
+                    <input type="text" pInputText [(ngModel)]="value"
+                    [ngModelOptions]="{standalone: true}" />
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2 form-hook">
+                    <label htmlFor="name">Invoice Type</label>
+                    <p-dropdown
+                    [options]="invoiceDetails"
+                    [(ngModel)]="selectedInvoiceDetail"
+                    optionLabel="name"
+                    [ngModelOptions]="{standalone: true}"
+                    placeholder="Select Supplier Number" />
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Invoice Number</label>
+                    <input type="text" pInputText [(ngModel)]="value"
+                    [ngModelOptions]="{standalone: true}" />
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Invoice Amount</label>
+                    <input type="text" pInputText [(ngModel)]="value"
+                    [ngModelOptions]="{standalone: true}" />
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Invoice Date</label>
+                    <input type="text" pInputText [(ngModel)]="value"
+                    [ngModelOptions]="{standalone: true}" />
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Invoice Month</label>
+                    <input type="text" pInputText [(ngModel)]="value"
+                    [ngModelOptions]="{standalone: true}" />
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="card">
+            <p-table [value]="invoiceRecord" [tableStyle]="{ 'min-width': '50rem' }">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th pSortableColumn="date" class="text-center">
+                    Invoice Line Number
+                    <p-sortIcon field="date"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="invoiceNumber" class="text-center">
+                    Plate Number
+                    <p-sortIcon field="invoiceNumber"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="progress" class="text-center">
+                    Vehicle Description
+                    <p-sortIcon field="progress"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="fileName" class="text-center">
+                    Agreement Number
+                    <p-sortIcon field="fileName"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="budget" class="text-center">
+                    Supllier Control Number
+                    <p-sortIcon field="budget"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="budget" class="text-center">
+                    Vehicle ID
+                    <p-sortIcon field="budget"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="budget" class="text-center">
+                    Start Date Of The Vehicle Assignment
+                    <p-sortIcon field="budget"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="budget" class="text-center">
+                    End Date Of The Vehicle Assignment
+                    <p-sortIcon field="budget"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="budget" class="text-center">
+                    Invoice Month
+                    <p-sortIcon field="budget"></p-sortIcon>
+                  </th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-invoice>
+                <tr [routerLink]="['/invoice-details']">
+                  <td class="text-center">{{invoice.date}}</td>
+                  <td class="text-center">{{invoice.invoiceNumber}}</td>
+                  <td class="text-center">{{invoice.progress}}</td>
+                  <td class="text-center">{{invoice.fileName}}</td>
+                  <td class="text-center">{{invoice.budget}}</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

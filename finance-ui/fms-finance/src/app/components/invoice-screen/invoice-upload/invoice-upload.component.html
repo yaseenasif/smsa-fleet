@@ -1,0 +1,98 @@
+<div class="flex flex-row">
+  <div class="body-position">
+    <div class="body-holder">
+
+      <div class="main">
+        <div class="body-card">
+          <div class="card">
+            <h1 class="mb-4 h-color">Invoice Upload</h1>
+
+            <form #employeeForm="ngForm">
+              <div class="grid">
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Invoice Type</label>
+                    <p-dropdown
+                    [options]="invoiceType"
+                    [(ngModel)]="selectedInvoiceType"
+                    optionLabel="name"
+                    [ngModelOptions]="{standalone: true}"
+                    placeholder="Select Invoice Type" />
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <label htmlFor="name">Invoice Month</label>
+                    <p-calendar
+                    [(ngModel)]="date"
+                    view="month"
+                    dateFormat="mm/yy"
+                    [readonlyInput]="true"
+                    [ngModelOptions]="{standalone: true}"
+                    />
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <p-toast />
+                    <p-fileUpload
+                    mode="basic"
+                    chooseLabel="Choose"
+                    chooseIcon="pi pi-upload"
+                    name="demo[]"
+                    url="https://www.primefaces.org/cdn/api/upload.php"
+                    accept="image/*"
+                    maxFileSize="1000000"
+                    (onUpload)="onUpload()" />
+                  </div>
+                </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2">
+                    <p-button>upload</p-button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="card">
+            <p-table [value]="invoiceRecord" [tableStyle]="{ 'min-width': '50rem' }">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th pSortableColumn="date" class="text-center">
+                    Date
+                    <p-sortIcon field="date"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="invoiceNumber" class="text-center">
+                    Invoice Number
+                    <p-sortIcon field="invoiceNumber"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="progress" class="text-center">
+                    Progress
+                    <p-sortIcon field="progress"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="fileName" class="text-center">
+                    File Name
+                    <p-sortIcon field="fileName"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="budget" class="text-center">
+                    Budget
+                    <p-sortIcon field="budget"></p-sortIcon>
+                  </th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-invoice>
+                <tr [routerLink]="['/invoice-details']">
+                  <td class="text-center">{{invoice.date}}</td>
+                  <td class="text-center">{{invoice.invoiceNumber}}</td>
+                  <td class="text-center">{{invoice.progress}}</td>
+                  <td class="text-center">{{invoice.fileName}}</td>
+                  <td class="text-center">{{invoice.budget}}</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

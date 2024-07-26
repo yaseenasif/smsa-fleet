@@ -31,6 +31,11 @@ export class AppMenuComponent implements OnInit{
             label: "View Vehicles",
             icon: "pi pi-fw pi-car",
             routerLink: ["/view-vehicle"],
+          },
+          {
+            label: "Invoice",
+            icon: "pi pi-fw pi-file-arrow-up",
+            routerLink: ["/invoice-upload"],
           }
     ]
   }

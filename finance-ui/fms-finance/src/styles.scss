@@ -14,7 +14,207 @@ $gutter: 1rem; //for primeflex grid system
 @import "assets/demo/styles/flags/flags.css";
 @import "assets/demo/styles/badges.scss";
 @import "assets/demo/styles/code.scss";
+$primary-color: #400099;
+$base-bg-color: #ebf1f4;
+$hover-bg-color: #4d0fa3;
+$white-color: #ffffff;
+$error-color: #dc2626;
 
-.p-button {
-    background-color: #462C8D !important;
+* {
+  margin: 0;
+  font-family: sans-serif;
+}
+
+body {
+  background-color: $base-bg-color;
+}
+
+.body-position {
+  padding-left: 0px;
+  width: 100%;
+}
+
+.bg-color>.p-button {
+  background-color: $primary-color !important;
+}
+
+.bg-color>.p-button:hover {
+  background-color: $hover-bg-color !important;
+}
+
+.bg-o-color>.p-button {
+  color: $primary-color;
+  border-color: $primary-color;
+}
+
+.bg-b-color>.p-button:hover {
+  background-color: $primary-color;
+}
+
+.bg-b-color>.p-button {
+  background-color: $hover-bg-color;
+}
+
+.hook>.p-element>.p-toolbar {
+  border-radius: 0px;
+  background-color: $white-color;
+}
+
+.table-head>.p-element>.p-toolbar {
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.main {
+  background-color: $base-bg-color;
+  height: 100%;
+  padding: 0px;
+}
+
+.body-card {
+  background-color: $white-color;
+  padding: 30px;
+  border-radius: 10px;
+}
+
+.body-card-tile {
+  background-color: rgb(235, 241, 244);
+  padding: 30px;
+  border-radius: 10px;
+}
+
+.body-holder {
+  width: 100%;
+}
+
+.max-w-full {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.p-breadcrumb {
+  height: 60px;
+}
+
+// .p-menuitem-text {
+//   margin-top: 8px;
+// }
+
+.h-color {
+  color: $primary-color
+}
+
+.mr {
+  margin-right: 5px;
+}
+
+.ml {
+  margin-left: 5px;
+}
+
+.form-hook>.p-element>.p-dropdown {
+  width: 100%
+}
+
+.form-hook>.p-element>.p-multiselect {
+  width: 100%
+}
+
+.form-hook>.p-element>.p-dropdown>.p-icon-wrapper {
+  display: none;
+}
+
+.form-hook>.p-element>.p-password>.p-inputtext {
+  width: 100%;
+}
+
+.form-hook>.p-element>.p-password {
+  width: 100%;
+}
+
+.form-hook>.p-element>.p-password>.p-icon-wrapper {
+  top: 37%
+}
+
+.form-hook>.p-element>.p-inputswitch {
+  margin: 7px 16px;
+}
+
+
+
+p-fileupload>.p-fileupload>.p-fileupload-buttonbar {
+  display: flex;
+  justify-content: center;
+  gap: 2%;
+}
+
+p-fileupload>.p-fileupload>.p-fileupload-buttonbar>.p-button {
+  background-color: $primary-color;
+}
+
+p-fileupload>.p-fileupload>.p-fileupload-buttonbar>.p-element>.p-button {
+  background-color: $primary-color;
+}
+
+p-fileupload>.p-fileupload>.p-fileupload-content>.p-fileupload-files>.ng-star-inserted>.p-fileupload-row>div>.p-button {
+  background-color: $primary-color;
+}
+
+.overflow-none {
+  overflow: none;
+}
+
+.dialog-hook>.p-dialog-mask>.p-dialog>.p-dialog-content {
+  overflow: hidden !important;
+}
+
+.form-hook>.p-inputwrapper>.p-password>.p-password-panel {
+  display: none;
+}
+
+.p-dropdown-empty-message {
+  color: red !important;
+}
+
+.bi-download {
+  padding-right: 10px !important;
+}
+
+// .p-input-icon-left > i, .p-input-icon-left > .p-icon-wrapper, .p-input-icon-right > i, .p-input-icon-right > .p-icon-wrapper {
+//     position: absolute;
+//     top: 49%;
+//     margin-top: -0.5rem;
+// }
+.p-speeddial-action {
+  width: 3rem;
+  height: 3rem;
+  background: #400099;
+  color: #fff;
+}
+
+.bi-download {
+  padding-right: 1px !important;
+}
+
+// For Float Label allignment!
+.p-float-label label {
+  line-height: 0.1 !important;
+}
+
+//  For Clear Icon
+
+.p-dropdown-clear-icon {
+  top: 32%;
+}
+
+.p-multiselect-clear-icon {
+  top: 33%;
+}
+.p-accordion
+  .p-accordion-header:not(.p-disabled).p-highlight
+  .p-accordion-header-link {
+  padding: 0.8rem 1.25rem !important;
+}
+.p-accordion .p-accordion-header .p-accordion-header-link{
+  padding: 0.8rem 1.25rem !important;
 }
