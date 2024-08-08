@@ -323,7 +323,7 @@ public class VehicleService {
 
             if (checkFile.isStatus()) {
                 for (int rowNum = 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
-                    Row row = sheet.getRow(rowNum);
+                        Row row = sheet.getRow(rowNum);
                     if (row != null && row.getPhysicalNumberOfCells() > 0) {
 
                         Vehicle vehicle = new Vehicle();

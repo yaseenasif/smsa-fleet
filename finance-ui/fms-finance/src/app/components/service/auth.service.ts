@@ -17,9 +17,9 @@ export class AuthService {
 
   private permissionRoutes: PermissionRoute[] = [
     { permission: 'Dashboard', route: ['/finance-dashboard', "/"] },
-    { permission: 'ViewVehicle', route: ['/view-vehicle'] },
+    { permission: 'ViewVehicles', route: ['/view-vehicle'] },
     { permission: 'InvoiceUpload', route: ['/invoice-upload'] },
-    { permission: 'InvoiceDetails', route: ['/invoice-details'] }
+    { permission: 'InvoiceDetails', route: ['/invoice-details','/invoice-details/:id'] }
 
   ]
 

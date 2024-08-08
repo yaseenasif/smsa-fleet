@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MessageService } from 'primeng/api';
+import { FileUpload } from 'primeng/fileupload';
+import { Invoice } from '../../../modal/invoice';
+import { InvoiceService } from '../invoice.service';
 
 
 interface InvoiceType {
@@ -31,9 +34,15 @@ export class InvoiceUploadComponent implements OnInit{
   selectedInvoiceType !: InvoiceType;
   date: Date[] | undefined;
 
-  invoiceRecord !: InvoiceRecord[];
+  // invoiceRecord !: InvoiceRecord[];
 
-  constructor(private messageService: MessageService) {}
+  fileSelected: boolean = false;
+  uploadedFiles : any[] = [];
+
+  invoiceList !: Array<Invoice>;
+
+
+  constructor(private messageService: MessageService, private invoiceService: InvoiceService) {}
 
 
   ngOnInit(): void {
@@ -43,19 +52,41 @@ export class InvoiceUploadComponent implements OnInit{
       { name: 'Inprogress'}
     ];
 
-    this.invoiceRecord = [
-      {
-        date: "02-24",
-        invoiceNumber: "INV-001",
-        progress: "Completed",
-        fileName: "invoice_july_2024.pdf",
-        budget: "5000"
-      },
-    ]
+    this.getAll();
   }
 
   onUpload() {
-        this.messageService.add({ severity: 'info', summary: 'Success', detail: 'File Uploaded with Basic Mode' });
+    this.invoiceService.saveFile(this.uploadedFiles[0]).subscribe((res)=>{
+      this.messageService.add({ severity: 'info', summary: 'Success', detail: 'File Uploaded with Basic Mode' });
+      this.getAll()
+    },(error) => {
+              this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
+    })
+  }
+
+
+
+    onFileSelect(event:UploadEvent) {
+      this.fileSelected = true;
+      for(let file of event.files) {
+        this.uploadedFiles.push(file);
+    }  
+    
+   }
+  
+    onCancel() {
+      // Handle cancel logic her
+      this.fileSelected = false;
+  
+      // this.uploadedFiles.clear();
+  
     }
 
+    getAll(){
+      this.invoiceService.getAll().subscribe((res)=>{
+        this.invoiceList = res
+        console.log(this.invoiceList);
+        
+      })
+    }
 }

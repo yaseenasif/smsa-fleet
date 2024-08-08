@@ -30,6 +30,9 @@ const routes: Routes = [];
           },
           {
             path: 'invoice-details', component: InvoiceDetailsComponent, canActivate: [AuthGuardService]
+          },
+          {
+            path: 'invoice-details/:id', component: InvoiceDetailsComponent, canActivate: [AuthGuardService]
           }
         ]
       },

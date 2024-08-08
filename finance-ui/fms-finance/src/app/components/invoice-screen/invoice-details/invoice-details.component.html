@@ -23,14 +23,14 @@
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">Supplier Name</label>
-                    <input type="text" pInputText [(ngModel)]="value"
-                    [ngModelOptions]="{standalone: true}" />
+                    <input type="text" pInputText [(ngModel)]="invoice.supplier.vendorName"
+                    [ngModelOptions]="{standalone: true}"/>
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">Supplier Site</label>
-                    <input type="text" pInputText [(ngModel)]="value"
+                    <input type="text" pInputText [(ngModel)]="invoice.supplier.officeLocation"
                     [ngModelOptions]="{standalone: true}" />
                   </div>
                 </div>
@@ -42,13 +42,13 @@
                     [(ngModel)]="selectedInvoiceDetail"
                     optionLabel="name"
                     [ngModelOptions]="{standalone: true}"
-                    placeholder="Select Supplier Number" />
+                    placeholder="Select Invoice Type" />
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">Invoice Number</label>
-                    <input type="text" pInputText [(ngModel)]="value"
+                    <input type="text" pInputText [(ngModel)]="invoice.invoiceNumber"
                     [ngModelOptions]="{standalone: true}" />
                   </div>
                 </div>
@@ -62,14 +62,14 @@
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">Invoice Date</label>
-                    <input type="text" pInputText [(ngModel)]="value"
+                    <input type="text" pInputText [(ngModel)]="invoice.invoiceDate"
                     [ngModelOptions]="{standalone: true}" />
                   </div>
                 </div>
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">Invoice Month</label>
-                    <input type="text" pInputText [(ngModel)]="value"
+                    <input type="text" pInputText [(ngModel)]="invoice.invoiceMonth"
                     [ngModelOptions]="{standalone: true}" />
                   </div>
                 </div>
@@ -77,7 +77,7 @@
             </form>
           </div>
           <div class="card">
-            <p-table [value]="invoiceRecord" [tableStyle]="{ 'min-width': '50rem' }">
+            <p-table [value]="[invoice]" [tableStyle]="{ 'min-width': '50rem' }">
               <ng-template pTemplate="header">
                 <tr>
                   <th pSortableColumn="date" class="text-center">
@@ -116,15 +116,53 @@
                     Invoice Month
                     <p-sortIcon field="budget"></p-sortIcon>
                   </th>
+                  <th pSortableColumn="budget" class="text-center">
+                    Calculated Amount
+                    <p-sortIcon field="budget"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="budget" class="text-center">
+                    Vendor Amount
+                    <p-sortIcon field="budget"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="budget" class="text-center">
+                    Employee Number
+                    <p-sortIcon field="budget"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="budget" class="text-center">
+                    Employee Name
+                    <p-sortIcon field="budget"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="budget" class="text-center">
+                    Department
+                    <p-sortIcon field="budget"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="budget" class="text-center">
+                    Tax
+                    <p-sortIcon field="budget"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="budget" class="text-center">
+                    Grand Total
+                    <p-sortIcon field="budget"></p-sortIcon>
+                  </th>
                 </tr>
               </ng-template>
-              <ng-template pTemplate="body" let-invoice>
-                <tr [routerLink]="['/invoice-details']">
-                  <td class="text-center">{{invoice.date}}</td>
-                  <td class="text-center">{{invoice.invoiceNumber}}</td>
-                  <td class="text-center">{{invoice.progress}}</td>
-                  <td class="text-center">{{invoice.fileName}}</td>
-                  <td class="text-center">{{invoice.budget}}</td>
+              <ng-template pTemplate="body" let-invoice >
+                <tr>
+                  <td class="text-center">{{invoice.lineNumber}}</td>
+                  <td class="text-center">{{invoice.plateNumber}}</td>
+                  <td class="text-center"> </td>
+                  <td class="text-center">{{invoice.agreementNumber}}</td>
+                  <td class="text-center"></td>
+                  <td class="text-center">{{vehicle.id}}</td>
+                  <td class="text-center"></td>
+                  <td class="text-center"></td>
+                  <td class="text-center">{{invoice.invoiceMonth}}</td>
+                  <td class="text-center"></td>
+                  <td class="text-center"></td>
+                  <td class="text-center"></td>
+                  <td class="text-center"></td>
+                  <td class="text-center"></td>
+                  <td class="text-center"></td>
                 </tr>
               </ng-template>
             </p-table>
