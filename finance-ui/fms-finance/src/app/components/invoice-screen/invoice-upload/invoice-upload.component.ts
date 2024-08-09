@@ -40,6 +40,7 @@ export class InvoiceUploadComponent implements OnInit{
   uploadedFiles : any[] = [];
 
   invoiceList !: Array<Invoice>;
+  value !: string;
 
 
   constructor(private messageService: MessageService, private invoiceService: InvoiceService) {}
@@ -70,23 +71,31 @@ export class InvoiceUploadComponent implements OnInit{
       this.fileSelected = true;
       for(let file of event.files) {
         this.uploadedFiles.push(file);
-    }  
-    
+    }
+
    }
-  
+
     onCancel() {
       // Handle cancel logic her
       this.fileSelected = false;
-  
+
       // this.uploadedFiles.clear();
-  
+
     }
 
     getAll(){
       this.invoiceService.getAll().subscribe((res)=>{
         this.invoiceList = res
         console.log(this.invoiceList);
-        
+
       })
+    }
+
+    OnSelectChange() {
+
+    }
+
+    downloadSampleData() {
+      
     }
 }

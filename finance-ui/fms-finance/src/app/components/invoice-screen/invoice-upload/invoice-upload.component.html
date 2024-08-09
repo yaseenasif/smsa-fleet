@@ -56,6 +56,36 @@
             </form>
           </div>
           <div class="card">
+            <div class="card flex flex-wrap justify-content-left gap-3">
+              <p-calendar
+                    [(ngModel)]="date"
+                    view="month"
+                    dateFormat="mm/yy"
+                    [readonlyInput]="true"
+                    [ngModelOptions]="{standalone: true}"
+                    placeholder="Pick a Motnh"
+                    />
+              <span class="w-auto">
+                <input
+                  type="text"
+                  pInputText
+                  [(ngModel)]="value"
+                  placeholder="Search By Invoice Number"
+                  style="width: 200px;"
+                />
+                  <p-button class="ml-2">
+                    Search
+                  </p-button>
+              </span>
+              <div class="ml-auto">
+                <p-button
+                  class="adjust mt-3"
+                  (click)="downloadSampleData()"
+                >
+                  <i class="pi pi-fw pi-download"></i>&nbsp; Sample Download
+                </p-button>
+              </div>
+            </div>
             <p-table [value]="invoiceList" [tableStyle]="{ 'min-width': '50rem' }">
               <ng-template pTemplate="header">
                 <tr>
@@ -79,6 +109,7 @@
                     Supplier
                     <p-sortIcon field="Supplier"></p-sortIcon>
                   </th>
+                  <th class="text-center">Actions</th>
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-invoiceList>
@@ -88,6 +119,7 @@
                   <td class="text-center">{{invoiceList.invoiceCategory}}</td>
                   <td class="text-center">{{invoiceList.fileName}}</td>
                   <td class="text-center">{{invoiceList.supplier.vendorName}}</td>
+                  <td class="text-center"><i class="pi pi-fw pi-download"></i></td>
                 </tr>
               </ng-template>
             </p-table>
