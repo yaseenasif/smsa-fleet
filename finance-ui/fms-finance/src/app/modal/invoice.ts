@@ -36,7 +36,6 @@ export interface Invoice {
         vendorName: String| null | undefined
         officeLocation: String | null | undefined
         attachments: String | null | undefined
-
     }
   }
   

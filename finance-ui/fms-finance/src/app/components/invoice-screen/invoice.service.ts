@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environments';
 import { Invoice } from '../../modal/invoice';
+import { InvoiceUploadRequest } from '../../modal/InvoiceUploadRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -15,14 +16,17 @@ export class InvoiceService {
 
 
 
-  saveFile(file: File): Observable<any> {
+  saveFile(file: File, invoiceUploadRequest: InvoiceUploadRequest): Observable<any> {
     const token = localStorage.getItem('accessToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     
     const formData = new FormData();
-    formData.append('file', file);
+    const invoiceRequestJson = JSON.stringify(invoiceUploadRequest);
 
-    return this.http.post<any>(`${this.url}/save-invoice-excel`, formData , {headers});
+    formData.append('file', file);
+    formData.append('invoiceUploadRequest', invoiceRequestJson);
+
+    return this.http.post<any>(`${this.url}/save-invoice-excel`, formData, {headers});
   }
 
   getAll(): Observable<Invoice[]>{

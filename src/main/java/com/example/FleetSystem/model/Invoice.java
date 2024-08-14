@@ -46,9 +46,11 @@ public class Invoice {
     private Float lineTaxAmount;
     private Float lineAmountWithTax;
     private String uuid;
-    private String fileName;
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
     private LocalDate updatedAt;
+
+    @ManyToOne
+    private InvoiceFile invoiceFile;
 
     @ManyToOne
     private Vendor supplier;

@@ -1,6 +1,7 @@
 package com.example.FleetSystem.service;
 
 import com.example.FleetSystem.dto.InvoiceDto;
+import com.example.FleetSystem.dto.InvoiceUploadRequest;
 import com.example.FleetSystem.exception.ExcelException;
 import com.example.FleetSystem.model.*;
 import com.example.FleetSystem.payload.ExcelErrorResponse;
@@ -41,10 +42,14 @@ public class InvoiceService {
     @Autowired
     VendorRepository vendorRepository;
     @Autowired
+    InvoiceFileRepository invoiceFileRepository;
+    @Autowired
     ModelMapper modelMapper;
+    @Autowired
+    StorageService storageService;
 
     @Transactional
-    public List<String> saveInvoiceExcelData(MultipartFile file){
+    public List<String> saveInvoiceExcelData(MultipartFile file , InvoiceUploadRequest invoiceUploadRequest){
         List<String> messages = new ArrayList<>();
 
         try (InputStream inputStream = file.getInputStream()) {
@@ -52,9 +57,36 @@ public class InvoiceService {
             Sheet sheet = workbook.getSheetAt(0);
             String fileName = file.getOriginalFilename();
             String uuid = UUID.randomUUID().toString();
-            ExcelErrorResponse checkFile = validateExcelFile(fileName, sheet);
+            ExcelErrorResponse checkFile = validateExcelFile(fileName, sheet , invoiceUploadRequest.getInvoiceType(), invoiceUploadRequest.getInvoiceMonth());
 
             if (checkFile.isStatus()) {
+                User user = null;
+                Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                if (principal instanceof UserDetails) {
+                    String username = ((UserDetails) principal).getUsername();
+                    user = userRepository.findByEmployeeIdAndStatusIsTrue(username);
+                }else {
+                        messages.add("UserName not Found");
+                        throw new ExcelException(messages);
+                    }
+
+                SimpleDateFormat inputDateFormat = new SimpleDateFormat("d-MMM-yy");
+                SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy", Locale.ENGLISH);
+                DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MM-yyyy", Locale.ENGLISH);
+
+                YearMonth formattedInvoiceMonth = YearMonth.parse(invoiceUploadRequest.getInvoiceMonth() , monthFormatter);
+
+                InvoiceFile invoiceFile = InvoiceFile.builder()
+                        .fileName(fileName)
+                        .invoiceMonth(formattedInvoiceMonth).invoiceType(invoiceUploadRequest.getInvoiceType())
+                        .createdAt(LocalDate.now()).createdBy(user)
+                        .uuid(uuid)
+                        .build();
+
+                storageService.uploadFile(file.getBytes(), file.getOriginalFilename());
+                invoiceFileRepository.save(invoiceFile);
+
                 for (int rowNum = 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
                     Row row = sheet.getRow(rowNum);
 
@@ -64,13 +96,10 @@ public class InvoiceService {
 
                         Invoice invoice = new Invoice();
 
-                        SimpleDateFormat inputDateFormat = new SimpleDateFormat("d-MMM-yy");
-                        SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy", Locale.ENGLISH);
-                        String invoiceMonthStr = String.valueOf(row.getCell(3));
-                        String invoiceDate = String.valueOf(row.getCell(8));
-                        String dateFrom = String.valueOf(row.getCell(20));
-                        String dateTo = String.valueOf(row.getCell(21));
+                         String invoiceMonthStr = String.valueOf(row.getCell(3));
+                         String invoiceDate = String.valueOf(row.getCell(8));
+                         String dateFrom = String.valueOf(row.getCell(20));
+                         String dateTo = String.valueOf(row.getCell(21));
 
 
                         try {
@@ -107,10 +136,6 @@ public class InvoiceService {
                             throw new RuntimeException("Error processing the Date: " + e.getMessage());
                         }
 
-                        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-                        if (principal instanceof UserDetails) {
-                            String username = ((UserDetails) principal).getUsername();
-                            User user = userRepository.findByEmployeeIdAndStatusIsTrue(username);
 
                             Vendor vendor = vendorRepository.findByVendorNameIgnoreCaseAndStatusIsTrue(getStringValue(row.getCell(2)));
 
@@ -135,26 +160,13 @@ public class InvoiceService {
                             invoice.setLineTaxRate(getFloatValue(row.getCell(23)));
                             invoice.setLineTaxAmount(getFloatValue(row.getCell(24)));
                             invoice.setLineAmountWithTax(getFloatValue(row.getCell(25)));
+                            invoice.setInvoiceFile(invoiceFile);
                             invoice.setCreatedBy(user);
-                            invoice.setCreatedAt(LocalDateTime.now());
+                            invoice.setCreatedAt(LocalDate.now());
                             invoice.setUuid(uuid);
-                            invoice.setFileName(fileName);
-
 
                             invoiceRepository.save(invoice);
-                        } else {
-                            messages.add("UserName not Found");
-                            throw new ExcelException(messages);
                         }
-
-
-                }
-
-                FileHistory fileHistory = FileHistory.builder()
-                        .fileName(fileName)
-                        .uuid(uuid)
-                        .build();
-                fileHistoryRepository.save(fileHistory);
 
                 messages.add("File uploaded and data saved successfully.");
                 return messages;
@@ -212,10 +224,10 @@ public class InvoiceService {
         return null;
     }
 
-    private ExcelErrorResponse validateExcelFile(String fileName, Sheet sheet) {
+    private ExcelErrorResponse validateExcelFile(String fileName, Sheet sheet, String invoiceType, String invoiceMonth) {
 
-        Optional<FileHistory> fileHistory = Optional.ofNullable(fileHistoryRepository.findByFileName(fileName));
-        if (fileHistory.isPresent()) {
+        Optional<InvoiceFile> invoiceFile = Optional.ofNullable(invoiceFileRepository.findByFileName(fileName));
+        if (invoiceFile.isPresent()) {
             return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList(fileName + " is already uploaded. Please upload a different File."));
         } else {
 
@@ -242,7 +254,26 @@ public class InvoiceService {
                         }
                     }
 
-                    if (!getStringValue(row.getCell(15)).matches(plateNumberPattern)) {
+                    if (!Objects.requireNonNull(getStringValue(row.getCell(1))).equalsIgnoreCase(invoiceType)){
+                        return new ExcelErrorResponse(Boolean.FALSE,Arrays.asList("Error in row : "+(rowNum+1),
+                                "Invoice Type doesn't match the data in excel"));
+                    }
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy", Locale.ENGLISH);
+                DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MM-yyyy", Locale.ENGLISH);
+                String invoiceMonthStr = String.valueOf(row.getCell(3));
+                LocalDate date = LocalDate.parse(invoiceMonthStr, formatter);
+                YearMonth excelInvoiceMonth = YearMonth.from(date);
+
+                YearMonth formattedInvoiceMonth = YearMonth.parse(invoiceMonth , monthFormatter);
+
+                if (!excelInvoiceMonth.equals(formattedInvoiceMonth)){
+                    return new ExcelErrorResponse(Boolean.FALSE,Arrays.asList("Error in row : "+(rowNum+1),
+                            "Invoice month doesn't match the data in excel"));
+                }
+
+
+                if (!getStringValue(row.getCell(15)).matches(plateNumberPattern)) {
                         return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Plate Number Format : " + row.getCell(15),
                                 "Row " + (rowNum + 1) + " and Cell 16", "Correct Format : 1234 ABC"));
                     }

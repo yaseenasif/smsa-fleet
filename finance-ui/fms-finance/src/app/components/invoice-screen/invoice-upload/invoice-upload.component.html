@@ -29,6 +29,7 @@
                     dateFormat="mm/yy"
                     [readonlyInput]="true"
                     [ngModelOptions]="{standalone: true}"
+                    (onSelect)="onDateSelect($event)"
                     />
                   </div>
                 </div>
@@ -58,68 +59,75 @@
           <div class="card">
             <div class="card flex flex-wrap justify-content-left gap-3">
               <p-calendar
-                    [(ngModel)]="date"
+                    [(ngModel)]="invoiceMonthSearch"
                     view="month"
                     dateFormat="mm/yy"
                     [readonlyInput]="true"
                     [ngModelOptions]="{standalone: true}"
-                    placeholder="Pick a Motnh"
+                    placeholder="Search By Invoive Month"
                     />
               <span class="w-auto">
-                <input
-                  type="text"
-                  pInputText
-                  [(ngModel)]="value"
-                  placeholder="Search By Invoice Number"
-                  style="width: 200px;"
-                />
-                  <p-button class="ml-2">
+                <p-dropdown
+                    [options]="invoiceType"
+                    [(ngModel)]="invoiceTypeSearch"
+                    optionLabel="name"
+                    [ngModelOptions]="{standalone: true}"
+                    placeholder="Search by Invoice Type" />
+                  <p-button class="ml-2" (onClick)="searchInvoiceFile()">
                     Search
                   </p-button>
               </span>
               <div class="ml-auto">
                 <p-button
                   class="adjust mt-3"
-                  (click)="downloadSampleData()"
+                  (click)="downloadSampleFile()"
                 >
                   <i class="pi pi-fw pi-download"></i>&nbsp; Sample Download
                 </p-button>
               </div>
             </div>
-            <p-table [value]="invoiceList" [tableStyle]="{ 'min-width': '50rem' }">
+            <p-table [value]="invoiceFileList" [tableStyle]="{ 'min-width': '50rem' }">
               <ng-template pTemplate="header">
                 <tr>
                   <th pSortableColumn="date" class="text-center">
-                    Date
+                    Upload Date
                     <p-sortIcon field="date"></p-sortIcon>
                   </th>
-                  <th pSortableColumn="invoiceNumber" class="text-center">
-                    Invoice Number
-                    <p-sortIcon field="invoiceNumber"></p-sortIcon>
-                  </th>
-                  <th pSortableColumn="invoiceCategory" class="text-center">
-                    Invoice Category
-                    <p-sortIcon field="invoiceCategory"></p-sortIcon>
+                  <th pSortableColumn="uploadedBy" class="text-center">
+                    Uploaded By
+                    <p-sortIcon field="uploadedBy"></p-sortIcon>
                   </th>
                   <th pSortableColumn="fileName" class="text-center">
                     File Name
                     <p-sortIcon field="fileName"></p-sortIcon>
                   </th>
-                  <th pSortableColumn="Supplier" class="text-center">
-                    Supplier
-                    <p-sortIcon field="Supplier"></p-sortIcon>
+                  <th pSortableColumn="invoiceMonth" class="text-center">
+                    Invoice Month
+                    <p-sortIcon field="invoiceMonth"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="invoiceType" class="text-center">
+                    Invoice Type
+                    <p-sortIcon field="invoiceType"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="uploadStatus" class="text-center">
+                    Upload Status
+                    <p-sortIcon field="uploadStatus"></p-sortIcon>
                   </th>
                   <th class="text-center">Actions</th>
                 </tr>
               </ng-template>
-              <ng-template pTemplate="body" let-invoiceList>
-                <tr [routerLink]="['/invoice-details' , invoiceList.id]">
-                  <td class="text-center">{{invoiceList.invoiceDate}}</td>
-                  <td class="text-center">{{invoiceList.invoiceNumber}}</td>
-                  <td class="text-center">{{invoiceList.invoiceCategory}}</td>
-                  <td class="text-center">{{invoiceList.fileName}}</td>
-                  <td class="text-center">{{invoiceList.supplier.vendorName}}</td>
-                  <td class="text-center"><i class="pi pi-fw pi-download"></i></td>
+              <ng-template pTemplate="body" let-invoiceFileList>
+                <tr>
+                  <td class="text-center" [routerLink]="['/invoice-details', invoiceFileList.id]">{{invoiceFileList.createdAt}}</td>
+                  <td class="text-center" [routerLink]="['/invoice-details', invoiceFileList.id]">{{invoiceFileList.createdBy.name}}</td>
+                  <td class="text-center" [routerLink]="['/invoice-details', invoiceFileList.id]">{{invoiceFileList.fileName}}</td>
+                  <td class="text-center" [routerLink]="['/invoice-details', invoiceFileList.id]">{{invoiceFileList.invoiceMonth}}</td>
+                  <td class="text-center" [routerLink]="['/invoice-details', invoiceFileList.id]">{{invoiceFileList.invoiceType}}</td>
+                  <td class="text-center"></td>
+                  <td class="text-center">
+                    <p-button icon="pi pi-fw pi-download" styleClass="p-button-sm"
+                              (click)="downloadInvoiceFile(invoiceFileList.fileName)"></p-button>
+                  </td>
                 </tr>
               </ng-template>
             </p-table>
