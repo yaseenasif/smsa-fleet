@@ -11,7 +11,7 @@
                       class="text-900 font-medium text-xl text-custom">Total Vehicles
                   </div>
                   <div
-                      class="text-900 font-medium text-xl text-custom">**
+                      class="text-900 font-medium text-xl text-custom">17
                   </div>
               </div>
               <div class="flex align-items-center justify-content-center bg-blue-100 border-round"
@@ -21,7 +21,7 @@
           </div>
           <div class="view">
               <span class="font-medium custom-span"
-                  routerLink="/ticket/list">View <i class="pi pi-angle-right"></i></span>
+                  routerLink="/view-vehicle">View <i class="pi pi-angle-right"></i></span>
           </div>
       </div>
   </div>
@@ -47,21 +47,21 @@
       <div class="card mb-0 custom-card">
           <div class="flex justify-content-between mb-3">
               <div>
-                  <span class="block text-500 font-medium mb-3 title-custom">Drivers</span>
+                  <span class="block text-500 font-medium mb-3 title-custom">Invoices</span>
                   <div
-                      class="text-900 font-medium text-xl text-custom">Total Drivers</div>
+                      class="text-900 font-medium text-xl text-custom">Number of Invoices</div>
                   <div
-                      class="text-900 font-medium text-xl text-custom">**
+                      class="text-900 font-medium text-xl text-custom">15
                   </div>
               </div>
               <div class="flex align-items-center justify-content-center bg-cyan-100 border-round"
                   [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
-                  <i class="pi pi-users text-cyan-500 text-xl"></i>
+                  <i class="pi pi-fw pi-file-arrow-up text-cyan-500 text-xl"></i>
               </div>
           </div>
           <div class="view">
               <span class="font-medium custom-span"
-                  routerLink="/awb/list">View <i class="pi pi-angle-right"></i></span>
+                  routerLink="/invoice-details">View <i class="pi pi-angle-right"></i></span>
           </div>
       </div>
   </div>
@@ -69,17 +69,17 @@
       <div class="card mb-0 custom-card">
           <div class="flex justify-content-between mb-3">
               <div>
-                  <span class="block text-500 font-medium mb-3 title-custom">Vehicles</span>
+                  <span class="block text-500 font-medium mb-3 title-custom">Files</span>
                   <div
-                      class="text-900 font-medium text-xl text-custom">Unassigned Vehicles
+                      class="text-900 font-medium text-xl text-custom">Number of Files
                   </div>
                   <div
-                      class="text-900 font-medium text-xl text-custom">**
+                      class="text-900 font-medium text-xl text-custom">10
                   </div>
               </div>
               <div class="flex align-items-center justify-content-center bg-purple-100 border-round"
                   [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
-                  <i class="pi pi-car text-purple-500 text-xl"></i>
+                  <i class="pi pi-fw pi-file-arrow-up text-purple-500 text-xl"></i>
               </div>
           </div>
           <div class="view">
@@ -89,6 +89,11 @@
       </div>
   </div>
 
+  <div class="col-12 lg:col-12 xl:col-12">
+    <div class="card">
+      <p-chart type="bar" [data]="basicData" [options]="basicOptions" />
+    </div>
+  </div>
 
 
   <!-- <div class="col-12 xl:col-6">

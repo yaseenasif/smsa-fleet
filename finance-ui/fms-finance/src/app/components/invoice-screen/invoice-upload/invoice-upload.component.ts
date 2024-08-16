@@ -44,7 +44,7 @@ export class InvoiceUploadComponent implements OnInit{
 
   invoiceMonthSearch !: Date | null;
   invoiceTypeSearch !: InvoiceType | null;
-  
+
   constructor(private messageService: MessageService, private invoiceFileService: InvoiceFileService,
     private invoiceService: InvoiceService) {}
 
@@ -79,7 +79,7 @@ export class InvoiceUploadComponent implements OnInit{
   formatDate(date: Date): string {
     // Format the date as MM/YYYY
     if(date != null){
-    const month = date.getMonth() + 1; 
+    const month = date.getMonth() + 1;
     const year = date.getFullYear();
     return `${month < 10 ? '0' + month : month}-${year}`;
     }else{
