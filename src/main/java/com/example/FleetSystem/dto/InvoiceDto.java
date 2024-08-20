@@ -1,9 +1,9 @@
 package com.example.FleetSystem.dto;
 
+import com.example.FleetSystem.model.Vehicle;
 import com.example.FleetSystem.model.Vendor;
 import lombok.*;
 
-import javax.persistence.ManyToOne;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,10 +29,10 @@ public class InvoiceDto {
     private Float amountBeforeTax;
     private Float taxableAmount;
     private Float taxPercent;
-    private Float VATAmount;
+    private Float vatAmount;
     private Float amountAfterVAT;
     private Long lineNumber;
-    private String plateNumber;
+//    private String plateNumber;
     private String agreementNumber;
     private Integer monthlyRate;
     private Long supplierControlNumber;
@@ -49,5 +49,6 @@ public class InvoiceDto {
     private LocalDateTime createdAt;
     private LocalDate updatedAt;
     private Vendor supplier;
+    private Vehicle vehicle;
 
 }

@@ -1,0 +1,40 @@
+<div class="flex flex-row">
+    <div class="body-position">
+      <div class="body-holder">
+  
+        <div class="main">
+          <div class="body-card">
+            <div class="card">
+              <div class="header-container">
+                <h1 class="mb-4 h-color">Suppliers List</h1>
+                <p-button type="button" label="Back" (onClick)="redirectToInvoiceUpload()" />
+              </div>
+              <h4 class="mb-4 h-color">Suppliers found in the file : {{vendorCount}}</h4>
+              <p-table 
+              [value] = "vendors"
+    styleClass="p-datatable-striped" 
+    [tableStyle]="{'min-width': '50rem'}">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Sr No.</th>
+                <th>Name</th>
+                <th>Office Location</th>
+                <th>Contact Person</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-vendor let-rowIndex="rowIndex">
+            <tr>
+                <td>{{ rowIndex + 1 }}</td>
+                <td [routerLink]="['/invoice-details', invoiceFileId , vendor.vendorName]">{{vendor.vendorName}}</td>
+                <td [routerLink]="['/invoice-details', invoiceFileId , vendor.vendorName]">{{vendor.officeLocation}}</td>
+                <td [routerLink]="['/invoice-details', invoiceFileId , vendor.vendorName]"></td>
+            </tr>
+        </ng-template>
+</p-table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

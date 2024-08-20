@@ -4,7 +4,6 @@ import lombok.*;
 import javax.persistence.*;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.YearMonth;
 
 @AllArgsConstructor
@@ -30,10 +29,10 @@ public class Invoice {
     private Float amountBeforeTax;
     private Float taxableAmount;
     private Float taxPercent;
-    private Float VATAmount;
+    private Float vatAmount;
     private Float amountAfterVAT;
     private Long lineNumber;
-    private String plateNumber;
+//    private String plateNumber;
     private String agreementNumber;
     private Integer monthlyRate;
     private Long supplierControlNumber;
@@ -48,6 +47,9 @@ public class Invoice {
     private String uuid;
     private LocalDate createdAt;
     private LocalDate updatedAt;
+
+    @OneToOne
+    private Vehicle vehicle;
 
     @ManyToOne
     private InvoiceFile invoiceFile;

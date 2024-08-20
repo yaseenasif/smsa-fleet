@@ -124,4 +124,6 @@ export class InvoiceUploadComponent implements OnInit{
     downloadInvoiceFile(fileName: string){
       this.invoiceFileService.downloadFile(fileName).subscribe(blob => saveAs(blob, fileName))
     }
+
+
 }

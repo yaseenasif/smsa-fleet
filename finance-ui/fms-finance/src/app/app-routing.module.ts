@@ -7,6 +7,7 @@ import { AppLayoutComponent } from './layout/app-layout/app-layout.component';
 import { ViewVehicleComponent } from './components/vehicle-screen/view-vehicle/view-vehicle/view-vehicle.component';
 import { InvoiceUploadComponent } from './components/invoice-screen/invoice-upload/invoice-upload.component';
 import { InvoiceDetailsComponent } from './components/invoice-screen/invoice-details/invoice-details.component';
+import { InvoiceSupplierComponent } from './components/invoice-screen/invoice-supplier/invoice-supplier.component';
 
 const routes: Routes = [];
 
@@ -32,7 +33,10 @@ const routes: Routes = [];
             path: 'invoice-details', component: InvoiceDetailsComponent, canActivate: [AuthGuardService]
           },
           {
-            path: 'invoice-details/:id', component: InvoiceDetailsComponent, canActivate: [AuthGuardService]
+            path: 'invoice-details/:id/:supplierName', component: InvoiceDetailsComponent, canActivate: [AuthGuardService]
+          },
+          {
+            path: 'invoice-supplier/:id', component: InvoiceSupplierComponent, canActivate: [AuthGuardService]
           }
         ]
       },

@@ -31,6 +31,7 @@ import { AppMenuitemComponent } from './layout/app-menu/menu-items.component';
 import { ViewVehicleComponent } from './components/vehicle-screen/view-vehicle/view-vehicle/view-vehicle.component';
 import { InvoiceUploadComponent } from './components/invoice-screen/invoice-upload/invoice-upload.component';
 import { InvoiceDetailsComponent } from './components/invoice-screen/invoice-details/invoice-details.component';
+import { InvoiceSupplierComponent } from './components/invoice-screen/invoice-supplier/invoice-supplier.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { InvoiceDetailsComponent } from './components/invoice-screen/invoice-det
     AppMenuitemComponent,
     ViewVehicleComponent,
     InvoiceUploadComponent,
-    InvoiceDetailsComponent
+    InvoiceDetailsComponent,
+    InvoiceSupplierComponent
   ],
   imports: [
     BrowserModule,

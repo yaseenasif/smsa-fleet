@@ -2,6 +2,7 @@ package com.example.FleetSystem.service;
 
 import com.example.FleetSystem.dto.InvoiceDto;
 import com.example.FleetSystem.dto.InvoiceUploadRequest;
+import com.example.FleetSystem.dto.VendorDto;
 import com.example.FleetSystem.exception.ExcelException;
 import com.example.FleetSystem.model.*;
 import com.example.FleetSystem.payload.ExcelErrorResponse;
@@ -20,7 +21,6 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -138,6 +138,7 @@ public class InvoiceService {
 
 
                             Vendor vendor = vendorRepository.findByVendorNameIgnoreCaseAndStatusIsTrue(getStringValue(row.getCell(2)));
+                            Optional<Vehicle> vehicle = vehicleRepository.findByPlateNumber(getStringValue(row.getCell(15)));
 
                             invoice.setBusinessUnit(getStringValue(row.getCell(0)));
                             invoice.setInvoiceCategory(getStringValue(row.getCell(1)));
@@ -149,10 +150,11 @@ public class InvoiceService {
                             invoice.setAmountBeforeTax(getFloatValue(row.getCell(9)));
                             invoice.setTaxableAmount(getFloatValue(row.getCell(10)));
                             invoice.setTaxPercent(getFloatValue(row.getCell(11)));
-                            invoice.setVATAmount(getFloatValue(row.getCell(12)));
+                            invoice.setVatAmount(getFloatValue(row.getCell(12)));
                             invoice.setAmountAfterVAT(getFloatValue(row.getCell(13)));
                             invoice.setLineNumber(getLongValue(row.getCell(14)));
-                            invoice.setPlateNumber(getStringValue(row.getCell(15)));
+//                            invoice.setPlateNumber(getStringValue(row.getCell(15)));
+                            vehicle.ifPresent(invoice::setVehicle);
                             invoice.setVendorVehicleRefNumber(getLongValue(row.getCell(16)));
                             invoice.setAgreementNumber(getStringValue(row.getCell(17)));
                             invoice.setMonthlyRate(getIntegerValue(row.getCell(18)));
@@ -361,6 +363,48 @@ public class InvoiceService {
         throw new RuntimeException(String.format("Invoice not found by id: %d",id));
     }
 
+    public HashMap<String,List<Invoice>> getSupplierSeparatedInvoices(Long invoiceFileId){
+        Optional<InvoiceFile> invoiceFile = invoiceFileRepository.findById(invoiceFileId);
+        if (invoiceFile.isPresent()){
+            HashMap<String, List<Invoice>> supplierSeparatedInvoices = new HashMap<>();
+            List<Invoice> invoices = invoiceRepository.findByInvoiceFile(invoiceFile.get());
+
+            for (Invoice invoice : invoices) {
+                String supplierName = invoice.getSupplier().getVendorName();
+
+                if (supplierSeparatedInvoices.containsKey(supplierName)) {
+                    supplierSeparatedInvoices.get(supplierName).add(invoice);
+                } else {
+                    List<Invoice> supplierInvoices = new ArrayList<>();
+                    supplierInvoices.add(invoice);
+                    supplierSeparatedInvoices.put(supplierName, supplierInvoices);
+                }
+            }
+            return supplierSeparatedInvoices;
+        }else throw new RuntimeException(String.format("Invoice File not found By Id : %d", invoiceFileId));
+    }
+
+    public List<InvoiceDto> getInvoicesBySupplierAndFileId(Long fileId, String supplierName){
+        Optional<InvoiceFile> invoiceFile = invoiceFileRepository.findById(fileId);
+        Vendor supplier = vendorRepository.findByVendorNameIgnoreCaseAndStatusIsTrue(supplierName);
+
+        if (invoiceFile.isPresent()){
+            return toDtoList(invoiceRepository.findByInvoiceFileAndSupplier(invoiceFile.get(),supplier));
+        }else throw new RuntimeException("Error finding file id: "+fileId);
+    }
+
+    public List<Vendor> getInvoicesSuppliersByFileId(Long fileId) {
+        Optional<InvoiceFile> invoiceFile = invoiceFileRepository.findById(fileId);
+        if (invoiceFile.isPresent()) {
+            List<Invoice> invoices = invoiceRepository.findByInvoiceFile(invoiceFile.get());
+            return invoices.stream()
+                    .map(Invoice::getSupplier)
+                    .distinct()
+                    .collect(Collectors.toList());
+
+        }else throw new RuntimeException("File not found by id: "+fileId);
+    }
+
     public List<InvoiceDto> toDtoList(List<Invoice> Invoices){
         return Invoices.stream().map(this::toDto).collect(Collectors.toList());
     }
@@ -372,4 +416,5 @@ public class InvoiceService {
     private Invoice toEntity(InvoiceDto InvoiceDto){
         return modelMapper.map(InvoiceDto , Invoice.class);
     }
+
 }

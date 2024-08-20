@@ -19,7 +19,8 @@ export class AuthService {
     { permission: 'Dashboard', route: ['/finance-dashboard', "/"] },
     { permission: 'ViewVehicles', route: ['/view-vehicle'] },
     { permission: 'InvoiceUpload', route: ['/invoice-upload'] },
-    { permission: 'InvoiceDetails', route: ['/invoice-details','/invoice-details/:id'] }
+    { permission: 'InvoiceDetails', route: ['/invoice-details','/invoice-details/:id/:supplierName'] },
+    { permission: 'InvoiceSupplier', route: ['/invoice-supplier/:id'] },
 
   ]
 
