@@ -1,5 +1,6 @@
 package com.example.FleetSystem.service;
 
+import com.example.FleetSystem.criteria.InvoiceSearchCriteria;
 import com.example.FleetSystem.dto.InvoiceDto;
 import com.example.FleetSystem.dto.InvoiceUploadRequest;
 import com.example.FleetSystem.dto.VendorDto;
@@ -7,9 +8,15 @@ import com.example.FleetSystem.exception.ExcelException;
 import com.example.FleetSystem.model.*;
 import com.example.FleetSystem.payload.ExcelErrorResponse;
 import com.example.FleetSystem.repository.*;
+import com.example.FleetSystem.specification.InvoiceFileSpecification;
+import com.example.FleetSystem.specification.InvoiceSpecification;
 import org.apache.poi.ss.usermodel.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -23,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -417,4 +425,23 @@ public class InvoiceService {
         return modelMapper.map(InvoiceDto , Invoice.class);
     }
 
+
+    public List<InvoiceDto> searchInvoice(String invoiceType, String invoiceCategory, String invoiceMonth, String supplierName, String invoiceNumber) {
+        YearMonth formattedInvoiceMonth = null;
+        if (invoiceMonth != null && !invoiceMonth.trim().isEmpty()) {
+            try {
+                DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MM-yyyy", Locale.ENGLISH);
+                formattedInvoiceMonth = YearMonth.parse(invoiceMonth.trim(), monthFormatter);
+            } catch (DateTimeParseException e) {
+                throw new IllegalArgumentException("Invalid date format for invoiceMonth. Expected format is MM-yyyy.", e);
+            }
+        }
+
+        Specification<Invoice> invoiceSpecification = InvoiceSpecification.getSearchSpecificationByFields(
+                invoiceType, invoiceCategory, formattedInvoiceMonth, supplierName, invoiceNumber
+        );
+
+        List<Invoice> invoices = invoiceRepository.findAll(invoiceSpecification);
+        return toDtoList(invoices);
+    };
 }

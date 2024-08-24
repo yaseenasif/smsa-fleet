@@ -36,6 +36,11 @@ export class AppMenuComponent implements OnInit{
             label: "Invoice",
             icon: "pi pi-fw pi-file-arrow-up",
             routerLink: ["/invoice-upload"],
+          },
+          {
+            label: "Report Section",
+            icon: "pi pi-fw pi-file-arrow-up",
+            routerLink: ["/report-section"],
           }
     ]
   }

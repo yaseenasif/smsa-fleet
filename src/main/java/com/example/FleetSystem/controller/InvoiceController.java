@@ -1,6 +1,8 @@
 package com.example.FleetSystem.controller;
 
+import com.example.FleetSystem.criteria.InvoiceSearchCriteria;
 import com.example.FleetSystem.dto.InvoiceDto;
+import com.example.FleetSystem.dto.InvoiceFileDto;
 import com.example.FleetSystem.dto.InvoiceUploadRequest;
 import com.example.FleetSystem.dto.VendorDto;
 import com.example.FleetSystem.model.Invoice;
@@ -10,6 +12,7 @@ import com.example.FleetSystem.service.InvoiceService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -62,4 +65,15 @@ public class InvoiceController {
     public ResponseEntity<List<Vendor>> getInvoicesSuppliersByFileId(@PathVariable Long fileId) {
         return ResponseEntity.ok(invoiceService.getInvoicesSuppliersByFileId(fileId));
     }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
+    @GetMapping("/search-invoice")
+    public ResponseEntity<List<InvoiceDto>> searchInvoice(@RequestParam(value = "invoiceType", required = false) String invoiceType,
+                                                      @RequestParam(value = "invoiceCategory", required = false) String invoiceCategory,
+                                                      @RequestParam(value = "invoiceMonth",required = false) String invoiceMonth,
+                                                      @RequestParam(value = "supplierName", required = false) String supplierName,
+                                                      @RequestParam(value = "invoiceNumber", required = false) String invoiceNumber) {
+        return ResponseEntity.ok(invoiceService.searchInvoice(invoiceType, invoiceCategory, invoiceMonth, supplierName, invoiceNumber));
+    }
+
 }

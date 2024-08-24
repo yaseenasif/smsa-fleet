@@ -20,9 +20,7 @@ export class InvoiceFileService {
   }
 
   searchAllVehicles(invoiceType?: string | null, invoiceMonth?: string | null): Observable<InvoiceFile[]> {
-    const token = localStorage.getItem('accessToken');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<InvoiceFile[]>(`${this.url}/search-invoice-files?invoiceType=${invoiceType ? invoiceType : ''}&invoiceMonth=${invoiceMonth ? invoiceMonth : ''}`, {headers});
+    return this.http.get<InvoiceFile[]>(`${this.url}/search-invoice-files?invoiceType=${invoiceType ? invoiceType : ''}&invoiceMonth=${invoiceMonth ? invoiceMonth : ''}`);
   }
 
   downloadFile(fileName: string): Observable<Blob> {

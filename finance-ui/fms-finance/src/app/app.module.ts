@@ -16,12 +16,13 @@ import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
 import { AppRoutingModule } from './app-routing.module';
 import { FileUploadModule } from 'primeng/fileupload';
+import { PaginatorModule } from 'primeng/paginator';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
 import { AppTopbarComponent } from './layout/app-topbar/app-topbar.component';
 import { AppLayoutComponent } from './layout/app-layout/app-layout.component';
@@ -32,6 +33,8 @@ import { ViewVehicleComponent } from './components/vehicle-screen/view-vehicle/v
 import { InvoiceUploadComponent } from './components/invoice-screen/invoice-upload/invoice-upload.component';
 import { InvoiceDetailsComponent } from './components/invoice-screen/invoice-details/invoice-details.component';
 import { InvoiceSupplierComponent } from './components/invoice-screen/invoice-supplier/invoice-supplier.component';
+import { ReportSectionComponent } from './components/report-section/report-section.component';
+import { InterceptorService } from './components/service/interceptor.service';
 
 @NgModule({
   declarations: [
@@ -46,7 +49,8 @@ import { InvoiceSupplierComponent } from './components/invoice-screen/invoice-su
     ViewVehicleComponent,
     InvoiceUploadComponent,
     InvoiceDetailsComponent,
-    InvoiceSupplierComponent
+    InvoiceSupplierComponent,
+    ReportSectionComponent
   ],
   imports: [
     BrowserModule,
@@ -69,9 +73,14 @@ import { InvoiceSupplierComponent } from './components/invoice-screen/invoice-su
     DropdownModule,
     CalendarModule,
     FileUploadModule,
+    PaginatorModule
 
   ],
-  providers: [MessageService],
+  providers: [
+    MessageService,
+    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
+
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

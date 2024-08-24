@@ -21,7 +21,7 @@ export class LoginService {
 
   getUserByEmpId(id: string) {
     const token = localStorage.getItem('accessToken');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);  
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get<User>(`${this._url}/get-by-empId/${id}`, {headers});
   }
 

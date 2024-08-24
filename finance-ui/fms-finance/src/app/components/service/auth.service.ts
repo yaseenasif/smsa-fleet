@@ -21,6 +21,7 @@ export class AuthService {
     { permission: 'InvoiceUpload', route: ['/invoice-upload'] },
     { permission: 'InvoiceDetails', route: ['/invoice-details','/invoice-details/:id/:supplierName'] },
     { permission: 'InvoiceSupplier', route: ['/invoice-supplier/:id'] },
+    { permission: 'ReportSection', route: ['/report-section'] },
 
   ]
 
