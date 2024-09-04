@@ -6,13 +6,14 @@ import com.example.FleetSystem.dto.InvoiceUploadRequest;
 import com.example.FleetSystem.dto.VendorDto;
 import com.example.FleetSystem.exception.ExcelException;
 import com.example.FleetSystem.model.*;
-import com.example.FleetSystem.payload.ExcelErrorResponse;
+import com.example.FleetSystem.payload.UploadDataFileResponse;
 import com.example.FleetSystem.repository.*;
 import com.example.FleetSystem.specification.InvoiceFileSpecification;
 import com.example.FleetSystem.specification.InvoiceSpecification;
 import org.apache.poi.ss.usermodel.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -44,7 +45,7 @@ public class InvoiceService {
     @Autowired
     UserRepository userRepository;
     @Autowired
-    FileHistoryRepository fileHistoryRepository;
+    VehicleAssignmentRepository vehicleAssignmentRepository;
     @Autowired
     VehicleRepository vehicleRepository;
     @Autowired
@@ -55,9 +56,11 @@ public class InvoiceService {
     ModelMapper modelMapper;
     @Autowired
     StorageService storageService;
+    @Autowired
+    ExcelErrorService excelErrorService;
 
     @Transactional
-    public List<String> saveInvoiceExcelData(MultipartFile file , InvoiceUploadRequest invoiceUploadRequest){
+    public UploadDataFileResponse saveInvoiceExcelData(MultipartFile file , InvoiceUploadRequest invoiceUploadRequest){
         List<String> messages = new ArrayList<>();
 
         try (InputStream inputStream = file.getInputStream()) {
@@ -65,9 +68,12 @@ public class InvoiceService {
             Sheet sheet = workbook.getSheetAt(0);
             String fileName = file.getOriginalFilename();
             String uuid = UUID.randomUUID().toString();
-            ExcelErrorResponse checkFile = validateExcelFile(fileName, sheet , invoiceUploadRequest.getInvoiceType(), invoiceUploadRequest.getInvoiceMonth());
+            UploadDataFileResponse checkFile = validateExcelFile(fileName, sheet , invoiceUploadRequest.getInvoiceType(), invoiceUploadRequest.getInvoiceMonth());
 
             if (checkFile.isStatus()) {
+                if(checkFile.isExcelStatus()){
+                    return checkFile;
+                }
                 User user = null;
                 Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
                 if (principal instanceof UserDetails) {
@@ -179,7 +185,7 @@ public class InvoiceService {
                         }
 
                 messages.add("File uploaded and data saved successfully.");
-                return messages;
+                return checkFile;
 
             }else {
                 messages.addAll(checkFile.getMessage());
@@ -234,19 +240,21 @@ public class InvoiceService {
         return null;
     }
 
-    private ExcelErrorResponse validateExcelFile(String fileName, Sheet sheet, String invoiceType, String invoiceMonth) {
+    private UploadDataFileResponse validateExcelFile(String fileName, Sheet sheet, String invoiceType, String invoiceMonth) {
 
         Optional<InvoiceFile> invoiceFile = Optional.ofNullable(invoiceFileRepository.findByFileName(fileName));
         if (invoiceFile.isPresent()) {
-            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList(fileName + " is already uploaded. Please upload a different File."));
+            return new UploadDataFileResponse(Boolean.FALSE, Arrays.asList(fileName + " is already uploaded. Please upload a different File."),null,Boolean.FALSE);
         } else {
 
-            ExcelErrorResponse headerValidation = validateHeaderRow(sheet);
+            UploadDataFileResponse headerValidation = validateHeaderRow(sheet);
 
             if (!headerValidation.isStatus()) {
                 return headerValidation;
             }
 
+            HashMap<Integer,List<String>> errors = new HashMap<>();
+//            boolean excelErrorStatus = false;
             for (int rowNum = 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
                 Row row = sheet.getRow(rowNum);
 
@@ -254,19 +262,17 @@ public class InvoiceService {
                     break;
                 }
 
-                    String plateNumberPattern = "\\d{4} [A-Z]{3}";
-
                     for (int cellNum = 0; cellNum <= row.getLastCellNum() - 1; cellNum++) {
                         if (cellNum != 4 && cellNum != 5 && cellNum != 16 && cellNum != 17 && cellNum != 18 && cellNum != 20 && cellNum != 21) {
                             if (String.valueOf(row.getCell(cellNum)).isEmpty() || row.getCell(cellNum) == null) {
-                                return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Empty Value at Row " + (rowNum + 1) + " and Cell " + (cellNum + 1)));
+                                return new UploadDataFileResponse(Boolean.FALSE, Arrays.asList("Empty Value at Row " + (rowNum + 1) + " and Cell " + (cellNum + 1)),null,Boolean.FALSE);
                             }
                         }
                     }
 
                     if (!Objects.requireNonNull(getStringValue(row.getCell(1))).equalsIgnoreCase(invoiceType)){
-                        return new ExcelErrorResponse(Boolean.FALSE,Arrays.asList("Error in row : "+(rowNum+1),
-                                "Invoice Type doesn't match the data in excel"));
+                        errors.computeIfAbsent(rowNum + 1, k -> new ArrayList<>())
+                                .add("Incorrect Invoice Type");
                     }
 
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy", Locale.ENGLISH);
@@ -278,20 +284,16 @@ public class InvoiceService {
                 YearMonth formattedInvoiceMonth = YearMonth.parse(invoiceMonth , monthFormatter);
 
                 if (!excelInvoiceMonth.equals(formattedInvoiceMonth)){
-                    return new ExcelErrorResponse(Boolean.FALSE,Arrays.asList("Error in row : "+(rowNum+1),
-                            "Invoice month doesn't match the data in excel"));
+                    errors.computeIfAbsent(rowNum + 1, k -> new ArrayList<>())
+                            .add("Incorrect Invoice Month");
                 }
 
 
-                if (!getStringValue(row.getCell(15)).matches(plateNumberPattern)) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Plate Number Format : " + row.getCell(15),
-                                "Row " + (rowNum + 1) + " and Cell 16", "Correct Format : 1234 ABC"));
-                    }
 
                     Optional<Vehicle> vehicle = vehicleRepository.findByPlateNumber(getStringValue(row.getCell(15)));
                     if (!vehicle.isPresent()) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Plate Number : " + getStringValue(row.getCell(15)) +
-                                "doesn't exist in fleet management", "Row : " + (rowNum + 1)));
+                        errors.computeIfAbsent(rowNum + 1, k -> new ArrayList<>())
+                                .add("Plate Number doesn't exist in fleet management");
                     }
 
 
@@ -302,40 +304,49 @@ public class InvoiceService {
                     if (String.valueOf(row.getCell(20)).isEmpty() || row.getCell(20) == null) {
                         Matcher dateFromMatcher = pattern.matcher(String.valueOf(row.getCell(20)));
                         if (!dateFromMatcher.matches()) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(20),
-                                "Row " + (rowNum + 1) + " and Cell 21"));
+                        return new UploadDataFileResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(20),
+                                "Row " + (rowNum + 1) + " and Cell 21"),null,Boolean.FALSE);
                         }
                     }
 
                     if (String.valueOf(row.getCell(21)).isEmpty() || row.getCell(21) == null) {
                         Matcher dateToMatcher = pattern.matcher(String.valueOf(row.getCell(21)));
                         if (!dateToMatcher.matches()) {
-                            return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(21),
-                                "Row " + (rowNum + 1) + " and Cell 22"));
+                            return new UploadDataFileResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(21),
+                                "Row " + (rowNum + 1) + " and Cell 22"),null,Boolean.FALSE);
                         }
                     }
 
 
                     if (!invoiceDateMatcher.matches()) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(8),
-                                "Row " + (rowNum + 1) + " and Cell 9"));
+                        return new UploadDataFileResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(8),
+                                "Row " + (rowNum + 1) + " and Cell 9"),null,Boolean.FALSE);
 
                     }
 
                     Optional<Vendor> vendor = Optional.ofNullable(vendorRepository.findByVendorNameIgnoreCaseAndStatusIsTrue(getStringValue(row.getCell(2))));
                     if (!vendor.isPresent()) {
-                        return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList(getStringValue(row.getCell(2)) + " Supplier does not exist in the Fleet Management", "Row " + (rowNum + 1) + " and Cell 3"));
+                        errors.computeIfAbsent(rowNum + 1, k -> new ArrayList<>())
+                                .add("Supplier does not exist in the Fleet Management");
                     }
-
-
 
             }
 
-            return new ExcelErrorResponse(Boolean.TRUE, Arrays.asList("Excel File is in Correct Format"));
+            if (!errors.isEmpty()){
+                try {
+                    ByteArrayResource errorBytes = excelErrorService.createErrorExcelFile(errors);
+                    return new UploadDataFileResponse(Boolean.TRUE,null,errorBytes,Boolean.TRUE);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    throw new RuntimeException(e);
+                }
+            }
+
+            return new UploadDataFileResponse(Boolean.TRUE, Arrays.asList("Excel File is in Correct Format"),null,Boolean.FALSE);
         }
     }
 
-    private ExcelErrorResponse validateHeaderRow(Sheet sheet) {
+    private UploadDataFileResponse validateHeaderRow(Sheet sheet) {
         Row headerRow = sheet.getRow(0);
         String[] expectedHeaders = {
                 "BusinessUnit", "InvoiceCategory", "SupplierName", "InvoiceMonth", "InvoiceFrom", "InvoiceTo", "InvoiceType",
@@ -350,12 +361,12 @@ public class InvoiceService {
             String actualHeader = headerRow.getCell(i).toString();
 
             if (!actualHeader.replaceAll("\\s", "").equalsIgnoreCase(expectedHeader)) {
-                return new ExcelErrorResponse(Boolean.FALSE, Arrays.asList("Error in column : " + actualHeader,
+                return new UploadDataFileResponse(Boolean.FALSE, Arrays.asList("Error in column : " + actualHeader,
                         "Row : " + (headerRow.getRowNum() + 1) + " and Cell : " + (i + 1)
-                        , "Please check the Sample Format of Excel File"));
+                        , "Please check the Sample Format of Excel File"),null,Boolean.FALSE);
             }
         }
-        return new ExcelErrorResponse(Boolean.TRUE, null);
+        return new UploadDataFileResponse(Boolean.TRUE, null,null,Boolean.FALSE);
     }
 
     public List<InvoiceDto> getAll(){
@@ -444,4 +455,15 @@ public class InvoiceService {
         List<Invoice> invoices = invoiceRepository.findAll(invoiceSpecification);
         return toDtoList(invoices);
     };
+
+    public HashMap<Long, VehicleAssignment> getValidatedInvoices(List<Invoice> invoices){
+        HashMap<Long, VehicleAssignment> validatedInvoices = new HashMap<>();
+        for (Invoice invoice: invoices) {
+            Optional<VehicleAssignment> assignment = vehicleAssignmentRepository.findByVehicleAndStatusIsTrue(invoice.getVehicle());
+            if (assignment.isPresent()){
+                validatedInvoices.put(invoice.getId(),assignment.get());
+            }else validatedInvoices.put(invoice.getId(),null);
+        }
+        return validatedInvoices;
+    }
 }

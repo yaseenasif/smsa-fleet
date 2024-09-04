@@ -6,6 +6,8 @@ import { Invoice } from '../../modal/invoice';
 import { InvoiceUploadRequest } from '../../modal/InvoiceUploadRequest';
 import { Vendor } from '../../modal/vendor';
 import { PaginatedResponse } from '../../modal/paginatedResponse';
+import { ValidatedInvoices } from '../../modal/ValidatedInvoices';
+import { UploadDataFileResponse } from '../../modal/UploadDataFileResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -19,14 +21,16 @@ export class InvoiceService {
 
 
   saveFile(file: File, invoiceUploadRequest: InvoiceUploadRequest): Observable<any> {
-
+    
     const formData = new FormData();
     const invoiceRequestJson = JSON.stringify(invoiceUploadRequest);
-
+  
     formData.append('file', file);
     formData.append('invoiceUploadRequest', invoiceRequestJson);
-
-    return this.http.post<any>(`${this.url}/save-invoice-excel`, formData);
+  
+    // Use 'blob' responseType to handle file downloads
+    return this.http.post(`${this.url}/save-invoice-excel`, formData, { responseType: 'blob', observe: 'response' });
+  
   }
 
   getAll(): Observable<Invoice[]>{
@@ -57,6 +61,10 @@ export class InvoiceService {
       &invoiceNumber=${invoiceNumber ? invoiceNumber : ''}
       &supplierName=${supplierName ? supplierName : ''}`
     );
+  }
+
+  getValidatedInvoices(invoices: Invoice[]): Observable<ValidatedInvoices[]>{
+    return this.http.post<ValidatedInvoices[]>(`${this.url}/get-validated-invoices`,invoices);
   }
 
 }

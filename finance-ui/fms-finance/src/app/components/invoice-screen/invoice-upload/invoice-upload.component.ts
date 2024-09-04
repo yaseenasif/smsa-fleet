@@ -1,3 +1,4 @@
+import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import saveAs from 'file-saver';
 import { MessageService } from 'primeng/api';
@@ -63,12 +64,45 @@ export class InvoiceUploadComponent implements OnInit{
     this.invoiceUploadRequest.invoiceType = this.selectedInvoiceType.name
     this.invoiceUploadRequest.invoiceMonth = this.formatDate(this.date!);
 
-    this.invoiceService.saveFile(this.uploadedFiles[0], this.invoiceUploadRequest).subscribe((res)=>{
-      this.messageService.add({ severity: 'info', summary: 'Success', detail: 'File Uploaded with Basic Mode' });
-      this.searchInvoiceFile()
-    },(error) => {
-              this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.error });
-    })
+    this.invoiceService.saveFile(this.uploadedFiles[0], this.invoiceUploadRequest).subscribe((response: HttpResponse<Blob>)=>{
+      const contentType = response.headers.get('Content-Type');
+
+      if (contentType && contentType.includes('application/json')) {
+        // Handle JSON response (list of messages)
+        const reader = new FileReader();
+        reader.onload = () => {
+          const messages: string[] = JSON.parse(reader.result as string);
+          messages.forEach(message => {
+            this.messageService.add({ severity: 'info', summary: 'Info', detail: message });
+          });
+        };
+        reader.readAsText(response.body!);
+      } else if (contentType && contentType.includes('application/octet-stream')) {
+        // Handle file download response
+        const blob = new Blob([response.body!], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'invoice-errors.xlsx';
+        a.click();
+        window.URL.revokeObjectURL(url);
+      }
+
+      this.searchInvoiceFile();
+    },
+    (error) => {
+      if (error.error instanceof Blob) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const errorMessage = reader.result as string;
+          this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: errorMessage });
+        };
+        reader.readAsText(error.error);
+      } else {
+        // Handle other types of errors
+        this.messageService.add({ severity: 'error', summary: 'Upload Error', detail: error.message || 'Unknown error' });
+      }    }
+  )
   }
 
   onDateSelect(selectedDate: Date) {

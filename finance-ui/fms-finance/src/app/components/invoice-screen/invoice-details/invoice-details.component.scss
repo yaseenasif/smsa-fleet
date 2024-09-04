@@ -3,3 +3,14 @@
     justify-content: space-between; /* Places h1 on the left and button on the right */
     align-items: center; /* Vertically centers items */
   }
+
+  .button-style {
+    display: flex;
+    justify-content: right;
+    margin-top: 10px;
+  }
+
+  .highlight-row {
+    background-color: rgba(255, 0, 0, 0.356) !important; /* Change this to your desired color */
+    color: black !important; /* Optional: adjust text color for readability */
+  }

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VehicleService } from '../../../common-service/vehicle.service';
 import { Invoice } from '../../../modal/invoice';
+import { ValidatedInvoices } from '../../../modal/ValidatedInvoices';
+import { VehicleAssignment } from '../../../modal/VehicleAssignment';
 import { InvoiceService } from '../invoice.service';
 
 
@@ -33,6 +35,26 @@ export class InvoiceDetailsComponent implements OnInit{
   supplierName !: string;
   
   invoice: Invoice[] = [];
+  validatedInvoices : ValidatedInvoices[] = [];
+
+  validatedInvoicess = {
+    1: {
+      id: 1,
+      assignToEmpName: 'John Doe',
+      assignToEmpId: {
+        id: 100,
+        employeeNumber: 12345,
+        empName: 'John Doe',
+        // other properties
+      },
+      vehicle: {
+        id: 1,
+        plateNumber: 'ABC123',
+        // other properties
+      }
+    }
+  };
+  
  
   constructor(private route: ActivatedRoute,private router: Router, 
     private invoiceService: InvoiceService, private vehicleService: VehicleService){
@@ -63,5 +85,25 @@ export class InvoiceDetailsComponent implements OnInit{
         id: this.invoiceFileId
       }
     });
+  }
+
+  validateInvoices(){
+    this.invoiceService.getValidatedInvoices(this.invoice).subscribe((res:ValidatedInvoices[])=>{
+      this.validatedInvoices = res
+      console.log(this.validatedInvoices[3])
+      const assignment = this.validatedInvoices[3] as unknown as VehicleAssignment;
+      const assignToEmpName = assignment?.assignToEmpName;
+      console.log(assignToEmpName);
+    })
+  }
+
+
+  getAssignToEmpName(invoiceId: number): String | null | undefined {
+    const assignment = this.validatedInvoices[invoiceId] as unknown as VehicleAssignment;
+    return assignment?.assignToEmpName;
+  }
+  
+  isHighlighted(invoiceId: number): boolean {
+    return this.validatedInvoices[invoiceId] === null;
   }
 }
