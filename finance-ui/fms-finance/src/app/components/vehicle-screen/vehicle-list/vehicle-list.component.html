@@ -1,0 +1,411 @@
+<div class="flex flex-row">
+    <div class="body-position">
+      <div class="body-holder">
+  
+        <div class="main">
+          
+            <div class="body-card">
+              <p-toast
+                [showTransitionOptions]="'0ms'"
+                [hideTransitionOptions]="'5000ms'"
+              ></p-toast>
+              <div class="table-head">
+  
+                <p-toolbar>
+                    <h2 class="mb-0 h-color">Vehicle</h2>
+                  <div>
+                    <label htmlFor="selectedStatus1">Status:</label>
+                    <p-dropdown
+                      class="w-full ml-3"
+                      [(ngModel)]="selectedStatus"
+                      [options]="vehicleStatus"
+                      name="selectedStatus1"
+                      #selectedStatus1="ngModel"
+                      [required]="true"
+                      optionLabel="name"
+                      [filter]="true"
+                      filterBy="name"
+                      (onChange)="OnSelectChange()"
+                    >
+                      <ng-template pTemplate="selectedItem">
+                        <div
+                          class="flex align-items-center gap-2"
+                          *ngIf="selectedStatus"
+                        >
+                          <div>{{ selectedStatus.name }}</div>
+                        </div>
+                      </ng-template>
+                      <ng-template let-vehicleStatus pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                          <div>{{ vehicleStatus.name }}</div>
+                        </div>
+                      </ng-template>
+                    </p-dropdown>
+                  </div>
+                  <div class="justify-content-center gap-3">
+                    <span class="p-input-icon-left">
+                      <i class="my-relative bi bi-search"></i>
+                      <input
+                        type="text"
+                        pInputText
+                        [(ngModel)]="value"
+                        (input)="OnSelectChange()"
+                        placeholder="Search Plate Number"
+                      />
+                    </span>
+                  </div>
+                </p-toolbar>
+              </div>
+    
+              <div class="card index">
+                <p-table [value]="vehicles" [tableStyle]="{ 'min-width': '50rem' }"  [scrollable]="true">
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th pSortableColumn="id" class="text-center">
+                        ID <p-sortIcon field="id"></p-sortIcon>
+                      </th>
+                      <th
+                        *ngIf="selectedStatus.name === 'Replacement'"
+                        class="text-center"
+                      >
+                        Status
+                      </th>
+                      <th pSortableColumn="processOrderNumber">
+                        PO Number
+                        <p-sortIcon field="processOrderNumber"></p-sortIcon>
+                      </th>
+                      <th pSortableColumn="plateNumber" class="text-center">
+                        Plate Number <p-sortIcon field="plateNumber"></p-sortIcon>
+                      </th>
+                      <th pSortableColumn="make" class="text-center">
+                        Make <p-sortIcon field="make"></p-sortIcon>
+                      </th>
+                      <th pSortableColumn="year" class="text-center">
+                        Year <p-sortIcon field="year"></p-sortIcon>
+                      </th>
+                      <th pSortableColumn="design" class="text-center">
+                        Design <p-sortIcon field="design"></p-sortIcon>
+                      </th>
+                      <th pSortableColumn="model" class="text-center">
+                        Model <p-sortIcon field="model"></p-sortIcon>
+                      </th>
+                      <th pSortableColumn="type" class="text-center">
+                        Type <p-sortIcon field="type"></p-sortIcon>
+                      </th>
+                      <th pSortableColumn="capacity" class="text-center">
+                        Capacity <p-sortIcon field="capacity"></p-sortIcon>
+                      </th>
+                      <th pSortableColumn="power" class="text-center">
+                        Power <p-sortIcon field="power"></p-sortIcon>
+                      </th>
+                      <th pSortableColumn="registrationExpiry" class="text-center">
+                        Registration Expiry
+                        <p-sortIcon field="registrationExpiry"></p-sortIcon>
+                      </th>
+                      <th pSortableColumn="fuelType" class="text-center">
+                        Fuel Type <p-sortIcon field="fuelType"></p-sortIcon>
+                      </th>
+                      <th pSortableColumn="vendor.vendorName" class="text-center">
+                        Vendor <p-sortIcon field="vendor"></p-sortIcon>
+                      </th>
+                      <th pSortableColumn="insuranceExpiry" class="text-center">
+                        Insurance Expiry
+                        <p-sortIcon field="insuranceExpiry"></p-sortIcon>
+                      </th>
+                      <th pSortableColumn="leaseCost" class="text-center">
+                        Lease Cost <p-sortIcon field="leaseCost"></p-sortIcon>
+                      </th>
+                      <th pSortableColumn="replaceLeaseCost" class="text-center">
+                        Replace Lease Cost
+                        <p-sortIcon field="replaceLeaseCost"></p-sortIcon>
+                      </th>
+                      <th pSortableColumn="leaseStartDate" class="text-center">
+                        Lease Start Date
+                        <p-sortIcon field="leaseStartDate"></p-sortIcon>
+                      </th>
+                      <th pSortableColumn="leaseExpiryDate" class="text-center">
+                        Lease Expiry Date
+                        <p-sortIcon field="leaseExpiryDate"></p-sortIcon>
+                      </th>
+                      <th pSortableColumn="usageType" class="text-center">
+                        Usage Type <p-sortIcon field="usageType"></p-sortIcon>
+                      </th>
+                      <th pSortableColumn="region" class="text-center">
+                        Region <p-sortIcon field="region"></p-sortIcon>
+                      </th>
+                      <th pSortableColumn="country" class="text-center">
+                        Country <p-sortIcon field="country"></p-sortIcon>
+                      </th>
+                      <th pSortableColumn="location" class="text-center">
+                        Location <p-sortIcon field="location"></p-sortIcon>
+                      </th>
+                      <th pSortableColumn="category" class="text-center">
+                        Category <p-sortIcon field="category"></p-sortIcon>
+                      </th>
+                      <th pSortableColumn="vehicleStatus" class="text-center">
+                        Status
+                        <p-sortIcon field="vehicleStatus"></p-sortIcon>
+                      </th>
+                      <th pSortableColumn="replaceVehicle" class="text-center">
+                        Replace Vehicle
+                        <p-sortIcon field="replaceVehicle"></p-sortIcon>
+                      </th>
+                      <th class="text-center">Actions</th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-vehicles let-region>
+                    <tr>
+                      <td
+                        [classList]="
+                          vehicles.vehicleReplacement ? 'color-orange' : null
+                        "
+                        class="text-center"
+                      >
+                        {{ vehicles.id }}
+                      </td>
+                      <td
+                        [classList]="
+                          vehicles.vehicleReplacement ? 'color-orange' : null
+                        "
+                        *ngIf="selectedStatus.name === 'Replacement'"
+                        class="text-center"
+                      >
+                        {{ vehicles.replacementVehicleStatus }}
+                      </td>
+                      <td
+                        [classList]="
+                          vehicles.vehicleReplacement ? 'color-orange' : null
+                        "
+                        class="text-center"
+                      >
+                        {{ vehicles.processOrderNumber }}
+                      </td>
+                      <td
+                        [classList]="
+                          vehicles.vehicleReplacement ? 'color-orange' : null
+                        "
+                        class="text-center"
+                      >
+                        {{ vehicles.plateNumber }}
+                      </td>
+                      <td
+                        [classList]="
+                          vehicles.vehicleReplacement ? 'color-orange' : null
+                        "
+                        class="text-center"
+                      >
+                        {{ vehicles.make }}
+                      </td>
+                      <td
+                        [classList]="
+                          vehicles.vehicleReplacement ? 'color-orange' : null
+                        "
+                        class="text-center"
+                      >
+                        {{ vehicles.year }}
+                      </td>
+                      <td
+                        [classList]="
+                          vehicles.vehicleReplacement ? 'color-orange' : null
+                        "
+                        class="text-center"
+                      >
+                        {{ vehicles.design }}
+                      </td>
+                      <td
+                        [classList]="
+                          vehicles.vehicleReplacement ? 'color-orange' : null
+                        "
+                        class="text-center"
+                      >
+                        {{ vehicles.model }}
+                      </td>
+                      <td
+                        [classList]="
+                          vehicles.vehicleReplacement ? 'color-orange' : null
+                        "
+                        class="text-center"
+                      >
+                        {{ vehicles.type }}
+                      </td>
+                      <td
+                        [classList]="
+                          vehicles.vehicleReplacement ? 'color-orange' : null
+                        "
+                        class="text-center"
+                      >
+                        {{ vehicles.capacity }}
+                      </td>
+                      <td
+                        [classList]="
+                          vehicles.vehicleReplacement ? 'color-orange' : null
+                        "
+                        class="text-center"
+                      >
+                        {{ vehicles.power }}
+                      </td>
+                      <td
+                        [classList]="
+                          vehicles.vehicleReplacement ? 'color-orange' : null
+                        "
+                        class="text-center"
+                      >
+                        {{ vehicles.registrationExpiry }}
+                      </td>
+                      <td
+                        [classList]="
+                          vehicles.vehicleReplacement ? 'color-orange' : null
+                        "
+                        class="text-center"
+                      >
+                        {{ vehicles.fuelType }}
+                      </td>
+                      <td
+                        [classList]="
+                          vehicles.vehicleReplacement ? 'color-orange' : null
+                        "
+                        class="text-center"
+                      >
+                        {{ vehicles.vendor.vendorName }}
+                      </td>
+                      <td
+                        [classList]="
+                          vehicles.vehicleReplacement ? 'color-orange' : null
+                        "
+                        class="text-center"
+                      >
+                        {{ vehicles.insuranceExpiry }}
+                      </td>
+                      <!-- <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center" >{{ vehicles.insuranceStatus }}</td> -->
+                      <td
+                        [classList]="
+                          vehicles.vehicleReplacement ? 'color-orange' : null
+                        "
+                        class="text-center"
+                      >
+                        {{ vehicles.leaseCost }}
+                      </td>
+                      <td
+                        [classList]="
+                          vehicles.vehicleReplacement ? 'color-orange' : null
+                        "
+                        class="text-center"
+                      >
+                        {{ vehicles.replaceLeaseCost }}
+                      </td>
+                      <td
+                        [classList]="
+                          vehicles.vehicleReplacement ? 'color-orange' : null
+                        "
+                        class="text-center"
+                      >
+                        {{ vehicles.leaseStartDate }}
+                      </td>
+                      <td
+                        [classList]="
+                          vehicles.vehicleReplacement ? 'color-orange' : null
+                        "
+                        class="text-center"
+                      >
+                        {{ vehicles.leaseExpiryDate }}
+                      </td>
+                      <td
+                        [classList]="
+                          vehicles.vehicleReplacement ? 'color-orange' : null
+                        "
+                        class="text-center"
+                      >
+                        {{ vehicles.usageType }}
+                      </td>
+                      <td
+                        [classList]="
+                          vehicles.vehicleReplacement ? 'color-orange' : null
+                        "
+                        class="text-center"
+                      >
+                        {{ vehicles.region }}
+                      </td>
+                      <td
+                        [classList]="
+                          vehicles.vehicleReplacement ? 'color-orange' : null
+                        "
+                        class="text-center"
+                      >
+                        {{ vehicles.country }}
+                      </td>
+                      <td
+                        [classList]="
+                          vehicles.vehicleReplacement ? 'color-orange' : null
+                        "
+                        class="text-center"
+                      >
+                        {{ vehicles.location }}
+                      </td>
+                      <td
+                        [classList]="
+                          vehicles.vehicleReplacement ? 'color-orange' : null
+                        "
+                        class="text-center"
+                      >
+                        {{ vehicles.category }}
+                      </td>
+                      <td
+                        [classList]="
+                          vehicles.vehicleReplacement ? 'color-orange' : null
+                        "
+                        class="text-center"
+                      >
+                        {{ vehicles.vehicleStatus }}
+                      </td>
+                      <td
+                        [classList]="
+                          vehicles.vehicleReplacement ? 'color-orange' : null
+                        "
+                        class="text-center"
+                      >
+                        {{
+                          vehicles.replacementVehicle
+                            ? vehicles.replacementVehicle.plateNumber
+                            : "-----"
+                        }}
+                      </td>
+                      <td class="text-center flex">
+                        <p-button
+                          [routerLink]="['/view-vehicle/', vehicles.id]"
+                          pTooltip="View"
+                          tooltipPosition="top"
+                          [rounded]="true"
+                          icon="bi bi-eye"
+                          [raised]="true"
+                          class="ml mr"
+                          [outlined]="true"
+                          severity="help"   
+                        ></p-button>
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+                <div class="card flex justify-content-center">
+                  <p-paginator
+                    [rows]="query.size"
+                    [first]="query.page * query.size"
+                    [totalRecords]="totalRecords"
+                    (onPageChange)="onPageChange(value, $event)"
+                    [alwaysShow]="true"
+                    [pageLinkSize]="4"
+                    [showCurrentPageReport]="true"
+                    currentPageReportTemplate="Showing {{
+                      query.page * query.size + 1
+                    }} to {{ (query.page + 1) * query.size }} of total {{
+                      totalRecords
+                    }} entries"
+                  >
+                  </p-paginator>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+  

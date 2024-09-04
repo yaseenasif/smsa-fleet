@@ -9,6 +9,7 @@ import { InvoiceUploadComponent } from './components/invoice-screen/invoice-uplo
 import { InvoiceDetailsComponent } from './components/invoice-screen/invoice-details/invoice-details.component';
 import { InvoiceSupplierComponent } from './components/invoice-screen/invoice-supplier/invoice-supplier.component';
 import { ReportSectionComponent } from './components/report-section/report-section.component';
+import { VehicleListComponent } from './components/vehicle-screen/vehicle-list/vehicle-list.component';
 
 const routes: Routes = [];
 
@@ -41,6 +42,9 @@ const routes: Routes = [];
           },
           {
             path: 'report-section', component: ReportSectionComponent, canActivate: [AuthGuardService]
+          },
+          {
+            path: 'vehicle-list', component: VehicleListComponent, canActivate: [AuthGuardService]
           }
         ]
       },

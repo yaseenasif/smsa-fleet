@@ -98,9 +98,17 @@ export class InvoiceDetailsComponent implements OnInit{
   }
 
 
-  getAssignToEmpName(invoiceId: number): String | null | undefined {
+  getAssignToEmpName(invoiceId: number, fieldName:string): any {
     const assignment = this.validatedInvoices[invoiceId] as unknown as VehicleAssignment;
+    if(fieldName === 'EmpName'){
     return assignment?.assignToEmpName;
+    }else if(fieldName === 'EmpNum'){
+      return assignment?.assignToEmpId.employeeNumber;
+    }else if(fieldName === 'department'){
+      return assignment?.assignToEmpId.department;
+    }else if(fieldName === 'EmpName'){
+      return assignment?.assignToEmpName;
+    }
   }
   
   isHighlighted(invoiceId: number): boolean {

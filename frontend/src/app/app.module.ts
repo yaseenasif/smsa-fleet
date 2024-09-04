@@ -118,6 +118,7 @@ import { MenuModule } from 'primeng/menu';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { AccordionModule } from 'primeng/accordion';
 import { BadgeModule } from 'primeng/badge';
+import { InvoiceApprovalComponent } from './page/Invoice/invoice-approval/invoice-approval.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -188,6 +189,7 @@ import { BadgeModule } from 'primeng/badge';
     JobTitleListComponent,
     ReportManagmentListComponent,
     DeletedVehiclesComponent,
+    InvoiceApprovalComponent,
   ],
   imports: [
     ConfirmDialogModule,

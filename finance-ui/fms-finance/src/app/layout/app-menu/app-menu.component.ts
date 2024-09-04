@@ -28,9 +28,9 @@ export class AppMenuComponent implements OnInit{
             routerLink: ["/"],
           },
           {
-            label: "View Vehicles",
+            label: "Vehicles",
             icon: "pi pi-fw pi-car",
-            routerLink: ["/view-vehicle"],
+            routerLink: ["/vehicle-list"],
           },
           {
             label: "Invoice",

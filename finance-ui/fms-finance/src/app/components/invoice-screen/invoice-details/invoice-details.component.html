@@ -216,10 +216,10 @@
                   <td class="text-center"></td>
                   <td class="text-center">{{invoice.invoiceMonth}}</td>
                   <td class="text-center"></td>
-                  <td class="text-center"></td>
-                  <td class="text-center">{{ getAssignToEmpName(invoice.id) }}</td>
-                  <td class="text-center"></td>
-                  <td class="text-center"></td>
+                  <td class="text-center">{{ invoice.lineAmountWithoutTax }}</td>
+                  <td class="text-center">{{ getAssignToEmpName(invoice.id,'EmpNum') }}</td>
+                  <td class="text-center">{{ getAssignToEmpName(invoice.id,'EmpName') }}</td>
+                  <td class="text-center">{{ getAssignToEmpName(invoice.id,'department') }}</td>
                   <td class="text-center"></td> 
                 </tr>
               </ng-template>

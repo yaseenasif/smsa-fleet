@@ -19,6 +19,8 @@
     "@angular/platform-browser-dynamic": "^17.1.0",
     "@angular/router": "^17.1.0",
     "@auth0/angular-jwt": "^5.2.0",
+    "@fortawesome/fontawesome-free": "^6.6.0",
+    "bootstrap-icons": "^1.11.3",
     "chart.js": "^4.4.3",
     "file-saver": "^2.0.5",
     "jwt-decode": "^4.0.0",

@@ -1,16 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { Vehicle } from '../../../../modal/vehicle';
-import { VehicleHistory } from '../../../../modal/vehicleHistory';
-import { VehicleService } from '../../../../common-service/vehicle.service';
-import { PageEvent } from '../../../../modal/PageEvent';
-import { PaginatedResponse } from '../../../../modal/paginatedResponse';
+import { VehicleService } from '../../../common-service/vehicle.service';
+import { PageEvent } from '../../../modal/PageEvent';
+import { PaginatedResponse } from '../../../modal/paginatedResponse';
+import { Vehicle } from '../../../modal/vehicle';
+import { VehicleHistory } from '../../../modal/vehicleHistory';
+import { ToolbarModule } from 'primeng/toolbar';
+
 
 @Component({
-  selector: 'app-view-vehicle',
-  templateUrl: './view-vehicle.component.html',
-  styleUrl: './view-vehicle.component.scss'
+  selector: 'app-vehicle-list',
+  templateUrl: './vehicle-list.component.html',
+  styleUrl: './vehicle-list.component.scss'
 })
-export class ViewVehicleComponent implements OnInit{
+export class VehicleListComponent {
 
   vehicleId: Number | undefined;
 
@@ -74,10 +76,32 @@ export class ViewVehicleComponent implements OnInit{
   totalRecords: number = 0;
 
   flag = 'TBA'
+  vehicleStatus: any;
 
   constructor( private vehicleService: VehicleService ) {}
 
   ngOnInit(): void {
+    this.vehicleStatus = [
+      {
+        name: 'All'
+      },
+      {
+        name: 'Active'
+      },
+      {
+        name: 'Replacement'
+      },
+      {
+        name: 'Under Maintenance'
+      },
+      {
+        name: 'In-Active'
+      },
+      {
+        name: 'TBA'
+      },
+    ]
+    this.setSelectedStatusAndGetAllVehicles()
   }
 
 
@@ -103,5 +127,11 @@ export class ViewVehicleComponent implements OnInit{
     this.query.size = event.rows;
     this.searchAllVehicles(this.selectedStatus.name)
   }
-  
+
+  setSelectedStatusAndGetAllVehicles() {
+    const status = sessionStorage.getItem('selectedStatus');
+    this.selectedStatus.name = status ? status : "All";
+    this.searchAllVehicles(this.selectedStatus.name);
+  }
+
 }

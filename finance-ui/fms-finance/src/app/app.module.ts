@@ -17,7 +17,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { AppRoutingModule } from './app-routing.module';
 import { FileUploadModule } from 'primeng/fileupload';
 import { PaginatorModule } from 'primeng/paginator';
-
+import { ToolbarModule } from 'primeng/toolbar';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -35,6 +35,9 @@ import { InvoiceDetailsComponent } from './components/invoice-screen/invoice-det
 import { InvoiceSupplierComponent } from './components/invoice-screen/invoice-supplier/invoice-supplier.component';
 import { ReportSectionComponent } from './components/report-section/report-section.component';
 import { InterceptorService } from './components/service/interceptor.service';
+import { VehicleListComponent } from './components/vehicle-screen/vehicle-list/vehicle-list.component';
+import { RouterModule } from '@angular/router';  // Ensure this is imported
+import { TooltipModule } from 'primeng/tooltip';
 
 @NgModule({
   declarations: [
@@ -50,7 +53,8 @@ import { InterceptorService } from './components/service/interceptor.service';
     InvoiceUploadComponent,
     InvoiceDetailsComponent,
     InvoiceSupplierComponent,
-    ReportSectionComponent
+    ReportSectionComponent,
+    VehicleListComponent
   ],
   imports: [
     BrowserModule,
@@ -73,8 +77,10 @@ import { InterceptorService } from './components/service/interceptor.service';
     DropdownModule,
     CalendarModule,
     FileUploadModule,
-    PaginatorModule
-
+    PaginatorModule,
+    ToolbarModule,
+    RouterModule,
+    TooltipModule
   ],
   providers: [
     MessageService,

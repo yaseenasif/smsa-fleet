@@ -1,0 +1,216 @@
+<div class="flex flex-row">
+    <div class="body-position">
+      <div class="body-holder">
+  
+        <div class="main">
+          <div class="body-card">
+            <div class="card">
+              <div class="header-container">
+              <h1 class="mb-4 h-color">Invoice Details</h1>
+              <p-button type="button" label="Back"/>
+            </div>
+              <form #employeeForm="ngForm">
+                <div class="grid">
+                  <div class="col-12 md:col-12 lg:col-6">
+                    <div class="flex flex-column gap-2 form-hook">
+                      <label htmlFor="name">Supplier Number</label>
+                      <input type="text" pInputText/>
+                    </div>
+                  </div>
+                  <div class="col-12 md:col-12 lg:col-6">
+                    <div class="flex flex-column gap-2">
+                      <label htmlFor="name">Supplier Name</label>
+                      <input type="text" pInputText />
+                    </div>
+                  </div>
+                  <div class="col-12 md:col-12 lg:col-6">
+                    <div class="flex flex-column gap-2">
+                      <label htmlFor="name">Supplier Site</label>
+                      <input type="text" pInputText />
+                    </div>
+                  </div>
+                  <div class="col-12 md:col-12 lg:col-6">
+                    <div class="flex flex-column gap-2">
+                      <label htmlFor="name">Business Unit</label>
+                      <input type="text" pInputText />
+                    </div>
+                  </div>
+                  
+                    <div class="col-12 md:col-12 lg:col-6">
+                      <div class="flex flex-column gap-2 form-hook">
+                        <label htmlFor="name">Invoice Category</label>
+                        <input type="text" pInputText />
+
+                      </div>
+                    </div>
+                    <div class="col-12 md:col-12 lg:col-6">
+                      <div class="flex flex-column gap-2">
+                        <label htmlFor="name">Invoice Type</label>
+                        <input type="text" pInputText />
+                      </div>
+                    </div>
+                    <div class="col-12 md:col-12 lg:col-6">
+                      <div class="flex flex-column gap-2">
+                        <label htmlFor="name">Invoice From</label>
+                        <input type="text" pInputText />
+                      </div>
+                    </div>
+                    <div class="col-12 md:col-12 lg:col-6">
+                      <div class="flex flex-column gap-2">
+                        <label htmlFor="name">Invoice To</label>
+                        <input type="text" pInputText />
+                      </div>
+                    </div>
+                  <div class="col-12 md:col-12 lg:col-6">
+                    <div class="flex flex-column gap-2">
+                      <label htmlFor="name">Invoice Number</label>
+                      <input type="text" pInputText />
+                    </div>
+                  </div>
+                  <div class="col-12 md:col-12 lg:col-6">
+                    <div class="flex flex-column gap-2">
+                      <label htmlFor="name">Invoice Date</label>
+                      <input type="text" pInputText />
+                    </div>
+                  </div>
+                  
+                  <div class="col-12 md:col-12 lg:col-6">
+                    <div class="flex flex-column gap-2">
+                      <label htmlFor="name">Invoice Month</label>
+                      <input type="text" pInputText />
+                    </div>
+                  </div>
+                  
+                  <div class="col-12 md:col-12 lg:col-6">
+                    <div class="flex flex-column gap-2">
+                      <label htmlFor="name">Total Amount Befor Tax</label>
+                      <input type="text" pInputText />
+                    </div>
+                  </div>
+                  <div class="col-12 md:col-12 lg:col-6">
+                    <div class="flex flex-column gap-2">
+                      <label htmlFor="name">Total Taxable Amount</label>
+                      <input type="text" pInputText />
+                    </div>
+                  </div>
+                  <div class="col-12 md:col-12 lg:col-6">
+                    <div class="flex flex-column gap-2">
+                      <label htmlFor="name">Tax %</label>
+                      <input type="text" pInputText />
+                    </div>
+                  </div>
+                  <div class="col-12 md:col-12 lg:col-6">
+                    <div class="flex flex-column gap-2">
+                      <label htmlFor="name">Total VAT Amount (SAR)</label>
+                      <input type="text" pInputText />
+                    </div>
+                  </div>
+                  <div class="col-12 md:col-12 lg:col-6">
+                    <div class="flex flex-column gap-2">
+                      <label htmlFor="name">Total Amount After VAT(SAR)</label>
+                      <input type="text" pInputText />
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="card">
+              <p-table [tableStyle]="{ 'min-width': '50rem' }">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th pSortableColumn="date" class="text-center">
+                      Invoice Line Number
+                      <p-sortIcon field="date"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="invoiceNumber" class="text-center">
+                      Plate Number
+                      <p-sortIcon field="invoiceNumber"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="progress" class="text-center">
+                      Vehicle Description
+                      <p-sortIcon field="progress"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="fileName" class="text-center">
+                      Agreement Number
+                      <p-sortIcon field="fileName"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="budget" class="text-center">
+                      Supllier Control Number
+                      <p-sortIcon field="budget"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="budget" class="text-center">
+                      Vehicle ID
+                      <p-sortIcon field="budget"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="budget" class="text-center">
+                      Start Date Of The Vehicle Assignment
+                      <p-sortIcon field="budget"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="budget" class="text-center">
+                      End Date Of The Vehicle Assignment
+                      <p-sortIcon field="budget"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="budget" class="text-center">
+                      Invoice Month
+                      <p-sortIcon field="budget"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="budget" class="text-center">
+                      Calculated Amount
+                      <p-sortIcon field="budget"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="budget" class="text-center">
+                      Vendor Amount
+                      <p-sortIcon field="budget"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="budget" class="text-center">
+                      Employee Number
+                      <p-sortIcon field="budget"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="budget" class="text-center">
+                      Employee Name
+                      <p-sortIcon field="budget"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="budget" class="text-center">
+                      Department
+                      <p-sortIcon field="budget"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="budget" class="text-center">
+                      Tax
+                      <p-sortIcon field="budget"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="budget" class="text-center">
+                      Grand Total
+                      <p-sortIcon field="budget"></p-sortIcon>
+                    </th>
+                  </tr>
+                </ng-template>
+                <!-- <ng-template pTemplate="body" let-invoice >
+                  <tr [ngClass]="{'highlight-row': isHighlighted(invoice.id)}">
+                    <td class="text-center">{{invoice.lineNumber}}</td>
+                    <td class="text-center">{{invoice.vehicle.plateNumber}}</td>
+                    <td class="text-center"> </td>
+                    <td class="text-center">{{invoice.agreementNumber}}</td>
+                    <td class="text-center"></td>
+                    <td class="text-center">{{invoice.vehicle.id}}</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">{{invoice.invoiceMonth}}</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center">{{ getAssignToEmpName(invoice.id) }}</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td> 
+                  </tr>
+                </ng-template> -->
+              </p-table>
+              <div class="button-style">
+                <p-button type="button" label="Validate"/>
+              </div> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
