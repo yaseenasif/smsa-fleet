@@ -40,6 +40,12 @@
         <span class="nav-text"> Report Management </span>
       </span>
     </li>
+    <li class="child" *ngIf="hasPermission('InvoiceApproval')">
+      <span class="sidebar-list-hover" routerLink="/invoice-supplier">
+        <i class="pi pi-file-arrow-up"></i>
+        <span class="nav-text"> Invoice Approval </span>
+      </span>
+    </li>
     <li class="child" *ngIf="hasPermission('DeletedVehicles')">
       <span class="sidebar-list-hover" routerLink="/deleted-vehicles">
         <i class="bi bi-truck"></i>

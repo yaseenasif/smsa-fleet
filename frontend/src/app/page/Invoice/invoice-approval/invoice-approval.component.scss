@@ -1,0 +1,11 @@
+.header-container {
+    display: flex;
+    justify-content: space-between; /* Places h1 on the left and button on the right */
+    align-items: center; /* Vertically centers items */
+  }
+
+  .button-style {
+    display: flex;
+    justify-content: right;
+    margin-top: 10px;
+  }

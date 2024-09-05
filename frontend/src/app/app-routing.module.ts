@@ -64,6 +64,8 @@ import { AddJobTitleComponent } from './page/job-title/add-job-title/add-job-tit
 import { JobTitleListComponent } from './page/job-title/job-title-list/job-title-list.component';
 import { ReportManagmentListComponent } from './page/report-managment/report-managment-list/report-managment-list.component';
 import { DeletedVehiclesComponent } from './page/vehicle-screen/deleted-vehicles/deleted-vehicles.component';
+import { InvoiceApprovalComponent } from './page/Invoice/invoice-approval/invoice-approval.component';
+import { InvoiceSupplierComponent } from './page/Invoice/invoice-supplier/invoice-supplier.component';
 
 const routes: Routes = [
   {
@@ -411,6 +413,16 @@ const routes: Routes = [
   {
     path: 'deleted-vehicles',
     component: DeletedVehiclesComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'invoice-approval',
+    component: InvoiceApprovalComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'invoice-supplier',
+    component: InvoiceSupplierComponent,
     canActivate: [AuthGuard]
   }
 
