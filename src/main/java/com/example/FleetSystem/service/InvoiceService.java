@@ -412,14 +412,17 @@ public class InvoiceService {
         }else throw new RuntimeException("Error finding file id: "+fileId);
     }
 
-    public List<Vendor> getInvoicesSuppliersByFileId(Long fileId) {
+    public List<Invoice> getInvoicesSuppliersByFileId(Long fileId) {
         Optional<InvoiceFile> invoiceFile = invoiceFileRepository.findById(fileId);
         if (invoiceFile.isPresent()) {
             List<Invoice> invoices = invoiceRepository.findByInvoiceFile(invoiceFile.get());
-            return invoices.stream()
-                    .map(Invoice::getSupplier)
-                    .distinct()
-                    .collect(Collectors.toList());
+            return new ArrayList<>(invoices.stream()
+                    .collect(Collectors.toMap(
+                            Invoice::getSupplier,  // Key: Supplier
+                            invoice -> invoice,    // Value: Invoice
+                            (existing, replacement) -> existing // In case of duplicate suppliers, keep the existing one
+                    ))
+                    .values());
 
         }else throw new RuntimeException("File not found by id: "+fileId);
     }

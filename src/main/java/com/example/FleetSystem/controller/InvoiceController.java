@@ -76,7 +76,7 @@ public class InvoiceController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
     @GetMapping("/get-invoices-suppliers-by-file/{fileId}")
-    public ResponseEntity<List<Vendor>> getInvoicesSuppliersByFileId(@PathVariable Long fileId) {
+    public ResponseEntity<List<Invoice>> getInvoicesSuppliersByFileId(@PathVariable Long fileId) {
         return ResponseEntity.ok(invoiceService.getInvoicesSuppliersByFileId(fileId));
     }
 
