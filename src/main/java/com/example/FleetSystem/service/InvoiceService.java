@@ -477,8 +477,8 @@ public class InvoiceService {
 
     @Transactional
     public void sendForApproval(EmailApprovalRequest emailApprovalRequest){
-        emailService.sendEmail("yaseenasif042@gmal.com", "Invoice Approval Request",
-                emailApprovalRequest.getSupplier(), emailApprovalRequest.getInvoiceMonth().toString(), emailApprovalRequest.getInvoiceType());
+//        emailService.sendEmail("yaseenasif042@gmal.com", "Invoice Approval Request",
+//                emailApprovalRequest.getSupplier(), emailApprovalRequest.getInvoiceMonth().toString(), emailApprovalRequest.getInvoiceType());
 
         Vendor supplier = vendorRepository.findByVendorNameIgnoreCaseAndStatusIsTrue(emailApprovalRequest.getSupplier());
         List<Invoice> invoices = invoiceRepository.findBySupplierAndInvoiceMonthAndInvoiceCategory(supplier,
