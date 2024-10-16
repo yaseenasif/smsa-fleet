@@ -67,9 +67,6 @@ export interface Invoice {
     lineTaxRate: number | null | undefined;
     lineTaxAmount: number | null | undefined;
     lineAmountWithTax: number | null | undefined;
-    remarks: string | null | undefined
-    uuid: string | null | undefined;
-    fileName: string | null | undefined;
     invoiceFile: {
         id: number | null | undefined
     filename: string | null | undefined
@@ -77,6 +74,8 @@ export interface Invoice {
     invoiceMonth: Date | null | undefined
     createdAt: Date | null | undefined
     }
+    uuid: string | null | undefined;
+    fileName: string | null | undefined;
     createdAt: Date | null | undefined; 
     updatedAt: Date | null | undefined; 
     supplier: {

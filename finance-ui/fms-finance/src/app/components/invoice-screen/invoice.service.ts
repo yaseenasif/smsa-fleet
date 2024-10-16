@@ -8,6 +8,8 @@ import { Vendor } from '../../modal/vendor';
 import { PaginatedResponse } from '../../modal/paginatedResponse';
 import { ValidatedInvoices } from '../../modal/ValidatedInvoices';
 import { UploadDataFileResponse } from '../../modal/UploadDataFileResponse';
+import { EmailApprovalRequest } from '../../modal/EmailApprovalRequest';
+import { ResponsePayload } from '../../modal/ResponsePayload';
 
 @Injectable({
   providedIn: 'root'
@@ -45,8 +47,8 @@ export class InvoiceService {
     return this.http.get<Invoice[]>(`${this.url}/get-invoices-by-supplier-and-file/${fileId}/${supplierName}`);
   }
 
-  getInvoicesSuppliersByFileId(fileId: number): Observable<Vendor[]>{
-    return this.http.get<Vendor[]>(`${this.url}/get-invoices-suppliers-by-file/${fileId}`);
+  getInvoicesSuppliersByFileId(fileId: number): Observable<Invoice[]>{
+    return this.http.get<Invoice[]>(`${this.url}/get-invoices-suppliers-by-file/${fileId}`);
   }
 
   searchAllInvoices(invoiceType?: string | null,
@@ -66,5 +68,9 @@ export class InvoiceService {
   getValidatedInvoices(invoices: Invoice[]): Observable<ValidatedInvoices[]>{
     return this.http.post<ValidatedInvoices[]>(`${this.url}/get-validated-invoices`,invoices);
   }
-
+  
+  sendForApproval(emailApprovalRequest: EmailApprovalRequest): Observable<ResponsePayload>{
+    return this.http.post<ResponsePayload>(`${this.url}/send-for-approval`,emailApprovalRequest);
+  }
+  
 }

@@ -8,7 +8,8 @@
           <div class="body-card">
             <div class="card">
               <div class="header-container">
-              <h1 class="mb-4 h-color">Invoice Details</h1>
+              <h1 class="mb-4 h-color">Invoice Details</h1>     
+              <p-toast />
               <p-button type="button" label="Back"/>
             </div>
               <form #employeeForm="ngForm">
@@ -16,108 +17,124 @@
                   <div class="col-12 md:col-12 lg:col-6">
                     <div class="flex flex-column gap-2 form-hook">
                       <label htmlFor="name">Supplier Number</label>
-                      <input type="text" pInputText/>
+                      <input type="text" pInputText  [(ngModel)]="invoices[0].supplier.id"
+                      [ngModelOptions]="{standalone: true}"/>
                     </div>
                   </div>
                   <div class="col-12 md:col-12 lg:col-6">
                     <div class="flex flex-column gap-2">
                       <label htmlFor="name">Supplier Name</label>
-                      <input type="text" pInputText />
+                      <input type="text" pInputText  [(ngModel)]="invoices[0].supplier.vendorName"
+                      [ngModelOptions]="{standalone: true}"/>
                     </div>
                   </div>
                   <div class="col-12 md:col-12 lg:col-6">
                     <div class="flex flex-column gap-2">
                       <label htmlFor="name">Supplier Site</label>
-                      <input type="text" pInputText />
+                      <input type="text" pInputText  [(ngModel)]="invoices[0].supplier.officeLocation"
+                      [ngModelOptions]="{standalone: true}"/>
                     </div>
                   </div>
                   <div class="col-12 md:col-12 lg:col-6">
                     <div class="flex flex-column gap-2">
                       <label htmlFor="name">Business Unit</label>
-                      <input type="text" pInputText />
+                      <input type="text" pInputText  [(ngModel)]="invoices[0].businessUnit"
+                      [ngModelOptions]="{standalone: true}"/>
                     </div>
                   </div>
                   
                     <div class="col-12 md:col-12 lg:col-6">
                       <div class="flex flex-column gap-2 form-hook">
                         <label htmlFor="name">Invoice Category</label>
-                        <input type="text" pInputText />
+                        <input type="text" pInputText  [(ngModel)]="invoices[0].invoiceCategory"
+                        [ngModelOptions]="{standalone: true}"/>
 
                       </div>
                     </div>
                     <div class="col-12 md:col-12 lg:col-6">
                       <div class="flex flex-column gap-2">
                         <label htmlFor="name">Invoice Type</label>
-                        <input type="text" pInputText />
+                        <input type="text" pInputText  [(ngModel)]="invoices[0].invoiceType"
+                        [ngModelOptions]="{standalone: true}"/>
                       </div>
                     </div>
                     <div class="col-12 md:col-12 lg:col-6">
                       <div class="flex flex-column gap-2">
                         <label htmlFor="name">Invoice From</label>
-                        <input type="text" pInputText />
+                        <input type="text" pInputText  [(ngModel)]="invoices[0].invoiceFrom"
+                        [ngModelOptions]="{standalone: true}"/>
                       </div>
                     </div>
                     <div class="col-12 md:col-12 lg:col-6">
                       <div class="flex flex-column gap-2">
                         <label htmlFor="name">Invoice To</label>
-                        <input type="text" pInputText />
+                        <input type="text" pInputText  [(ngModel)]="invoices[0].invoiceTo"
+                        [ngModelOptions]="{standalone: true}"/>
                       </div>
                     </div>
                   <div class="col-12 md:col-12 lg:col-6">
                     <div class="flex flex-column gap-2">
                       <label htmlFor="name">Invoice Number</label>
-                      <input type="text" pInputText />
+                      <input type="text" pInputText  [(ngModel)]="invoices[0].invoiceNumber"
+                      [ngModelOptions]="{standalone: true}"/>
                     </div>
                   </div>
                   <div class="col-12 md:col-12 lg:col-6">
                     <div class="flex flex-column gap-2">
                       <label htmlFor="name">Invoice Date</label>
-                      <input type="text" pInputText />
+                      <input type="text" pInputText  [(ngModel)]="invoices[0].invoiceDate"
+                      [ngModelOptions]="{standalone: true}"/>
                     </div>
                   </div>
                   
                   <div class="col-12 md:col-12 lg:col-6">
                     <div class="flex flex-column gap-2">
                       <label htmlFor="name">Invoice Month</label>
-                      <input type="text" pInputText />
+                      <input type="text" pInputText  [(ngModel)]="invoices[0].invoiceMonth"
+                      [ngModelOptions]="{standalone: true}"/>
                     </div>
                   </div>
                   
                   <div class="col-12 md:col-12 lg:col-6">
                     <div class="flex flex-column gap-2">
                       <label htmlFor="name">Total Amount Befor Tax</label>
-                      <input type="text" pInputText />
+                      <input type="text" pInputText  [(ngModel)]="invoices[0].amountBeforeTax"
+                      [ngModelOptions]="{standalone: true}"/>
                     </div>
                   </div>
                   <div class="col-12 md:col-12 lg:col-6">
                     <div class="flex flex-column gap-2">
                       <label htmlFor="name">Total Taxable Amount</label>
-                      <input type="text" pInputText />
+                      <input type="text" pInputText [(ngModel)]="invoices[0].taxableAmount"
+                      [ngModelOptions]="{standalone: true}"/>
                     </div>
                   </div>
                   <div class="col-12 md:col-12 lg:col-6">
                     <div class="flex flex-column gap-2">
                       <label htmlFor="name">Tax %</label>
-                      <input type="text" pInputText />
+                      <input type="text" pInputText [(ngModel)]="invoices[0].taxPercent"
+                      [ngModelOptions]="{standalone: true}"/>
                     </div>
                   </div>
                   <div class="col-12 md:col-12 lg:col-6">
                     <div class="flex flex-column gap-2">
                       <label htmlFor="name">Total VAT Amount (SAR)</label>
-                      <input type="text" pInputText />
+                      <input type="text" pInputText [(ngModel)]="invoices[0].vatAmount"
+                      [ngModelOptions]="{standalone: true}"/>
                     </div>
                   </div>
                   <div class="col-12 md:col-12 lg:col-6">
                     <div class="flex flex-column gap-2">
                       <label htmlFor="name">Total Amount After VAT(SAR)</label>
-                      <input type="text" pInputText />
+                      <input type="text" pInputText [(ngModel)]="invoices[0].amountAfterVAT"
+                      [ngModelOptions]="{standalone: true}"/>
                     </div>
                   </div>
                 </div>
               </form>
             </div>
             <div class="card">
-              <p-table [tableStyle]="{ 'min-width': '50rem' }">
+              <p-table [value]="invoices" [tableStyle]="{ 'min-width': '50rem' }">
                 <ng-template pTemplate="header">
                   <tr>
                     <th pSortableColumn="date" class="text-center">
@@ -186,8 +203,8 @@
                     </th>
                   </tr>
                 </ng-template>
-                <!-- <ng-template pTemplate="body" let-invoice >
-                  <tr [ngClass]="{'highlight-row': isHighlighted(invoice.id)}">
+                <ng-template pTemplate="body" let-invoice >
+                  <tr>
                     <td class="text-center">{{invoice.lineNumber}}</td>
                     <td class="text-center">{{invoice.vehicle.plateNumber}}</td>
                     <td class="text-center"> </td>
@@ -199,16 +216,18 @@
                     <td class="text-center">{{invoice.invoiceMonth}}</td>
                     <td class="text-center"></td>
                     <td class="text-center"></td>
-                    <td class="text-center">{{ getAssignToEmpName(invoice.id) }}</td>
-                    <td class="text-center"></td>
-                    <td class="text-center"></td>
+                    <td class="text-center">{{ getAssignToEmpName(invoice.id,"EmpNum") }}</td>
+                    <td class="text-center">{{ getAssignToEmpName(invoice.id,"EmpName") }}</td>
+                    <td class="text-center">{{ getAssignToEmpName(invoice.id,"department") }}</td>
                     <td class="text-center"></td> 
                   </tr>
-                </ng-template> -->
+                </ng-template>
               </p-table>
               <div class="button-style">
-                <p-button type="button" label="Validate"/>
-              </div> 
+                <p-button severity="success" label="Approve" Style="margin-right: 10px;" (click)="showDialog('Approve')"></p-button>
+                <p-button severity="danger" type="button" label="Reject" Style="margin-right: 10px;" (click)="showDialog('Reject')"></p-button>
+                <p-button severity="secondary" type="button" label="Request more info" (click)="showDialog('Info')"></p-button>
+              </div>              
             </div>
           </div>
         </div>
@@ -216,3 +235,37 @@
     </div>
   </div>
   
+  <p-dialog
+  header="Enter Remarks"
+  [closable]="false"
+  [(visible)]="dialogVisible"
+  [breakpoints]="{ '960px': '75vw' }"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div class="dialog-content">
+    <!-- Textarea for Remarks -->
+    <textarea
+      rows="6"
+      cols="50"
+      placeholder="Enter your remarks here..."
+      class="remarks-textarea"
+      [(ngModel)]="remarks"
+    ></textarea>
+
+    <!-- Buttons Container -->
+    <div class="dialog-footer">
+      <p-button
+      (click)="closeDialog()"
+        label="Cancel"
+        styleClass="p-button-danger p-button-text p-button-raised"
+      ></p-button>
+      <p-button
+      (click)="onSubmit()"
+        label="Submit"
+        class="bg-b-color ml"
+      ></p-button>
+    </div>
+  </div>
+</p-dialog>

@@ -7,26 +7,30 @@
           <div class="body-card">
             <div class="card">
               <div class="header-container">
-                <h1 class="mb-4 h-color">Suppliers List</h1>
+                <h1 class="mb-4 h-color">Invoices For Approval</h1>
               </div>
-              <h4 class="mb-4 h-color">Suppliers found in the file :</h4>
-              <p-table styleClass="p-datatable-striped" [tableStyle]="{'min-width': '50rem'}">
-             <ng-template pTemplate="header">
+              <!-- <h4 class="mb-4 h-color">Suppliers found in the file :</h4> -->
+              <p-table [value] = "invoices" [tableStyle]="{'min-width': '30rem'}">
+             <ng-template pTemplate="header" >
             <tr>
-                <th>Sr No.</th>
-                <th>Name</th>
-                <th>Office Location</th>
-                <th>Contact Person</th>
+                <th class="text-center">Sr No.</th>
+                <th class="text-center">Name</th>
+                <th class="text-center">Invoice Type</th>
+                <th class="text-center">Invoice Month</th>
+                <th class="text-center">Actions</th>
             </tr>
         </ng-template>
-        <!-- <ng-template pTemplate="body">
+        <ng-template pTemplate="body" let-invoice let-rowIndex="rowIndex">
             <tr>
-                <td>{{ rowIndex + 1 }}</td>
-                <td>{{vendor.vendorName}}</td>
-                <td>{{vendor.officeLocation}}</td>
-                <td></td>
+                <td class="text-center">{{ rowIndex + 1 }}</td>
+                <td class="text-center">{{invoice.supplier.vendorName}}</td>
+                <td class="text-center">{{invoice.invoiceCategory}}</td>
+                <td class="text-center">{{invoice.invoiceMonth}}</td>
+                <td class="text-center">
+                  <p-button [routerLink] ="['/invoice-approval', invoice.invoiceFile.id , invoice.supplier.vendorName]" icon="bi bi-check" pTooltip="Approve" tooltipPosition="top" class=' mr' [outlined]="true" [rounded]="true"  [raised]="true" severity="success"></p-button>
+                </td>
             </tr>
-        </ng-template> -->
+        </ng-template>
 </p-table>
             </div>
           </div>

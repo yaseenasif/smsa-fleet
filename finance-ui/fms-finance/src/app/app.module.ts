@@ -38,6 +38,7 @@ import { InterceptorService } from './components/service/interceptor.service';
 import { VehicleListComponent } from './components/vehicle-screen/vehicle-list/vehicle-list.component';
 import { RouterModule } from '@angular/router';  // Ensure this is imported
 import { TooltipModule } from 'primeng/tooltip';
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
   declarations: [
@@ -80,7 +81,8 @@ import { TooltipModule } from 'primeng/tooltip';
     PaginatorModule,
     ToolbarModule,
     RouterModule,
-    TooltipModule
+    TooltipModule,
+    DialogModule
   ],
   providers: [
     MessageService,

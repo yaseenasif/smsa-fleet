@@ -5,8 +5,9 @@
       <div class="main">
         <div class="body-card">
           <div class="card">
-            <div class="header-container">
-            <h1 class="mb-4 h-color">Invoice Details</h1>
+            <div class="header-container">                    
+            <h1 class="mb-4 h-color">Invoice Details</h1>        
+            <p-toast />
             <p-button type="button" label="Back" (onClick)="redirectToSupplier()" />
           </div>
             <form #employeeForm="ngForm">
@@ -226,6 +227,7 @@
             </p-table>
             <div class="button-style">
               <p-button type="button" label="Validate" (onClick)="validateInvoices()" />
+              <p-button *ngIf="invoiceValidationCheck" type="button" label="Send for approval" (onClick)="sendForApproval()" />
             </div> 
           </div>
         </div>

@@ -6,6 +6,9 @@ import com.example.FleetSystem.dto.InvoiceUploadRequest;
 import com.example.FleetSystem.dto.VendorDto;
 import com.example.FleetSystem.exception.ExcelException;
 import com.example.FleetSystem.model.*;
+import com.example.FleetSystem.payload.EmailApprovalRequest;
+import com.example.FleetSystem.payload.InvoiceActionPayload;
+import com.example.FleetSystem.payload.ResponsePayload;
 import com.example.FleetSystem.payload.UploadDataFileResponse;
 import com.example.FleetSystem.repository.*;
 import com.example.FleetSystem.specification.InvoiceFileSpecification;
@@ -58,6 +61,8 @@ public class InvoiceService {
     StorageService storageService;
     @Autowired
     ExcelErrorService excelErrorService;
+    @Autowired
+    EmailService emailService;
 
     @Transactional
     public UploadDataFileResponse saveInvoiceExcelData(MultipartFile file , InvoiceUploadRequest invoiceUploadRequest){
@@ -468,5 +473,74 @@ public class InvoiceService {
             }else validatedInvoices.put(invoice.getId(),null);
         }
         return validatedInvoices;
+    }
+
+    @Transactional
+    public void sendForApproval(EmailApprovalRequest emailApprovalRequest){
+        emailService.sendEmail("yaseenasif042@gmal.com", "Invoice Approval Request",
+                emailApprovalRequest.getSupplier(), emailApprovalRequest.getInvoiceMonth().toString(), emailApprovalRequest.getInvoiceType());
+
+        Vendor supplier = vendorRepository.findByVendorNameIgnoreCaseAndStatusIsTrue(emailApprovalRequest.getSupplier());
+        List<Invoice> invoices = invoiceRepository.findBySupplierAndInvoiceMonthAndInvoiceCategory(supplier,
+                emailApprovalRequest.getInvoiceMonth(), emailApprovalRequest.getInvoiceType());
+
+        if (!invoices.isEmpty()){
+            invoices.forEach(invoice -> {
+                invoice.setApprovalStatus("Waiting");
+            });
+            invoiceRepository.saveAll(invoices);
+        }
+
+    }
+
+    public List<Invoice> getWaitingForApprovalInvoices(){
+        List<Invoice> invoices = invoiceRepository.findByApprovalStatus("Waiting");
+
+        return new ArrayList<>(
+                invoices.stream()
+                        .collect(Collectors.toMap(
+                                invoice -> Arrays.asList(
+                                        invoice.getSupplier(),
+                                        invoice.getInvoiceType(),
+                                        invoice.getInvoiceMonth()
+                                ),
+                                invoice -> invoice,
+                                (existing, replacement) -> existing 
+                        )).values()
+        );
+    }
+
+    @Transactional
+    public ResponsePayload actionOnInvoice(InvoiceActionPayload invoiceActionPayload){
+        Vendor supplier = vendorRepository.findByVendorNameIgnoreCaseAndStatusIsTrue(invoiceActionPayload.getSupplierName());
+        List<Invoice> invoices = invoiceRepository.findBySupplierAndInvoiceMonthAndInvoiceCategory(supplier,
+                invoiceActionPayload.getInvoiceMonth(),invoiceActionPayload.getInvoiceType());
+
+        if (!invoices.isEmpty()){
+         switch (invoiceActionPayload.getStatus()) {
+             case "Approve":
+                invoices.forEach(invoice -> {
+                    invoice.setApprovalStatus("Approved");
+                    invoice.setRemarks(invoiceActionPayload.getRemarks());
+                });
+                break;
+             case "Reject":
+                 invoices.forEach(invoice -> {
+                     invoice.setApprovalStatus("Reject");
+                     invoice.setRemarks(invoiceActionPayload.getRemarks());
+                 });
+                 break;
+             case "Info":
+                 invoices.forEach(invoice -> {
+                     invoice.setApprovalStatus("More Info");
+                     invoice.setRemarks(invoiceActionPayload.getRemarks());
+                 });
+                 break;
+             default:
+                 break;
+         }
+            invoiceRepository.saveAll(invoices);
+        }
+        return new ResponsePayload("Submitted Successfully");
     }
 }

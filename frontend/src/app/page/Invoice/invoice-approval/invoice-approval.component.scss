@@ -9,3 +9,33 @@
     justify-content: right;
     margin-top: 10px;
   }
+
+
+  .dialog-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .remarks-textarea {
+    width: 100%;
+    height: 200px;
+    padding: 10px;
+    font-size: 1rem;
+    resize: none;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .dialog-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: auto;
+  }
+  
+  .dialog-footer p-button {
+    margin-left: 10px;
+  }
+  

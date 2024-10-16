@@ -44,6 +44,8 @@ public class Invoice {
     private Float lineTaxRate;
     private Float lineTaxAmount;
     private Float lineAmountWithTax;
+    private String approvalStatus;
+    private String remarks;
     private String uuid;
     private LocalDate createdAt;
     private LocalDate updatedAt;

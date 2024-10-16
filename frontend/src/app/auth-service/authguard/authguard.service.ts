@@ -33,7 +33,7 @@ export class AuthguardService {
     { permission: 'Download Attachment', route: ['/individual-file-list-component/:call-type/:id'] },
     { permission: 'DeletedVehicles', route: ['/deleted-vehicles'] },
     { permission: 'EditUser', route: ['/edit-user/:id', '/edit-user/:redirectValue/:id'] },
-    { permission: 'InvoiceApproval', route: ['/invoice-approval'] },
+    { permission: 'InvoiceApproval', route: ['/invoice-approval/:id/:supplierName'] },
     { permission: 'InvoiceSupplier', route: ['/invoice-supplier'] },
   ];
 

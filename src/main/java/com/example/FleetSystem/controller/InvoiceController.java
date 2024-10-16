@@ -8,8 +8,7 @@ import com.example.FleetSystem.dto.VendorDto;
 import com.example.FleetSystem.model.Invoice;
 import com.example.FleetSystem.model.VehicleAssignment;
 import com.example.FleetSystem.model.Vendor;
-import com.example.FleetSystem.payload.ResponseMessage;
-import com.example.FleetSystem.payload.UploadDataFileResponse;
+import com.example.FleetSystem.payload.*;
 import com.example.FleetSystem.service.InvoiceService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,6 +21,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.YearMonth;
 import java.util.HashMap;
 import java.util.List;
 
@@ -95,4 +95,23 @@ public class InvoiceController {
     public ResponseEntity<HashMap<Long, VehicleAssignment>> getValidatedInvoices(@RequestBody List<Invoice> invoices) {
         return ResponseEntity.ok(invoiceService.getValidatedInvoices(invoices));
     }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
+    @PostMapping("/send-for-approval")
+    public ResponseEntity<ResponsePayload> getValidatedInvoices(@RequestBody EmailApprovalRequest emailApprovalRequest) {
+        invoiceService.sendForApproval(emailApprovalRequest);
+        return ResponseEntity.ok(new ResponsePayload("Email sent for approval successfully."));
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
+    @GetMapping("/get-waiting-invoices")
+    public ResponseEntity<List<Invoice>> getWaitingForApprovalInvoices() {
+         return ResponseEntity.ok(invoiceService.getWaitingForApprovalInvoices());
+    }
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
+    @PostMapping("/send-invoice-action")
+    public ResponseEntity<ResponsePayload> actionOnInvoice(@RequestBody InvoiceActionPayload invoiceActionPayload) {
+         return ResponseEntity.ok(invoiceService.actionOnInvoice(invoiceActionPayload));
+    }
+
 }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { Invoice } from '../../../modal/invoice';
 import { Vendor } from '../../../modal/vendor';
 import { InvoiceService } from '../invoice.service';
 
@@ -14,8 +15,11 @@ export class InvoiceSupplierComponent {
 
   invoiceFileId !: number;
   supplierNames : string[] = [];
-  vendors : Vendor[] = [];
+  // vendors : Vendor[] = [];
   vendorCount !: number;
+  invoices: Invoice[] = [];
+  dialogVisible: boolean = false;
+  remarks!:string;
 
   constructor(private messageService: MessageService, private route: ActivatedRoute,private router: Router,
     private invoiceService: InvoiceService) {}
@@ -37,12 +41,21 @@ export class InvoiceSupplierComponent {
 
   getInvoicesSuppliersByFileId(fileId: number){
     this.invoiceService.getInvoicesSuppliersByFileId(fileId).subscribe((res)=>{
-      this.vendors = res
-      this.vendorCount = this.vendors.length
+      this.invoices = res
+      this.vendorCount = this.invoices.length
     })
   }
 
   redirectToInvoiceUpload(){
     this.router.navigate(['/invoice-upload'])
+  }
+
+  closeDialog(){
+    this.dialogVisible = false
+  }
+
+  showDialog(remarks: string){
+    this.remarks = remarks
+    this.dialogVisible = true
   }
 }

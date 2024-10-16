@@ -1,5 +1,6 @@
 package com.example.FleetSystem.dto;
 
+import com.example.FleetSystem.model.InvoiceFile;
 import com.example.FleetSystem.model.Vehicle;
 import com.example.FleetSystem.model.Vendor;
 import lombok.*;
@@ -44,11 +45,14 @@ public class InvoiceDto {
     private Float lineTaxRate;
     private Float lineTaxAmount;
     private Float lineAmountWithTax;
+    private String approvalStatus;
+    private String remarks;
     private String uuid;
     private String fileName;
     private LocalDateTime createdAt;
     private LocalDate updatedAt;
     private Vendor supplier;
     private Vehicle vehicle;
+    private InvoiceFile invoiceFile;
 
 }

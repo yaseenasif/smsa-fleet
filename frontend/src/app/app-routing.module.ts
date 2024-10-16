@@ -421,6 +421,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'invoice-approval/:id/:supplierName',
+    component: InvoiceApprovalComponent, 
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'invoice-supplier',
     component: InvoiceSupplierComponent,
     canActivate: [AuthGuard]

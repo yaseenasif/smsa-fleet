@@ -11,26 +11,47 @@
               </div>
               <h4 class="mb-4 h-color">Suppliers found in the file : {{vendorCount}}</h4>
               <p-table 
-              [value] = "vendors"
+              [value] = "invoices"
     styleClass="p-datatable-striped" 
     [tableStyle]="{'min-width': '50rem'}">
         <ng-template pTemplate="header">
             <tr>
                 <th>Sr No.</th>
-                <th>Name</th>
-                <th>Office Location</th>
-                <th>Contact Person</th>
+                <th class="text-center">Name</th>
+                <th class="text-center">Office Location</th>
+                <th class="text-center">Invoice Month</th>
+                <th class="text-center">Invoice Type</th>
+                <th class="text-center">Approval Status</th>
+                <th class="text-center">Actions</th>
+                
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-vendor let-rowIndex="rowIndex">
+        <ng-template pTemplate="body" let-invoice let-rowIndex="rowIndex">
             <tr>
                 <td>{{ rowIndex + 1 }}</td>
-                <td [routerLink]="['/invoice-details', invoiceFileId , vendor.vendorName]">{{vendor.vendorName}}</td>
-                <td [routerLink]="['/invoice-details', invoiceFileId , vendor.vendorName]">{{vendor.officeLocation}}</td>
-                <td [routerLink]="['/invoice-details', invoiceFileId , vendor.vendorName]"></td>
-            </tr>
+                <td class="text-center" [routerLink]="['/invoice-details', invoiceFileId , invoice.supplier.vendorName]">{{invoice.supplier.vendorName}}</td>
+                <td class="text-center" [routerLink]="['/invoice-details', invoiceFileId , invoice.supplier.vendorName]">{{invoice.supplier.officeLocation}}</td>
+                <td class="text-center" [routerLink]="['/invoice-details', invoiceFileId , invoice.supplier.vendorName]">{{invoice.invoiceMonth}}</td>
+                <td class="text-center" [routerLink]="['/invoice-details', invoiceFileId , invoice.supplier.vendorName]">{{invoice.invoiceCategory}}</td>
+                <td class="text-center" [routerLink]="['/invoice-details', invoiceFileId , invoice.supplier.vendorName]">{{invoice.approvalStatus}}</td>
+            <td>
+              <p-button
+              *ngIf="invoice.approvalStatus !== 'Waiting'"
+                      (click)="showDialog(invoice.remarks)"
+                      pTooltip="Remarks"
+                      tooltipPosition="top"
+                      icon="bi bi-eye"
+                      class="ml mr"
+                      [outlined]="true"
+                      [rounded]="true"
+                      [raised]="true"
+                      severity="success"
+                    >
+                    </p-button>
+            </td>
+              </tr>
         </ng-template>
-</p-table>
+        </p-table>
             </div>
           </div>
         </div>
@@ -38,3 +59,31 @@
     </div>
   </div>
   
+<p-dialog
+  header="Remarks"
+  [closable]="false"
+  [(visible)]="dialogVisible"
+  [breakpoints]="{ '960px': '75vw' }"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <div class="dialog-content">
+    <!-- Textarea for Remarks -->
+    <textarea
+      rows="6"
+      cols="50"
+      class="remarks-textarea"
+      [(ngModel)]="remarks"
+      readonly
+    ></textarea>
+
+    <!-- Buttons Container -->
+    <div class="dialog-footer">
+      <p-button
+      (click)="closeDialog()"
+        label="Cancel"
+      ></p-button>
+    </div>
+  </div>
+</p-dialog>

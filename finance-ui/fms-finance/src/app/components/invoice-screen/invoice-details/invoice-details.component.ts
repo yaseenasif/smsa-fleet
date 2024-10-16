@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { VehicleService } from '../../../common-service/vehicle.service';
+import { EmailApprovalRequest } from '../../../modal/EmailApprovalRequest';
 import { Invoice } from '../../../modal/invoice';
 import { ValidatedInvoices } from '../../../modal/ValidatedInvoices';
 import { VehicleAssignment } from '../../../modal/VehicleAssignment';
@@ -9,14 +11,6 @@ import { InvoiceService } from '../invoice.service';
 
 interface InvoiceType {
   name: string;
-}
-
-interface InvoiceRecord {
-  date: string;
-  invoiceNumber: string | undefined,
-  progress: string | undefined,
-  fileName: string,
-  budget: string | undefined
 }
 
 @Component({
@@ -29,7 +23,6 @@ export class InvoiceDetailsComponent implements OnInit{
   value !: string;
   invoiceType !: InvoiceType[];
 
-  invoiceRecord !: InvoiceRecord[];
   invoiceId!: number;
   invoiceFileId !: number;
   supplierName !: string;
@@ -37,26 +30,14 @@ export class InvoiceDetailsComponent implements OnInit{
   invoice: Invoice[] = [];
   validatedInvoices : ValidatedInvoices[] = [];
 
-  validatedInvoicess = {
-    1: {
-      id: 1,
-      assignToEmpName: 'John Doe',
-      assignToEmpId: {
-        id: 100,
-        employeeNumber: 12345,
-        empName: 'John Doe',
-        // other properties
-      },
-      vehicle: {
-        id: 1,
-        plateNumber: 'ABC123',
-        // other properties
-      }
-    }
-  };
-  
+  invoiceValidationCheck: boolean = false;
+  emailApprovalRequest : EmailApprovalRequest = {
+    supplier: undefined,
+    invoiceMonth: undefined,
+    invoiceType: undefined,
+  }
  
-  constructor(private route: ActivatedRoute,private router: Router, 
+  constructor(private messageService: MessageService, private route: ActivatedRoute,private router: Router, 
     private invoiceService: InvoiceService, private vehicleService: VehicleService){
   }
 
@@ -90,10 +71,10 @@ export class InvoiceDetailsComponent implements OnInit{
   validateInvoices(){
     this.invoiceService.getValidatedInvoices(this.invoice).subscribe((res:ValidatedInvoices[])=>{
       this.validatedInvoices = res
-      console.log(this.validatedInvoices[3])
-      const assignment = this.validatedInvoices[3] as unknown as VehicleAssignment;
-      const assignToEmpName = assignment?.assignToEmpName;
-      console.log(assignToEmpName);
+      const hasNonNullInvoice = Object.values(this.validatedInvoices).some(invoice => invoice === null);
+      if (!hasNonNullInvoice){
+        this.invoiceValidationCheck = true;
+      }
     })
   }
 
@@ -114,4 +95,14 @@ export class InvoiceDetailsComponent implements OnInit{
   isHighlighted(invoiceId: number): boolean {
     return this.validatedInvoices[invoiceId] === null;
   }
+
+  sendForApproval(){
+      this.emailApprovalRequest.supplier = this.invoice[0].supplier.vendorName;
+      this.emailApprovalRequest.invoiceMonth = this.invoice[0].invoiceMonth;
+      this.emailApprovalRequest.invoiceType = this.invoice[0].invoiceCategory;
+      this.invoiceService.sendForApproval(this.emailApprovalRequest).subscribe((res) => {
+       this.messageService.add({ severity: 'success', summary: 'Sent', detail: res.message! });
+      });
+  }
+
 }

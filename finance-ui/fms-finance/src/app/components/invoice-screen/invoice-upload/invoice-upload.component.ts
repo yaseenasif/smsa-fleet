@@ -107,7 +107,6 @@ export class InvoiceUploadComponent implements OnInit{
 
   onDateSelect(selectedDate: Date) {
     this.formattedDate = this.formatDate(selectedDate);
-    console.log('Formatted Date:', this.formattedDate);    // Additional logic if needed
   }
 
   formatDate(date: Date): string {
