@@ -60,10 +60,11 @@ public class VehicleAssignmentSpecification {
                         .collect(Collectors.toList());
                 predicates.add(vehicleJoin.get("region").in(userRegion));
             }
+            predicates.add(criteriaBuilder.isTrue(root.get("status")));
 
             if (vehicleSearchCriteria == null || vehicleSearchCriteria.getValue() == null || vehicleSearchCriteria.getValue().isEmpty()) {
                 query.orderBy(criteriaBuilder.desc(root.get("id")));
-                criteriaBuilder.and(criteriaBuilder.isTrue(root.get("status")));
+//                criteriaBuilder.and(criteriaBuilder.isTrue(root.get("status")));
                 return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
             }
 
@@ -77,7 +78,6 @@ public class VehicleAssignmentSpecification {
                         vehicleSearchCriteria.getValue().toLowerCase()));
             }
 
-            predicates.add(criteriaBuilder.isTrue(root.get("status")));
             query.orderBy(criteriaBuilder.desc(root.get("id")));
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
