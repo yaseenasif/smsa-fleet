@@ -109,7 +109,7 @@ public class InvoiceService {
                 for (int rowNum = 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
                     Row row = sheet.getRow(rowNum);
 
-                    if (row == null || row.getPhysicalNumberOfCells() == 0 || (row.getCell(1) == null && row.getCell(2) == null && row.getCell(3) == null)) {
+                    if (row == null || row.getPhysicalNumberOfCells() == 0 || isRowEmpty(row)) {
                         break;
                     }
 
