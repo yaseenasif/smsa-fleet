@@ -263,7 +263,7 @@ public class InvoiceService {
             for (int rowNum = 1; rowNum <= sheet.getLastRowNum(); rowNum++) {
                 Row row = sheet.getRow(rowNum);
 
-                if (row == null || row.getPhysicalNumberOfCells() == 0 || (row.getCell(1) == null && row.getCell(2) == null && row.getCell(3) == null)) {
+                if (row == null || row.getPhysicalNumberOfCells() == 0 || isRowEmpty(row)) {
                     break;
                 }
 
@@ -349,6 +349,16 @@ public class InvoiceService {
 
             return new UploadDataFileResponse(Boolean.TRUE, Arrays.asList("File uploaded and data saved successfully."),null,Boolean.FALSE);
         }
+    }
+
+    private boolean isRowEmpty(Row row) {
+        for (int cellNum = 0; cellNum < row.getLastCellNum(); cellNum++) {
+            Cell cell = row.getCell(cellNum);
+            if (cell != null && !String.valueOf(cell).trim().isEmpty()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private UploadDataFileResponse validateHeaderRow(Sheet sheet) {
@@ -477,8 +487,8 @@ public class InvoiceService {
 
     @Transactional
     public void sendForApproval(EmailApprovalRequest emailApprovalRequest){
-//        emailService.sendEmail("yaseenasif042@gmal.com", "Invoice Approval Request",
-//                emailApprovalRequest.getSupplier(), emailApprovalRequest.getInvoiceMonth().toString(), emailApprovalRequest.getInvoiceType());
+        emailService.sendEmail("yaseenasif042@gmail.com", "Invoice Approval Request",
+                emailApprovalRequest.getSupplier(), emailApprovalRequest.getInvoiceMonth().toString(), emailApprovalRequest.getInvoiceType());
 
         Vendor supplier = vendorRepository.findByVendorNameIgnoreCaseAndStatusIsTrue(emailApprovalRequest.getSupplier());
         List<Invoice> invoices = invoiceRepository.findBySupplierAndInvoiceMonthAndInvoiceCategory(supplier,
