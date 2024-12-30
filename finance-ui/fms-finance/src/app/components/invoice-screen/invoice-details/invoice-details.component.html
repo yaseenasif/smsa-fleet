@@ -104,7 +104,7 @@
                     [ngModelOptions]="{standalone: true}" />
                   </div>
                 </div>
-                <div class="col-12 md:col-12 lg:col-6">
+                <!-- <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">Total Taxable Amount</label>
                     <input type="text" pInputText [(ngModel)]="invoice[0].taxableAmount"
@@ -117,7 +117,7 @@
                     <input type="text" pInputText [(ngModel)]="invoice[0].taxPercent"
                     [ngModelOptions]="{standalone: true}" />
                   </div>
-                </div>
+                </div> -->
                 <div class="col-12 md:col-12 lg:col-6">
                   <div class="flex flex-column gap-2">
                     <label htmlFor="name">Total VAT Amount (SAR)</label>
@@ -154,6 +154,10 @@
                   <th pSortableColumn="fileName" class="text-center">
                     Agreement Number
                     <p-sortIcon field="fileName"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="monthlyRate" class="text-center">
+                    Monthly Rate
+                    <p-sortIcon field="monthlyRate"></p-sortIcon>
                   </th>
                   <th pSortableColumn="budget" class="text-center">
                     Supllier Control Number
@@ -210,7 +214,8 @@
                   <td class="text-center">{{invoice.lineNumber}}</td>
                   <td class="text-center">{{invoice.vehicle.plateNumber}}</td>
                   <td class="text-center"> </td>
-                  <td class="text-center">{{invoice.agreementNumber}}</td>
+                  <td class="text-center">{{invoice.vehicle.processOrderNumber}}</td>
+                  <td class="text-center">{{invoice.vehicle.monthlyRate}}</td>
                   <td class="text-center"></td>
                   <td class="text-center">{{invoice.vehicle.id}}</td>
                   <td class="text-center"></td>
