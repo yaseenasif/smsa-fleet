@@ -47,6 +47,7 @@ public class VehicleDto {
     private String replacementReason;
     private String replacementRemarks;
     private Vehicle replacementVehicle;
+    private Integer monthlyRate;
 //    private VehicleReplacement vehicleReplacement;
 
 }

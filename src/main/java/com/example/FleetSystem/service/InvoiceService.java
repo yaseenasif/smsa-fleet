@@ -117,8 +117,8 @@ public class InvoiceService {
 
                          String invoiceMonthStr = String.valueOf(row.getCell(3));
                          String invoiceDate = String.valueOf(row.getCell(8));
-                         String dateFrom = String.valueOf(row.getCell(20));
-                         String dateTo = String.valueOf(row.getCell(21));
+                         String dateFrom = String.valueOf(row.getCell(15));
+                         String dateTo = String.valueOf(row.getCell(16));
 
 
                         try {
@@ -157,7 +157,7 @@ public class InvoiceService {
 
 
                             Vendor vendor = vendorRepository.findByVendorNameIgnoreCaseAndStatusIsTrue(getStringValue(row.getCell(2)));
-                            Optional<Vehicle> vehicle = vehicleRepository.findByPlateNumber(getStringValue(row.getCell(15)));
+                            Optional<Vehicle> vehicle = vehicleRepository.findByPlateNumber(getStringValue(row.getCell(13)));
 
                             invoice.setBusinessUnit(getStringValue(row.getCell(0)));
                             invoice.setInvoiceCategory(getStringValue(row.getCell(1)));
@@ -167,20 +167,20 @@ public class InvoiceService {
                             invoice.setInvoiceType(getStringValue(row.getCell(6)));
                             invoice.setInvoiceNumber(getStringValue(row.getCell(7)));
                             invoice.setAmountBeforeTax(getFloatValue(row.getCell(9)));
-                            invoice.setTaxableAmount(getFloatValue(row.getCell(10)));
-                            invoice.setTaxPercent(getFloatValue(row.getCell(11)));
-                            invoice.setVatAmount(getFloatValue(row.getCell(12)));
-                            invoice.setAmountAfterVAT(getFloatValue(row.getCell(13)));
-                            invoice.setLineNumber(getLongValue(row.getCell(14)));
+//                            invoice.setTaxableAmount(getFloatValue(row.getCell(10)));
+//                            invoice.setTaxPercent(getFloatValue(row.getCell(11)));
+                            invoice.setVatAmount(getFloatValue(row.getCell(10)));
+                            invoice.setAmountAfterVAT(getFloatValue(row.getCell(11)));
+                            invoice.setLineNumber(getLongValue(row.getCell(12)));
 //                            invoice.setPlateNumber(getStringValue(row.getCell(15)));
                             vehicle.ifPresent(invoice::setVehicle);
-                            invoice.setVendorVehicleRefNumber(getLongValue(row.getCell(16)));
-                            invoice.setAgreementNumber(getStringValue(row.getCell(17)));
-                            invoice.setMonthlyRate(getIntegerValue(row.getCell(18)));
-                            invoice.setLineAmountWithoutTax(getFloatValue(row.getCell(22)));
-                            invoice.setLineTaxRate(getFloatValue(row.getCell(23)));
-                            invoice.setLineTaxAmount(getFloatValue(row.getCell(24)));
-                            invoice.setLineAmountWithTax(getFloatValue(row.getCell(25)));
+                            invoice.setVendorVehicleRefNumber(getLongValue(row.getCell(14)));
+//                            invoice.setAgreementNumber(getStringValue(row.getCell(17)));
+//                            invoice.setMonthlyRate(getIntegerValue(row.getCell(18)));
+                            invoice.setLineAmountWithoutTax(getFloatValue(row.getCell(17)));
+//                            invoice.setLineTaxRate(getFloatValue(row.getCell(23)));
+//                            invoice.setLineTaxAmount(getFloatValue(row.getCell(24)));
+//                            invoice.setLineAmountWithTax(getFloatValue(row.getCell(25)));
                             invoice.setInvoiceFile(invoiceFile);
                             invoice.setCreatedBy(user);
                             invoice.setCreatedAt(LocalDate.now());
@@ -268,7 +268,7 @@ public class InvoiceService {
                 }
 
                     for (int cellNum = 0; cellNum <= row.getLastCellNum() - 1; cellNum++) {
-                        if (cellNum != 4 && cellNum != 5 && cellNum != 16 && cellNum != 17 && cellNum != 18 && cellNum != 20 && cellNum != 21) {
+                        if (cellNum != 4 && cellNum != 5 && cellNum != 14 && cellNum != 15 && cellNum != 16) {
                             if (String.valueOf(row.getCell(cellNum)).isEmpty() || row.getCell(cellNum) == null) {
                                 return new UploadDataFileResponse(Boolean.FALSE, Arrays.asList("Empty Value at Row " + (rowNum + 1) + " and Cell " + (cellNum + 1)),null,Boolean.FALSE);
                             }
@@ -295,7 +295,7 @@ public class InvoiceService {
 
 
 
-                    Optional<Vehicle> vehicle = vehicleRepository.findByPlateNumber(getStringValue(row.getCell(15)));
+                    Optional<Vehicle> vehicle = vehicleRepository.findByPlateNumber(getStringValue(row.getCell(13)));
                     if (!vehicle.isPresent()) {
                         errors.computeIfAbsent(rowNum + 1, k -> new ArrayList<>())
                                 .add("Plate Number doesn't exist in fleet management");
@@ -306,19 +306,19 @@ public class InvoiceService {
                     Pattern pattern = Pattern.compile(regex);
                     Matcher invoiceDateMatcher = pattern.matcher(String.valueOf(row.getCell(8)));
 
-                    if (String.valueOf(row.getCell(20)).isEmpty() || row.getCell(20) == null) {
-                        Matcher dateFromMatcher = pattern.matcher(String.valueOf(row.getCell(20)));
+                    if (String.valueOf(row.getCell(15)).isEmpty() || row.getCell(15) == null) {
+                        Matcher dateFromMatcher = pattern.matcher(String.valueOf(row.getCell(15)));
                         if (!dateFromMatcher.matches()) {
                         return new UploadDataFileResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(20),
-                                "Row " + (rowNum + 1) + " and Cell 21"),null,Boolean.FALSE);
+                                "Row " + (rowNum + 1) + " and Cell 18"),null,Boolean.FALSE);
                         }
                     }
 
-                    if (String.valueOf(row.getCell(21)).isEmpty() || row.getCell(21) == null) {
-                        Matcher dateToMatcher = pattern.matcher(String.valueOf(row.getCell(21)));
+                    if (String.valueOf(row.getCell(16)).isEmpty() || row.getCell(16) == null) {
+                        Matcher dateToMatcher = pattern.matcher(String.valueOf(row.getCell(16)));
                         if (!dateToMatcher.matches()) {
                             return new UploadDataFileResponse(Boolean.FALSE, Arrays.asList("Incorrect Date Format : " + row.getCell(21),
-                                "Row " + (rowNum + 1) + " and Cell 22"),null,Boolean.FALSE);
+                                "Row " + (rowNum + 1) + " and Cell 19"),null,Boolean.FALSE);
                         }
                     }
 
@@ -365,10 +365,8 @@ public class InvoiceService {
         Row headerRow = sheet.getRow(0);
         String[] expectedHeaders = {
                 "BusinessUnit", "InvoiceCategory", "SupplierName", "InvoiceMonth", "InvoiceFrom", "InvoiceTo", "InvoiceType",
-                "InvoiceNumber", "InvoiceDate", "TotalAmountBeforeTax", "TotalTaxableAmount", "Tax%", "TotalVatAmount(SAR)",
-                "TotalAmountAfterVat(SAR)", "LineNo.", "PlateNo.", "VendorVehicleRefNumber", "POAgreementContractNo.",
-                "MonthlyRate", "SupplierSite", "DateFrom", "DateTo", "LineAmount(withoutTax)", "LineTaxRate", "LineTaxAmount",
-                "LineAmount(InclTax)"
+                "InvoiceNumber", "InvoiceDate", "TotalAmountBeforeTax", "TotalVatAmount(SAR)", "TotalAmountAfterVat(SAR)",
+                "LineNo.", "PlateNo.", "VendorVehicleRefNumber", "DateFrom", "DateTo", "LineAmount(withoutTax)"
         };
 
         for (int i = 0; i < expectedHeaders.length; i++) {

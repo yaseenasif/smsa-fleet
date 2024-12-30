@@ -80,6 +80,7 @@ public class Vehicle {
     private String historyStatus;
     private String replacementReason;
     private String replacementRemarks;
+    private Integer monthlyRate;
 
     @NotAudited
     private LocalDateTime createdAt;
