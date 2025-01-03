@@ -39,6 +39,7 @@ import { VehicleListComponent } from './components/vehicle-screen/vehicle-list/v
 import { RouterModule } from '@angular/router';  // Ensure this is imported
 import { TooltipModule } from 'primeng/tooltip';
 import { DialogModule } from 'primeng/dialog';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -87,7 +88,7 @@ import { DialogModule } from 'primeng/dialog';
   providers: [
     MessageService,
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
-
+    [{ provide: LocationStrategy, useClass: HashLocationStrategy }]
   ],
   bootstrap: [AppComponent]
 })
