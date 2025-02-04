@@ -43,6 +43,7 @@ export class EditProjectVehicleComponent implements OnInit {
       startLease: null,
       expiryLease: null,
       duration: null,
+      costCenter: null,
       vendor: {
         id: null,
         vendorName: null,
@@ -126,6 +127,7 @@ export class EditProjectVehicleComponent implements OnInit {
       startLease: null,
       expiryLease: null,
       duration: null,
+      costCenter: null,
       vendor: {
         id: null,
         vendorName: null,

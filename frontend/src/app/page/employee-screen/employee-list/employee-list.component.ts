@@ -7,6 +7,11 @@ import { PaginatedResponse } from 'src/app/modal/paginatedResponse';
 import { saveAs } from 'file-saver';
 import { PageEvent } from 'src/app/modal/pageEvent';
 import { DashboardRedirectServiceService } from 'src/app/CommonServices/dashboard-redirect-service.service';
+import { AuthguardService } from 'src/app/auth-service/authguard/authguard.service';
+import { UserService } from '../../user/user.service';
+import { ErrorService } from 'src/app/CommonServices/Error/error.service';
+import { BackenCommonErrorThrow } from 'src/app/modal/BackendCommonErrorThrow';
+import { User } from 'src/app/modal/user';
 
 @Component({
   selector: 'app-employee-list',
@@ -18,12 +23,15 @@ export class EmployeeListComponent implements OnInit {
   @ViewChild('fileUpload', { static: false })
   fileUpload!: FileUpload;
   fileSelected: boolean = false;
+  role: string | null | undefined;
 
 
   constructor(
     private employeeService: EmployeeService,
     private messageService: MessageService,
-    private dashboardRedirectService: DashboardRedirectServiceService
+    private dashboardRedirectService: DashboardRedirectServiceService,
+    private authService: AuthguardService,
+    private userService: UserService,private errorService: ErrorService,
   ) { }
 
   employee!: Employee[];
@@ -44,6 +52,9 @@ export class EmployeeListComponent implements OnInit {
 
   ngOnInit(): void {
 
+    const decodedToken = this.decodeTokenTOGetUser();
+    this.checkUserRole(decodedToken?.sub!);
+
     this.items = [{
       label: 'Employee'
     }]
@@ -59,6 +70,20 @@ export class EmployeeListComponent implements OnInit {
     this.getAllEmployees();
     this.dashboardRedirectService.setDashboardValue('Employee');
 
+  }
+
+  decodeTokenTOGetUser(): { PERMISSIONS: string[], ROLES: string[], sub: string } | null {
+    const token = localStorage.getItem('accessToken');
+    return this.authService.getDecodedAccessToken(token!);
+  }
+
+  checkUserRole(employeeId: string): void {
+    this.userService.getUserByEmpId(employeeId).subscribe(
+      (user: User) => {
+        this.role = user.roles[0].name;
+      }, (err: BackenCommonErrorThrow) => {
+        this.errorService.showError(err.error!)
+      });
   }
 
   onCancel() {

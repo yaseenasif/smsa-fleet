@@ -6,19 +6,18 @@
 
       <div class="main">
         <p-toast></p-toast>
-        <div class="card flex justify-content-center">
-          <!-- <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb> -->
+        <!-- <div class="card flex justify-content-center">
           <p-button
             class="bg-b-color adjust mt-3"
             (click)="downloadExcelData()"
           >
             <i class="bi bi-download"></i>&nbsp; Export data
           </p-button>
-        </div>
+        </div> -->
         <div class="body-card">
           <div class="table-head">
             <div
-              class="flex mb-2 align-items-center gap-1 mt-5"
+              class="flex mb-2 align-items-center"
               style="justify-content: flex-end; align-items: flex-end"
             >
               <p-button class="bg-b-color" routerLink="/add-employee">
@@ -56,6 +55,14 @@
                   label="Download Sample"
                   (click)="downloadAttachment(fileName)"
                   icon="bi bi-download"
+                ></p-button>
+              </div>
+              <div class="flex flex-column gap-2 ml-5">
+                <p-button
+                  label="Export Data"
+                  (click)="downloadExcelData()"
+                  icon="bi bi-download"
+                  class="bg-b-color"
                 ></p-button>
               </div>
             </div>
@@ -263,7 +270,7 @@
                       >
                       </p-button>
                       <p-button
-                        *ngIf="selectedStatus.name !== 'Active'"
+                        *ngIf="selectedStatus.name !== 'Active' && role === 'ROLE_ADMIN'"
                         class="bg-color"
                         (click)="activateEmployee(employee.id)"
                         [rounded]="true"
@@ -298,7 +305,7 @@
                         [raised]="true"
                         severity="warning"
                       >
-                      </p-button>
+                        </p-button>
                       <p-button
                         [routerLink]="[
                           '/individual-file-list-component/',

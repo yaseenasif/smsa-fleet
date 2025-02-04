@@ -5,26 +5,27 @@
       <app-dashboard-head></app-dashboard-head>
 
       <div class="main">
-        <div class="card flex justify-content-center">
-          <!-- <p-breadcrumb class="max-w-full" [model]="items"> </p-breadcrumb> -->
+        <!-- <div class="card flex justify-content-center">
           <p-button
             class="bg-b-color adjust mt-3"
             (click)="downloadExcelData()"
           >
             <i class="bi bi-download"></i>&nbsp; Export data
           </p-button>
-        </div>
+        </div> -->
         <div class="body-card">
           <p-toast
             [showTransitionOptions]="'0ms'"
             [hideTransitionOptions]="'5000ms'"
           ></p-toast>
+          
           <div class="table-head">
             <div
               *ngIf="!vehicletab && !unAssignedVehicleTab"
-              class="flex mb-2 align-items-center gap-1 mt-5"
+              class="flex mb-2 align-items-center"
               style="justify-content: flex-end; align-items: flex-end"
             >
+            
               <p-button *ngIf="permissions && permissions.includes('AddVehicles')" class="bg-b-color" routerLink="/add-vehicle">
                 <i
                   class="bi bi-plus-lg"
@@ -32,6 +33,7 @@
                 ></i
                 >&nbsp;Add Vehicle
               </p-button>
+              
               <div class="flex flex-column gap-2 ml-5">
                 <p-fileUpload
                   #fileUpload
@@ -60,6 +62,14 @@
                   label="Download Sample"
                   (click)="downloadAttachment(fileName)"
                   icon="bi bi-download"
+                ></p-button>
+              </div>
+              <div class="flex flex-column gap-2 ml-5">
+                <p-button
+                  label="Export Data"
+                  (click)="downloadExcelData()"
+                  icon="bi bi-download"
+                  class="bg-b-color"
                 ></p-button>
               </div>
             </div>
@@ -198,6 +208,9 @@
                   </th>
                   <th pSortableColumn="category" class="text-center">
                     Category <p-sortIcon field="category"></p-sortIcon>
+                  </th>
+                  <th pSortableColumn="costCenter" class="text-center">
+                    Cost Center <p-sortIcon field="costCenter"></p-sortIcon>
                   </th>
                   <th pSortableColumn="vehicleStatus" class="text-center">
                     Status
@@ -412,6 +425,14 @@
                     "
                     class="text-center"
                   >
+                    {{ vehicles.costCenter }}
+                  </td>
+                  <td
+                    [classList]="
+                      vehicles.vehicleReplacement ? 'color-orange' : null
+                    "
+                    class="text-center"
+                  >
                     {{ vehicles.vehicleStatus }}
                   </td>
                   <td
@@ -439,7 +460,7 @@
                       [outlined]="true"
                     ></p-button>
 
-                    <p-button
+                    <!-- <p-button
                       *ngIf="
                         vehicles.vehicleStatus === 'In-Active' &&
                         !vehicletab &&
@@ -455,7 +476,7 @@
                       class="ml mr"
                       [outlined]="true"
                       [raised]="true"
-                    ></p-button>
+                    ></p-button> -->
 
                     <p-button
                       *ngIf="!vehicletab && !unAssignedVehicleTab &&

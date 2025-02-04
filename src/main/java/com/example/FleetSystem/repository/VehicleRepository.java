@@ -55,4 +55,6 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long>, JpaSpec
     List<String> findDistinctByProcessOrderNumberNotNull();
 
     Optional<Vehicle> findByReplacementVehicle(Vehicle vehicle);
+
+    List<Vehicle> findByVehicleStatus(String status);
 }

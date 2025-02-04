@@ -74,6 +74,8 @@ public class Vehicle {
     @NotAudited
     private String category;
     @NotAudited
+    private String costCenter;
+    @NotAudited
     private String uuid;
     private String vehicleStatus;
     private String replacementVehicleStatus;

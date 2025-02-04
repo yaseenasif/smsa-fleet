@@ -232,9 +232,9 @@ public class VehicleController {
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_COORDINATOR','ROLE_SUPERVISOR','ROLE_FLEETMANAGER','ROLE_PROJECTMANAGER','ROLE_FINANCE')")
-    @PostMapping("/download-vehicle-excel")
-    public ResponseEntity<byte[]> downloadVehicleExcel(@RequestBody List<VehicleDto> vehicleDtoList) {
-        byte[] excelBytes = vehicleService.downloadExcel(vehicleDtoList);
+    @PostMapping("/download-vehicle-excel/{status}")
+    public ResponseEntity<byte[]> downloadVehicleExcel(@PathVariable String status) {
+        byte[] excelBytes = vehicleService.downloadExcel(status);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         headers.setContentDispositionFormData("attachment", "vehicles.xlsx");

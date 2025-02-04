@@ -50,6 +50,7 @@ export class UpdateVehicleComponent implements OnInit {
     country: undefined,
     location: undefined,
     category: undefined,
+    costCenter: undefined,
     vendor: {
       id: undefined,
       vendorName: undefined,

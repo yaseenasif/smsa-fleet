@@ -48,6 +48,6 @@ public class VehicleDto {
     private String replacementRemarks;
     private Vehicle replacementVehicle;
     private Integer monthlyRate;
+    private String costCenter;
 //    private VehicleReplacement vehicleReplacement;
-
 }

@@ -17,6 +17,9 @@ import { BackenCommonErrorThrow } from 'src/app/modal/BackendCommonErrorThrow';
 import { ProductField } from 'src/app/modal/ProductField';
 import { ErrorService } from 'src/app/CommonServices/Error/error.service';
 import { DashboardRedirectServiceService } from 'src/app/CommonServices/dashboard-redirect-service.service';
+import { AuthguardService } from 'src/app/auth-service/authguard/authguard.service';
+import { UserService } from '../../user/user.service';
+import { User } from 'src/app/modal/user';
 
 @Component({
   selector: 'app-update-employee',
@@ -91,6 +94,8 @@ export class UpdateEmployeeComponent {
   location: ProductField | null | undefined;
   organization: ProductField | null | undefined;
   deptCode: ProductField | null | undefined;
+  user: User | undefined | null;
+  role: string | null | undefined;
 
   constructor(private employeeService: EmployeeService,
     private router: Router,
@@ -102,8 +107,9 @@ export class UpdateEmployeeComponent {
     private jobTitleService: JobTitleService,
     private productFieldService: ProductFieldServiceService,
     private errorHandleService: ErrorService,
-    private dashboardRedirectService: DashboardRedirectServiceService
-
+    private dashboardRedirectService: DashboardRedirectServiceService,
+    private authService: AuthguardService,
+    private userService: UserService,private errorService: ErrorService,
   ) { }
 
 
@@ -123,6 +129,8 @@ export class UpdateEmployeeComponent {
   }
 
   ngOnInit(): void {
+    const decodedToken = this.decodeTokenTOGetUser();
+    this.checkUserRole(decodedToken?.sub!);
     this.items = [{ label: 'Employee', routerLink: '/employee' }, { label: 'Edit Employee' }];
     this.employeeId = +this.route.snapshot.paramMap.get('id')!;
     this.getEmployeeById(this.employeeId)
@@ -132,6 +140,21 @@ export class UpdateEmployeeComponent {
     this.getOrganizationList("Organization");
     this.getDeptcodeList("Dept Code");
     this.dashboardRedirectService.setDashboardValue('Employee');
+    
+  }
+
+  decodeTokenTOGetUser(): { PERMISSIONS: string[], ROLES: string[], sub: string } | null {
+    const token = localStorage.getItem('accessToken');
+    return this.authService.getDecodedAccessToken(token!);
+  }
+
+  checkUserRole(employeeId: string): void {
+    this.userService.getUserByEmpId(employeeId).subscribe(
+      (user: User) => {
+        this.role = user.roles[0].name;
+      }, (err: BackenCommonErrorThrow) => {
+        this.errorService.showError(err.error!)
+      });
   }
 
   getEmployeeById(id: Number) {
@@ -140,8 +163,6 @@ export class UpdateEmployeeComponent {
       res.dateOfBirth = res.dateOfBirth ? new Date(res.dateOfBirth) : new Date();
       this.employee = res;
       this.getCountry();
-      console.log(this.employee);
-
     })
   }
 

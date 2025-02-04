@@ -286,6 +286,7 @@ public class VehicleService {
                 optionalVehicle.get().setInsuranceExpiry(vehicleDto.getInsuranceExpiry());
                 optionalVehicle.get().setLeaseCost(vehicleDto.getLeaseCost());
                 optionalVehicle.get().setLeaseStartDate(vehicleDto.getLeaseStartDate());
+                optionalVehicle.get().setCostCenter(vehicleDto.getCostCenter());
                 optionalVehicle.get().setLeaseExpiryDate(vehicleDto.getLeaseExpiryDate());
                 optionalVehicle.get().setUsageType(vehicleDto.getUsageType());
                 optionalVehicle.get().setRegion(vehicleDto.getRegion());
@@ -1071,18 +1072,17 @@ public class VehicleService {
         return vehicleList.stream().map(this::toVehicleExcelDto).collect(Collectors.toList());
     }
 
-    public byte[] downloadExcel(List<VehicleDto> vehicleDtoList) {
+    public byte[] downloadExcel(String status) {
         List<VehicleExcelDto> vehicleExcelDtoList;
 
-        if (vehicleDtoList != null && !vehicleDtoList.isEmpty()) {
-            List<Vehicle> vehiclesList = vehicleDtoList.stream()
-                    .map(this::toEntity)
-                    .collect(Collectors.toList());
-            vehicleExcelDtoList = toVehicleExcelDtoList(vehiclesList);
-        } else {
+        if (status.equalsIgnoreCase("All")) {
             List<Vehicle> vehicles = vehicleRepository.findAll();
             vehicleExcelDtoList = toVehicleExcelDtoList(vehicles);
+        } else {
+            List<Vehicle> vehicles = vehicleRepository.findByVehicleStatus(status);
+            vehicleExcelDtoList = toVehicleExcelDtoList(vehicles);
         }
+
         return excelExportService.exportToExcel(vehicleExcelDtoList);
     }
 

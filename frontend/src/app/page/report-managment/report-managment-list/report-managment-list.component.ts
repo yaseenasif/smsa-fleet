@@ -57,6 +57,7 @@ export class ReportManagmentListComponent implements OnInit {
     power: undefined,
     registrationExpiry: undefined,
     fuelType: undefined,
+    costCenter: undefined,
     vendor: {
       id: undefined,
       vendorName: undefined,
@@ -267,6 +268,7 @@ export class ReportManagmentListComponent implements OnInit {
       power: undefined,
       registrationExpiry: undefined,
       fuelType: undefined,
+      costCenter: undefined,
       vendor: {
         id: undefined,
         vendorName: undefined,
@@ -296,8 +298,8 @@ export class ReportManagmentListComponent implements OnInit {
   }
 
   downloadExcelData() {
-    this.vehicleService.downloadExcelData(this.vehicles)
-      .subscribe(blob => saveAs(blob, "Report Data.xlsx"));
+    this.vehicleService.downloadExcelData(this.selectedSearchOption.name)
+      .subscribe(blob => saveAs(blob, `${this.selectedSearchOption.name} Report Data.xlsx`));
   }
 
   ListOfDistinctPoNumbers() {
