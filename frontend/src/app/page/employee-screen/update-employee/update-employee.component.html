@@ -749,7 +749,8 @@
                   styleClass="p-button-text"
                 >
                 </p-button>
-                <p-button
+                <p-button 
+                *ngIf="role === 'ROLE_ADMIN'"
                   label="Delete"
                   class="ml"
                   (click)="showDialog()"

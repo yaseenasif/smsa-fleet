@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { DashboardRedirectServiceService } from 'src/app/CommonServices/dashboard-redirect-service.service';
 import { Vehicle } from 'src/app/modal/vehicle';
+import { VehicleAssignment } from 'src/app/modal/vehicle-assignment';
+import { VehicleAssignmentService } from '../../Assignment/vehicle-assignment.service';
 import { VehicleService } from '../service/vehicle.service';
 
 
@@ -20,9 +22,74 @@ export class ViewVehicleComponent {
   vehicles!: Array<Vehicle>;
   assignmentCheck!: boolean;
   tooltipItems: MenuItem[] | undefined;
+  vehicleAssignment: VehicleAssignment = {
+    id: undefined,
+    assignToEmpName: undefined,
+    assignToEmpId: {
+      id:  undefined,
+      empName:  undefined,
+      employeeNumber:  undefined,
+      budgetRef:  undefined,
+      gender:  undefined,
+      maritalStatus:  undefined,
+      dateOfBirth:  undefined,
+      joiningDate:  undefined,
+      jobTitle:  undefined,
+      status:  undefined,
+      region:  undefined,
+      organization:  undefined,
+      division:  undefined,
+      deptCode:  undefined,
+      department:  undefined,
+      contactNumber:  undefined,
+      section:  undefined,
+      nationalIdNumber:  undefined,
+      svEmployeeNumber:  undefined,
+      svEmployeeName:  undefined,
+      location:  undefined,
+      country: undefined,
+      nationality:  undefined,
+      companyEmailAddress:  undefined,
+      grade:  undefined,
+      licenseNumber:  undefined,      
+      vehicleBudget:  undefined,
+      costCentre:  undefined,
+  
+    },
+    vehicle: {
+      id: undefined,
+      processOrderNumber: undefined,
+      plateNumber: undefined,
+      make: undefined,
+      year: undefined,
+      design: undefined,
+      model: undefined,
+      type: undefined,
+      capacity: undefined,
+      power: undefined,
+      registrationExpiry: undefined,
+      fuelType: undefined,
+      vendor: {
+        id: undefined,
+        vendorName: undefined,
+        officeLocation: undefined,
+        attachments: undefined
+      },
+      insuranceExpiry: undefined,
+      leaseCost: undefined,
+      leaseStartDate: undefined,
+      leaseExpiryDate: undefined,
+      usageType: undefined,
+      category: undefined,
+      replacementDate: undefined,
+      replaceLeaseCost: undefined,
+      vehicleStatus: undefined
+    }
+  }
+
 
   constructor(private vehicleService: VehicleService, private route: ActivatedRoute,
-    private router: Router,
+    private router: Router, private assignmentService: VehicleAssignmentService,
     private dashboardRedirectService: DashboardRedirectServiceService) { }
 
   ngOnInit() {
@@ -86,13 +153,18 @@ export class ViewVehicleComponent {
     ];
 
     this.dashboardRedirectService.setDashboardValue('Vehicle');
-
   }
 
   getVehicleById(id: Number) {
-    
     this.vehicleService.getVehicleById(id).subscribe((res: Vehicle) => {
       this.vehicle = res;
+      this.getAssignmentByPlateNumber(res.plateNumber!)
+    })
+  }
+
+  getAssignmentByPlateNumber(plateNumber: String){
+    this.assignmentService.getAllVehicleAssignmentByPlateNumber(plateNumber).subscribe((res)=>{
+      this.vehicleAssignment = res
     })
   }
 

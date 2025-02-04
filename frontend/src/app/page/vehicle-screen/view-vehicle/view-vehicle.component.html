@@ -1,102 +1,168 @@
 <div class="flex flex-row">
-    <app-sidebar></app-sidebar>
-    <div class="body-position">
-        <div class="body-holder">
-            <app-dashboard-head></app-dashboard-head>
+  <app-sidebar></app-sidebar>
+  <div class="body-position">
+    <div class="body-holder">
+      <app-dashboard-head></app-dashboard-head>
 
-            <div class="main">
-                <div class="card flex justify-content-center">
-                    <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
-                </div>
-                <div class="body-card">
-                    <div class="card">
-                        <h1 class="mb-4 h-color">View Vehicle</h1><br>
-                        <div class="card">
-                            <div style="margin-left: 95%; position: relative;margin-bottom: -50px;" class="speeddial-linear-demo">
-                                <p-speedDial [model]="items2" direction="down"></p-speedDial>
-                            </div>
-                        </div>
-                        <div class="grid" style="margin-top: 60px;line-height: 20px;">
-
-                            <div class="col-12 md:col-12 lg:col-6">
-                                <label htmlFor="name" Style="color: #2e026d"><strong>PO Number: </strong></label>
-                                <label for="">{{vehicle.processOrderNumber}}</label>
-                            </div>
-                            <div class="col-12 md:col-12 lg:col-6">
-                                <label htmlFor="name" Style="color: #2e026d"><strong> Plate Number: </strong></label>
-                                <label for="">{{vehicle.plateNumber}}</label>
-                            </div>
-                            <div class="col-12 md:col-12 lg:col-6">
-                                <label htmlFor="name" Style="color: #2e026d"><strong> Make: </strong></label>
-                                <label for="">{{vehicle.make}}</label>
-                            </div>
-                            <div class="col-12 md:col-12 lg:col-6">
-                                <label htmlFor="name" Style="color: #2e026d"><strong> Year: </strong></label>
-                                <label for="">{{vehicle.year}}</label>
-                            </div>
-                            <div class="col-12 md:col-12 lg:col-6">
-                                <label htmlFor="name" Style="color: #2e026d"><strong>Design: </strong></label>
-                                <label for="">{{vehicle.design}}</label>
-                            </div>
-                            <div class="col-12 md:col-12 lg:col-6">
-                                <label htmlFor="name" Style="color: #2e026d"><strong>Model: </strong></label>
-                                <label for="">{{vehicle.model}}</label>
-                            </div>
-                            <div class="col-12 md:col-12 lg:col-6">
-                                <label htmlFor="name" Style="color: #2e026d"><strong>Type: </strong></label>
-                                <label for="">{{vehicle.type}}</label>
-                            </div>
-                            <div class="col-12 md:col-12 lg:col-6">
-                                <label htmlFor="name" Style="color: #2e026d"><strong>Capacity: </strong></label>
-                                <label for="">{{vehicle.capacity}}</label>
-                            </div>
-                            <div class="col-12 md:col-12 lg:col-6">
-                                <label htmlFor="name" Style="color: #2e026d"><strong>Power: </strong></label>
-                                <label for="">{{vehicle.power}}</label>
-                            </div>
-                            <div class="col-12 md:col-12 lg:col-6">
-                                <label htmlFor="name" Style="color: #2e026d"><strong>Registration Expiry:
-                                    </strong></label>
-                                <label for="">{{vehicle.registrationExpiry}}</label>
-                            </div>
-                            <div class="col-12 md:col-12 lg:col-6">
-                                <label htmlFor="name" Style="color: #2e026d"><strong>Fuel Type: </strong></label>
-                                <label for="">{{vehicle.fuelType}}</label>
-                            </div>
-                            <div class="col-12 md:col-12 lg:col-6">
-                                <label htmlFor="name" Style="color: #2e026d"><strong>Vendor: </strong></label>
-                                <label for="">{{vehicle.vendor.vendorName}}</label>
-                            </div>
-                            <div class="col-12 md:col-12 lg:col-6">
-                                <label htmlFor="name" Style="color: #2e026d"><strong>Insurance Expiry: </strong></label>
-                                <label for="">{{vehicle.insuranceExpiry}}</label>
-                            </div>
-                            <div class="col-12 md:col-12 lg:col-6">
-                                <label htmlFor="name" Style="color: #2e026d"><strong>Lease Cost: </strong></label>
-                                <label for="">{{vehicle.leaseCost}}</label>
-                            </div>
-                            <div class="col-12 md:col-12 lg:col-6">
-                                <label htmlFor="name" Style="color: #2e026d"><strong>Lease Start Date: </strong></label>
-                                <label for="">{{vehicle.leaseStartDate}}</label>
-                            </div>
-                            <div class="col-12 md:col-12 lg:col-6">
-                                <label htmlFor="name" Style="color: #2e026d"><strong>Lease Start Expiry:
-                                    </strong></label>
-                                <label for="">{{vehicle.leaseExpiryDate}}</label>
-                            </div>
-                            <div class="col-12 md:col-12 lg:col-6">
-                                <label htmlFor="name" Style="color: #2e026d"><strong> Usage Type: </strong></label>
-                                <label for="">{{vehicle.usageType}}</label>
-                            </div>
-
-                        </div>
-                        <div class="flex align-items-center justify-content-end mt-4">
-                            
-                            <div class="flex align-items-center justify-content-end mt-4">
-                                <p-button type="button" styleClass="p-button-sucess" (click)="navigateFromBack()">Back</p-button>
-                              </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div class="main">
+        <div class="card flex justify-content-center">
+          <p-breadcrumb class="max-w-full" [model]="items"></p-breadcrumb>
         </div>
+        <div class="body-card">
+          <div class="card">
+            <h1 class="mb-4 h-color">View Vehicle</h1>
+            <br />
+            <div class="card">
+              <div
+                style="
+                  margin-left: 95%;
+                  position: relative;
+                  margin-bottom: -50px;
+                "
+                class="speeddial-linear-demo"
+              >
+                <p-speedDial [model]="items2" direction="down"></p-speedDial>
+              </div>
+            </div>
+            <div class="grid" style="margin-top: 40px; line-height: 20px">
+              <div class="col-12 md:col-12 lg:col-4">
+                <label htmlFor="name" Style="color: #2e026d"
+                  ><strong>PO Number: </strong></label
+                >
+                <label for="">{{ vehicle.processOrderNumber }}</label>
+              </div>
+              <div class="col-12 md:col-12 lg:col-4">
+                <label htmlFor="name" Style="color: #2e026d"
+                  ><strong> Plate Number: </strong></label
+                >
+                <label for="">{{ vehicle.plateNumber }}</label>
+              </div>
+              <div class="col-12 md:col-12 lg:col-4">
+                <label htmlFor="name" Style="color: #2e026d"
+                  ><strong> Make: </strong></label
+                >
+                <label for="">{{ vehicle.make }}</label>
+              </div>
+              <div class="col-12 md:col-12 lg:col-4">
+                <label htmlFor="name" Style="color: #2e026d"
+                  ><strong> Year: </strong></label
+                >
+                <label for="">{{ vehicle.year }}</label>
+              </div>
+              <div class="col-12 md:col-12 lg:col-4">
+                <label htmlFor="name" Style="color: #2e026d"
+                  ><strong>Design: </strong></label
+                >
+                <label for="">{{ vehicle.design }}</label>
+              </div>
+              <div class="col-12 md:col-12 lg:col-4">
+                <label htmlFor="name" Style="color: #2e026d"
+                  ><strong>Model: </strong></label
+                >
+                <label for="">{{ vehicle.model }}</label>
+              </div>
+              <div class="col-12 md:col-12 lg:col-4">
+                <label htmlFor="name" Style="color: #2e026d"
+                  ><strong>Type: </strong></label
+                >
+                <label for="">{{ vehicle.type }}</label>
+              </div>
+              <div class="col-12 md:col-12 lg:col-4">
+                <label htmlFor="name" Style="color: #2e026d"
+                  ><strong>Capacity: </strong></label
+                >
+                <label for="">{{ vehicle.capacity }}</label>
+              </div>
+              <div class="col-12 md:col-12 lg:col-4">
+                <label htmlFor="name" Style="color: #2e026d"
+                  ><strong>Power: </strong></label
+                >
+                <label for="">{{ vehicle.power }}</label>
+              </div>
+              <div class="col-12 md:col-12 lg:col-4">
+                <label htmlFor="name" Style="color: #2e026d"
+                  ><strong>Registration Expiry: </strong></label
+                >
+                <label for="">{{ vehicle.registrationExpiry }}</label>
+              </div>
+              <div class="col-12 md:col-12 lg:col-4">
+                <label htmlFor="name" Style="color: #2e026d"
+                  ><strong>Fuel Type: </strong></label
+                >
+                <label for="">{{ vehicle.fuelType }}</label>
+              </div>
+              <div class="col-12 md:col-12 lg:col-4">
+                <label htmlFor="name" Style="color: #2e026d"
+                  ><strong>Vendor: </strong></label
+                >
+                <label for="">{{ vehicle.vendor.vendorName }}</label>
+              </div>
+              <div class="col-12 md:col-12 lg:col-4">
+                <label htmlFor="name" Style="color: #2e026d"
+                  ><strong>Insurance Expiry: </strong></label
+                >
+                <label for="">{{ vehicle.insuranceExpiry }}</label>
+              </div>
+              <div class="col-12 md:col-12 lg:col-4">
+                <label htmlFor="name" Style="color: #2e026d"
+                  ><strong>Lease Cost: </strong></label
+                >
+                <label for="">{{ vehicle.leaseCost }}</label>
+              </div>
+              <div class="col-12 md:col-12 lg:col-4">
+                <label htmlFor="name" Style="color: #2e026d"
+                  ><strong>Lease Start Date: </strong></label
+                >
+                <label for="">{{ vehicle.leaseStartDate }}</label>
+              </div>
+              <div class="col-12 md:col-12 lg:col-4">
+                <label htmlFor="name" Style="color: #2e026d"
+                  ><strong>Lease Start Expiry: </strong></label
+                >
+                <label for="">{{ vehicle.leaseExpiryDate }}</label>
+              </div>
+              <div class="col-12 md:col-12 lg:col-4">
+                <label htmlFor="name" Style="color: #2e026d"
+                  ><strong> Usage Type: </strong></label
+                >
+                <label for="">{{ vehicle.usageType }}</label>
+              </div>
+            </div>
+            <div>
+              <h1 class="mt-4 h-color"><strong> Assignment</strong></h1>
+              <div style="margin-top: 20px; line-height: 20px">
+                <label for="name" Style="color: #2e026d"
+                  ><strong> Employee Number: </strong></label
+                >
+                <label for="name">{{
+                  vehicleAssignment?.assignToEmpId?.employeeNumber
+                    ? vehicleAssignment.assignToEmpId.employeeNumber
+                    : "NA"
+                }}</label
+                ><br /><br />
+                <label for="name" Style="color: #2e026d"
+                  ><strong> Employee Number: </strong></label
+                >
+                <label for="name">{{
+                  vehicleAssignment?.assignToEmpName
+                    ? vehicleAssignment.assignToEmpName
+                    : "NA"
+                }}</label>
+              </div>
+            </div>
+            <div class="flex align-items-center justify-content-end mt-4">
+              <div class="flex align-items-center justify-content-end mt-4">
+                <p-button
+                  type="button"
+                  styleClass="p-button-sucess"
+                  (click)="navigateFromBack()"
+                  >Back</p-button
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

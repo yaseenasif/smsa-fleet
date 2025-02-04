@@ -693,6 +693,7 @@
                 </p-button>
 
                 <p-button
+                  *ngIf = "vehicle.vehicleStatus !== 'In-Active'"
                   label="Final Return"
                   class="ml"
                   (click)="showDialog()"

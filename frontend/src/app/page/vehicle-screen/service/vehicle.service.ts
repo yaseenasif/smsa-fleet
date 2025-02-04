@@ -139,8 +139,8 @@ export class VehicleService {
     return this.http.patch<Vehicle>(`${this.url}/mark-total-lost/${id}`, {});
   }
 
-  downloadExcelData(vehicleList: Vehicle[]): Observable<Blob> {
-    return this.http.post(`${this.url}/download-vehicle-excel`, vehicleList, {
+  downloadExcelData(status: string): Observable<Blob> {
+    return this.http.post(`${this.url}/download-vehicle-excel/${status}`,null, {
       responseType: 'blob'
     });
   }
