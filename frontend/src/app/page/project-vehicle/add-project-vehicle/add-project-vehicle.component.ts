@@ -10,6 +10,7 @@ import { ProductField } from 'src/app/modal/ProductField';
 import { DashboardRedirectServiceService } from 'src/app/CommonServices/dashboard-redirect-service.service';
 import { BackenCommonErrorThrow } from 'src/app/modal/BackendCommonErrorThrow';
 import { ErrorService } from 'src/app/CommonServices/Error/error.service';
+import { ɵNullViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'app-add-project-vehicle',
@@ -46,6 +47,7 @@ export class AddProjectVehicleComponent implements OnInit {
       startLease: null,
       expiryLease: null,
       duration: null,
+      costCenter: null,
       vendor: {
         id: null,
         vendorName: null,
@@ -99,6 +101,7 @@ export class AddProjectVehicleComponent implements OnInit {
       startLease: null,
       expiryLease: null,
       duration: null,
+      costCenter: null,
       vendor: {
         id: null,
         vendorName: null,

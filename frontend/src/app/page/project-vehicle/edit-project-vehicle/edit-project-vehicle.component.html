@@ -399,6 +399,29 @@
                         </div>
                         <div class="col-12 md:col-12 lg:col-6">
                           <div class="flex flex-column gap-2 form-hook">
+                            <label htmlFor="cost">Cost Center</label>
+                            <input
+                              pInputText
+                              aria-describedby="cost-help"
+                              [name]="'costCenter_' + monthData.month + '_' + i"
+                              [id]="'costCenter_' + monthData.month + '_' + i"
+                              [(ngModel)]="projectVehicleField.costCenter"
+                              #costCenter="ngModel"
+                              required
+                            />
+                            <small
+                              id="cost-help"
+                              class="p-dropdown-empty-message"
+                              *ngIf="
+                              costCenter.invalid && (costCenter.dirty || costCenter.touched)
+                              "
+                            >
+                              Cost Center is required
+                            </small>
+                          </div>
+                        </div>
+                        <div class="col-12 md:col-12 lg:col-6">
+                          <div class="flex flex-column gap-2 form-hook">
                             <label htmlFor="refNo">Reference No</label>
                             <p-inputNumber
                               aria-describedby="refNo-help"

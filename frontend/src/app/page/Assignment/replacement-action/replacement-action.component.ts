@@ -35,6 +35,7 @@ export class ReplacementActionComponent {
     location: undefined,
     registrationExpiry: undefined,
     fuelType: undefined,
+    costCenter: undefined,
      vendor:
      {
         id: undefined,
@@ -75,6 +76,7 @@ export class ReplacementActionComponent {
     location: undefined,
     registrationExpiry: undefined,
     fuelType: undefined,
+    costCenter: undefined,
      vendor:
      {
         id: undefined,

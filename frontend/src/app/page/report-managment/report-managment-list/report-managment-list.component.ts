@@ -57,6 +57,7 @@ export class ReportManagmentListComponent implements OnInit {
     power: undefined,
     registrationExpiry: undefined,
     fuelType: undefined,
+    costCenter: undefined,
     vendor: {
       id: undefined,
       vendorName: undefined,
@@ -267,6 +268,7 @@ export class ReportManagmentListComponent implements OnInit {
       power: undefined,
       registrationExpiry: undefined,
       fuelType: undefined,
+      costCenter: undefined,
       vendor: {
         id: undefined,
         vendorName: undefined,

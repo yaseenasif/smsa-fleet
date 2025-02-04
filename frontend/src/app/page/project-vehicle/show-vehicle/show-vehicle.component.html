@@ -157,6 +157,7 @@
                   <th class="text-center">Plate Number</th>
                   <th class="text-center">Lease Cost</th>
                   <th class="text-center">Type</th>
+                  <th class="text-center">Cost Center</th>
                   <th
                     *ngIf="showOriginDestination === true"
                     class="text-center"
@@ -201,6 +202,9 @@
                   </td>
                   <td style="text-align: center">
                     {{ projectVehicleValue.type }}
+                  </td>
+                  <td style="text-align: center">
+                    {{ projectVehicleValue.costCenter }}
                   </td>
                   <td style="text-align: center" *ngIf="showOriginDestination">
                     {{

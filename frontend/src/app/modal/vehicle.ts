@@ -15,6 +15,7 @@ export interface Vehicle {
     location: String | null | undefined
     registrationExpiry: String | Date | null | undefined
     fuelType: String | null | undefined
+    costCenter: String | null | undefined
      vendor:
      {
         id: Number| null | undefined

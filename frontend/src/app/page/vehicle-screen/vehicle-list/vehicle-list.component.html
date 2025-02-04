@@ -209,6 +209,9 @@
                   <th pSortableColumn="category" class="text-center">
                     Category <p-sortIcon field="category"></p-sortIcon>
                   </th>
+                  <th pSortableColumn="costCenter" class="text-center">
+                    Cost Center <p-sortIcon field="costCenter"></p-sortIcon>
+                  </th>
                   <th pSortableColumn="vehicleStatus" class="text-center">
                     Status
                     <p-sortIcon field="vehicleStatus"></p-sortIcon>
@@ -415,6 +418,14 @@
                     class="text-center"
                   >
                     {{ vehicles.category }}
+                  </td>
+                  <td
+                    [classList]="
+                      vehicles.vehicleReplacement ? 'color-orange' : null
+                    "
+                    class="text-center"
+                  >
+                    {{ vehicles.costCenter }}
                   </td>
                   <td
                     [classList]="

@@ -682,6 +682,30 @@
                     </small>
                   </div>
                 </div>
+                <div class="col-12 md:col-12 lg:col-6">
+                  <div class="flex flex-column gap-2 form-hook">
+                    <label htmlFor="name">Cost Center</label>
+                    <input
+                      pInputText
+                      id="name"
+                      aria-describedby="name-help"
+                      name="costCenter"
+                      [(ngModel)]="vehicle.costCenter"
+                      #costCenter="ngModel"
+                      required
+                    />
+                    <small
+                      id="name-help"
+                      class="p-dropdown-empty-message"
+                      *ngIf="
+                      costCenter.invalid &&
+                        (costCenter.dirty || costCenter.touched)
+                      "
+                    >
+                      Cost Center is required
+                    </small>
+                  </div>
+                </div>
               </div>
 
               <div class="flex align-items-center justify-content-end mt-4">

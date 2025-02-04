@@ -286,6 +286,7 @@ public class VehicleService {
                 optionalVehicle.get().setInsuranceExpiry(vehicleDto.getInsuranceExpiry());
                 optionalVehicle.get().setLeaseCost(vehicleDto.getLeaseCost());
                 optionalVehicle.get().setLeaseStartDate(vehicleDto.getLeaseStartDate());
+                optionalVehicle.get().setCostCenter(vehicleDto.getCostCenter());
                 optionalVehicle.get().setLeaseExpiryDate(vehicleDto.getLeaseExpiryDate());
                 optionalVehicle.get().setUsageType(vehicleDto.getUsageType());
                 optionalVehicle.get().setRegion(vehicleDto.getRegion());

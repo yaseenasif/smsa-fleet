@@ -22,6 +22,7 @@ export interface ProjectVehicleValues {
   referenceNo: number | null | undefined;
   origin: String | null | undefined;
   destination: String | null | undefined;
+  costCenter: String | null | undefined;
   rentalDate: Date | null | undefined;
   rentalDateTo: Date | null | undefined;
   startLease: Date | null | undefined;

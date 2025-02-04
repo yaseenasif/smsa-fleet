@@ -128,6 +128,7 @@ export class AddVehicleComponent implements OnInit {
     country: undefined,
     location: undefined,
     category: undefined,
+    costCenter: undefined,
     vendor: {
       id: undefined,
       vendorName: undefined,
@@ -171,6 +172,7 @@ export class AddVehicleComponent implements OnInit {
       location: undefined,
       registrationExpiry: undefined,
       fuelType: undefined,
+      costCenter: undefined,
        vendor:
        {
           id: undefined,
