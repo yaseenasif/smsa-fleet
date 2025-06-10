@@ -42,7 +42,7 @@ export interface VehicleAssignment {
     type: String | null | undefined
     capacity: String | null | undefined
     power: String | null | undefined
-    registrationExpiry: String | null | undefined | Date
+    // registrationExpiry: String | null | undefined | Date
     fuelType: String | null | undefined
     vendor: {
       id: Number | null | undefined
@@ -50,7 +50,7 @@ export interface VehicleAssignment {
       officeLocation: String | null | undefined
       attachments: String | null | undefined
     }
-    insuranceExpiry: String | null | undefined | Date
+    // insuranceExpiry: String | null | undefined | Date
     leaseCost: Number | null | undefined
     leaseStartDate: String | null | undefined | Date
     leaseExpiryDate: String | null | undefined | Date

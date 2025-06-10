@@ -82,7 +82,7 @@ export class AddVehicleComponent implements OnInit {
         type: undefined,
         capacity: undefined,
         power: undefined,
-        registrationExpiry: undefined,
+        // registrationExpiry: undefined,
         fuelType: undefined,
         vendor: {
           id: undefined,
@@ -90,7 +90,7 @@ export class AddVehicleComponent implements OnInit {
           officeLocation: undefined,
           attachments: undefined,
         },
-        insuranceExpiry: undefined,
+        // insuranceExpiry: undefined,
         leaseCost: undefined,
         leaseStartDate: undefined,
         leaseExpiryDate: undefined,
@@ -116,9 +116,9 @@ export class AddVehicleComponent implements OnInit {
     type: undefined,
     capacity: undefined,
     power: undefined,
-    registrationExpiry: undefined,
+    // registrationExpiry: undefined,
     fuelType: undefined,
-    insuranceExpiry: undefined,
+    // insuranceExpiry: undefined,
     leaseCost: undefined,
     replaceLeaseCost: undefined,
     leaseStartDate: undefined,
@@ -170,7 +170,7 @@ export class AddVehicleComponent implements OnInit {
       region: undefined,
       country: undefined,
       location: undefined,
-      registrationExpiry: undefined,
+      // registrationExpiry: undefined,
       fuelType: undefined,
       costCenter: undefined,
        vendor:
@@ -180,7 +180,7 @@ export class AddVehicleComponent implements OnInit {
           officeLocation: undefined,
           attachments: undefined
       },
-      insuranceExpiry: undefined,
+      // insuranceExpiry: undefined,
       leaseCost: undefined,
       replaceLeaseCost: undefined,
       leaseStartDate: undefined,
@@ -585,6 +585,7 @@ export class AddVehicleComponent implements OnInit {
     this.productFieldService.getProductFieldByName(fieldName).subscribe(
       (res: ProductField) => {
         this.vehicleType = res;
+        debugger
       }, (err: BackenCommonErrorThrow) => {
         this.errorHandleService.showError(err.error!);
       });

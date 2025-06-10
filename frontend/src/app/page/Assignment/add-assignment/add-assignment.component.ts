@@ -88,7 +88,7 @@ export class AddAssignmentComponent {
       type: undefined,
       capacity: undefined,
       power: undefined,
-      registrationExpiry: undefined,
+      // registrationExpiry: undefined,
       fuelType: undefined,
       vendor: {
         id: undefined,
@@ -96,7 +96,7 @@ export class AddAssignmentComponent {
         officeLocation: undefined,
         attachments: undefined
       },
-      insuranceExpiry: undefined,
+      // insuranceExpiry: undefined,
       leaseCost: undefined,
       leaseStartDate: undefined,
       leaseExpiryDate: undefined,

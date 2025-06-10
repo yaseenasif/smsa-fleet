@@ -33,7 +33,7 @@ export class ReplacementActionComponent {
     region: undefined,
     country: undefined,
     location: undefined,
-    registrationExpiry: undefined,
+    // registrationExpiry: undefined,
     fuelType: undefined,
     costCenter: undefined,
      vendor:
@@ -44,7 +44,7 @@ export class ReplacementActionComponent {
         attachments: undefined,
 
     },
-    insuranceExpiry: undefined,
+    // insuranceExpiry: undefined,
     leaseCost: undefined,
     replaceLeaseCost: undefined,
     leaseStartDate: undefined,
@@ -74,7 +74,7 @@ export class ReplacementActionComponent {
     region: undefined,
     country: undefined,
     location: undefined,
-    registrationExpiry: undefined,
+    // registrationExpiry: undefined,
     fuelType: undefined,
     costCenter: undefined,
      vendor:
@@ -85,7 +85,7 @@ export class ReplacementActionComponent {
         attachments: undefined,
 
     },
-    insuranceExpiry: undefined,
+    // insuranceExpiry: undefined,
     leaseCost: undefined,
     replaceLeaseCost: undefined,
     leaseStartDate: undefined,

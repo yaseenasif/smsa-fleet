@@ -67,7 +67,7 @@ export class ViewVehicleComponent {
       type: undefined,
       capacity: undefined,
       power: undefined,
-      registrationExpiry: undefined,
+      // registrationExpiry: undefined,
       fuelType: undefined,
       vendor: {
         id: undefined,
@@ -75,7 +75,7 @@ export class ViewVehicleComponent {
         officeLocation: undefined,
         attachments: undefined
       },
-      insuranceExpiry: undefined,
+      // insuranceExpiry: undefined,
       leaseCost: undefined,
       leaseStartDate: undefined,
       leaseExpiryDate: undefined,

@@ -165,20 +165,20 @@
                   <th pSortableColumn="power" class="text-center">
                     Power <p-sortIcon field="power"></p-sortIcon>
                   </th>
-                  <th pSortableColumn="registrationExpiry" class="text-center">
+                  <!-- <th pSortableColumn="registrationExpiry" class="text-center">
                     Registration Expiry
                     <p-sortIcon field="registrationExpiry"></p-sortIcon>
-                  </th>
+                  </th> -->
                   <th pSortableColumn="fuelType" class="text-center">
                     Fuel Type <p-sortIcon field="fuelType"></p-sortIcon>
                   </th>
                   <th pSortableColumn="vendor.vendorName" class="text-center">
                     Vendor <p-sortIcon field="vendor"></p-sortIcon>
                   </th>
-                  <th pSortableColumn="insuranceExpiry" class="text-center">
+                  <!-- <th pSortableColumn="insuranceExpiry" class="text-center">
                     Insurance Expiry
                     <p-sortIcon field="insuranceExpiry"></p-sortIcon>
-                  </th>
+                  </th> -->
                   <th pSortableColumn="leaseCost" class="text-center">
                     Lease Cost <p-sortIcon field="leaseCost"></p-sortIcon>
                   </th>
@@ -314,14 +314,14 @@
                   >
                     {{ vehicles.power }}
                   </td>
-                  <td
+                  <!-- <td
                     [classList]="
                       vehicles.vehicleReplacement ? 'color-orange' : null
                     "
                     class="text-center"
                   >
                     {{ vehicles.registrationExpiry }}
-                  </td>
+                  </td> -->
                   <td
                     [classList]="
                       vehicles.vehicleReplacement ? 'color-orange' : null
@@ -338,14 +338,14 @@
                   >
                     {{ vehicles.vendor.vendorName }}
                   </td>
-                  <td
+                  <!-- <td
                     [classList]="
                       vehicles.vehicleReplacement ? 'color-orange' : null
                     "
                     class="text-center"
                   >
                     {{ vehicles.insuranceExpiry }}
-                  </td>
+                  </td> -->
                   <!-- <td [classList]="vehicles.vehicleReplacement?'color-orange':null" class="text-center" >{{ vehicles.insuranceStatus }}</td> -->
                   <td
                     [classList]="

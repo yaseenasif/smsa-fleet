@@ -96,17 +96,17 @@ public class VehicleService {
 
                     Date currentDate = Date.valueOf(LocalDate.now());
 
-                    if (currentDate.before(finalReturnRequest.getReplacementVehicle().getRegistrationExpiry()) || currentDate.equals(finalReturnRequest.getReplacementVehicle().getRegistrationExpiry())) {
-                        replacingVehicle.setRegistrationStatus(Boolean.TRUE);
-                    } else if (currentDate.after(finalReturnRequest.getReplacementVehicle().getRegistrationExpiry())) {
-                        replacingVehicle.setRegistrationStatus(Boolean.FALSE);
-                    }
-
-                    if (currentDate.before(finalReturnRequest.getReplacementVehicle().getInsuranceExpiry()) || currentDate.equals(finalReturnRequest.getReplacementVehicle().getInsuranceExpiry())) {
-                        replacingVehicle.setInsuranceStatus(Boolean.TRUE);
-                    } else if (currentDate.after(finalReturnRequest.getReplacementVehicle().getInsuranceExpiry())) {
-                        replacingVehicle.setInsuranceStatus(Boolean.FALSE);
-                    }
+//                    if (currentDate.before(finalReturnRequest.getReplacementVehicle().getRegistrationExpiry()) || currentDate.equals(finalReturnRequest.getReplacementVehicle().getRegistrationExpiry())) {
+//                        replacingVehicle.setRegistrationStatus(Boolean.TRUE);
+//                    } else if (currentDate.after(finalReturnRequest.getReplacementVehicle().getRegistrationExpiry())) {
+//                        replacingVehicle.setRegistrationStatus(Boolean.FALSE);
+//                    }
+//
+//                    if (currentDate.before(finalReturnRequest.getReplacementVehicle().getInsuranceExpiry()) || currentDate.equals(finalReturnRequest.getReplacementVehicle().getInsuranceExpiry())) {
+//                        replacingVehicle.setInsuranceStatus(Boolean.TRUE);
+//                    } else if (currentDate.after(finalReturnRequest.getReplacementVehicle().getInsuranceExpiry())) {
+//                        replacingVehicle.setInsuranceStatus(Boolean.FALSE);
+//                    }
                 }
 
                 if (vehicle.get().getVehicleStatus().equals("TBA") && replacingVehicle != null) {
@@ -220,17 +220,17 @@ public class VehicleService {
 
             Date currentDate = Date.valueOf(LocalDate.now());
 
-            if (currentDate.before(vehicleDto.getRegistrationExpiry()) || currentDate.equals(vehicleDto.getRegistrationExpiry())) {
-                vehicle1.setRegistrationStatus(Boolean.TRUE);
-            } else if (currentDate.after(vehicleDto.getRegistrationExpiry())) {
-                vehicle1.setRegistrationStatus(Boolean.FALSE);
-            }
-
-            if (currentDate.before(vehicleDto.getInsuranceExpiry()) || currentDate.equals(vehicleDto.getInsuranceExpiry())) {
-                vehicle1.setInsuranceStatus(Boolean.TRUE);
-            } else if (currentDate.after(vehicleDto.getInsuranceExpiry())) {
-                vehicle1.setInsuranceStatus(Boolean.FALSE);
-            }
+//            if (currentDate.before(vehicleDto.getRegistrationExpiry()) || currentDate.equals(vehicleDto.getRegistrationExpiry())) {
+//                vehicle1.setRegistrationStatus(Boolean.TRUE);
+//            } else if (currentDate.after(vehicleDto.getRegistrationExpiry())) {
+//                vehicle1.setRegistrationStatus(Boolean.FALSE);
+//            }
+//
+//            if (currentDate.before(vehicleDto.getInsuranceExpiry()) || currentDate.equals(vehicleDto.getInsuranceExpiry())) {
+//                vehicle1.setInsuranceStatus(Boolean.TRUE);
+//            } else if (currentDate.after(vehicleDto.getInsuranceExpiry())) {
+//                vehicle1.setInsuranceStatus(Boolean.FALSE);
+//            }
 
             return toDto(vehicleRepository.save(vehicle1));
         }
@@ -280,10 +280,10 @@ public class VehicleService {
                 optionalVehicle.get().setType(vehicleDto.getType());
                 optionalVehicle.get().setCapacity(vehicleDto.getCapacity());
                 optionalVehicle.get().setPower(vehicleDto.getPower());
-                optionalVehicle.get().setRegistrationExpiry(vehicleDto.getRegistrationExpiry());
+//                optionalVehicle.get().setRegistrationExpiry(vehicleDto.getRegistrationExpiry());
                 optionalVehicle.get().setFuelType(vehicleDto.getFuelType());
                 optionalVehicle.get().setVendor(vehicleDto.getVendor());
-                optionalVehicle.get().setInsuranceExpiry(vehicleDto.getInsuranceExpiry());
+//                optionalVehicle.get().setInsuranceExpiry(vehicleDto.getInsuranceExpiry());
                 optionalVehicle.get().setLeaseCost(vehicleDto.getLeaseCost());
                 optionalVehicle.get().setLeaseStartDate(vehicleDto.getLeaseStartDate());
                 optionalVehicle.get().setCostCenter(vehicleDto.getCostCenter());
@@ -384,10 +384,10 @@ public class VehicleService {
                                 vehicle.setMake(Objects.requireNonNull(getStringValue(row.getCell(2))).toUpperCase());
                                 vehicle.setYear(getIntegerValue(row.getCell(3)));
                                 vehicle.setDesign(Objects.requireNonNull(getStringValue(row.getCell(4))).toUpperCase());
-                                vehicle.setModel(Objects.requireNonNull(getStringValue(row.getCell(5))).toUpperCase());
+                                vehicle.setModel(getStringValue(row.getCell(5)));
                                 vehicle.setType(Objects.requireNonNull(getStringValue(row.getCell(6))).toUpperCase());
-                                vehicle.setCapacity(Objects.requireNonNull(getStringValue(row.getCell(7))).toUpperCase());
-                                vehicle.setPower(Objects.requireNonNull(getStringValue(row.getCell(8))).toUpperCase());
+                                vehicle.setCapacity(getStringValue(row.getCell(7)));
+                                vehicle.setPower(getStringValue(row.getCell(8)));
                                 vehicle.setFuelType(Objects.requireNonNull(getStringValue(row.getCell(9))).toUpperCase());
 //                                vehicle.setUsageType(Objects.requireNonNull(getStringValue(row.getCell(10))).toUpperCase(Locale.ROOT));
                                 vehicle.setCategory(Objects.requireNonNull(getStringValue(row.getCell(11))).toUpperCase(Locale.ROOT));
@@ -590,10 +590,10 @@ public class VehicleService {
         productFields.put(2, "Make");
         productFields.put(3, "Year");
         productFields.put(4, "Design");
-        productFields.put(5, "Model");
+        //productFields.put(5, "Model");
         productFields.put(6, "Vehicle Type");
-        productFields.put(7, "Capacity");
-        productFields.put(8, "Power");
+      //  productFields.put(7, "Capacity");
+       // productFields.put(8, "Power");
         productFields.put(9, "Fuel Type");
 //        productFields.put(10, "Usage Type");
         productFields.put(11, "Category");
@@ -977,17 +977,17 @@ public class VehicleService {
 
                             Date currentDate = Date.valueOf(LocalDate.now());
 
-                            if (currentDate.before(replacementActionRequest.getPermanentVehicle().getRegistrationExpiry()) || currentDate.equals(replacementActionRequest.getPermanentVehicle().getRegistrationExpiry())) {
-                                permanentVehicle.setRegistrationStatus(Boolean.TRUE);
-                            } else if (currentDate.after(replacementActionRequest.getPermanentVehicle().getRegistrationExpiry())) {
-                                permanentVehicle.setRegistrationStatus(Boolean.FALSE);
-                            }
-
-                            if (currentDate.before(replacementActionRequest.getPermanentVehicle().getInsuranceExpiry()) || currentDate.equals(replacementActionRequest.getPermanentVehicle().getInsuranceExpiry())) {
-                                permanentVehicle.setInsuranceStatus(Boolean.TRUE);
-                            } else if (currentDate.after(replacementActionRequest.getPermanentVehicle().getInsuranceExpiry())) {
-                                permanentVehicle.setInsuranceStatus(Boolean.FALSE);
-                            }
+//                            if (currentDate.before(replacementActionRequest.getPermanentVehicle().getRegistrationExpiry()) || currentDate.equals(replacementActionRequest.getPermanentVehicle().getRegistrationExpiry())) {
+//                                permanentVehicle.setRegistrationStatus(Boolean.TRUE);
+//                            } else if (currentDate.after(replacementActionRequest.getPermanentVehicle().getRegistrationExpiry())) {
+//                                permanentVehicle.setRegistrationStatus(Boolean.FALSE);
+//                            }
+//
+//                            if (currentDate.before(replacementActionRequest.getPermanentVehicle().getInsuranceExpiry()) || currentDate.equals(replacementActionRequest.getPermanentVehicle().getInsuranceExpiry())) {
+//                                permanentVehicle.setInsuranceStatus(Boolean.TRUE);
+//                            } else if (currentDate.after(replacementActionRequest.getPermanentVehicle().getInsuranceExpiry())) {
+//                                permanentVehicle.setInsuranceStatus(Boolean.FALSE);
+//                            }
 
                             permanentVehicle.setVehicleStatus("Active");
                             vehicleRepository.save(permanentVehicle);

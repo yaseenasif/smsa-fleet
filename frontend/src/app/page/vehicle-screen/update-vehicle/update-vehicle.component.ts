@@ -38,9 +38,9 @@ export class UpdateVehicleComponent implements OnInit {
     type: undefined,
     capacity: undefined,
     power: undefined,
-    registrationExpiry: undefined,
+    // registrationExpiry: undefined,
     fuelType: undefined,
-    insuranceExpiry: undefined,
+    // insuranceExpiry: undefined,
     leaseCost: undefined,
     replaceLeaseCost: undefined,
     leaseStartDate: undefined,
@@ -142,8 +142,8 @@ export class UpdateVehicleComponent implements OnInit {
     this.getModelList("Model");
     this.getYearList("Year");
     this.getDesignList("Design");
-    this.getTypeList("Type");
-    this.getCapicityList("Capicity");
+    this.getTypeList("Vehicle Type");
+    this.getCapicityList("Capacity");
     this.getPowerList("Power");
     this.getFuelTypeList("Fuel Type");
     this.dashboardRedirectService.setDashboardValue('Vehicle');
@@ -164,12 +164,12 @@ export class UpdateVehicleComponent implements OnInit {
     if (typeof vehicle.leaseExpiryDate === 'string') {
       vehicle.leaseExpiryDate = new Date(vehicle.leaseExpiryDate);
     }
-    if (typeof vehicle.insuranceExpiry === 'string') {
-      vehicle.insuranceExpiry = new Date(vehicle.insuranceExpiry);
-    }
-    if (typeof vehicle.registrationExpiry === 'string') {
-      vehicle.registrationExpiry = new Date(vehicle.registrationExpiry);
-    }
+    // if (typeof vehicle.insuranceExpiry === 'string') {
+    //   vehicle.insuranceExpiry = new Date(vehicle.insuranceExpiry);
+    // }
+    // if (typeof vehicle.registrationExpiry === 'string') {
+    //   vehicle.registrationExpiry = new Date(vehicle.registrationExpiry);
+    // }
   }
 
 

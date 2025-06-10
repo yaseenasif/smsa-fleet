@@ -25,11 +25,11 @@ public class VehicleDto {
     private String type;
     private String capacity;
     private String power;
-    private Date registrationExpiry;
+//    private Date registrationExpiry;
     private boolean registrationStatus;
     private String fuelType;
     private Vendor vendor;
-    private Date insuranceExpiry;
+//    private Date insuranceExpiry;
     private boolean insuranceStatus;
     private Integer leaseCost;
     private Integer replaceLeaseCost;

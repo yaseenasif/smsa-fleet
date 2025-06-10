@@ -13,7 +13,6 @@ export interface Vehicle {
     region: String | null | undefined
     country: String | null | undefined
     location: String | null | undefined
-    registrationExpiry: String | Date | null | undefined
     fuelType: String | null | undefined
     costCenter: String | null | undefined
      vendor:
@@ -24,7 +23,6 @@ export interface Vehicle {
         attachments: String | null | undefined
 
     }
-    insuranceExpiry: String | Date | null | undefined
     leaseCost: Number | null | undefined
     replaceLeaseCost: Number | null | undefined
     leaseStartDate: String | Date | null | undefined
