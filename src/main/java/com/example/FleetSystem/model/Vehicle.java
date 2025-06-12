@@ -26,7 +26,7 @@ public class Vehicle {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotAudited
-    private Integer processOrderNumber;
+    private String processOrderNumber;
     @NotAudited
     private String plateNumber;
     @NotAudited

@@ -379,7 +379,7 @@ public class VehicleService {
 
                                 Vendor vendor = vendorRepository.findByVendorNameIgnoreCaseAndStatusIsTrue(getStringValue(row.getCell(12)));
 
-//                                vehicle.setProcessOrderNumber(getIntegerValue(row.getCell(0)));
+                               vehicle.setProcessOrderNumber(getStringValue(row.getCell(0)));
                                 vehicle.setPlateNumber(getStringValue(row.getCell(1)));
                                 vehicle.setMake(Objects.requireNonNull(getStringValue(row.getCell(2))).toUpperCase());
                                 vehicle.setYear(getIntegerValue(row.getCell(3)));
