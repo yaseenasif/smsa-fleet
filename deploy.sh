@@ -14,7 +14,7 @@ echo "Removing old JAR: $JAR_PATH"
 sudo rm -f "$JAR_PATH"
 
 echo "Pulling latest code..."
-git pull
+sudo git pull
 
 echo "Running Maven build..."
 if sudo mvn clean install; then
