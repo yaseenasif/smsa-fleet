@@ -75,7 +75,6 @@ export class ViewProjectVehicleComponent implements OnInit {
     obj.date = new Date
     this.convertInDate(obj)
     this.projectVehicle = obj
-    console.log(obj);
     for (let index = 0; index < obj.projectVehicleValuesList.length; index++) {
     this.updateDuration(index)
 
@@ -122,7 +121,6 @@ export class ViewProjectVehicleComponent implements OnInit {
             const durationInDays = timeDifference / (1000 * 60 * 60 * 24);
 
             this.duration[i] = durationInDays;
-            console.log('Duration:', this.duration);
         }
     } else {
         this.duration[i] = 0;

@@ -156,7 +156,6 @@ export class EditProjectVehicleComponent implements OnInit {
 
   getAllVendors() {
     this.vendorService.getVendor().subscribe((res: Vendor[]) => {
-      console.log(res);
       this.vendors = res;
     });
   }
@@ -289,7 +288,6 @@ export class EditProjectVehicleComponent implements OnInit {
     // Assign monthWiseList to projectVehicle
     this.projectVehicle.monthWiseList = monthWiseList;
 
-    console.log(projectVehicle);
   }
 
   private getTypeList(fieldName: string): void {

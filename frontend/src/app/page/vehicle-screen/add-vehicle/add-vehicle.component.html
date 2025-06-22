@@ -188,7 +188,6 @@
                       [options]="vehicleModel?.productFieldValuesList"
                       name="model"
                       #model="ngModel"
-                      [required]="true"
                       optionLabel="name"
                       optionValue="name"
                       [filter]="true"
@@ -259,7 +258,6 @@
                       [options]="vehicleCapicity?.productFieldValuesList"
                       name="capacity"
                       #capacity="ngModel"
-                      [required]="true"
                       optionLabel="name"
                       optionValue="name"
                       [filter]="true"
@@ -296,7 +294,6 @@
                       [options]="vehiclePower?.productFieldValuesList"
                       name="power"
                       #power="ngModel"
-                      [required]="true"
                       optionLabel="name"
                       optionValue="name"
                       [filter]="true"
@@ -498,7 +495,7 @@
                       name="leaseCost"
                       [(ngModel)]="vehicle.leaseCost"
                       #leaseCost="ngModel"
-                      required
+                      
                     />
                     <small
                       id="name-help"

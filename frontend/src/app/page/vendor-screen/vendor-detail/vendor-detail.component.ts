@@ -45,8 +45,7 @@ export class VendorDetailComponent implements OnInit {
 
   getVendorbyId(id: number) {
     this.vendorService.getVendorbyId(id).subscribe((res: Vendor) => {
-      this.vendor = res;
-      console.log(this.vendor);
+      this.vendor = res;     
     });
   }
 

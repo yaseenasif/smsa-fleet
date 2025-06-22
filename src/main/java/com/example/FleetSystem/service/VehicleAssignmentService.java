@@ -19,6 +19,8 @@ import com.example.FleetSystem.payload.ResponseMessage;
 import com.example.FleetSystem.repository.*;
 import org.apache.poi.ss.usermodel.*;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -68,6 +70,7 @@ public class VehicleAssignmentService {
     @Autowired
     FileHistoryRepository fileHistoryRepository;
 
+    private static final Logger logger = LoggerFactory.getLogger(VehicleAssignmentService.class);
     public VehicleAssignmentDto save(VehicleAssignmentDto vehicleAssignmentDto) {
         Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principle instanceof UserDetails) {
@@ -191,9 +194,10 @@ public class VehicleAssignmentService {
             if (vehicleAssignment.isPresent()) {
                 return toDto(vehicleAssignment.get());
             }
+        }else{
+            logger.info(String.format("Record Not Found By the PlateNumber : %s", plateNumber));
         }
-
-        throw new RuntimeException(String.format("Record Not Found By the PlateNumber : %s", plateNumber));
+        return null;
     }
 
     public List<VehicleAssignmentDto> toDtoList(List<VehicleAssignment> vehicleAssignments) {

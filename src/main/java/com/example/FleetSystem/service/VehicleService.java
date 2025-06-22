@@ -292,6 +292,10 @@ public class VehicleService {
                 optionalVehicle.get().setRegion(vehicleDto.getRegion());
                 optionalVehicle.get().setUpdatedAt(LocalDate.now());
                 optionalVehicle.get().setUpdatedBy(user);
+                if("In-Active".equalsIgnoreCase(optionalVehicle.get().getVehicleStatus())){
+                    optionalVehicle.get().setVehicleStatus("TBA");
+                }
+
 
                 Vehicle updatedVehicle = vehicleRepository.save(optionalVehicle.get());
                 return toDto(updatedVehicle);
@@ -864,9 +868,7 @@ public class VehicleService {
             User user = userRepository.findByEmployeeIdAndStatusIsTrue(username);
 
             if (replacementVehicle.isPresent()) {
-                replacementVehicle.get().setVehicleStatus("Deleted");
-
-                Vehicle vehicle = replacementVehicle.get().getReplacementVehicle();
+                Vehicle vehicle = replacementVehicle.get();
 
                 Optional<VehicleAssignment> vehicleAssignment = vehicleAssignmentRepository.findByVehicleAndStatusIsTrue(replacementVehicle.get());
                 if (vehicleAssignment.isPresent()) {
@@ -898,7 +900,7 @@ public class VehicleService {
                     vehicleAssignment.get().setStatus(Boolean.FALSE);
                     vehicleAssignmentRepository.save(vehicleAssignment.get());
                 } else {
-                    vehicle.setVehicleStatus("TBA");
+                    vehicle.setVehicleStatus("In-Active");
                 }
                 vehicleRepository.save(vehicle);
             }

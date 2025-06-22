@@ -199,7 +199,6 @@ export class AddEmployeeComponent implements OnInit {
   getAllJobTitle() {
     this.jobTitleService.getJobTitle().subscribe((res) => {
       this.allJobTitle = res;
-      console.log(this.allJobTitle);
 
     })
   }

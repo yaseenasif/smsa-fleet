@@ -12,7 +12,7 @@ import java.sql.Date;
 @Builder
 public class VehicleExcelDto {
     private Long id;
-    private Integer processOrderNumber;
+    private String processOrderNumber;
     private String plateNumber;
     private String make;
     private Integer year;

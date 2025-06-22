@@ -136,6 +136,7 @@ export class UpdateEmployeeComponent {
     this.getEmployeeById(this.employeeId)
     this.checkAssignedEmployee(this.employeeId);
     this.getAllJobTitle();
+    this.getAllGrades();
     this.getLocationList("Location");
     this.getOrganizationList("Organization");
     this.getDeptcodeList("Dept Code");
@@ -159,8 +160,8 @@ export class UpdateEmployeeComponent {
 
   getEmployeeById(id: Number) {
     this.employeeService.getEmployeeById(id).subscribe((res: Employee) => {
-      res.joiningDate = res.joiningDate ? new Date(res.joiningDate) : new Date();
-      res.dateOfBirth = res.dateOfBirth ? new Date(res.dateOfBirth) : new Date();
+      res.joiningDate = res.joiningDate ? new Date(res.joiningDate) : null;
+      res.dateOfBirth = res.dateOfBirth ? new Date(res.dateOfBirth) : null;
       this.employee = res;
       this.getCountry();
     })
@@ -289,7 +290,6 @@ export class UpdateEmployeeComponent {
   getAllJobTitle() {
     this.jobTitleService.getJobTitle().subscribe((res) => {
       this.allJobTitle = res;
-      console.log(this.allJobTitle);
 
     })
   }

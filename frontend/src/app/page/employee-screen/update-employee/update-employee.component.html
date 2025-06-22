@@ -256,8 +256,7 @@
                     <label htmlFor="name">Date Of Joining</label>
                     <p-calendar
                       #joinDate
-                      name="joinDate"
-                      [required]="true"
+                      name="joinDate"                      
                       [(ngModel)]="employee.joiningDate"
                       [showIcon]="true"
                       [style]="{ width: '100%' }"
@@ -393,8 +392,7 @@
                       aria-describedby="name-help"
                       name="companyEmailAddress"
                       [(ngModel)]="employee.companyEmailAddress"
-                      #companyEmailAddress="ngModel"
-                      required
+                      #companyEmailAddress="ngModel"                      
                     />
                     <small
                       id="name-help"
@@ -461,7 +459,6 @@
                     <p-calendar
                       #joinDate
                       name="dateOfBirth"
-                      [required]="true"
                       [(ngModel)]="employee.dateOfBirth"
                       [showIcon]="true"
                       [style]="{ width: '100%' }"
@@ -477,8 +474,7 @@
                       [(ngModel)]="employee.organization"
                       [options]="organization?.productFieldValuesList"
                       name="organization"
-                      #organizationModel="ngModel"
-                      [required]="true"
+                      #organizationModel="ngModel"                      
                       optionLabel="name"
                       optionValue="name"
                       [filter]="true"
@@ -577,8 +573,7 @@
                       aria-describedby="name-help"
                       name="svEmployeeNumber"
                       [(ngModel)]="employee.svEmployeeNumber"
-                      #svEmployeeNumber="ngModel"
-                      required
+                      #svEmployeeNumber="ngModel"                     
                     />
                     <small
                       id="name-help"
@@ -601,8 +596,7 @@
                       aria-describedby="name-help"
                       name="svEmployeeName"
                       [(ngModel)]="employee.svEmployeeName"
-                      #svEmployeeName="ngModel"
-                      required
+                      #svEmployeeName="ngModel"                      
                     />
                     <small
                       id="name-help"
@@ -640,8 +634,7 @@
                       aria-describedby="name-help"
                       name="licenseNumber"
                       [(ngModel)]="employee.licenseNumber"
-                      #licenseNumber="ngModel"
-                      required
+                      #licenseNumber="ngModel"                    
                     />
                     <small
                       id="name-help"

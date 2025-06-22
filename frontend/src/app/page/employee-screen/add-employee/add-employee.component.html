@@ -260,7 +260,6 @@
                     <p-calendar
                       #joinDate
                       name="joinDate"
-                      [required]="true"
                       [(ngModel)]="employee.joiningDate"
                       [showIcon]="true"
                       [style]="{ width: '100%' }"
@@ -404,7 +403,6 @@
                       name="companyEmailAddress"
                       [(ngModel)]="employee.companyEmailAddress"
                       #companyEmailAddress="ngModel"
-                      required
                     />
                     <small
                       id="name-help"
@@ -438,12 +436,10 @@
                     <label htmlFor="name">Date Of Birth</label>
                     <p-calendar
                       #dateOfBirth="ngModel"
-                      name="dateOfBirth"
-                      [required]="true"
+                      name="dateOfBirth"                      
                       [(ngModel)]="employee.dateOfBirth"
                       [showIcon]="true"
                       [style]="{ width: '100%' }"
-                      [required]="true"
                     ></p-calendar>
                   </div>
                 </div>
@@ -456,7 +452,6 @@
                       [options]="organization?.productFieldValuesList"
                       name="organization"
                       #organizationModel="ngModel"
-                      [required]="true"
                       optionLabel="name"
                       optionValue="name"
                       [filter]="true"
@@ -562,7 +557,6 @@
                       name="svEmployeeNumber"
                       [(ngModel)]="employee.svEmployeeNumber"
                       #svEmployeeNumber="ngModel"
-                      required
                       [ngClass]="{
                         error:
                           svEmployeeNumber.invalid &&
@@ -591,7 +585,6 @@
                       name="svEmployeeName"
                       [(ngModel)]="employee.svEmployeeName"
                       #svEmployeeName="ngModel"
-                      required
                       [ngClass]="{
                         error:
                           svEmployeeName.invalid &&
@@ -637,7 +630,7 @@
                       name="licenseNumber"
                       [(ngModel)]="employee.licenseNumber"
                       #licenseNumber="ngModel"
-                      required
+                      
                       [ngClass]="{
                         error:
                           licenseNumber.invalid &&

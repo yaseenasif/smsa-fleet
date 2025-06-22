@@ -93,7 +93,7 @@ export class AddRoleComponent {
     }
   }
   childPermissions(item: Permission) {
-    debugger
+
     if (item.name === "Vehicles") {
       this.vehiclePermissionObject.Vehicles.forEach((element: Permission) => {
         element.status = item.status;
@@ -102,7 +102,7 @@ export class AddRoleComponent {
       const allStatusTrue = this.vehiclePermissionObject.Vehicles.every((element: Permission) => {
         return element.status === true;
       });
-      debugger
+      
       if (allStatusTrue) {
         const vehicles = this.permission.find(obj => obj.name === 'Vehicles');
         vehicles ? vehicles.status = true : false;

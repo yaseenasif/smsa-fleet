@@ -585,7 +585,7 @@ export class AddVehicleComponent implements OnInit {
     this.productFieldService.getProductFieldByName(fieldName).subscribe(
       (res: ProductField) => {
         this.vehicleType = res;
-        debugger
+        
       }, (err: BackenCommonErrorThrow) => {
         this.errorHandleService.showError(err.error!);
       });

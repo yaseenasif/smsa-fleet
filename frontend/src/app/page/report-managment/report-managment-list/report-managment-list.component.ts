@@ -224,7 +224,7 @@ export class ReportManagmentListComponent implements OnInit {
     this.reportManagmentService.searchVehiclesWithDynamicValues(this.vehicle, selectedPoNumberString,undefined,this.query).subscribe(
       (res: PaginatedResponse<Vehicle>) => {
         this.vehicles = res.content;
-        debugger
+     
         if (res.content.length > 0) {
           this.query = { page: res.pageable.pageNumber, size: res.size }
           this.one = 1;

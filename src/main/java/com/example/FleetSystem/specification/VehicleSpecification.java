@@ -193,7 +193,7 @@ public class VehicleSpecification {
             List<Predicate> predicates = new ArrayList<>();
 
             addBetweenPredicateIfNotNull(predicates, criteriaBuilder, root.get("leaseExpiryDate"), vehicle.getLeaseStartDate(), vehicle.getLeaseExpiryDate());
-            addLikePredicateIfNotNull(predicates, criteriaBuilder, root.get("processOrderNumber"), stringifyPoNumbers, Integer.class);
+            addLikePredicateIfNotNull(predicates, criteriaBuilder, root.get("processOrderNumber"), stringifyPoNumbers, String.class);
             addLikePredicateIfNotNull(predicates, criteriaBuilder, root.join("vendor").get("vendorName"), vehicle.getVendor().getVendorName(), String.class);
             addLikePredicateIfNotNull(predicates, criteriaBuilder, root.get("usageType"), vehicle.getUsageType(), String.class);
             addLikePredicateIfNotNull(predicates, criteriaBuilder, root.get("region"), vehicle.getRegion(), String.class);

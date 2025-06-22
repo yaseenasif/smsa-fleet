@@ -77,7 +77,6 @@ export class AddProjectVehicleComponent implements OnInit {
 
   ngOnInit(): void {
     this.updateMonthForFieldValue();
-    console.log(this.projectVehicle.projectVehicleValuesList);
     this.items = [{ label: 'Project Vehicle', routerLink: '/project-vehicle' }, { label: 'Add Project Vehicle' }];
     this.getAllVendors();
     this.getProjectName();
@@ -113,7 +112,6 @@ export class AddProjectVehicleComponent implements OnInit {
       referenceNo: undefined
     };
     this.projectVehicle.projectVehicleValuesList.push(newFieldValue);
-    console.log(this.projectVehicle.projectVehicleValuesList);
   }
 
 
@@ -143,7 +141,7 @@ export class AddProjectVehicleComponent implements OnInit {
   private getProjectName() {
     this.productFieldService.getProductFieldByName('Project Name').subscribe((res: ProductField) => {
       this.projectNames = res;
-      console.log(res);
+   
 
     }, error => {
       this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error });
